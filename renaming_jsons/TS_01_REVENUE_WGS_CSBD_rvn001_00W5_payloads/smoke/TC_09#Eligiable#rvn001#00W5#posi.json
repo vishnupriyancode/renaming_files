@@ -1,0 +1,97 @@
+{
+  "testCaseId": "TC_001",
+  "testCaseName": "Revenue Calculation Positive Test",
+  "testSuite": "Revenue_WGS_CSBD",
+  "priority": "High",
+  "testType": "Smoke",
+  "description": "Verify revenue calculation functionality with valid input data",
+  "preconditions": [
+    "User is logged into the system",
+    "Revenue calculation module is accessible",
+    "Test data is properly configured"
+  ],
+  "testData": {
+    "revenueInputs": {
+      "baseAmount": 1000.00,
+      "taxRate": 0.08,
+      "discountPercentage": 0.10,
+      "currency": "USD",
+      "region": "North America"
+    },
+    "expectedOutputs": {
+      "grossRevenue": 1000.00,
+      "taxAmount": 80.00,
+      "discountAmount": 100.00,
+      "netRevenue": 980.00,
+      "totalRevenue": 1060.00
+    }
+  },
+  "testSteps": [
+    {
+      "stepNumber": 1,
+      "action": "Navigate to revenue calculation page",
+      "expectedResult": "Revenue calculation form is displayed"
+    },
+    {
+      "stepNumber": 2,
+      "action": "Enter base amount: 1000.00",
+      "expectedResult": "Base amount is accepted and displayed"
+    },
+    {
+      "stepNumber": 3,
+      "action": "Select tax rate: 8%",
+      "expectedResult": "Tax rate is applied correctly"
+    },
+    {
+      "stepNumber": 4,
+      "action": "Apply discount: 10%",
+      "expectedResult": "Discount is calculated and applied"
+    },
+    {
+      "stepNumber": 5,
+      "action": "Click calculate button",
+      "expectedResult": "Revenue calculation is completed successfully"
+    },
+    {
+      "stepNumber": 6,
+      "action": "Verify calculated amounts",
+      "expectedResult": "All calculated amounts match expected values"
+    }
+  ],
+  "testResults": {
+    "status": "Passed",
+    "executionTime": "00:02:15",
+    "executedBy": "TestUser_01",
+    "executionDate": "2024-01-15T10:30:00Z",
+    "environment": "QA_Environment",
+    "browser": "Chrome 120.0",
+    "notes": "All test steps passed successfully. Revenue calculations are accurate."
+  },
+  "defects": [],
+  "attachments": [
+    {
+      "name": "screenshot_001.png",
+      "type": "image/png",
+      "description": "Revenue calculation form screenshot"
+    },
+    {
+      "name": "test_log.txt",
+      "type": "text/plain",
+      "description": "Detailed test execution log"
+    }
+  ],
+  "tags": [
+    "revenue",
+    "calculation",
+    "positive",
+    "smoke",
+    "critical"
+  ],
+  "metadata": {
+    "createdBy": "QA_Team",
+    "createdDate": "2024-01-10T09:00:00Z",
+    "lastModifiedBy": "TestUser_01",
+    "lastModifiedDate": "2024-01-15T10:30:00Z",
+    "version": "1.0"
+  }
+}

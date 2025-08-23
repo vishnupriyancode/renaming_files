@@ -1,0 +1,118 @@
+{
+  "testCaseId": "TC_006",
+  "testCaseName": "Revenue Calculation Exclusion Test - Seasonal and Promotional Rules",
+  "testSuite": "Revenue_WGS_CSBD",
+  "priority": "Low",
+  "testType": "Smoke",
+  "description": "Verify system behavior with seasonal discounts and promotional exclusions",
+  "preconditions": [
+    "User is logged into the system",
+    "Revenue calculation module is accessible",
+    "Seasonal and promotional rules are properly configured"
+  ],
+  "testData": {
+    "revenueInputs": {
+      "baseAmount": 3000.00,
+      "taxRate": 0.09,
+      "discountPercentage": 0.25,
+      "currency": "USD",
+      "region": "North America",
+      "season": "Holiday",
+      "promotionCode": "HOLIDAY2024",
+      "customerTier": "Premium"
+    },
+    "expectedOutputs": {
+      "seasonalDiscount": true,
+      "promotionalDiscount": true,
+      "customerTierDiscount": true,
+      "stackedDiscounts": true,
+      "finalAmount": 2025.00,
+      "totalSavings": 975.00,
+      "exclusionReason": "Holiday season with promotional code and premium customer tier"
+    }
+  },
+  "testSteps": [
+    {
+      "stepNumber": 1,
+      "action": "Navigate to revenue calculation page",
+      "expectedResult": "Revenue calculation form is displayed"
+    },
+    {
+      "stepNumber": 2,
+      "action": "Select season: Holiday",
+      "expectedResult": "Holiday season is selected and seasonal discount rules applied"
+    },
+    {
+      "stepNumber": 3,
+      "action": "Enter promotion code: HOLIDAY2024",
+      "expectedResult": "Promotional discount is applied and validated"
+    },
+    {
+      "stepNumber": 4,
+      "action": "Select customer tier: Premium",
+      "expectedResult": "Premium customer tier is selected and additional benefits applied"
+    },
+    {
+      "stepNumber": 5,
+      "action": "Enter base amount: 3000.00",
+      "expectedResult": "Base amount is accepted and displayed"
+    },
+    {
+      "stepNumber": 6,
+      "action": "Verify seasonal discount application",
+      "expectedResult": "Holiday season discount is properly applied"
+    },
+    {
+      "stepNumber": 7,
+      "action": "Verify promotional code validation",
+      "expectedResult": "HOLIDAY2024 promotion code is valid and applied"
+    },
+    {
+      "stepNumber": 8,
+      "action": "Verify customer tier benefits",
+      "expectedResult": "Premium customer tier benefits are applied"
+    },
+    {
+      "stepNumber": 9,
+      "action": "Click calculate button",
+      "expectedResult": "Final amount calculated with all seasonal and promotional exclusions"
+    }
+  ],
+  "testResults": {
+    "status": "Passed",
+    "executionTime": "00:03:15",
+    "executedBy": "TestUser_06",
+    "executionDate": "2024-01-20T13:10:00Z",
+    "environment": "QA_Environment",
+    "browser": "Firefox 122.0",
+    "notes": "Seasonal and promotional exclusions are working correctly. Multiple discount types can be stacked properly for premium customers during holiday season."
+  },
+  "defects": [],
+  "attachments": [
+    {
+      "name": "screenshot_006.png",
+      "type": "image/png",
+      "description": "Seasonal and promotional discount screenshot showing stacked discounts"
+    },
+    {
+      "name": "seasonal_test_log.txt",
+      "type": "text/plain",
+      "description": "Detailed seasonal and promotional exclusion test execution log"
+    }
+  ],
+  "tags": [
+    "revenue",
+    "exclusion",
+    "seasonal",
+    "promotional",
+    "smoke",
+    "customer-tier"
+  ],
+  "metadata": {
+    "createdBy": "QA_Team",
+    "createdDate": "2024-01-10T09:00:00Z",
+    "lastModifiedBy": "TestUser_06",
+    "lastModifiedDate": "2024-01-20T13:10:00Z",
+    "version": "1.0"
+  }
+}
