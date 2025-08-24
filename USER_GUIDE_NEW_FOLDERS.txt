@@ -1,0 +1,156 @@
+USER GUIDE: MODIFYING FILES FOR NEW FOLDERS AND VALUES
+========================================================
+
+This guide explains what files need to be checked and modified when you want to 
+use this renaming script with a new folder structure and different values.
+
+CRITICAL FILES TO MODIFY:
+========================
+
+1. rename_files.py (PRIMARY FILE - MUST MODIFY)
+2. rename_files_explanation.txt (Documentation updates)
+3. README.md (Project documentation updates)
+
+DETAILED MODIFICATION GUIDE:
+===========================
+
+FILE 1: rename_files.py
+-----------------------
+
+This is the main script that contains all the logic. You MUST modify these sections:
+
+A) HARDCODED PARAMETERS (Lines 7-8):
+   Current values:
+   edit_id = "rvn001"        ← CHANGE THIS
+   code = "00W5"             ← CHANGE THIS
+   
+   Example new values:
+   edit_id = "rvn002"        (for a new edit)
+   code = "00W6"             (for a new code)
+
+B) SUFFIX MAPPING (Lines 10-15):
+   Current mapping:
+   suffix_mapping = {
+       "Eligiable": "posi",   ← MAY NEED TO CHANGE
+       "bypass": "nega",      ← MAY NEED TO CHANGE
+       "market": "ex",        ← MAY NEED TO CHANGE
+       "dos": "ex"            ← MAY NEED TO CHANGE
+   }
+   
+   Only change this if your files use different suffix values!
+
+C) DIRECTORY PATHS (Lines 17-18):
+   Current paths:
+   source_dir = "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads/smoke"
+   dest_dir = r"C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads\smoke"
+   
+   You MUST change both paths to match your new folder structure!
+
+FILE 2: rename_files_explanation.txt
+-----------------------------------
+
+Update this documentation file to reflect:
+- New parameter values
+- New examples
+- New naming patterns
+- Updated summary section
+
+FILE 3: README.md
+-----------------
+
+Update the project documentation to include:
+- New project description
+- New usage examples
+- New folder structure information
+
+STEP-BY-STEP MODIFICATION PROCESS:
+================================
+
+1. IDENTIFY YOUR NEW VALUES:
+   - What is your new edit_id? (e.g., "rvn002", "rvn003")
+   - What is your new code? (e.g., "00W6", "00W7")
+   - What is your new folder name?
+
+2. MODIFY rename_files.py:
+   - Change edit_id value
+   - Change code value
+   - Change source_dir path
+   - Change dest_dir path
+   - Update suffix_mapping if needed
+
+3. UPDATE DOCUMENTATION:
+   - Modify rename_files_explanation.txt
+   - Modify README.md
+
+4. TEST YOUR CHANGES:
+   - Run the script to ensure it works
+   - Check that files are renamed correctly
+   - Verify destination folder structure
+
+EXAMPLE: CHANGING TO NEW FOLDER STRUCTURE
+=========================================
+
+Let's say you want to use:
+- New edit_id: "rvn002"
+- New code: "00W6"
+- New folder: "TS_02_PAYMENT_WGS_CSBD_rvn002_00W6_payloads"
+
+CHANGES NEEDED IN rename_files.py:
+
+OLD VALUES:
+edit_id = "rvn001"
+code = "00W5"
+source_dir = "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads/smoke"
+dest_dir = r"C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads\smoke"
+
+NEW VALUES:
+edit_id = "rvn002"
+code = "00W6"
+source_dir = "TS_02_PAYMENT_WGS_CSBD_rvn002_00W6_payloads/smoke"
+dest_dir = r"C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_02_PAYMENT_WGS_CSBD_rvn002_00W6_payloads\smoke"
+
+FILE NAMING PATTERN:
+===================
+
+The script transforms files from:
+OLD FORMAT: TC_01#Eligiable.json
+NEW FORMAT: TC_01#Eligiable#rvn002#00W6#posi.json
+
+Where:
+- TC_01: Test case identifier
+- Eligiable: Original suffix
+- rvn002: Your new edit_id
+- 00W6: Your new code
+- posi: Mapped suffix (from suffix_mapping)
+
+IMPORTANT NOTES:
+===============
+
+1. The script expects source files to have exactly 2 parts separated by '#'
+2. Make sure your destination directory path is correct and accessible
+3. The script will create the destination directory if it doesn't exist
+4. Original files are removed after successful copying
+5. Only JSON files are processed
+
+TROUBLESHOOTING:
+================
+
+Common issues and solutions:
+
+1. "Source directory not found" error:
+   - Check that source_dir path is correct
+   - Ensure the folder actually exists
+
+2. Permission errors:
+   - Check that you have write access to destination directory
+   - Ensure source files aren't read-only
+
+3. File format errors:
+   - Ensure your source files follow the expected format: TC_XX#suffix.json
+   - Check that files have exactly 2 parts separated by '#'
+
+4. Destination path issues:
+   - Use raw string (r"path") for Windows paths
+   - Ensure the full path is correct
+
+Remember: Always test with a small set of files first before running on your entire folder!
