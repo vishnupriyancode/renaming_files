@@ -1,0 +1,196 @@
+RENAME_FILES.PY - LINE BY LINE EXPLANATION
+==========================================
+
+Lines 1-3: Imports
+------------------
+import os
+- Provides operating system interface functions (file/directory operations)
+
+import re  
+- Regular expression operations (though not used in this script)
+
+import shutil
+- High-level file operations like copying files
+
+Lines 5-6: Function Definition
+------------------------------
+def rename_files():
+- Defines the main function that will handle the file renaming process
+
+Lines 7-8: Hardcoded Parameters
+-------------------------------
+edit_id = "rvn001"
+- Sets specific edit ID value that will be inserted into the new filename template
+
+code = "00W5"
+- Sets specific code value that will be inserted into the new filename template
+
+Lines 10-15: Suffix Mapping Dictionary
+-------------------------------------
+suffix_mapping = {
+    "Eligiable": "posi",
+    "bypass": "nega", 
+    "market": "ex",
+    "dos": "ex"
+}
+- Maps old suffix values to new ones (e.g., "Eligiable" becomes "posi")
+- "bypass" becomes "nega"
+- "market" and "dos" both become "ex"
+
+Lines 17-18: Directory Paths
+----------------------------
+source_dir = "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads/smoke"
+- Where the original files are located (relative path)
+
+dest_dir = r"C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads\smoke"
+- Where the renamed files will be moved (absolute path)
+
+Lines 20-22: Source Directory Check
+----------------------------------
+if not os.path.exists(source_dir):
+    print(f"Source directory {source_dir} not found!")
+    return
+- Checks if the source directory exists
+- Exits the function if source directory is not found
+
+Line 25: Create Destination Directory
+------------------------------------
+os.makedirs(dest_dir, exist_ok=True)
+- Creates the destination directory if it doesn't exist
+- exist_ok=True prevents errors if the directory already exists
+
+Line 28: Get JSON Files
+-----------------------
+json_files = [f for f in os.listdir(source_dir) if f.endswith('.json')]
+- Lists all files in source directory
+- Filters to only include files ending with '.json' extension
+
+Lines 30-32: Print Header
+-------------------------
+print("Files to be renamed and moved:")
+print("=" * 60)
+- Prints a header message
+- Creates a visual separator line (60 equal signs)
+
+Line 34: Main Loop
+------------------
+for filename in json_files:
+- Iterates through each JSON file found in the source directory
+
+Lines 36-38: Parse Filename
+---------------------------
+parts = filename.split('#')
+- Splits the filename by '#' character to separate components
+
+Lines 40-41: Check Format
+-------------------------
+if len(parts) == 2:
+- Ensures the filename has exactly 2 parts (TC_XX and suffix)
+
+Lines 42-44: Extract Parts
+--------------------------
+tc_part = parts[0]  # TC_01, TC_02, etc.
+suffix = parts[1].replace('.json', '')  # Eligiable, bypass, market, dos
+- Extracts the test case part (TC_01, TC_02, etc.)
+- Extracts the suffix, removing the '.json' extension
+
+Line 47: Map Suffix
+-------------------
+mapped_suffix = suffix_mapping.get(suffix, suffix)
+- Gets the new suffix from the mapping dictionary
+- If no mapping exists, keeps the original suffix
+
+Line 50: Create New Filename
+----------------------------
+new_filename = f"{tc_part}#{suffix}#{edit_id}#{code}#{mapped_suffix}.json"
+- Creates new filename using the template: TC_XX#suffix#rvn001#00W5#mapped_suffix.json
+
+Lines 52-56: Print Conversion Info
+----------------------------------
+print(f"Current: {filename}")
+print(f"Converting to new template...")
+print(f"New:     {new_filename}")
+print(f"Moving to: {dest_dir}")
+print("-" * 40)
+- Shows the current filename
+- Indicates conversion process
+- Shows the new filename
+- Shows destination directory
+- Creates a visual separator line (40 dashes)
+
+Lines 58-59: Handle Invalid Format
+---------------------------------
+else:
+    print(f"Warning: {filename} doesn't match expected format (needs exactly 2 parts)")
+    continue
+- Handles files that don't match the expected format
+- Skips to the next file in the loop
+
+Lines 61-62: Set File Paths
+---------------------------
+source_path = os.path.join(source_dir, filename)
+dest_path = os.path.join(dest_dir, new_filename)
+- Creates full source file path
+- Creates full destination file path
+
+Lines 64-75: File Operations
+-----------------------------
+try:
+    # Copy the file to destination with new name
+    shutil.copy2(source_path, dest_path)
+    print(f"✓ Successfully copied and renamed: {filename} → {new_filename}")
+    
+    # Remove the original file
+    os.remove(source_path)
+    print(f"✓ Removed original file: {filename}")
+    
+except Exception as e:
+    print(f"✗ Error processing {filename}: {e}")
+- Copies file to destination with new name
+- Prints success message for copying
+- Removes the original file
+- Prints success message for removal
+- Handles any errors that occur during the process
+
+Lines 77-80: Completion Message
+-------------------------------
+print("\n" + "=" * 60)
+print("Renaming and moving completed!")
+print(f"Files moved to: {dest_dir}")
+- Prints a blank line
+- Creates a visual separator line (60 equal signs)
+- Prints completion message
+- Shows the destination directory
+
+Lines 82-83: Main Execution
+---------------------------
+if __name__ == "__main__":
+    rename_files()
+- Runs the function when the script is executed directly
+- Prevents the function from running if the script is imported as a module
+
+SUMMARY
+=======
+This script renames JSON files from a simple format (TC_01#Eligiable.json) to a more 
+detailed format (TC_01#Eligiable#rvn001#00W5#posi.json) by:
+
+1. Reading files from a source directory
+2. Parsing their current names
+3. Applying suffix mappings
+4. Creating new names with additional parameters
+5. Moving them to a destination directory
+6. Cleaning up the original files
+
+The script is designed for test case file management, adding metadata like edit IDs 
+and codes to make the files more descriptive and organized.
+
+EXAMPLE TRANSFORMATION:
+- Input:  TC_01#Eligiable.json
+- Output: TC_01#Eligiable#rvn001#00W5#posi.json
+
+Where:
+- TC_01: Test case identifier
+- Eligiable: Original suffix
+- rvn001: Edit ID
+- 00W5: Code
+- posi: Mapped suffix (Eligiable → posi)
