@@ -25,27 +25,34 @@ edit_id = "rvn001"
 code = "00W5"
 - Sets specific code value that will be inserted into the new filename template
 
-Lines 10-15: Suffix Mapping Dictionary
--------------------------------------
+Lines 10-20: Nested Suffix Mapping Dictionary
+--------------------------------------------
 suffix_mapping = {
-    "Eligiable": "posi",
-    "bypass": "nega", 
-    "market": "ex",
-    "dos": "ex"
+    "positive": {
+        "deny": "LR",    # deny -> LR
+    },
+    "negative": {
+        "bypass": "NR",  # bypass -> NR
+    },
+    "Exclusion": {
+        "market": "EX",   # market -> EX
+        "date": "EX"     # date -> EX
+    }
 }
-- Maps old suffix values to new ones (e.g., "Eligiable" becomes "posi")
-- "bypass" becomes "nega"
-- "market" and "dos" both become "ex"
+- Uses a nested dictionary structure to categorize suffix mappings
+- "positive" category: "deny" becomes "LR" (Limited Response)
+- "negative" category: "bypass" becomes "NR" (No Response)
+- "Exclusion" category: "market" and "date" both become "EX" (Exception)
 
-Lines 17-18: Directory Paths
+Lines 22-23: Directory Paths
 ----------------------------
-source_dir = "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads/smoke"
+source_dir = "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/smoke"
 - Where the original files are located (relative path)
 
-dest_dir = r"C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads\smoke"
+dest_dir = r"C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis\smoke"
 - Where the renamed files will be moved (absolute path)
 
-Lines 20-22: Source Directory Check
+Lines 25-27: Source Directory Check
 ----------------------------------
 if not os.path.exists(source_dir):
     print(f"Source directory {source_dir} not found!")
@@ -53,59 +60,66 @@ if not os.path.exists(source_dir):
 - Checks if the source directory exists
 - Exits the function if source directory is not found
 
-Line 25: Create Destination Directory
+Line 30: Create Destination Directory
 ------------------------------------
 os.makedirs(dest_dir, exist_ok=True)
 - Creates the destination directory if it doesn't exist
 - exist_ok=True prevents errors if the directory already exists
 
-Line 28: Get JSON Files
+Line 33: Get JSON Files
 -----------------------
 json_files = [f for f in os.listdir(source_dir) if f.endswith('.json')]
 - Lists all files in source directory
 - Filters to only include files ending with '.json' extension
 
-Lines 30-32: Print Header
+Lines 35-37: Print Header
 -------------------------
 print("Files to be renamed and moved:")
 print("=" * 60)
 - Prints a header message
 - Creates a visual separator line (60 equal signs)
 
-Line 34: Main Loop
+Line 39: Main Loop
 ------------------
 for filename in json_files:
 - Iterates through each JSON file found in the source directory
 
-Lines 36-38: Parse Filename
+Lines 41-43: Parse Filename
 ---------------------------
 parts = filename.split('#')
 - Splits the filename by '#' character to separate components
 
-Lines 40-41: Check Format
+Lines 45-46: Check Format
 -------------------------
-if len(parts) == 2:
-- Ensures the filename has exactly 2 parts (TC_XX and suffix)
+if len(parts) == 3:
+- Ensures the filename has exactly 3 parts (TC, ID, and suffix)
 
-Lines 42-44: Extract Parts
+Lines 47-50: Extract Parts
 --------------------------
-tc_part = parts[0]  # TC_01, TC_02, etc.
-suffix = parts[1].replace('.json', '')  # Eligiable, bypass, market, dos
-- Extracts the test case part (TC_01, TC_02, etc.)
+tc_part = parts[0]  # TC
+tc_id_part = parts[1]  # 01_12345
+suffix = parts[2].replace('.json', '')  # deny, bypass, market, date
+- Extracts the test case part (TC)
+- Extracts the test case ID part (01_12345, etc.)
 - Extracts the suffix, removing the '.json' extension
 
-Line 47: Map Suffix
--------------------
-mapped_suffix = suffix_mapping.get(suffix, suffix)
-- Gets the new suffix from the mapping dictionary
-- If no mapping exists, keeps the original suffix
+Lines 52-56: Advanced Suffix Mapping
+------------------------------------
+mapped_suffix = suffix
+for category in suffix_mapping.values():
+    if suffix in category:
+        mapped_suffix = category[suffix]
+        break
+- Searches through all categories in the nested mapping structure
+- When a match is found, assigns the mapped value
+- If no match is found, keeps the original suffix
 
-Line 50: Create New Filename
+Line 58: Create New Filename
 ----------------------------
-new_filename = f"{tc_part}#{suffix}#{edit_id}#{code}#{mapped_suffix}.json"
-- Creates new filename using the template: TC_XX#suffix#rvn001#00W5#mapped_suffix.json
+new_filename = f"{tc_part}#{tc_id_part}#{edit_id}#{code}#{mapped_suffix}.json"
+- Creates new filename using the template: TC#XX_XXXXX#rvn001#00W5#mapped_suffix.json
 
-Lines 52-56: Print Conversion Info
+Lines 60-64: Print Conversion Info
 ----------------------------------
 print(f"Current: {filename}")
 print(f"Converting to new template...")
@@ -118,22 +132,22 @@ print("-" * 40)
 - Shows destination directory
 - Creates a visual separator line (40 dashes)
 
-Lines 58-59: Handle Invalid Format
+Lines 66-67: Handle Invalid Format
 ---------------------------------
 else:
-    print(f"Warning: {filename} doesn't match expected format (needs exactly 2 parts)")
+    print(f"Warning: {filename} doesn't match expected format (needs exactly 3 parts)")
     continue
 - Handles files that don't match the expected format
 - Skips to the next file in the loop
 
-Lines 61-62: Set File Paths
+Lines 69-70: Set File Paths
 ---------------------------
 source_path = os.path.join(source_dir, filename)
 dest_path = os.path.join(dest_dir, new_filename)
 - Creates full source file path
 - Creates full destination file path
 
-Lines 64-75: File Operations
+Lines 72-83: File Operations
 -----------------------------
 try:
     # Copy the file to destination with new name
@@ -152,7 +166,7 @@ except Exception as e:
 - Prints success message for removal
 - Handles any errors that occur during the process
 
-Lines 77-80: Completion Message
+Lines 85-88: Completion Message
 -------------------------------
 print("\n" + "=" * 60)
 print("Renaming and moving completed!")
@@ -162,7 +176,7 @@ print(f"Files moved to: {dest_dir}")
 - Prints completion message
 - Shows the destination directory
 
-Lines 82-83: Main Execution
+Lines 90-91: Main Execution
 ---------------------------
 if __name__ == "__main__":
     rename_files()
@@ -171,26 +185,38 @@ if __name__ == "__main__":
 
 SUMMARY
 =======
-This script renames JSON files from a simple format (TC_01#Eligiable.json) to a more 
-detailed format (TC_01#Eligiable#rvn001#00W5#posi.json) by:
+This script renames JSON files from a 3-part format (TC#XX_XXXXX#suffix.json) to a more 
+detailed 5-part naming convention (TC#XX_XXXXX#rvn001#00W5#mapped_suffix.json) by:
 
 1. Reading files from a source directory
-2. Parsing their current names
-3. Applying suffix mappings
-4. Creating new names with additional parameters
+2. Parsing their current names into 3 components (TC, ID, suffix)
+3. Applying advanced suffix mappings using a nested dictionary structure
+4. Creating new names with additional parameters (edit_id, code)
 5. Moving them to a destination directory
 6. Cleaning up the original files
 
-The script is designed for test case file management, adding metadata like edit IDs 
-and codes to make the files more descriptive and organized.
+The script uses a sophisticated nested mapping system that categorizes suffixes into:
+- **positive**: Limited Response test cases (deny → LR)
+- **negative**: No Response test cases (bypass → NR)  
+- **Exclusion**: Exception test cases (market → EX, date → EX)
+
+The lookup algorithm searches through all categories to find the correct mapping,
+allowing multiple suffixes to map to the same output suffix.
 
 EXAMPLE TRANSFORMATION:
-- Input:  TC_01#Eligiable.json
-- Output: TC_01#Eligiable#rvn001#00W5#posi.json
+- Input:  TC#01_12345#deny.json
+- Output: TC#01_12345#rvn001#00W5#LR.json
 
 Where:
-- TC_01: Test case identifier
-- Eligiable: Original suffix
+- TC: Test case identifier
+- 01_12345: Test case ID
+- deny: Original suffix
 - rvn001: Edit ID
 - 00W5: Code
-- posi: Mapped suffix (Eligiable → posi)
+- LR: Mapped suffix (deny → LR via positive category)
+
+MAPPING EXAMPLES:
+- deny → LR (positive category)
+- bypass → NR (negative category)
+- market → EX (Exclusion category)
+- date → EX (Exclusion category)

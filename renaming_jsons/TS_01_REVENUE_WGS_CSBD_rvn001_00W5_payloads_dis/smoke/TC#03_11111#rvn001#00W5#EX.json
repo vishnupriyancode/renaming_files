@@ -1,0 +1,109 @@
+{
+  "testCaseId": "TC_005",
+  "testCaseName": "Revenue Calculation Exclusion Test - Business Rule Validation",
+  "testSuite": "Revenue_WGS_CSBD",
+  "priority": "Low",
+  "testType": "Smoke",
+  "description": "Verify system behavior with business rule exclusions and special conditions",
+  "preconditions": [
+    "User is logged into the system",
+    "Revenue calculation module is accessible",
+    "Business rules and exclusions are properly configured"
+  ],
+  "testData": {
+    "revenueInputs": {
+      "baseAmount": 5000.00,
+      "taxRate": 0.10,
+      "discountPercentage": 0.20,
+      "currency": "USD",
+      "region": "Tax Free Zone",
+      "customerType": "Government",
+      "productCategory": "Exempt"
+    },
+    "expectedOutputs": {
+      "taxExemption": true,
+      "discountEligibility": false,
+      "specialPricing": true,
+      "finalAmount": 5000.00,
+      "exclusionReason": "Government customer in tax-free zone with exempt product"
+    }
+  },
+  "testSteps": [
+    {
+      "stepNumber": 1,
+      "action": "Navigate to revenue calculation page",
+      "expectedResult": "Revenue calculation form is displayed"
+    },
+    {
+      "stepNumber": 2,
+      "action": "Select customer type: Government",
+      "expectedResult": "Government customer type is selected and special rules applied"
+    },
+    {
+      "stepNumber": 3,
+      "action": "Select region: Tax Free Zone",
+      "expectedResult": "Tax-free zone is selected and tax exemption is applied"
+    },
+    {
+      "stepNumber": 4,
+      "action": "Select product category: Exempt",
+      "expectedResult": "Exempt product category is selected and special pricing rules applied"
+    },
+    {
+      "stepNumber": 5,
+      "action": "Enter base amount: 5000.00",
+      "expectedResult": "Base amount is accepted and displayed"
+    },
+    {
+      "stepNumber": 6,
+      "action": "Verify tax exemption is applied",
+      "expectedResult": "Tax is excluded due to government customer and tax-free zone"
+    },
+    {
+      "stepNumber": 7,
+      "action": "Verify discount eligibility",
+      "expectedResult": "Discount is not applicable for exempt products"
+    },
+    {
+      "stepNumber": 8,
+      "action": "Click calculate button",
+      "expectedResult": "Final amount calculated with all exclusions applied"
+    }
+  ],
+  "testResults": {
+    "status": "Passed",
+    "executionTime": "00:02:30",
+    "executedBy": "TestUser_05",
+    "executionDate": "2024-01-19T16:20:00Z",
+    "environment": "QA_Environment",
+    "browser": "Chrome 121.0",
+    "notes": "Business rule exclusions are working correctly. Government customers in tax-free zones with exempt products are properly handled."
+  },
+  "defects": [],
+  "attachments": [
+    {
+      "name": "screenshot_005.png",
+      "type": "image/png",
+      "description": "Business rule exclusion screenshot showing special pricing"
+    },
+    {
+      "name": "exclusion_test_log.txt",
+      "type": "text/plain",
+      "description": "Detailed business rule exclusion test execution log"
+    }
+  ],
+  "tags": [
+    "revenue",
+    "exclusion",
+    "business-rules",
+    "smoke",
+    "special-cases"
+  ],
+  "metadata": {
+    "createdBy": "QA_Team",
+    "createdDate": "2024-01-10T09:00:00Z",
+    "lastModifiedBy": "TestUser_05",
+    "lastModifiedDate": "2024-01-19T16:20:00Z",
+    "version": "1.0"
+  }
+}

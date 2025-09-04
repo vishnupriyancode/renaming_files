@@ -12,16 +12,16 @@ This project automatically processes test case JSON files from a source director
 renaming_files/
 ├── rename_files.py                    # Main Python script
 ├── renaming_jsons/                    # Output directory for renamed files
-│   └── TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads/
+│   └── TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis/
 │       └── smoke/                     # Processed test cases
-├── TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads/
+├── TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/
 │   └── smoke/                         # Source directory (original files)
 └── README.md                          # This file
 ```
 
 ## Features
 
-- **Automatic File Renaming**: Converts files from 2-part format to detailed 5-part naming convention
+- **Automatic File Renaming**: Converts files from 3-part format to detailed 5-part naming convention
 - **Suffix Mapping**: Maps test case types to appropriate suffixes
 - **File Organization**: Moves renamed files to organized directory structure
 - **Error Handling**: Provides detailed logging and error reporting
@@ -33,25 +33,24 @@ renaming_files/
 Files must follow this pattern:
 
 ```
-TC_XX#suffix.json
+TC#XX_XXXXX#suffix.json
 ```
 
 **Examples:**
-- `TC_01#Eligiable.json`
-- `TC_02#bypass.json`
-- `TC_05#market.json`
-- `TC_08#bypass.json`
+- `TC#01_12345#deny.json`
+- `TC#02_67890#bypass.json`
+- `TC#05_11111#market.json`
 
 ### Output Format
 Files are renamed to follow this template:
 ```
-TC_XX#suffix#edit_id#code#mapped_suffix.json
+TC#XX_XXXXX#edit_id#code#mapped_suffix.json
 ```
 
 **Examples:**
-- `TC_01#Eligiable#rvn001#00W5#posi.json`
-- `TC_02#bypass#rvn001#00W5#nega.json`
-- `TC_05#market#rvn001#00W5#ex.json`
+- `TC#01_12345#rvn001#00W5#LR.json`
+- `TC#02_67890#rvn001#00W5#NR.json`
+- `TC#05_11111#rvn001#00W5#EX.json`
 
 ## Parameters
 
@@ -60,20 +59,33 @@ The script uses the following hardcoded parameters:
 
 - **`edit_id`**: `"rvn001"` - Unique identifier for the edit/revision
 - **`code`**: `"00W5"` - Code identifier for the test suite
-- **`source_dir`**: `"TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads/smoke"` - Source directory path
+- **`source_dir`**: `"TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/smoke"` - Source directory path
 - **`dest_dir`**: Absolute path to the destination directory
 
 ### Suffix Mapping
-The script automatically maps test case types to appropriate suffixes:
+The script uses a nested dictionary structure to map test case types to appropriate suffixes:
 
-| Original Suffix | Mapped Suffix | Description |
-|----------------|---------------|-------------|
-| `Eligiable`   | `posi`        | Positive test cases |
-| `bypass`      | `nega`        | Negative test cases |
-| `market`      | `ex`          | Exception test cases |
-| `dos`         | `ex`          | Exception test cases |
+```python
+suffix_mapping = {
+    "positive": {
+        "deny": "LR",    # deny -> LR
+    },
+    "negative": {
+        "bypass": "NR",  # bypass -> NR
+    },
+    "Exclusion": {
+        "market": "EX",   # market -> EX
+        "date": "EX"     # date -> EX
+    }
+}
+```
 
-**Note**: The script automatically determines the appropriate suffix based on the test case type. For example, `bypass` files automatically get the `nega` suffix in the new 5-part template.
+| Original Suffix | Mapped Suffix | Category | Description |
+|----------------|---------------|----------|-------------|
+| `deny`         | `LR`          | positive | Limited Response test cases |
+| `bypass`       | `NR`          | negative | No Response test cases |
+| `market`       | `EX`          | Exclusion | Exception test cases |
+| `date`         | `EX`          | Exclusion | Exception test cases |
 
 ## Usage
 
@@ -116,20 +128,37 @@ The script automatically maps test case types to appropriate suffixes:
 ```
 Files to be renamed and moved:
 ============================================================
-Current (3-part): TC_01#Eligiable#posi.json
-New:     TC_01#Eligiable#rvn001#00W5#posi.json
-Moving to: C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads\smoke
+Current: TC#01_12345#deny.json
+Converting to new template...
+New:     TC#01_12345#rvn001#00W5#LR.json
+Moving to: C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis\smoke
 ----------------------------------------
-✓ Successfully copied and renamed: TC_01#Eligiable#posi.json → TC_01#Eligiable#rvn001#00W5#posi.json
-✓ Removed original file: TC_01#Eligiable#posi.json
+✓ Successfully copied and renamed: TC#01_12345#deny.json → TC#01_12345#rvn001#00W5#LR.json
+✓ Removed original file: TC#01_12345#deny.json
 
-Current (2-part): TC_08#bypass.json
-Converting to 3-part template...
-New:     TC_08#bypass#rvn001#00W5#nega.json
-Moving to: C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads\smoke
+Current: TC#02_67890#bypass.json
+Converting to new template...
+New:     TC#02_67890#rvn001#00W5#NR.json
+Moving to: C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis\smoke
 ----------------------------------------
-✓ Successfully copied and renamed: TC_08#bypass.json → TC_08#bypass#rvn001#00W5#nega.json
-✓ Removed original file: TC_08#bypass.json
+✓ Successfully copied and renamed: TC#02_67890#bypass.json → TC#02_67890#rvn001#00W5#NR.json
+✓ Removed original file: TC#02_67890#bypass.json
+
+Current: TC#05_11111#market.json
+Converting to new template...
+New:     TC#05_11111#rvn001#00W5#EX.json
+Moving to: C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis\smoke
+----------------------------------------
+✓ Successfully copied and renamed: TC#05_11111#market.json → TC#05_11111#rvn001#00W5#EX.json
+✓ Removed original file: TC#05_11111#market.json
+
+Current: TC#03_99999#date.json
+Converting to new template...
+New:     TC#03_99999#rvn001#00W5#EX.json
+Moving to: C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis\smoke
+----------------------------------------
+✓ Successfully copied and renamed: TC#03_99999#date.json → TC#03_99999#rvn001#00W5#EX.json
+✓ Removed original file: TC#03_99999#date.json
 ...
 ============================================================
 Renaming and moving completed!
@@ -163,6 +192,45 @@ The script processes JSON files containing test case information:
 }
 ```
 
+## How the Mapping Works
+
+The script uses a sophisticated nested dictionary structure for suffix mapping. Here's how it works:
+
+### Mapping Structure
+```python
+suffix_mapping = {
+    "positive": {
+        "deny": "LR",    # deny -> LR
+    },
+    "negative": {
+        "bypass": "NR",  # bypass -> NR
+    },
+    "Exclusion": {
+        "market": "EX",   # market -> EX
+        "date": "EX"     # date -> EX
+    }
+}
+```
+
+### Lookup Algorithm
+1. **Input**: The script receives a suffix (e.g., "market", "date", "deny")
+2. **Search**: It searches through all categories in the mapping
+3. **Match**: When a match is found, it returns the mapped value
+4. **Fallback**: If no match is found, it uses the original suffix
+
+### Example Lookup Process
+- **Input**: `"market"`
+- **Search**: 
+  - Check "positive" category → No match
+  - Check "negative" category → No match  
+  - Check "Exclusion" category → **Found!** `"market": "EX"`
+- **Output**: `"EX"`
+
+This structure allows for:
+- **Categorization**: Grouping related suffixes together
+- **Multiple Mappings**: Several suffixes can map to the same output (e.g., both "market" and "date" → "EX")
+- **Easy Extension**: Adding new categories or mappings is straightforward
+
 ## Customization
 
 ### Modifying Parameters
@@ -185,13 +253,23 @@ To add new suffix mappings, modify the `suffix_mapping` dictionary:
 
 ```python
 suffix_mapping = {
-    "Eligiable": "posi",
-    "bypass": "nega",
-    "market": "ex",
-    "dos": "ex",
-    "new_type": "new_suffix"  # Add new mappings here
+    "positive": {
+        "deny": "LR",        # Limited Response test cases
+        "new_positive": "LR"  # Add new positive mappings here
+    },
+    "negative": {
+        "bypass": "NR",      # No Response test cases
+        "new_negative": "NR"  # Add new negative mappings here
+    },
+    "Exclusion": {
+        "market": "EX",      # Exception test cases
+        "date": "EX",        # Exception test cases
+        "new_exclusion": "EX"  # Add new exclusion mappings here
+    }
 }
 ```
+
+**Note**: The script searches through all categories to find the correct mapping for each suffix. Multiple suffixes can map to the same output suffix (e.g., both `market` and `date` map to `EX`).
 
 ## Error Handling
 
@@ -215,8 +293,9 @@ The script includes comprehensive error handling:
    - Run the script with appropriate privileges
 
 3. **File Format Errors**
-   - Verify that input files follow the expected naming convention
+   - Verify that input files follow the expected naming convention: `TC#XX_XXXXX#suffix.json`
    - Check that files are valid JSON format
+   - Ensure files have exactly 3 parts separated by `#` characters
 
 ### Debug Mode
 To add more detailed logging, you can modify the script to include debug information:
