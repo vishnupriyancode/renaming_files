@@ -37,6 +37,22 @@ STATIC_MODELS_CONFIG = [
         "dest_dir": "renaming_jsons/TS_04_REVENUE_WGS_CSBD_rvn004_00W8_payloads_dis/regression",
         "postman_collection_name": "ts_4_collection",
         "postman_file_name": "revenue_wgs_csbd_rvn004_00w8.json"
+    },
+    {
+        "edit_id": "rvn005",
+        "code": "00W9", 
+        "source_dir": "TS_04_REVENUE_WGS_CSBD_rvn005_00W8_payloads_sur/regression",
+        "dest_dir": "renaming_jsons/TS_04_REVENUE_WGS_CSBD_rvn004_00W9_payloads_dis/regression",
+        "postman_collection_name": "ts_5_collection",
+        "postman_file_name": "revenue_wgs_csbd_rvn004_00w9.json"
+    },
+    {
+        "edit_id": "rvn006",
+        "code": "00W9", 
+        "source_dir": "TS_05_REVENUE_WGS_CSBD_rvn005_00W9_payloads_sur/regression",
+        "dest_dir": "renaming_jsons/TS_04_REVENUE_WGS_CSBD_rvn004_00W10_payloads_dis/regression",
+        "postman_collection_name": "ts_5_collection",
+        "postman_file_name": "revenue_wgs_csbd_rvn004_00w10.json"
     }
 ]
 

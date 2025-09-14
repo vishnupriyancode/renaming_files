@@ -1,0 +1,21 @@
+{
+  "testCase": "TC#01_12345#rvn001#00W5#SUR",
+  "testSuite": "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur",
+  "testType": "regression",
+  "payload": {
+    "revenue": {
+      "wgs": {
+        "csbd": {
+          "rvn001": {
+            "week": "00W5",
+            "type": "SUR",
+            "testId": "12345"
+          }
+        }
+      }
+    }
+  },
+  "expectedResult": "success",
+  "description": "Revenue WGS CSBD rvn001 00W5 SUR test case",
+  "created": "2024-01-01T00:00:00Z"
+}
