@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "ts_01_collection API Collection",
+    "description": "API collection for ts_01_collection test cases",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC#01_12345#rvn001#00W5#LR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "X-Edit-ID",
+            "value": "rvn001",
+            "type": "text"
+          },
+          {
+            "key": "X-EOB-Code",
+            "value": "00W5",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Type",
+            "value": "LR",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"testCase\": \"TC#01_12345#rvn001#00W5#SUR\",\n  \"testSuite\": \"TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur\",\n  \"testType\": \"regression\",\n  \"payload\": {\n    \"revenue\": {\n      \"wgs\": {\n        \"csbd\": {\n          \"rvn001\": {\n            \"week\": \"00W5\",\n            \"type\": \"SUR\",\n            \"testId\": \"12345\"\n          }\n        }\n      }\n    }\n  },\n  \"expectedResult\": \"success\",\n  \"description\": \"Revenue WGS CSBD rvn001 00W5 SUR test case\",\n  \"created\": \"2024-01-01T00:00:00Z\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

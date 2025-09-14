@@ -1,94 +1,90 @@
-import os
-import re
-import shutil
+#!/usr/bin/env python3
+"""
+Alternative command interface for rename_files_with_postman.py
+This file provides a shorter command format for convenience.
+Now supports dynamic TS number discovery.
+"""
 
-def rename_files():
-    # Parameters extracted from folder name
-    edit_id = "rvn001"
-    code = "00W5"
+import sys
+import os
+import subprocess
+import argparse
+
+# Add the current directory to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+def main():
+    """Main function to handle command line arguments and execute the appropriate script."""
     
-    # Mapping for suffixes based on the expected output format
-    suffix_mapping = {
-        "positive": {
-            "deny": "LR",    # deny -> LR
-        },
-        "negative": {
-            "bypass": "NR",  # bypass -> NR
-        },
-        "Exclusion": {
-            "market": "EX",   # market -> EX
-            "date": "EX"      # dos -> EX
-        }
-    }
+    # Set up argument parser for this wrapper
+    parser = argparse.ArgumentParser(
+        description="Short command interface for file renaming and Postman collection generation",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python rename_files.py --TS01    # Process TS01 model
+  python rename_files.py --TS02    # Process TS02 model  
+  python rename_files.py --TS 03   # Process TS03 model (auto-discovered)
+  python rename_files.py --TS 04   # Process TS04 model (auto-discovered)
+  python rename_files.py --all     # Process all discovered models
+  python rename_files.py --list    # List all available TS models
+        """
+    )
     
-    # Source directory containing the files
-    source_dir = "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/smoke"
+    # Add model-specific arguments
+    parser.add_argument("--TS01", action="store_true", 
+                       help="Process TS01 model")
+    parser.add_argument("--TS02", action="store_true", 
+                       help="Process TS02 model")
+    parser.add_argument("--all", action="store_true", 
+                       help="Process all discovered models")
+    parser.add_argument("--list", action="store_true", 
+                       help="List all available TS models")
+    parser.add_argument("--no-postman", action="store_true", 
+                       help="Skip Postman collection generation")
     
-    # Destination directory
-    dest_dir = r"C:\Users\Vishnu\Cursor_AI_proj\GIT_HUB\renaming_files\renaming_jsons\TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis\smoke"
+    # Add dynamic TS number support
+    parser.add_argument("--TS", type=str, metavar="NUMBER",
+                       help="Process specific TS model by number (e.g., --TS 03)")
     
-    if not os.path.exists(source_dir):
-        print(f"Source directory {source_dir} not found!")
+    args = parser.parse_args()
+    
+    # Get the script directory
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    main_script = os.path.join(script_dir, "rename_files_with_postman.py")
+    
+    # Build command arguments
+    cmd_args = [sys.executable, main_script]
+    
+    # Convert arguments to the main script format
+    if args.TS01:
+        cmd_args.append("--TS01")
+    if args.TS02:
+        cmd_args.append("--TS02")
+    if args.all:
+        cmd_args.append("--all")
+    if args.list:
+        cmd_args.append("--list")
+    if args.no_postman:
+        cmd_args.append("--no-postman")
+    if args.TS:
+        cmd_args.extend(["--TS", args.TS])
+    
+    # If no arguments provided, show help
+    if len(cmd_args) == 2:  # Only sys.executable and main_script
+        parser.print_help()
         return
     
-    # Create destination directory if it doesn't exist
-    os.makedirs(dest_dir, exist_ok=True)
-    
-    # Get all JSON files in the source directory
-    json_files = [f for f in os.listdir(source_dir) if f.endswith('.json')]
-    
-    print("Files to be renamed and moved:")
-    print("=" * 60)
-    
-    for filename in json_files:
-        # Parse the current filename
-        # Expected format: TC#XX_XXXXX#suffix.json (3 parts)
-        parts = filename.split('#')
-        
-        if len(parts) == 3:
-            # Handle 3-part template: TC#XX_XXXXX#suffix.json
-            tc_part = parts[0]  # TC
-            tc_id_part = parts[1]  # 01_12345
-            suffix = parts[2].replace('.json', '')  # deny, bypass, market
-            
-            # Get the correct suffix mapping for the new template
-            mapped_suffix = suffix
-            for category in suffix_mapping.values():
-                if suffix in category:
-                    mapped_suffix = category[suffix]
-                    break
-            
-            # Create new filename according to new template: TC#XX_XXXXX#rvn001#00W5#LR.json
-            new_filename = f"{tc_part}#{tc_id_part}#{edit_id}#{code}#{mapped_suffix}.json"
-            
-            print(f"Current: {filename}")
-            print(f"Converting to new template...")
-            print(f"New:     {new_filename}")
-            print(f"Moving to: {dest_dir}")
-            print("-" * 40)
-            
-            # Source and destination paths
-            source_path = os.path.join(source_dir, filename)
-            dest_path = os.path.join(dest_dir, new_filename)
-            
-            try:
-                # Copy the file to destination with new name
-                shutil.copy2(source_path, dest_path)
-                print(f"✓ Successfully copied and renamed: {filename} → {new_filename}")
-                
-                # Remove the original file
-                os.remove(source_path)
-                print(f"✓ Removed original file: {filename}")
-                
-            except Exception as e:
-                print(f"✗ Error processing {filename}: {e}")
-        else:
-            print(f"Warning: {filename} doesn't match expected format (needs exactly 3 parts)")
-            continue
-    
-    print("\n" + "=" * 60)
-    print("Renaming and moving completed!")
-    print(f"Files moved to: {dest_dir}")
+    # Run the main script with the converted arguments
+    try:
+        print(f"🚀 Executing: {' '.join(cmd_args)}")
+        result = subprocess.run(cmd_args, check=True)
+        sys.exit(result.returncode)
+    except subprocess.CalledProcessError as e:
+        sys.exit(e.returncode)
+    except Exception as e:
+        print(f"Error running main script: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
-    rename_files()
+    main()

@@ -1,0 +1,443 @@
+import os
+import re
+import shutil
+from postman_generator import PostmanCollectionGenerator
+
+
+def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, generate_postman=True, postman_collection_name=None, postman_file_name=None):
+    """Rename files and optionally generate Postman collection for a specific model.
+    
+    Args:
+        edit_id: The edit ID (e.g., "rvn001", "rvn002")
+        code: The code (e.g., "00W5", "00W6")
+        source_dir: Source directory path (auto-generated if None)
+        dest_dir: Destination directory path (auto-generated if None)
+        generate_postman: If True, generate Postman collection after renaming
+        postman_collection_name: Name for the Postman collection
+        postman_file_name: Custom filename for the Postman collection JSON file
+    """
+    
+    # Mapping for suffixes based on the expected output format
+    suffix_mapping = {
+        "positive": {
+            "deny": "LR",    # deny -> LR
+        },
+        "negative": {
+            "bypass": "NR",  # bypass -> NR
+        },
+        "Exclusion": {
+            "market": "EX",   # market -> EX
+            "date": "EX"      # date -> EX
+        }
+    }
+    
+    # Auto-generate paths if not provided
+    if source_dir is None:
+        source_dir = f"TS_01_REVENUE_WGS_CSBD_{edit_id}_{code}_payloads_sur/regression"
+    
+    if dest_dir is None:
+        dest_dir = f"renaming_jsons/TS_01_REVENUE_WGS_CSBD_{edit_id}_{code}_payloads_dis/regression"
+    
+    if not os.path.exists(source_dir):
+        print(f"Source directory {source_dir} not found!")
+        return
+    
+    # Create destination directory if it doesn't exist
+    os.makedirs(dest_dir, exist_ok=True)
+    
+    # Get all JSON files in the source directory
+    json_files = [f for f in os.listdir(source_dir) if f.endswith('.json')]
+    
+    print("Files to be renamed and moved:")
+    print("=" * 60)
+    
+    renamed_files = []
+    
+    for filename in json_files:
+        # Parse the current filename
+        parts = filename.split('#')
+        
+        if len(parts) == 3:
+            # Handle 3-part template: TC#XX_XXXXX#suffix.json
+            tc_part = parts[0]  # TC
+            tc_id_part = parts[1]  # 01_12345
+            suffix = parts[2].replace('.json', '')  # deny, bypass, market
+            
+            # Get the correct suffix mapping for the new template
+            mapped_suffix = suffix
+            for category in suffix_mapping.values():
+                if suffix in category:
+                    mapped_suffix = category[suffix]
+                    break
+            
+            # Create new filename according to new template: TC#XX_XXXXX#rvn001#00W5#LR.json
+            new_filename = f"{tc_part}#{tc_id_part}#{edit_id}#{code}#{mapped_suffix}.json"
+            
+            print(f"Current: {filename}")
+            print(f"Converting to new template...")
+            print(f"New:     {new_filename}")
+            print(f"Moving to: {dest_dir}")
+            print("-" * 40)
+            
+            # Source and destination paths
+            source_path = os.path.join(source_dir, filename)
+            dest_path = os.path.join(dest_dir, new_filename)
+            
+            try:
+                # Copy the file to destination with new name
+                shutil.copy2(source_path, dest_path)
+                print(f"✓ Successfully copied and renamed: {filename} → {new_filename}")
+                
+                # Remove the original file
+                os.remove(source_path)
+                print(f"✓ Removed original file: {filename}")
+                
+                renamed_files.append(new_filename)
+                
+            except Exception as e:
+                print(f"✗ Error processing {filename}: {e}")
+                
+        elif len(parts) == 4:
+            # Handle 4-part template: TC#XX_XXXXX#edit_id#suffix.json
+            tc_part = parts[0]  # TC
+            tc_id_part = parts[1]  # 01_12345
+            file_edit_id = parts[2]  # rvn001
+            suffix = parts[3].replace('.json', '')  # deny, bypass, market
+            
+            # Get the correct suffix mapping for the new template
+            mapped_suffix = suffix
+            for category in suffix_mapping.values():
+                if suffix in category:
+                    mapped_suffix = category[suffix]
+                    break
+            
+            # Create new filename according to new template: TC#XX_XXXXX#rvn001#00W5#LR.json
+            new_filename = f"{tc_part}#{tc_id_part}#{edit_id}#{code}#{mapped_suffix}.json"
+            
+            print(f"Current: {filename}")
+            print(f"Converting from 4-part to 5-part template...")
+            print(f"New:     {new_filename}")
+            print(f"Moving to: {dest_dir}")
+            print("-" * 40)
+            
+            # Source and destination paths
+            source_path = os.path.join(source_dir, filename)
+            dest_path = os.path.join(dest_dir, new_filename)
+            
+            try:
+                # Copy the file to destination with new name
+                shutil.copy2(source_path, dest_path)
+                print(f"✓ Successfully copied and renamed: {filename} → {new_filename}")
+                
+                # Remove the original file
+                os.remove(source_path)
+                print(f"✓ Removed original file: {filename}")
+                
+                renamed_files.append(new_filename)
+                
+            except Exception as e:
+                print(f"✗ Error processing {filename}: {e}")
+                
+        elif len(parts) == 5:
+            # Handle 5-part template: TC#XX_XXXXX#edit_id#code#suffix.json (already converted)
+            tc_part = parts[0]  # TC
+            tc_id_part = parts[1]  # 01_12345
+            file_edit_id = parts[2]  # rvn001
+            file_code = parts[3]  # 00W5
+            suffix = parts[4].replace('.json', '')  # LR, NR, EX
+            
+            # Check if this file matches our target model
+            if file_edit_id == edit_id and file_code == code:
+                # File is already in correct format, just move it
+                new_filename = filename  # Keep the same name
+                
+                print(f"Current: {filename}")
+                print(f"Already in correct format, moving as-is...")
+                print(f"Moving to: {dest_dir}")
+                print("-" * 40)
+                
+                # Source and destination paths
+                source_path = os.path.join(source_dir, filename)
+                dest_path = os.path.join(dest_dir, new_filename)
+                
+                try:
+                    # Copy the file to destination
+                    shutil.copy2(source_path, dest_path)
+                    print(f"✓ Successfully moved: {filename}")
+                    
+                    # Remove the original file
+                    os.remove(source_path)
+                    print(f"✓ Removed original file: {filename}")
+                    
+                    renamed_files.append(new_filename)
+                    
+                except Exception as e:
+                    print(f"✗ Error processing {filename}: {e}")
+            else:
+                print(f"Warning: {filename} has different model parameters ({file_edit_id}_{file_code}) than target ({edit_id}_{code})")
+                continue
+        else:
+            print(f"Warning: {filename} doesn't match expected format (needs 3, 4, or 5 parts)")
+            continue
+    
+    print("\n" + "=" * 60)
+    print("Renaming and moving completed!")
+    print(f"Files moved to: {dest_dir}")
+    
+    # Generate Postman collection if requested
+    if generate_postman and renamed_files:
+        print("\n" + "=" * 60)
+        print("Generating Postman collection...")
+        print("-" * 40)
+        
+        try:
+            # Initialize Postman generator
+            generator = PostmanCollectionGenerator(
+                source_dir="renaming_jsons",
+                output_dir="postman_collections"
+            )
+            
+            # Extract collection name from destination directory if not provided
+            if postman_collection_name is None:
+                # Extract from dest_dir path
+                dest_path_parts = dest_dir.split(os.sep)
+                for part in dest_path_parts:
+                    if part.startswith("TS_") and "_payloads_dis" in part:
+                        postman_collection_name = part.replace("_payloads_dis", "")
+                        break
+                
+                # Fallback to auto-generated name if not found
+                if postman_collection_name is None:
+                    postman_collection_name = f"TS_01_REVENUE_WGS_CSBD_{edit_id}_{code}"
+            
+            # Get custom filename from model config if available
+            custom_filename = postman_file_name
+            
+            # Generate collection
+            collection_path = generator.generate_postman_collection(postman_collection_name, custom_filename)
+            
+            if collection_path:
+                print(f"✅ Postman collection generated: {collection_path}")
+                print(f"📦 Collection name: {postman_collection_name}")
+                print("\n🎯 Ready for API testing!")
+                print("=" * 60)
+                print("To use this collection:")
+                print("1. Open Postman")
+                print("2. Click 'Import'")
+                print(f"3. Select the file: {collection_path}")
+                print("4. Start testing your APIs!")
+            else:
+                print("❌ Failed to generate Postman collection")
+                
+        except Exception as e:
+            print(f"❌ Error generating Postman collection: {e}")
+    
+    return renamed_files
+
+
+if __name__ == "__main__":
+    import argparse
+    import sys
+    import re
+    
+    # Set up argument parser
+    parser = argparse.ArgumentParser(
+        description="Rename files and generate Postman collections for specific models",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python rename_files_with_postman.py --TS01    # Process TS01 model
+  python rename_files_with_postman.py --TS02    # Process TS02 model  
+  python rename_files_with_postman.py --TS03    # Process TS03 model (auto-discovered)
+  python rename_files_with_postman.py --TS04    # Process TS04 model (auto-discovered)
+  python rename_files_with_postman.py --all     # Process all discovered models
+  python rename_files_with_postman.py --list    # List all available TS models
+        """
+    )
+    
+    # Add model-specific arguments
+    parser.add_argument("--TS01", action="store_true", 
+                       help="Process TS01 model")
+    parser.add_argument("--TS02", action="store_true", 
+                       help="Process TS02 model")
+    parser.add_argument("--TS03", action="store_true", 
+                       help="Process TS03 model")
+    parser.add_argument("--TS04", action="store_true", 
+                       help="Process TS04 model")
+    parser.add_argument("--all", action="store_true", 
+                       help="Process all discovered models")
+    parser.add_argument("--list", action="store_true", 
+                       help="List all available TS models")
+    parser.add_argument("--no-postman", action="store_true", 
+                       help="Skip Postman collection generation")
+    
+    # Add dynamic TS number support
+    parser.add_argument("--TS", type=str, metavar="NUMBER",
+                       help="Process specific TS model by number (e.g., --TS 03)")
+    
+    args = parser.parse_args()
+    
+    # Load model configurations with dynamic discovery
+    try:
+        from models_config import get_models_config, get_model_by_ts
+        models_config = get_models_config(use_dynamic=True)
+        print("✅ Configuration loaded with dynamic discovery")
+    except ImportError as e:
+        print(f"❌ Error: {e}")
+        print("Please ensure models_config.py and dynamic_models.py exist.")
+        sys.exit(1)
+    
+    # Handle --list option
+    if args.list:
+        print("\n📋 AVAILABLE TS MODELS")
+        print("=" * 50)
+        if models_config:
+            for model in models_config:
+                print(f"TS_{model['ts_number']}: {model['edit_id']}_{model['code']}")
+                print(f"  📁 Source: {model['source_dir']}")
+                print(f"  📁 Dest:   {model['dest_dir']}")
+                print()
+        else:
+            print("❌ No TS models found")
+        sys.exit(0)
+    
+    # Determine which models to process
+    models_to_process = []
+    
+    # Handle specific TS numbers
+    if args.TS01:
+        ts01_model = next((model for model in models_config if model.get("ts_number") == "01"), None)
+        if ts01_model:
+            models_to_process.append(ts01_model)
+        else:
+            print("❌ Error: TS01 model not found!")
+            sys.exit(1)
+    
+    if args.TS02:
+        ts02_model = next((model for model in models_config if model.get("ts_number") == "02"), None)
+        if ts02_model:
+            models_to_process.append(ts02_model)
+        else:
+            print("❌ Error: TS02 model not found!")
+            sys.exit(1)
+    
+    if args.TS03:
+        ts03_model = next((model for model in models_config if model.get("ts_number") == "03"), None)
+        if ts03_model:
+            models_to_process.append(ts03_model)
+        else:
+            print("❌ Error: TS03 model not found!")
+            sys.exit(1)
+    
+    if args.TS04:
+        ts04_model = next((model for model in models_config if model.get("ts_number") == "04"), None)
+        if ts04_model:
+            models_to_process.append(ts04_model)
+        else:
+            print("❌ Error: TS04 model not found!")
+            sys.exit(1)
+    
+    # Handle dynamic TS number
+    if args.TS:
+        ts_number = args.TS.zfill(2)  # Ensure 2-digit format (e.g., "3" -> "03")
+        ts_model = get_model_by_ts(ts_number)
+        if ts_model:
+            models_to_process.append(ts_model)
+            print(f"✅ Found TS_{ts_number} model: {ts_model['edit_id']}_{ts_model['code']}")
+        else:
+            print(f"❌ Error: TS_{ts_number} model not found!")
+            print("Available models:")
+            for model in models_config:
+                print(f"  TS_{model['ts_number']}: {model['edit_id']}_{model['code']}")
+            sys.exit(1)
+    
+    if args.all:
+        models_to_process = models_config
+        print(f"✅ Processing all {len(models_config)} discovered models")
+    
+    # If no specific model is selected, show help
+    if not models_to_process:
+        print("❌ Error: No model specified!")
+        print("\nPlease specify which model to process:")
+        print("  --TS01    Process TS01 model")
+        print("  --TS02    Process TS02 model")
+        print("  --TS03    Process TS03 model")
+        print("  --TS04    Process TS04 model")
+        print("  --TS 03   Process TS03 model (or any TS number)")
+        print("  --all     Process all discovered models")
+        print("  --list    List all available TS models")
+        print("\nUse --help for more information.")
+        sys.exit(1)
+    
+    # Process selected models
+    generate_postman = not args.no_postman
+    
+    print(f"\n🚀 Processing {len(models_to_process)} model(s)...")
+    print("=" * 60)
+    
+    total_processed = 0
+    successful_models = []
+    
+    for i, model_config in enumerate(models_to_process, 1):
+        edit_id = model_config["edit_id"]
+        code = model_config["code"]
+        source_dir = model_config["source_dir"]
+        dest_dir = model_config["dest_dir"]
+        postman_collection_name = model_config["postman_collection_name"]
+        ts_number = model_config.get("ts_number", "??")
+        
+        print(f"\n📋 Processing Model {i}/{len(models_to_process)}: TS_{ts_number} ({edit_id}_{code})")
+        print("-" * 40)
+        
+        try:
+            renamed_files = rename_files(
+                edit_id=edit_id,
+                code=code,
+                source_dir=source_dir,
+                dest_dir=dest_dir,
+                generate_postman=generate_postman,
+                postman_collection_name=postman_collection_name,
+                postman_file_name=model_config.get('postman_file_name')
+            )
+            
+            if renamed_files:
+                print(f"✅ Model TS_{ts_number} ({edit_id}_{code}): Successfully processed {len(renamed_files)} files")
+                successful_models.append({
+                    "ts_number": ts_number,
+                    "edit_id": edit_id,
+                    "code": code,
+                    "files_count": len(renamed_files)
+                })
+                total_processed += len(renamed_files)
+            else:
+                print(f"⚠️  Model TS_{ts_number} ({edit_id}_{code}): No files were processed")
+                
+        except Exception as e:
+            print(f"❌ Model TS_{ts_number} ({edit_id}_{code}): Failed with error - {e}")
+    
+    # Summary
+    print("\n" + "=" * 60)
+    print("📊 PROCESSING SUMMARY")
+    print("=" * 60)
+    print(f"Models processed: {len(models_to_process)}")
+    print(f"Successful models: {len(successful_models)}")
+    print(f"Total files processed: {total_processed}")
+    
+    if successful_models:
+        print(f"\n✅ SUCCESSFUL MODELS:")
+        for model in successful_models:
+            print(f"   • TS_{model['ts_number']} ({model['edit_id']}_{model['code']}): {model['files_count']} files")
+        
+        if generate_postman:
+            print(f"\n📦 POSTMAN COLLECTIONS GENERATED:")
+            print("To use these collections:")
+            print("1. Open Postman")
+            print("2. Click 'Import'")
+            print("3. Select the collection files from 'postman_collections' folder")
+            print("4. Start testing your APIs!")
+    
+    if total_processed > 0:
+        print(f"\n🎉 Successfully processed {total_processed} files!")
+        print("Files are now ready for API testing with Postman.")
+    else:
+        print("\n❌ No files were processed.")
