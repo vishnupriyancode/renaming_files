@@ -1,0 +1,44 @@
+{
+  "version": "1",
+  "name": "TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis API Collection",
+  "type": "collection",
+  "items": [
+    {
+      "uid": "b27dc405-e426-47d6-9577-43a18112a016",
+      "name": "TC#01_od#rvn011#00W11#LR",
+      "type": "http",
+      "method": "POST",
+      "url": "{{baseUrl}}/api/validate/{{tc_id}}",
+      "headers": [
+        {
+          "uid": "4a99f66d-18c3-418c-9e32-6a3586103867",
+          "name": "Content-Type",
+          "value": "application/json",
+          "enabled": true
+        },
+        {
+          "uid": "243f0a20-bebb-405e-8bb9-ac17c0f796dd",
+          "name": "X-Edit-ID",
+          "value": "rvn011",
+          "enabled": true
+        },
+        {
+          "uid": "a26753c0-68d1-419c-8fd4-589ec7251973",
+          "name": "X-EOB-Code",
+          "value": "00W11",
+          "enabled": true
+        },
+        {
+          "uid": "58813826-b6ab-4d9b-9e7c-95196c94851a",
+          "name": "X-Test-Type",
+          "value": "LR",
+          "enabled": true
+        }
+      ],
+      "body": {
+        "mode": "raw",
+        "raw": "{\n  \"testCase\": \"TC#01_od#rvn011#00W11#LR\",\n  \"testSuite\": \"TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis\",\n  \"testType\": \"regression\",\n  \"payload\": {\n    \"revenue\": {\n      \"wgs\": {\n        \"csbd\": {\n          \"rvn011\": {\n            \"week\": \"00W11\",\n            \"type\": \"LR\",\n            \"testId\": \"od\"\n          }\n        }\n      }\n    }\n  },\n  \"expectedResult\": \"success\",\n  \"description\": \"Revenue WGS CSBD rvn011 00W11 LR test case\",\n  \"created\": \"2024-01-01T00:00:00Z\"\n}"
+      }
+    }
+  ]
+}

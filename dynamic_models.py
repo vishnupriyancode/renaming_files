@@ -10,9 +10,89 @@ import glob
 from typing import List, Dict, Optional
 
 
+def normalize_ts_number(ts_number_raw: str) -> str:
+    """
+    Normalize TS number to handle different digit patterns.
+    
+    Args:
+        ts_number_raw: Raw TS number from folder name (e.g., "1", "01", "001", "10", "100")
+        
+    Returns:
+        Normalized TS number string
+        
+    Examples:
+        "1" -> "01"     (single digit)
+        "01" -> "01"    (already 2 digits)
+        "001" -> "001"  (already 3 digits)
+        "10" -> "10"    (2 digits)
+        "100" -> "100"  (3 digits)
+    """
+    ts_num = int(ts_number_raw)
+    
+    # Determine padding based on value range
+    if 1 <= ts_num <= 9:
+        # Single digit: TS01 to TS09
+        return f"{ts_num:02d}"
+    elif 10 <= ts_num <= 99:
+        # Two digits: TS10 to TS99
+        return f"{ts_num:02d}"
+    elif 100 <= ts_num <= 999:
+        # Three digits: TS100 to TS999
+        return f"{ts_num:03d}"
+    else:
+        # Fallback: use original format
+        return ts_number_raw
+
+
+def generate_postman_collection_name(ts_number: str) -> str:
+    """
+    Generate Postman collection name based on TS number pattern.
+    
+    Args:
+        ts_number: Normalized TS number (e.g., "01", "10", "100")
+        
+    Returns:
+        Postman collection name
+        
+    Examples:
+        "01" -> "ts_01_collection"
+        "10" -> "ts_10_collection"
+        "100" -> "ts_100_collection"
+    """
+    return f"ts_{ts_number}_collection"
+
+
+def format_ts_argument(ts_number: str) -> str:
+    """
+    Format TS number for command line arguments.
+    
+    Args:
+        ts_number: TS number (can be "1", "01", "10", "100", etc.)
+        
+    Returns:
+        Formatted TS number for arguments
+        
+    Examples:
+        "1" -> "01"
+        "10" -> "10"
+        "100" -> "100"
+    """
+    ts_num = int(ts_number)
+    
+    if 1 <= ts_num <= 9:
+        return f"{ts_num:02d}"
+    elif 10 <= ts_num <= 99:
+        return f"{ts_num:02d}"
+    elif 100 <= ts_num <= 999:
+        return f"{ts_num:03d}"
+    else:
+        return ts_number
+
+
 def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
     """
     Discover all TS_XX_REVENUE_WGS_CSBD_* folders and extract model parameters.
+    Supports flexible digit patterns: TS01-TS09, TS10-TS99, TS100-TS999
     
     Args:
         base_dir: Base directory to search for TS folders
@@ -34,14 +114,18 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
     for folder_path in ts_folders:
         folder_name = os.path.basename(folder_path)
         
-        # Extract parameters using regex
+        # Extract parameters using regex with flexible digit patterns
         # Pattern: TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_payloads_sur or TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_ayloads_sur
-        match = re.match(r'TS_(\d+)_REVENUE_WGS_CSBD_(rvn\d+)_(00W\d+)_(?:p)?ayloads_sur', folder_name)
+        # Supports 1-3 digit TS numbers: TS_1, TS_01, TS_001, TS_10, TS_100, etc.
+        match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_(rvn\d+)_(00W\d+)_(?:p)?ayloads_sur', folder_name)
         
         if match:
-            ts_number = match.group(1)
+            ts_number_raw = match.group(1)
             edit_id = match.group(2)
             code = match.group(3)
+            
+            # Normalize TS number to handle different digit patterns
+            ts_number = normalize_ts_number(ts_number_raw)
             
             # Check if regression subfolder exists
             regression_path = os.path.join(folder_path, "regression")
@@ -57,12 +141,13 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
                 dest_folder_name = folder_name.replace("_ayloads_sur", "_payloads_dis")
             dest_dir = os.path.join("renaming_jsons", dest_folder_name, "regression")
             
-            # Generate Postman collection name
-            postman_collection_name = f"ts_{ts_number}_collection"
+            # Generate Postman collection name with flexible formatting
+            postman_collection_name = generate_postman_collection_name(ts_number)
             postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
             
             model_config = {
                 "ts_number": ts_number,
+                "ts_number_raw": ts_number_raw,  # Keep original for reference
                 "edit_id": edit_id,
                 "code": code,
                 "source_dir": regression_path,
@@ -73,7 +158,7 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
             }
             
             models.append(model_config)
-            print(f"✅ Discovered: TS_{ts_number} ({edit_id}_{code})")
+            print(f"✅ Discovered: TS_{ts_number} ({edit_id}_{code}) [Raw: {ts_number_raw}]")
         else:
             print(f"⚠️  Warning: Could not parse folder name: {folder_name}")
     
@@ -83,9 +168,10 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
 def get_model_by_ts_number(ts_number: str, base_dir: str = ".") -> Optional[Dict]:
     """
     Get model configuration for a specific TS number.
+    Supports flexible TS number formats (e.g., "1", "01", "10", "100").
     
     Args:
-        ts_number: TS number (e.g., "01", "02", "03")
+        ts_number: TS number (e.g., "1", "01", "10", "100")
         base_dir: Base directory to search for TS folders
         
     Returns:
@@ -93,8 +179,11 @@ def get_model_by_ts_number(ts_number: str, base_dir: str = ".") -> Optional[Dict
     """
     models = discover_ts_folders(base_dir)
     
+    # Normalize the input TS number for comparison
+    normalized_input = normalize_ts_number(ts_number)
+    
     for model in models:
-        if model["ts_number"] == ts_number:
+        if model["ts_number"] == normalized_input:
             return model
     
     return None

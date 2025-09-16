@@ -250,6 +250,9 @@ Examples:
   python rename_files_with_postman.py --TS02    # Process TS02 model  
   python rename_files_with_postman.py --TS03    # Process TS03 model (auto-discovered)
   python rename_files_with_postman.py --TS04    # Process TS04 model (auto-discovered)
+  python rename_files_with_postman.py --TS 1     # Process TS01 model (single digit)
+  python rename_files_with_postman.py --TS 10    # Process TS10 model (two digits)
+  python rename_files_with_postman.py --TS 100   # Process TS100 model (three digits)
   python rename_files_with_postman.py --all     # Process all discovered models
   python rename_files_with_postman.py --list    # List all available TS models
         """
@@ -271,9 +274,9 @@ Examples:
     parser.add_argument("--no-postman", action="store_true", 
                        help="Skip Postman collection generation")
     
-    # Add dynamic TS number support
+    # Add dynamic TS number support with flexible digit patterns
     parser.add_argument("--TS", type=str, metavar="NUMBER",
-                       help="Process specific TS model by number (e.g., --TS 03)")
+                       help="Process specific TS model by number (supports TS01-TS09, TS10-TS99, TS100-TS999)")
     
     args = parser.parse_args()
     
@@ -337,15 +340,22 @@ Examples:
             print("❌ Error: TS04 model not found!")
             sys.exit(1)
     
-    # Handle dynamic TS number
+    # Handle dynamic TS number with flexible digit patterns
     if args.TS:
-        ts_number = args.TS.zfill(2)  # Ensure 2-digit format (e.g., "3" -> "03")
+        # Import the normalization function
+        from dynamic_models import normalize_ts_number
+        
+        # Normalize TS number to handle different digit patterns
+        ts_number = normalize_ts_number(args.TS)
         ts_model = get_model_by_ts(ts_number)
+        
         if ts_model:
             models_to_process.append(ts_model)
             print(f"✅ Found TS_{ts_number} model: {ts_model['edit_id']}_{ts_model['code']}")
+            print(f"   Input: {args.TS} → Normalized: {ts_number}")
         else:
             print(f"❌ Error: TS_{ts_number} model not found!")
+            print(f"   Input: {args.TS} → Normalized: {ts_number}")
             print("Available models:")
             for model in models_config:
                 print(f"  TS_{model['ts_number']}: {model['edit_id']}_{model['code']}")
@@ -363,7 +373,9 @@ Examples:
         print("  --TS02    Process TS02 model")
         print("  --TS03    Process TS03 model")
         print("  --TS04    Process TS04 model")
-        print("  --TS 03   Process TS03 model (or any TS number)")
+        print("  --TS 1     Process TS01 model (single digit)")
+        print("  --TS 10    Process TS10 model (two digits)")
+        print("  --TS 100   Process TS100 model (three digits)")
         print("  --all     Process all discovered models")
         print("  --list    List all available TS models")
         print("\nUse --help for more information.")

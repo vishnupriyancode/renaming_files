@@ -5,6 +5,7 @@ Converts organized JSON files into Postman collections for API testing and valid
 
 import json
 import os
+import re
 import uuid
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -306,8 +307,16 @@ class PostmanCollectionGenerator:
         collection["name"] = f"{dir_name} API Collection"
         collection["items"] = requests
         
-        # Create Postman collection directory structure
-        collection_dir = self.output_dir / f"{dir_name.lower().replace(' ', '_')}_collection"
+        # Create Postman collection directory structure with flexible naming
+        # Extract TS number from directory name for consistent naming
+        ts_match = re.match(r'TS_(\d{1,3})_', dir_name)
+        if ts_match:
+            ts_number = ts_match.group(1)
+            collection_dir_name = f"TS_{ts_number}_collection"
+        else:
+            collection_dir_name = f"{dir_name.replace(' ', '_')}_collection"
+        
+        collection_dir = self.output_dir / collection_dir_name
         collection_dir.mkdir(exist_ok=True)
         
         # Save collection.json file
