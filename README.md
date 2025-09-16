@@ -2,28 +2,69 @@
 
 A Python script for automatically renaming and organizing test case JSON files based on predefined naming conventions and suffix mappings, with integrated Postman collection generation for API testing.
 
+## 🔧 Recent Updates & Fixes
+
+**✅ Project Structure Cleaned & Naming Conventions Fixed (Latest Update)**
+
+The project has been cleaned up and standardized with the following improvements:
+
+- **✅ Consistent Naming**: All collections now use `TS_XX_collection` format (uppercase)
+- **✅ Duplicate Files Removed**: Eliminated duplicate JSON files and collections
+- **✅ Content Accuracy**: Fixed mismatched content in JSON files (now matches filenames)
+- **✅ Clean Structure**: Organized project with proper directory structure
+- **✅ No Duplicates**: Each collection has unique, properly named requests
+
+### Current Project Structure:
+```
+postman_collections/
+├── TS_07_collection/collection.json
+├── TS_100_collection/collection.json  
+├── TS_120_collection/collection.json
+├── TS_13_collection/collection.json
+└── TS_50_collection/collection.json
+
+renaming_jsons/
+├── TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+├── TS_100_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+├── TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+├── TS_13_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+└── TS_50_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+```
+
 ## 🚀 Quick Start Commands (Verified & Ready to Use)
 
 **✅ All commands have been tested and verified to work correctly:**
 
 ```bash
-# Process TS01 model (rvn001, 00W5)
-python rename_files.py --TS01
+# Process TS07 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS07
 
-# Process TS02 model (rvn002, 00W6)  
-python rename_files.py --TS02
+# Process TS100 model (rvn011, 00W11)  
+python rename_files_with_postman.py --TS100
+
+# Process TS120 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS120
+
+# Process TS13 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS13
+
+# Process TS50 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS50
 
 # Process all configured models
-python rename_files.py --all
+python rename_files_with_postman.py --all
 ```
 
 **Additional Options:**
 ```bash
 # Skip Postman collection generation
-python rename_files.py --TS01 --no-postman
+python rename_files_with_postman.py --TS07 --no-postman
+
+# List all available models
+python rename_files_with_postman.py --list
 
 # Show help and all available options
-python rename_files.py --help
+python rename_files_with_postman.py --help
 ```
 
 **What these commands do:**
@@ -33,9 +74,10 @@ python rename_files.py --help
 - ✅ Provide detailed processing output and summary
 
 **✅ Verification Status:**
-- `python rename_files.py --TS01` - **TESTED & WORKING** ✓
-- `python rename_files.py --TS02` - **TESTED & WORKING** ✓  
-- `python rename_files.py --all` - **TESTED & WORKING** ✓
+- `python rename_files_with_postman.py --TS07` - **TESTED & WORKING** ✓
+- `python rename_files_with_postman.py --TS120` - **TESTED & WORKING** ✓  
+- `python rename_files_with_postman.py --list` - **TESTED & WORKING** ✓
+- `python rename_files_with_postman.py --all` - **TESTED & WORKING** ✓
 
 All commands successfully process files and generate expected output with proper error handling.
 
@@ -49,14 +91,38 @@ This project automatically processes test case JSON files from a source director
 renaming_postman_collection/
 ├── rename_files.py                    # Original Python script
 ├── rename_files_with_postman.py       # Enhanced script with Postman integration
-├── postman_generator.py               # Postman collection generator
+├── postman_generator.py               # Postman collection generator (updated with consistent naming)
 ├── postman_cli.py                     # CLI for Postman operations
+├── models_config.py                   # Configuration for different test models
+├── dynamic_models.py                   # Dynamic model management
+├── process_multiple_models.py         # Batch processing script
 ├── renaming_jsons/                    # Output directory for renamed files
-│   └── TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis/
-│       └── regression/                     # Processed test cases
-├── postman_collections/               # Generated Postman collections
-│   └── revenue_test_collection/
-│       └── postman_collection.json    # Ready-to-import Postman collection
+│   ├── TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   │   └── regression/
+│   │       └── TC#01_od#rvn011#00W11#LR.json
+│   ├── TS_100_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   │   └── regression/
+│   │       └── TC#01_od#rvn011#00W11#LR.json
+│   ├── TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   │   └── regression/
+│   │       └── TC#01_od#rvn011#00W11#LR.json
+│   ├── TS_13_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   │   └── regression/
+│   │       └── TC#01_do#rvn011#00W11#LR.json
+│   └── TS_50_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│       └── regression/
+│           └── TC#02_od#rvn011#00W11#LR.json
+├── postman_collections/               # Generated Postman collections (cleaned & standardized)
+│   ├── TS_07_collection/
+│   │   └── collection.json
+│   ├── TS_100_collection/
+│   │   └── collection.json
+│   ├── TS_120_collection/
+│   │   └── collection.json
+│   ├── TS_13_collection/
+│   │   └── collection.json
+│   └── TS_50_collection/
+│       └── collection.json
 ├── TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/
 │   └── regression/                         # Source directory (original files)
 └── README.md                          # This file
@@ -71,6 +137,40 @@ renaming_postman_collection/
 - **Error Handling**: Provides detailed logging and error reporting
 - **Batch Processing**: Processes multiple JSON files simultaneously
 - **CLI Interface**: Command-line tools for Postman collection management
+- **Consistent Naming**: Standardized naming conventions across all collections
+- **Duplicate Prevention**: Eliminates duplicate files and requests
+- **Content Validation**: Ensures JSON content matches filenames
+
+## 🔧 Recent Fixes & Improvements
+
+### Issues Resolved:
+1. **Naming Convention Inconsistency**
+   - **Problem**: Mixed case naming (`ts_120_collection` vs `TS_100_collection`)
+   - **Solution**: Standardized to `TS_XX_collection` format across all collections
+   - **Impact**: Consistent, professional naming throughout the project
+
+2. **Duplicate Files**
+   - **Problem**: Multiple identical JSON files with same content
+   - **Solution**: Removed duplicate files, kept only proper `collection.json` files
+   - **Impact**: Clean structure with one collection file per TS directory
+
+3. **Content Mismatch**
+   - **Problem**: JSON files contained `rvn001`/`00W5` data but were named with `rvn011`/`00W11`
+   - **Solution**: Updated all JSON files to contain correct data matching their filenames
+   - **Impact**: Accurate test data that matches file naming conventions
+
+4. **Duplicate Requests**
+   - **Problem**: Same request names appearing multiple times in collections
+   - **Solution**: Each collection now has unique, properly named requests
+   - **Impact**: Clean, non-duplicate Postman collections
+
+### Technical Improvements:
+- Updated `postman_generator.py` to use consistent uppercase naming
+- Fixed content accuracy in all JSON test files
+- Regenerated all Postman collections with correct data
+- Cleaned up project structure and removed unnecessary files
+- **Fixed command-line argument parsing**: Updated `rename_files_with_postman.py` to handle available models (TS_07, TS_100, TS_120, TS_13, TS_50) instead of non-existent TS_02
+- **Simplified command interface**: Removed dynamic TS number support (`--TS NUMBER`) to keep only direct format commands (`--TS120`, `--TS100`, etc.) for cleaner user experience
 
 ## Naming Convention
 
@@ -144,45 +244,42 @@ suffix_mapping = {
 
 #### 1. Enhanced Script with Postman Integration (Recommended)
 
-The enhanced script now supports command-line arguments for processing specific models:
+The enhanced script supports direct command-line arguments for processing specific models:
 
 ```bash
-# Process TS01 model (rvn001, 00W5)
-python rename_files_with_postman.py --TS01
+# Process TS07 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS07
 
-# Process TS02 model (rvn002, 00W6)
-python rename_files_with_postman.py --TS02
+# Process TS100 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS100
+
+# Process TS120 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS120
+
+# Process TS13 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS13
+
+# Process TS50 model (rvn011, 00W11)
+python rename_files_with_postman.py --TS50
 
 # Process all configured models
 python rename_files_with_postman.py --all
 
-# Process TS01 without generating Postman collection
-python rename_files_with_postman.py --TS01 --no-postman
+# Process TS07 without generating Postman collection
+python rename_files_with_postman.py --TS07 --no-postman
 
 # Show help and available options
 python rename_files_with_postman.py --help
 ```
 
-**Alternative Command Format:**
-You can also use the shorter command format:
-
-```bash
-# Process TS01 model (rvn001, 00W5)
-python rename_files.py --TS01
-
-# Process TS02 model (rvn002, 00W6)
-python rename_files.py --TS02
-
-# Process all configured models
-python rename_files.py --all
-```
-
-**Note:** Both command formats work identically. Choose the one that's more convenient for your workflow.
-
 **Command Options:**
-- `--TS01`: Process TS01 model (rvn001, 00W5)
-- `--TS02`: Process TS02 model (rvn002, 00W6)
+- `--TS07`: Process TS07 model (rvn011, 00W11)
+- `--TS100`: Process TS100 model (rvn011, 00W11)
+- `--TS120`: Process TS120 model (rvn011, 00W11)
+- `--TS13`: Process TS13 model (rvn011, 00W11)
+- `--TS50`: Process TS50 model (rvn011, 00W11)
 - `--all`: Process all configured models
+- `--list`: List all available TS models
 - `--no-postman`: Skip Postman collection generation
 - `--help`: Show help message with examples
 
@@ -249,21 +346,32 @@ python postman_cli.py generate-all
 python postman_cli.py validate --collection-path "postman_collections/test_collection/postman_collection.json"
 ```
 
-#### 4. Standalone Postman Generator
+#### 4. Standalone Postman Generator (Updated & Working)
 
 ```bash
+# Generate collection for specific directory (current working directories)
+python postman_generator.py --directory "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+python postman_generator.py --directory "TS_100_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+python postman_generator.py --directory "TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+python postman_generator.py --directory "TS_13_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+python postman_generator.py --directory "TS_50_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+
 # Generate collection with custom parameters
 python postman_generator.py --source-dir "renaming_jsons" --output-dir "postman_collections" --collection-name "CustomCollection"
-
-# Generate collection for specific directory
-python postman_generator.py --directory "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
 
 # List available directories
 python postman_generator.py --list-directories
 
-# Show statistics
-python postman_generator.py --stats "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
+# Show statistics for specific directory
+python postman_generator.py --stats "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
 ```
+
+**✅ Current Working Directories:**
+- `TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis`
+- `TS_100_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis`
+- `TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis`
+- `TS_13_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis`
+- `TS_50_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis`
 
 ### What the Scripts Do
 
@@ -479,63 +587,49 @@ The script processes JSON files containing test case information:
 }
 ```
 
-### Generated Postman Collection Format
+### Generated Postman Collection Format (Updated)
 ```json
 {
-  "info": {
-    "name": "RevenueTestCollection API Collection",
-    "description": "API collection for RevenueTestCollection test cases",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
+  "version": "1",
+  "name": "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis API Collection",
+  "type": "collection",
+  "items": [
     {
-      "name": "TC#01_12345#rvn001#00W5#LR",
-      "request": {
-        "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          },
-          {
-            "key": "X-Edit-ID",
-            "value": "rvn001",
-            "type": "text"
-          },
-          {
-            "key": "X-EOB-Code",
-            "value": "00W5",
-            "type": "text"
-          },
-          {
-            "key": "X-Test-Type",
-            "value": "LR",
-            "type": "text"
-          }
-        ],
-        "url": {
-          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "validate", "{{tc_id}}"]
+      "uid": "5b306e7b-3272-472c-8dc7-d5f5044dd029",
+      "name": "TC#01_od#rvn011#00W11#LR",
+      "type": "http",
+      "method": "POST",
+      "url": "{{baseUrl}}/api/validate/{{tc_id}}",
+      "headers": [
+        {
+          "uid": "2221e60f-799e-4e9d-8e8d-85e81d1434c6",
+          "name": "Content-Type",
+          "value": "application/json",
+          "enabled": true
         },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"testCaseId\": \"TC_001\",\n  ...\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
+        {
+          "uid": "b379639e-67d2-4a23-9449-9c397755b2b8",
+          "name": "X-Edit-ID",
+          "value": "rvn011",
+          "enabled": true
+        },
+        {
+          "uid": "610e87c2-5ae8-4295-a1f1-35e8c557f044",
+          "name": "X-EOB-Code",
+          "value": "00W11",
+          "enabled": true
+        },
+        {
+          "uid": "9b8afea3-b663-4d61-97b8-7a6ef8bfac25",
+          "name": "X-Test-Type",
+          "value": "LR",
+          "enabled": true
         }
+      ],
+      "body": {
+        "mode": "raw",
+        "raw": "{\n  \"testCase\": \"TC#01_od#rvn011#00W11#LR\",\n  \"testSuite\": \"TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis\",\n  \"testType\": \"regression\",\n  \"payload\": {\n    \"revenue\": {\n      \"wgs\": {\n        \"csbd\": {\n          \"rvn011\": {\n            \"week\": \"00W11\",\n            \"type\": \"LR\",\n            \"testId\": \"od\"\n          }\n        }\n      }\n    }\n  },\n  \"expectedResult\": \"success\",\n  \"description\": \"Revenue WGS CSBD rvn011 00W11 LR test case\",\n  \"created\": \"2024-01-01T00:00:00Z\"\n}"
       }
-    }
-  ],
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:3000",
-      "type": "string"
     }
   ]
 }
@@ -741,5 +835,40 @@ For issues or questions:
 5. Check Postman collection generation logs
 
 ---
+
+## 📋 Project Status Summary
+
+**✅ Current Status: CLEAN & FUNCTIONAL**
+
+The project has been successfully cleaned up and all naming convention issues have been resolved:
+
+### ✅ What's Working:
+- **5 Active Test Suites**: TS_07, TS_100, TS_120, TS_13, TS_50
+- **Consistent Naming**: All collections use `TS_XX_collection` format
+- **Accurate Content**: JSON files contain correct data matching filenames
+- **Clean Structure**: No duplicate files or requests
+- **Ready for Use**: All Postman collections are properly generated and importable
+
+### 🎯 Key Files:
+- **Test Data**: `renaming_jsons/TS_XX_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/`
+- **Collections**: `postman_collections/TS_XX_collection/collection.json`
+- **Generator**: `postman_generator.py` (updated with consistent naming)
+
+### 🚀 Quick Commands:
+```bash
+# Process specific models (direct format only)
+python rename_files_with_postman.py --TS07
+python rename_files_with_postman.py --TS100
+python rename_files_with_postman.py --TS120
+python rename_files_with_postman.py --TS13
+python rename_files_with_postman.py --TS50
+
+# Generate collections for all current directories
+python postman_generator.py --directory "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+python postman_generator.py --directory "TS_100_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+python postman_generator.py --directory "TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+python postman_generator.py --directory "TS_13_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+python postman_generator.py --directory "TS_50_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+```
 
 **Note**: This script modifies file locations and names. Always backup your data before running it on production files.
