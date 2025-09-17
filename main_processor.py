@@ -1,6 +1,20 @@
+#!/usr/bin/env python3
+"""
+Main Processor - Consolidated file for renaming files and generating Postman collections.
+This file combines the functionality of:
+- rename_files_with_postman.py (main processing logic)
+- process_multiple_models.py (batch processing)
+- rename_files.py (simple interface wrapper)
+
+Supports both single model processing and batch processing of multiple models.
+"""
+
 import os
 import re
 import shutil
+import sys
+import subprocess
+import argparse
 from postman_generator import PostmanCollectionGenerator
 
 
@@ -235,24 +249,141 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
     return renamed_files
 
 
-if __name__ == "__main__":
-    import argparse
-    import sys
-    import re
+def process_multiple_models(models_config, generate_postman=True):
+    """
+    Process multiple models with their respective configurations.
+    
+    Args:
+        models_config: List of dictionaries containing model configurations
+        generate_postman: Whether to generate Postman collections for each model
+    
+    Example models_config:
+    [
+        {
+            "edit_id": "rvn001",
+            "code": "00W5",
+            "source_dir": "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/regression",
+            "dest_dir": "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis/regression",
+            "postman_collection_name": "TS_01_REVENUE_WGS_CSBD_rvn001_00W5"
+        },
+        {
+            "edit_id": "rvn002", 
+            "code": "00W6",
+            "source_dir": "TS_01_REVENUE_WGS_CSBD_rvn002_00W6_payloads_sur/regression",
+            "dest_dir": "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn002_00W6_payloads_dis/regression",
+            "postman_collection_name": "TS_01_REVENUE_WGS_CSBD_rvn002_00W6"
+        }
+    ]
+    """
+    
+    print("🚀 Starting Multi-Model Processing")
+    print("=" * 80)
+    
+    total_processed = 0
+    successful_models = []
+    failed_models = []
+    
+    for i, model_config in enumerate(models_config, 1):
+        edit_id = model_config.get("edit_id")
+        code = model_config.get("code")
+        source_dir = model_config.get("source_dir")
+        dest_dir = model_config.get("dest_dir")
+        postman_collection_name = model_config.get("postman_collection_name")
+        
+        print(f"\n📋 Processing Model {i}/{len(models_config)}")
+        print(f"   Edit ID: {edit_id}")
+        print(f"   Code: {code}")
+        print(f"   Source: {source_dir}")
+        print(f"   Destination: {dest_dir}")
+        print("-" * 60)
+        
+        try:
+            # Process the model
+            renamed_files = rename_files(
+                edit_id=edit_id,
+                code=code,
+                source_dir=source_dir,
+                dest_dir=dest_dir,
+                generate_postman=generate_postman,
+                postman_collection_name=postman_collection_name
+            )
+            
+            if renamed_files:
+                print(f"✅ Model {edit_id}_{code}: Successfully processed {len(renamed_files)} files")
+                successful_models.append({
+                    "edit_id": edit_id,
+                    "code": code,
+                    "files_count": len(renamed_files),
+                    "files": renamed_files
+                })
+                total_processed += len(renamed_files)
+            else:
+                print(f"⚠️  Model {edit_id}_{code}: No files were processed")
+                failed_models.append({
+                    "edit_id": edit_id,
+                    "code": code,
+                    "reason": "No files found or processed"
+                })
+                
+        except Exception as e:
+            print(f"❌ Model {edit_id}_{code}: Failed with error - {e}")
+            failed_models.append({
+                "edit_id": edit_id,
+                "code": code,
+                "reason": str(e)
+            })
+    
+    # Summary
+    print("\n" + "=" * 80)
+    print("📊 PROCESSING SUMMARY")
+    print("=" * 80)
+    print(f"Total models processed: {len(models_config)}")
+    print(f"Successful models: {len(successful_models)}")
+    print(f"Failed models: {len(failed_models)}")
+    print(f"Total files processed: {total_processed}")
+    
+    if successful_models:
+        print(f"\n✅ SUCCESSFUL MODELS:")
+        for model in successful_models:
+            print(f"   • {model['edit_id']}_{model['code']}: {model['files_count']} files")
+    
+    if failed_models:
+        print(f"\n❌ FAILED MODELS:")
+        for model in failed_models:
+            print(f"   • {model['edit_id']}_{model['code']}: {model['reason']}")
+    
+    print("\n🎯 All models processed!")
+    return successful_models, failed_models
+
+
+def main():
+    """Main function with comprehensive command line interface."""
     
     # Set up argument parser
     parser = argparse.ArgumentParser(
-        description="Rename files and generate Postman collections for specific models",
+        description="Main Processor - Rename files and generate Postman collections for TS models",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python rename_files_with_postman.py --TS07    # Process TS07 model
-  python rename_files_with_postman.py --TS100   # Process TS100 model  
-  python rename_files_with_postman.py --TS120   # Process TS120 model
-  python rename_files_with_postman.py --TS13    # Process TS13 model
-  python rename_files_with_postman.py --TS50    # Process TS50 model
-  python rename_files_with_postman.py --all     # Process all discovered models
-  python rename_files_with_postman.py --list    # List all available TS models
+  # Process specific TS models
+  python main_processor.py --TS07    # Process TS07 model
+  python main_processor.py --TS100   # Process TS100 model  
+  python main_processor.py --TS120   # Process TS120 model
+  python main_processor.py --TS13    # Process TS13 model
+  python main_processor.py --TS50    # Process TS50 model
+  python main_processor.py --TS130   # Process TS130 model
+  
+  # Process all discovered models
+  python main_processor.py --all     # Process all discovered models
+  
+  # List available models
+  python main_processor.py --list    # List all available TS models
+  
+  # Skip Postman generation
+  python main_processor.py --TS07 --no-postman
+  
+  # Process with custom parameters
+  python main_processor.py --edit-id rvn001 --code 00W5 --source-dir custom/path
         """
     )
     
@@ -267,12 +398,21 @@ Examples:
                        help="Process TS13 model")
     parser.add_argument("--TS50", action="store_true", 
                        help="Process TS50 model")
+    parser.add_argument("--TS130", action="store_true", 
+                       help="Process TS130 model")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
                        help="List all available TS models")
     parser.add_argument("--no-postman", action="store_true", 
                        help="Skip Postman collection generation")
+    
+    # Add custom parameter arguments
+    parser.add_argument("--edit-id", type=str, help="Custom edit ID (e.g., rvn001)")
+    parser.add_argument("--code", type=str, help="Custom code (e.g., 00W5)")
+    parser.add_argument("--source-dir", type=str, help="Custom source directory path")
+    parser.add_argument("--dest-dir", type=str, help="Custom destination directory path")
+    parser.add_argument("--collection-name", type=str, help="Custom Postman collection name")
     
     args = parser.parse_args()
     
@@ -298,6 +438,32 @@ Examples:
                 print()
         else:
             print("❌ No TS models found")
+        sys.exit(0)
+    
+    # Handle custom parameters
+    if args.edit_id and args.code:
+        print(f"\n🔧 Processing custom model: {args.edit_id}_{args.code}")
+        print("=" * 60)
+        
+        try:
+            renamed_files = rename_files(
+                edit_id=args.edit_id,
+                code=args.code,
+                source_dir=args.source_dir,
+                dest_dir=args.dest_dir,
+                generate_postman=not args.no_postman,
+                postman_collection_name=args.collection_name
+            )
+            
+            if renamed_files:
+                print(f"✅ Custom model {args.edit_id}_{args.code}: Successfully processed {len(renamed_files)} files")
+            else:
+                print(f"⚠️  Custom model {args.edit_id}_{args.code}: No files were processed")
+                
+        except Exception as e:
+            print(f"❌ Custom model {args.edit_id}_{args.code}: Failed with error - {e}")
+            sys.exit(1)
+        
         sys.exit(0)
     
     # Determine which models to process
@@ -344,6 +510,14 @@ Examples:
             print("❌ Error: TS50 model not found!")
             sys.exit(1)
     
+    if args.TS130:
+        ts130_model = next((model for model in models_config if model.get("ts_number") == "130"), None)
+        if ts130_model:
+            models_to_process.append(ts130_model)
+        else:
+            print("❌ Error: TS130 model not found!")
+            sys.exit(1)
+    
     if args.all:
         models_to_process = models_config
         print(f"✅ Processing all {len(models_config)} discovered models")
@@ -357,6 +531,7 @@ Examples:
         print("  --TS120   Process TS120 model")
         print("  --TS13    Process TS13 model")
         print("  --TS50    Process TS50 model")
+        print("  --TS130   Process TS130 model")
         print("  --all     Process all discovered models")
         print("  --list    List all available TS models")
         print("\nUse --help for more information.")
@@ -434,3 +609,7 @@ Examples:
         print("Files are now ready for API testing with Postman.")
     else:
         print("\n❌ No files were processed.")
+
+
+if __name__ == "__main__":
+    main()

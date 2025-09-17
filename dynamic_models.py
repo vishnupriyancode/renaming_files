@@ -103,10 +103,11 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
     models = []
     
     # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
-    # Handle both "payloads_sur" and "ayloads_sur" (typo in folder name)
+    # Handle both "payloads_sur" and "_sur" patterns
     pattern1 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_payloads_sur")
     pattern2 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_ayloads_sur")
-    ts_folders = glob.glob(pattern1) + glob.glob(pattern2)
+    pattern3 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_sur")
+    ts_folders = glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3)
     
     print(f"🔍 Scanning for TS folders in: {base_dir}")
     print(f"📁 Found {len(ts_folders)} TS folders")
@@ -115,9 +116,9 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
         folder_name = os.path.basename(folder_path)
         
         # Extract parameters using regex with flexible digit patterns
-        # Pattern: TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_payloads_sur or TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_ayloads_sur
+        # Pattern: TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_payloads_sur or TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_ayloads_sur or TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_sur
         # Supports 1-3 digit TS numbers: TS_1, TS_01, TS_001, TS_10, TS_100, etc.
-        match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_(rvn\d+)_(00W\d+)_(?:p)?ayloads_sur', folder_name)
+        match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_(rvn\d+)_(00W\d+)_sur$', folder_name)
         
         if match:
             ts_number_raw = match.group(1)
@@ -134,11 +135,15 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
                 continue
             
             # Generate destination directory name
-            # Handle both "payloads_sur" and "ayloads_sur" (typo in folder name)
+            # Handle "payloads_sur", "ayloads_sur" (typo), and "_sur" patterns
             if "_payloads_sur" in folder_name:
                 dest_folder_name = folder_name.replace("_payloads_sur", "_payloads_dis")
-            else:
+            elif "_ayloads_sur" in folder_name:
                 dest_folder_name = folder_name.replace("_ayloads_sur", "_payloads_dis")
+            elif "_sur" in folder_name:
+                dest_folder_name = folder_name.replace("_sur", "_dis")
+            else:
+                dest_folder_name = folder_name  # fallback
             dest_dir = os.path.join("renaming_jsons", dest_folder_name, "regression")
             
             # Generate Postman collection name with flexible formatting

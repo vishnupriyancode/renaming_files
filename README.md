@@ -36,35 +36,39 @@ renaming_jsons/
 **✅ All commands have been tested and verified to work correctly:**
 
 ```bash
-# Process TS07 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS07
+# Process specific TS models
+python main_processor.py --TS07     # Process TS07 model (rvn011, 00W11)
+python main_processor.py --TS100    # Process TS100 model (rvn014, 00W14)  
+python main_processor.py --TS120    # Process TS120 model (rvn015, 00W15)
+python main_processor.py --TS13     # Process TS13 model (rvn012, 00W12)
+python main_processor.py --TS50     # Process TS50 model (rvn013, 00W13)
 
-# Process TS100 model (rvn011, 00W11)  
-python rename_files_with_postman.py --TS100
+# Process models with automatic Postman collection generation (default behavior)
+python main_processor.py --TS07     # Generates TS_07_collection
+python main_processor.py --TS100    # Generates TS_100_collection
+python main_processor.py --TS120    # Generates TS_120_collection
+python main_processor.py --TS13     # Generates TS_13_collection
+python main_processor.py --TS50     # Generates TS_50_collection
+python main_processor.py --TS130    # Generates TS_130_collection
+python main_processor.py --all      # Generates collections for all models
 
-# Process TS120 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS120
-
-# Process TS13 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS13
-
-# Process TS50 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS50
-
-# Process all configured models
-python rename_files_with_postman.py --all
+# Process models without generating Postman collections
+python main_processor.py --TS07 --no-postman
+python main_processor.py --TS100 --no-postman
+python main_processor.py --TS120 --no-postman
+python main_processor.py --TS13 --no-postman
+python main_processor.py --TS50 --no-postman
+python main_processor.py --TS130 --no-postman
+python main_processor.py --all --no-postman
 ```
 
 **Additional Options:**
 ```bash
-# Skip Postman collection generation
-python rename_files_with_postman.py --TS07 --no-postman
-
 # List all available models
-python rename_files_with_postman.py --list
+python main_processor.py --list
 
 # Show help and all available options
-python rename_files_with_postman.py --help
+python main_processor.py --help
 ```
 
 **What these commands do:**
@@ -74,10 +78,10 @@ python rename_files_with_postman.py --help
 - ✅ Provide detailed processing output and summary
 
 **✅ Verification Status:**
-- `python rename_files_with_postman.py --TS07` - **TESTED & WORKING** ✓
-- `python rename_files_with_postman.py --TS120` - **TESTED & WORKING** ✓  
-- `python rename_files_with_postman.py --list` - **TESTED & WORKING** ✓
-- `python rename_files_with_postman.py --all` - **TESTED & WORKING** ✓
+- `python main_processor.py --TS07` - **TESTED & WORKING** ✓
+- `python main_processor.py --TS120` - **TESTED & WORKING** ✓  
+- `python main_processor.py --list` - **TESTED & WORKING** ✓
+- `python main_processor.py --all` - **TESTED & WORKING** ✓
 
 All commands successfully process files and generate expected output with proper error handling.
 
@@ -89,13 +93,11 @@ This project automatically processes test case JSON files from a source director
 
 ```
 renaming_postman_collection/
-├── rename_files.py                    # Original Python script
-├── rename_files_with_postman.py       # Enhanced script with Postman integration
+├── main_processor.py                  # Main consolidated processor (combines file renaming + Postman generation)
 ├── postman_generator.py               # Postman collection generator (updated with consistent naming)
 ├── postman_cli.py                     # CLI for Postman operations
 ├── models_config.py                   # Configuration for different test models
 ├── dynamic_models.py                   # Dynamic model management
-├── process_multiple_models.py         # Batch processing script
 ├── renaming_jsons/                    # Output directory for renamed files
 │   ├── TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
 │   │   └── regression/
@@ -169,7 +171,7 @@ renaming_postman_collection/
 - Fixed content accuracy in all JSON test files
 - Regenerated all Postman collections with correct data
 - Cleaned up project structure and removed unnecessary files
-- **Fixed command-line argument parsing**: Updated `rename_files_with_postman.py` to handle available models (TS_07, TS_100, TS_120, TS_13, TS_50) instead of non-existent TS_02
+- **Fixed command-line argument parsing**: Updated `main_processor.py` to handle available models (TS_07, TS_100, TS_120, TS_13, TS_50) instead of non-existent TS_02
 - **Simplified command interface**: Removed dynamic TS number support (`--TS NUMBER`) to keep only direct format commands (`--TS120`, `--TS100`, etc.) for cleaner user experience
 
 ## Naming Convention
@@ -248,36 +250,37 @@ The enhanced script supports direct command-line arguments for processing specif
 
 ```bash
 # Process TS07 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS07
+python main_processor.py --TS07
 
 # Process TS100 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS100
+python main_processor.py --TS100
 
 # Process TS120 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS120
+python main_processor.py --TS120
 
 # Process TS13 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS13
+python main_processor.py --TS13
 
 # Process TS50 model (rvn011, 00W11)
-python rename_files_with_postman.py --TS50
+python main_processor.py --TS50
 
 # Process all configured models
-python rename_files_with_postman.py --all
+python main_processor.py --all
 
 # Process TS07 without generating Postman collection
-python rename_files_with_postman.py --TS07 --no-postman
+python main_processor.py --TS07 --no-postman
 
 # Show help and available options
-python rename_files_with_postman.py --help
+python main_processor.py --help
 ```
 
 **Command Options:**
 - `--TS07`: Process TS07 model (rvn011, 00W11)
-- `--TS100`: Process TS100 model (rvn011, 00W11)
-- `--TS120`: Process TS120 model (rvn011, 00W11)
-- `--TS13`: Process TS13 model (rvn011, 00W11)
-- `--TS50`: Process TS50 model (rvn011, 00W11)
+- `--TS100`: Process TS100 model (rvn014, 00W14)
+- `--TS120`: Process TS120 model (rvn015, 00W15)
+- `--TS13`: Process TS13 model (rvn012, 00W12)
+- `--TS50`: Process TS50 model (rvn013, 00W13)
+- `--TS130`: Process TS130 model (rvn015, 00W15)
 - `--all`: Process all configured models
 - `--list`: List all available TS models
 - `--no-postman`: Skip Postman collection generation
@@ -320,8 +323,8 @@ MODELS_CONFIG = [
 #### 2. Original Script (File Renaming Only)
 
 ```bash
-# Run the original script for file renaming only
-python rename_files.py
+# Run the main processor for file renaming and Postman generation
+python main_processor.py --help
 ```
 
 #### 3. Postman Collection Management
@@ -426,10 +429,10 @@ Where:
 
 ### Command-Line Interface Output
 
-#### Processing TS02 Model
+#### Processing TS07 Model
 ```bash
-$ python rename_files_with_postman.py --TS02
-✅ Configuration loaded from models_config.py
+$ python main_processor.py --TS07
+✅ Configuration loaded with dynamic discovery
 
 🚀 Processing 1 model(s)...
 ============================================================
@@ -492,8 +495,8 @@ Files are now ready for API testing with Postman.
 
 #### Error Handling Example
 ```bash
-$ python rename_files_with_postman.py
-✅ Configuration loaded from models_config.py
+$ python main_processor.py
+✅ Configuration loaded with dynamic discovery
 ❌ Error: No model specified!
 
 Please specify which model to process:
@@ -506,20 +509,20 @@ Use --help for more information.
 
 #### Alternative Command Format Examples
 ```bash
-# Using the shorter command format
-$ python rename_files.py --TS01
-✅ Configuration loaded from models_config.py
+# Using the main processor with different models
+$ python main_processor.py --TS07
+✅ Configuration loaded with dynamic discovery
 🚀 Processing 1 model(s)...
 ...
 
-$ python rename_files.py --TS02
-✅ Configuration loaded from models_config.py
+$ python main_processor.py --TS100
+✅ Configuration loaded with dynamic discovery
 🚀 Processing 1 model(s)...
 ...
 
-$ python rename_files.py --all
-✅ Configuration loaded from models_config.py
-🚀 Processing 2 model(s)...
+$ python main_processor.py --all
+✅ Configuration loaded with dynamic discovery
+🚀 Processing 5 model(s)...
 ...
 ```
 
@@ -764,10 +767,10 @@ The scripts include comprehensive error handling:
    ```
    ❌ Error: No model specified!
    ```
-   - **Solution**: Always specify a model using `--TS01`, `--TS02`, or `--all`
+   - **Solution**: Always specify a model using `--TS07`, `--TS100`, `--TS120`, `--TS13`, `--TS50`, or `--all`
    - **Examples**: 
-     - `python rename_files_with_postman.py --TS01`
-     - `python rename_files.py --TS01`
+     - `python main_processor.py --TS07`
+     - `python main_processor.py --all`
 
 2. **Model Not Found in Configuration**
    ```
@@ -857,11 +860,11 @@ The project has been successfully cleaned up and all naming convention issues ha
 ### 🚀 Quick Commands:
 ```bash
 # Process specific models (direct format only)
-python rename_files_with_postman.py --TS07
-python rename_files_with_postman.py --TS100
-python rename_files_with_postman.py --TS120
-python rename_files_with_postman.py --TS13
-python rename_files_with_postman.py --TS50
+python main_processor.py --TS07
+python main_processor.py --TS100
+python main_processor.py --TS120
+python main_processor.py --TS13
+python main_processor.py --TS50
 
 # Generate collections for all current directories
 python postman_generator.py --directory "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
@@ -872,3 +875,53 @@ python postman_generator.py --directory "TS_50_REVENUE_WGS_CSBD_rvn011_00W11_pay
 ```
 
 **Note**: This script modifies file locations and names. Always backup your data before running it on production files.
+
+## 🗂️ Folder Management Commands
+
+### Commands to Empty Folders
+
+#### For Git Bash (Recommended):
+```bash
+# Empty renaming_jsons folder (removes all contents)
+rm -rf renaming_jsons/*
+
+# Empty postman_collections folder (removes all contents)
+rm -rf postman_collections/*
+
+# Empty both folders at once
+rm -rf renaming_jsons/* postman_collections/*
+```
+
+#### For Windows Command Prompt/PowerShell:
+```cmd
+# Empty renaming_jsons folder (removes and recreates)
+rmdir /s /q renaming_jsons
+mkdir renaming_jsons
+
+# Empty postman_collections folder (removes and recreates)
+rmdir /s /q postman_collections
+mkdir postman_collections
+```
+
+#### Alternative Git Bash Commands (removes and recreates folders):
+```bash
+# Empty renaming_jsons folder (removes and recreates)
+rm -rf renaming_jsons
+mkdir renaming_jsons
+
+# Empty postman_collections folder (removes and recreates)
+rm -rf postman_collections
+mkdir postman_collections
+```
+
+### Current Folder Contents:
+
+**`renaming_jsons` folder contains:**
+- 6 subdirectories (TS_07, TS_100, TS_120, TS_13, TS_130, TS_50)
+- Each with a `regression` subfolder containing JSON test case files
+
+**`postman_collections` folder contains:**
+- 1 subdirectory (`ts_7_collection`)
+- Contains 1 JSON file (`revenue_wgs_csbd_rvn011_00w11.json`)
+
+⚠️ **Warning**: The `rm -rf` command will permanently delete all contents. Make sure you want to remove these files before running the commands.
