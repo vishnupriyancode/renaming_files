@@ -372,6 +372,8 @@ Examples:
   python main_processor.py --TS13    # Process TS13 model
   python main_processor.py --TS50    # Process TS50 model
   python main_processor.py --TS130   # Process TS130 model
+  python main_processor.py --TS55    # Process TS55 model
+  python main_processor.py --TS60    # Process TS60 model
   
   # Process all discovered models
   python main_processor.py --all     # Process all discovered models
@@ -400,6 +402,12 @@ Examples:
                        help="Process TS50 model")
     parser.add_argument("--TS130", action="store_true", 
                        help="Process TS130 model")
+    parser.add_argument("--TS55", action="store_true", 
+                       help="Process TS55 model")
+    parser.add_argument("--TS60", action="store_true", 
+                       help="Process TS60 model")
+    parser.add_argument("--TS178", action="store_true", 
+                       help="Process TS178 model")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
@@ -518,6 +526,30 @@ Examples:
             print("❌ Error: TS130 model not found!")
             sys.exit(1)
     
+    if args.TS55:
+        ts55_model = next((model for model in models_config if model.get("ts_number") == "55"), None)
+        if ts55_model:
+            models_to_process.append(ts55_model)
+        else:
+            print("❌ Error: TS55 model not found!")
+            sys.exit(1)
+
+    if args.TS60:
+        ts60_model = next((model for model in models_config if model.get("ts_number") == "60"), None)
+        if ts60_model:
+            models_to_process.append(ts60_model)
+        else:
+            print("❌ Error: TS60 model not found!")
+            sys.exit(1)
+
+    if args.TS178:
+        ts178_model = next((model for model in models_config if model.get("ts_number") == "178"), None)
+        if ts178_model:
+            models_to_process.append(ts178_model)
+        else:
+            print("❌ Error: TS178 model not found!")
+            sys.exit(1)
+    
     if args.all:
         models_to_process = models_config
         print(f"✅ Processing all {len(models_config)} discovered models")
@@ -532,6 +564,9 @@ Examples:
         print("  --TS13    Process TS13 model")
         print("  --TS50    Process TS50 model")
         print("  --TS130   Process TS130 model")
+        print("  --TS55    Process TS55 model")
+        print("  --TS60    Process TS60 model")
+        print("  --TS178   Process TS178 model")
         print("  --all     Process all discovered models")
         print("  --list    List all available TS models")
         print("\nUse --help for more information.")

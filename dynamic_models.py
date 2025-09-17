@@ -115,10 +115,12 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
     for folder_path in ts_folders:
         folder_name = os.path.basename(folder_path)
         
-        # Extract parameters using regex with flexible digit patterns
-        # Pattern: TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_payloads_sur or TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_ayloads_sur or TS_XX_REVENUE_WGS_CSBD_rvnXXX_00WX_sur
+        # Extract parameters using flexible regex pattern
+        # Pattern: TS_XX_REVENUE_WGS_CSBD_EDIT_ID_EOB_CODE_sur
         # Supports 1-3 digit TS numbers: TS_1, TS_01, TS_001, TS_10, TS_100, etc.
-        match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_(rvn\d+)_(00W\d+)_sur$', folder_name)
+        # Supports any alphanumeric edit_id and EOB code formats
+        # Examples: TS_60_REVENUE_WGS_CSBD_ASDFGJEUSK_00W29_sur, TS_07_REVENUE_WGS_CSBD_rvn011_00W11_sur
+        match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
         if match:
             ts_number_raw = match.group(1)
