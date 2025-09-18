@@ -7,6 +7,7 @@ from dynamic_models import discover_ts_folders, get_model_by_ts_number, get_all_
 # Static model configurations (for backward compatibility)
 STATIC_MODELS_CONFIG = [
     {
+        "ts_number": "01",
         "edit_id": "rvn001",
         "code": "00W5",
         "source_dir": "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_sur/regression",
@@ -15,6 +16,7 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn001_00w5.json"
     },
     {
+        "ts_number": "02",
         "edit_id": "rvn002",
         "code": "00W6",
         "source_dir": "TS_02_REVENUE_WGS_CSBD_rvn002_00W6_sur/regression",
@@ -23,6 +25,7 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn002_00w6.json"
     },
     {
+        "ts_number": "03",
         "edit_id": "rvn003",
         "code": "00W7",
         "source_dir": "TS_03_REVENUE_WGS_CSBD_rvn003_00W7_sur/regression",
@@ -31,14 +34,16 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn003_00w7.json"
     },
     {
-        "edit_id": "rvn004",
-        "code": "00W8", 
-        "source_dir": "TS_04_REVENUE_WGS_CSBD_rvn004_00W8_sur/regression",
-        "dest_dir": "renaming_jsons/TS_04_REVENUE_WGS_CSBD_rvn004_00W8_dis/regression",
-        "postman_collection_name": "TS_4_collection",
-        "postman_file_name": "revenue_wgs_csbd_rvn004_00w8.json"
+        "ts_number": "04",
+        "edit_id": "RULEREVE000004",
+        "code": "00W28", 
+        "source_dir": "TS_04_Revenue code Services not payable on Facility claim - Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_sur/regression",
+        "dest_dir": "renaming_jsons/TS_04_Revenue code Services not payable on Facility claim - Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/regression",
+        "postman_collection_name": "TS_04_Revenue code Services not payable on Facility claim - Sub Edit 4_Collection",
+        "postman_file_name": "revenue_wgs_csbd_RULEREVE000004_00w28.json"
     },
     {
+        "ts_number": "05",
         "edit_id": "rvn005",
         "code": "00W9", 
         "source_dir": "TS_05_REVENUE_WGS_CSBD_rvn005_00W9_sur/regression",
@@ -47,6 +52,7 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn005_00w9.json"
     },
     {
+        "ts_number": "06",
         "edit_id": "rvn006",
         "code": "00W10", 
         "source_dir": "TS_06_REVENUE_WGS_CSBD_rvn006_00W10_sur/regression",
@@ -55,6 +61,7 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn006_00w10.json"
     },
     {
+        "ts_number": "07",
         "edit_id": "rvn011",
         "code": "00W11",
         "source_dir": "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_sur/regression",
@@ -63,6 +70,7 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn011_00w11.json"
     },
     {
+        "ts_number": "13",
         "edit_id": "rvn012",
         "code": "00W12",
         "source_dir": "TS_13_REVENUE_WGS_CSBD_rvn012_00W12_sur/regression",
@@ -71,6 +79,7 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn012_00w12.json"
     },
     {
+        "ts_number": "50",
         "edit_id": "rvn013",
         "code": "00W13",
         "source_dir": "TS_50_REVENUE_WGS_CSBD_rvn013_00W13_sur/regression",
@@ -79,6 +88,7 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn013_00w13.json"
     },
     {
+        "ts_number": "100",
         "edit_id": "rvn014",
         "code": "00W14",
         "source_dir": "TS_100_REVENUE_WGS_CSBD_rvn014_00W14_sur/regression",
@@ -87,6 +97,7 @@ STATIC_MODELS_CONFIG = [
         "postman_file_name": "revenue_wgs_csbd_rvn014_00w14.json"
     },
     {
+        "ts_number": "120",
         "edit_id": "rvn015",
         "code": "00W15",
         "source_dir": "TS_120_REVENUE_WGS_CSBD_rvn015_00W15_sur/regression",

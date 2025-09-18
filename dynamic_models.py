@@ -104,10 +104,19 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
     
     # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
     # Handle both "payloads_sur" and "_sur" patterns
+    # Also handle new Revenue code pattern and Lab panel Model pattern
     pattern1 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_payloads_sur")
     pattern2 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_ayloads_sur")
     pattern3 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_sur")
-    ts_folders = glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3)
+    pattern4 = os.path.join(base_dir, "TS_*_Revenue code Services not payable on Facility claim Sub Edit *_WGS_CSBD_*_sur")
+    pattern5 = os.path.join(base_dir, "TS_*_Lab panel Model_WGS_CSBD_*_sur")
+    pattern6 = os.path.join(base_dir, "TS_*_Recovery Room Reimbursement_WGS_CSBD_*_sur")
+    pattern7 = os.path.join(base_dir, "TS_*_Covid_WGS_CSBD_*_sur")
+    pattern8 = os.path.join(base_dir, "TS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur")
+    pattern9 = os.path.join(base_dir, "TS_*_Device Dependent Procedures(R1)-1B_WGS_CSBD_*_sur")
+    ts_folders = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + 
+                 glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + 
+                 glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9))
     
     print(f"🔍 Scanning for TS folders in: {base_dir}")
     print(f"📁 Found {len(ts_folders)} TS folders")
@@ -116,11 +125,39 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
         folder_name = os.path.basename(folder_path)
         
         # Extract parameters using flexible regex pattern
-        # Pattern: TS_XX_REVENUE_WGS_CSBD_EDIT_ID_EOB_CODE_sur
+        # Pattern 1: TS_XX_REVENUE_WGS_CSBD_EDIT_ID_EOB_CODE_sur (original pattern)
+        # Pattern 2: TS_XX_Revenue code Services not payable on Facility claim Sub Edit X_WGS_CSBD_RULEREVE00000X_00W28_sur (new pattern)
         # Supports 1-3 digit TS numbers: TS_1, TS_01, TS_001, TS_10, TS_100, etc.
         # Supports any alphanumeric edit_id and EOB code formats
         # Examples: TS_60_REVENUE_WGS_CSBD_ASDFGJEUSK_00W29_sur, TS_07_REVENUE_WGS_CSBD_rvn011_00W11_sur
+        # Examples: TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur
+        
+        # Try original pattern first
         match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try new Revenue code pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Revenue code Services not payable on Facility claim Sub Edit \d+_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Lab panel Model pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Lab panel Model_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Recovery Room Reimbursement pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Recovery Room Reimbursement_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Covid pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Covid_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Laterality Policy pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Device Dependent Procedures pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Device Dependent Procedures\(R1\)-1B_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
         if match:
             ts_number_raw = match.group(1)
@@ -149,8 +186,39 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
             dest_dir = os.path.join("renaming_jsons", dest_folder_name, "regression")
             
             # Generate Postman collection name with flexible formatting
-            postman_collection_name = generate_postman_collection_name(ts_number)
-            postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
+            # For Revenue code Services models, use the full descriptive name
+            if "Revenue code Services not payable on Facility claim" in folder_name:
+                # Extract the Sub Edit number and create proper collection name
+                sub_edit_match = re.search(r'Sub Edit (\d+)', folder_name)
+                if sub_edit_match:
+                    sub_edit_num = sub_edit_match.group(1)
+                    postman_collection_name = f"TS_{ts_number}_Revenue code Services not payable on Facility claim Sub Edit {sub_edit_num}_Collection"
+                else:
+                    postman_collection_name = generate_postman_collection_name(ts_number)
+                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Lab panel Model" in folder_name:
+                # For Lab panel Model, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Lab panel Model_Collection"
+                postman_file_name = f"lab_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Recovery Room Reimbursement" in folder_name:
+                # For Recovery Room Reimbursement, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Recovery Room Reimbursement_Collection"
+                postman_file_name = f"recovery_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Covid" in folder_name:
+                # For Covid, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Covid_Collection"
+                postman_file_name = f"covid_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Laterality Policy" in folder_name:
+                # For Laterality Policy, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Laterality_Collection"
+                postman_file_name = f"laterality_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Device Dependent Procedures" in folder_name:
+                # For Device Dependent Procedures, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Device Dependent Procedures_Collection"
+                postman_file_name = f"device_wgs_csbd_{edit_id}_{code.lower()}.json"
+            else:
+                postman_collection_name = generate_postman_collection_name(ts_number)
+                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
             
             model_config = {
                 "ts_number": ts_number,

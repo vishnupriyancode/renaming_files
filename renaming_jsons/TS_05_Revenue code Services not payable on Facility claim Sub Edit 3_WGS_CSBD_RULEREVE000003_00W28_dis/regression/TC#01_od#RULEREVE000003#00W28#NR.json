@@ -1,0 +1,21 @@
+{
+  "testCase": "TC#01_od#rvn011#00W11#LR",
+  "testSuite": "TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis",
+  "testType": "regression",
+  "payload": {
+    "revenue": {
+      "wgs": {
+        "csbd": {
+          "rvn011": {
+            "week": "00W11",
+            "type": "LR",
+            "testId": "od"
+          }
+        }
+      }
+    }
+  },
+  "expectedResult": "success",
+  "description": "Revenue WGS CSBD rvn011 00W11 LR test case",
+  "created": "2024-01-01T00:00:00Z"
+}

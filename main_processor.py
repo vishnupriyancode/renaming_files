@@ -205,9 +205,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
         print("-" * 40)
         
         try:
-            # Initialize Postman generator
+            # Initialize Postman generator with specific model directory
             generator = PostmanCollectionGenerator(
-                source_dir="renaming_jsons",
+                source_dir=dest_dir,  # Use the specific model's destination directory
                 output_dir="postman_collections"
             )
             
@@ -216,8 +216,12 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 # Extract from dest_dir path
                 dest_path_parts = dest_dir.split(os.sep)
                 for part in dest_path_parts:
-                    if part.startswith("TS_") and "_payloads_dis" in part:
-                        postman_collection_name = part.replace("_payloads_dis", "")
+                    if part.startswith("TS_") and ("_payloads_dis" in part or "_dis" in part):
+                        # Handle both _payloads_dis and _dis patterns
+                        if "_payloads_dis" in part:
+                            postman_collection_name = part.replace("_payloads_dis", "")
+                        elif "_dis" in part:
+                            postman_collection_name = part.replace("_dis", "")
                         break
                 
                 # Fallback to auto-generated name if not found
@@ -366,14 +370,10 @@ def main():
         epilog="""
 Examples:
   # Process specific TS models
+  python main_processor.py --TS01    # Process TS01 model (Covid)
+  python main_processor.py --TS02    # Process TS02 model (Laterality Policy)
   python main_processor.py --TS07    # Process TS07 model
-  python main_processor.py --TS100   # Process TS100 model  
-  python main_processor.py --TS120   # Process TS120 model
-  python main_processor.py --TS13    # Process TS13 model
-  python main_processor.py --TS50    # Process TS50 model
-  python main_processor.py --TS130   # Process TS130 model
-  python main_processor.py --TS55    # Process TS55 model
-  python main_processor.py --TS60    # Process TS60 model
+  python main_processor.py --TS10    # Process TS10 model
   
   # Process all discovered models
   python main_processor.py --all     # Process all discovered models
@@ -390,24 +390,26 @@ Examples:
     )
     
     # Add model-specific arguments for available models
+    parser.add_argument("--TS01", action="store_true", 
+                       help="Process TS01 model (Covid)")
+    parser.add_argument("--TS02", action="store_true", 
+                       help="Process TS02 model (Laterality Policy)")
+    parser.add_argument("--TS10", action="store_true", 
+                       help="Process TS10 model")
+    parser.add_argument("--TS03", action="store_true", 
+                       help="Process TS03 model (Revenue code Services not payable on Facility claim Sub Edit 5)")
+    parser.add_argument("--TS04", action="store_true", 
+                       help="Process TS04 model (Revenue code Services not payable on Facility claim - Sub Edit 4)")
+    parser.add_argument("--TS05", action="store_true", 
+                       help="Process TS05 model (Revenue code Services not payable on Facility claim Sub Edit 3)")
+    parser.add_argument("--TS06", action="store_true", 
+                       help="Process TS06 model (Revenue code Services not payable on Facility claim Sub Edit 2)")
     parser.add_argument("--TS07", action="store_true", 
-                       help="Process TS07 model")
-    parser.add_argument("--TS100", action="store_true", 
-                       help="Process TS100 model")
-    parser.add_argument("--TS120", action="store_true", 
-                       help="Process TS120 model")
-    parser.add_argument("--TS13", action="store_true", 
-                       help="Process TS13 model")
-    parser.add_argument("--TS50", action="store_true", 
-                       help="Process TS50 model")
-    parser.add_argument("--TS130", action="store_true", 
-                       help="Process TS130 model")
-    parser.add_argument("--TS55", action="store_true", 
-                       help="Process TS55 model")
-    parser.add_argument("--TS60", action="store_true", 
-                       help="Process TS60 model")
-    parser.add_argument("--TS178", action="store_true", 
-                       help="Process TS178 model")
+                       help="Process TS07 model (Revenue code Services not payable on Facility claim Sub Edit 1)")
+    parser.add_argument("--TS08", action="store_true", 
+                       help="Process TS08 model (Lab panel Model)")
+    parser.add_argument("--TS09", action="store_true", 
+                       help="Process TS09 model (Device Dependent Procedures)")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
@@ -478,6 +480,64 @@ Examples:
     models_to_process = []
     
     # Handle specific TS numbers for available models
+    
+    if args.TS01:
+        ts01_model = next((model for model in models_config if model.get("ts_number") == "01"), None)
+        if ts01_model:
+            models_to_process.append(ts01_model)
+        else:
+            print("❌ Error: TS01 model not found!")
+            sys.exit(1)
+    
+    if args.TS02:
+        ts02_model = next((model for model in models_config if model.get("ts_number") == "02"), None)
+        if ts02_model:
+            models_to_process.append(ts02_model)
+        else:
+            print("❌ Error: TS02 model not found!")
+            sys.exit(1)
+    
+    if args.TS10:
+        ts10_model = next((model for model in models_config if model.get("ts_number") == "10"), None)
+        if ts10_model:
+            models_to_process.append(ts10_model)
+        else:
+            print("❌ Error: TS10 model not found!")
+            sys.exit(1)
+    
+
+    if args.TS04:
+        ts04_model = next((model for model in models_config if model.get("ts_number") == "04"), None)
+        if ts04_model:
+            models_to_process.append(ts04_model)
+        else:
+            print("❌ Error: TS04 model not found!")
+            sys.exit(1)
+    
+    if args.TS03:
+        ts03_model = next((model for model in models_config if model.get("ts_number") == "03"), None)
+        if ts03_model:
+            models_to_process.append(ts03_model)
+        else:
+            print("❌ Error: TS03 model not found!")
+            sys.exit(1)
+    
+    if args.TS05:
+        ts05_model = next((model for model in models_config if model.get("ts_number") == "05"), None)
+        if ts05_model:
+            models_to_process.append(ts05_model)
+        else:
+            print("❌ Error: TS05 model not found!")
+            sys.exit(1)
+    
+    if args.TS06:
+        ts06_model = next((model for model in models_config if model.get("ts_number") == "06"), None)
+        if ts06_model:
+            models_to_process.append(ts06_model)
+        else:
+            print("❌ Error: TS06 model not found!")
+            sys.exit(1)
+    
     if args.TS07:
         ts07_model = next((model for model in models_config if model.get("ts_number") == "07"), None)
         if ts07_model:
@@ -486,68 +546,20 @@ Examples:
             print("❌ Error: TS07 model not found!")
             sys.exit(1)
     
-    if args.TS100:
-        ts100_model = next((model for model in models_config if model.get("ts_number") == "100"), None)
-        if ts100_model:
-            models_to_process.append(ts100_model)
+    if args.TS08:
+        ts08_model = next((model for model in models_config if model.get("ts_number") == "08"), None)
+        if ts08_model:
+            models_to_process.append(ts08_model)
         else:
-            print("❌ Error: TS100 model not found!")
+            print("❌ Error: TS08 model not found!")
             sys.exit(1)
     
-    if args.TS120:
-        ts120_model = next((model for model in models_config if model.get("ts_number") == "120"), None)
-        if ts120_model:
-            models_to_process.append(ts120_model)
+    if args.TS09:
+        ts09_model = next((model for model in models_config if model.get("ts_number") == "09"), None)
+        if ts09_model:
+            models_to_process.append(ts09_model)
         else:
-            print("❌ Error: TS120 model not found!")
-            sys.exit(1)
-    
-    if args.TS13:
-        ts13_model = next((model for model in models_config if model.get("ts_number") == "13"), None)
-        if ts13_model:
-            models_to_process.append(ts13_model)
-        else:
-            print("❌ Error: TS13 model not found!")
-            sys.exit(1)
-    
-    if args.TS50:
-        ts50_model = next((model for model in models_config if model.get("ts_number") == "50"), None)
-        if ts50_model:
-            models_to_process.append(ts50_model)
-        else:
-            print("❌ Error: TS50 model not found!")
-            sys.exit(1)
-    
-    if args.TS130:
-        ts130_model = next((model for model in models_config if model.get("ts_number") == "130"), None)
-        if ts130_model:
-            models_to_process.append(ts130_model)
-        else:
-            print("❌ Error: TS130 model not found!")
-            sys.exit(1)
-    
-    if args.TS55:
-        ts55_model = next((model for model in models_config if model.get("ts_number") == "55"), None)
-        if ts55_model:
-            models_to_process.append(ts55_model)
-        else:
-            print("❌ Error: TS55 model not found!")
-            sys.exit(1)
-
-    if args.TS60:
-        ts60_model = next((model for model in models_config if model.get("ts_number") == "60"), None)
-        if ts60_model:
-            models_to_process.append(ts60_model)
-        else:
-            print("❌ Error: TS60 model not found!")
-            sys.exit(1)
-
-    if args.TS178:
-        ts178_model = next((model for model in models_config if model.get("ts_number") == "178"), None)
-        if ts178_model:
-            models_to_process.append(ts178_model)
-        else:
-            print("❌ Error: TS178 model not found!")
+            print("❌ Error: TS09 model not found!")
             sys.exit(1)
     
     if args.all:
@@ -558,15 +570,16 @@ Examples:
     if not models_to_process:
         print("❌ Error: No model specified!")
         print("\nPlease specify which model to process:")
-        print("  --TS07    Process TS07 model")
-        print("  --TS100   Process TS100 model")
-        print("  --TS120   Process TS120 model")
-        print("  --TS13    Process TS13 model")
-        print("  --TS50    Process TS50 model")
-        print("  --TS130   Process TS130 model")
-        print("  --TS55    Process TS55 model")
-        print("  --TS60    Process TS60 model")
-        print("  --TS178   Process TS178 model")
+        print("  --TS01    Process TS01 model (Covid)")
+        print("  --TS02    Process TS02 model (Laterality Policy)")
+        print("  --TS03    Process TS03 model (Revenue code Services not payable on Facility claim Sub Edit 5)")
+        print("  --TS04    Process TS04 model (Revenue code Services not payable on Facility claim - Sub Edit 4)")
+        print("  --TS05    Process TS05 model (Revenue code Services not payable on Facility claim Sub Edit 3)")
+        print("  --TS06    Process TS06 model (Revenue code Services not payable on Facility claim Sub Edit 2)")
+        print("  --TS07    Process TS07 model (Revenue code Services not payable on Facility claim Sub Edit 1)")
+        print("  --TS08    Process TS08 model (Lab panel Model)")
+        print("  --TS09    Process TS09 model (Device Dependent Procedures)")
+        print("  --TS10    Process TS10 model")
         print("  --all     Process all discovered models")
         print("  --list    List all available TS models")
         print("\nUse --help for more information.")
