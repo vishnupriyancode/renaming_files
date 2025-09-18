@@ -279,6 +279,243 @@ class ProfessionalReportGenerator:
         
         self.doc.add_paragraph(processing_text.strip())
         
+        # Regex Pattern Matching
+        subheading = self.doc.add_heading("Regex Pattern Matching System", level=2)
+        subheading.style = 'CustomHeading2'
+        
+        regex_intro = """
+        The system employs sophisticated regex pattern matching to parse folder names and extract model parameters. This section provides detailed examples of all regex patterns used throughout the project.
+        """
+        self.doc.add_paragraph(regex_intro.strip())
+        
+        # Folder Name Patterns
+        subheading = self.doc.add_heading("Folder Name Parsing Patterns", level=3)
+        subheading.style = 'CustomHeading2'
+        
+        folder_patterns_text = """
+        The dynamic discovery system uses multiple regex patterns to handle different folder naming conventions:
+        """
+        self.doc.add_paragraph(folder_patterns_text.strip())
+        
+        # Pattern 1: Original Revenue Pattern
+        pattern1_text = """
+        Pattern 1: Original Revenue Pattern
+        Regex: r'TS_(\\d{1,3})_REVENUE_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$'
+        
+        Matches: TS_XX_REVENUE_WGS_CSBD_EDIT_ID_EOB_CODE_sur
+        
+        Examples:
+        • TS_07_REVENUE_WGS_CSBD_rvn011_00W11_sur
+        • TS_100_REVENUE_WGS_CSBD_rvn014_00W14_sur
+        • TS_120_REVENUE_WGS_CSBD_rvn015_00W15_sur
+        
+        Captured Groups:
+        • Group 1: TS number (1-3 digits)
+        • Group 2: Edit ID (alphanumeric)
+        • Group 3: EOB Code (alphanumeric)
+        """
+        self.doc.add_paragraph(pattern1_text.strip())
+        
+        # Pattern 2: Revenue Code Services Pattern
+        pattern2_text = """
+        Pattern 2: Revenue Code Services Pattern
+        Regex: r'TS_(\\d{1,3})_Revenue code Services not payable on Facility claim Sub Edit \\d+_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$'
+        
+        Matches: TS_XX_Revenue code Services not payable on Facility claim Sub Edit X_WGS_CSBD_EDIT_ID_EOB_CODE_sur
+        
+        Examples:
+        • TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur
+        • TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_sur
+        
+        Captured Groups:
+        • Group 1: TS number (1-3 digits)
+        • Group 2: Edit ID (alphanumeric)
+        • Group 3: EOB Code (alphanumeric)
+        """
+        self.doc.add_paragraph(pattern2_text.strip())
+        
+        # Pattern 3: Lab Panel Model Pattern
+        pattern3_text = """
+        Pattern 3: Lab Panel Model Pattern
+        Regex: r'TS_(\\d{1,3})_Lab panel Model_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$'
+        
+        Matches: TS_XX_Lab panel Model_WGS_CSBD_EDIT_ID_EOB_CODE_sur
+        
+        Examples:
+        • TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_sur
+        
+        Captured Groups:
+        • Group 1: TS number (1-3 digits)
+        • Group 2: Edit ID (alphanumeric)
+        • Group 3: EOB Code (alphanumeric)
+        """
+        self.doc.add_paragraph(pattern3_text.strip())
+        
+        # Pattern 4: Recovery Room Pattern
+        pattern4_text = """
+        Pattern 4: Recovery Room Reimbursement Pattern
+        Regex: r'TS_(\\d{1,3})_Recovery Room Reimbursement_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$'
+        
+        Matches: TS_XX_Recovery Room Reimbursement_WGS_CSBD_EDIT_ID_EOB_CODE_sur
+        
+        Examples:
+        • TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_sur
+        
+        Captured Groups:
+        • Group 1: TS number (1-3 digits)
+        • Group 2: Edit ID (alphanumeric)
+        • Group 3: EOB Code (alphanumeric)
+        """
+        self.doc.add_paragraph(pattern4_text.strip())
+        
+        # Pattern 5: Covid Pattern
+        pattern5_text = """
+        Pattern 5: Covid Pattern
+        Regex: r'TS_(\\d{1,3})_Covid_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$'
+        
+        Matches: TS_XX_Covid_WGS_CSBD_EDIT_ID_EOB_CODE_sur
+        
+        Examples:
+        • TS_01_Covid_WGS_CSBD_RULEEM000001_W04_sur
+        
+        Captured Groups:
+        • Group 1: TS number (1-3 digits)
+        • Group 2: Edit ID (alphanumeric)
+        • Group 3: EOB Code (alphanumeric)
+        """
+        self.doc.add_paragraph(pattern5_text.strip())
+        
+        # Pattern 6: Laterality Policy Pattern
+        pattern6_text = """
+        Pattern 6: Laterality Policy Pattern
+        Regex: r'TS_(\\d{1,3})_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$'
+        
+        Matches: TS_XX_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_EDIT_ID_EOB_CODE_sur
+        
+        Examples:
+        • TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur
+        
+        Captured Groups:
+        • Group 1: TS number (1-3 digits)
+        • Group 2: Edit ID (alphanumeric)
+        • Group 3: EOB Code (alphanumeric)
+        """
+        self.doc.add_paragraph(pattern6_text.strip())
+        
+        # Pattern 7: Device Dependent Procedures Pattern
+        pattern7_text = """
+        Pattern 7: Device Dependent Procedures Pattern
+        Regex: r'TS_(\\d{1,3})_Device Dependent Procedures\\(R1\\)-1B_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$'
+        
+        Matches: TS_XX_Device Dependent Procedures(R1)-1B_WGS_CSBD_EDIT_ID_EOB_CODE_sur
+        
+        Examples:
+        • TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_sur
+        
+        Captured Groups:
+        • Group 1: TS number (1-3 digits)
+        • Group 2: Edit ID (alphanumeric)
+        • Group 3: EOB Code (alphanumeric)
+        
+        Note: The parentheses in "(R1)" are escaped as \\(R1\\) in the regex pattern.
+        """
+        self.doc.add_paragraph(pattern7_text.strip())
+        
+        # Filename Parsing Patterns
+        subheading = self.doc.add_heading("Filename Parsing Patterns", level=3)
+        subheading.style = 'CustomHeading2'
+        
+        filename_text = """
+        The system also uses regex patterns to parse individual test case filenames:
+        """
+        self.doc.add_paragraph(filename_text.strip())
+        
+        # 3-Part Filename Pattern
+        filename3_text = """
+        3-Part Filename Pattern
+        Format: TC#XX_XXXXX#suffix.json
+        Regex: r'TC#(\\d+)_([A-Za-z0-9]+)#([A-Za-z]+)\\.json$'
+        
+        Examples:
+        • TC#01_12345#deny.json
+        • TC#02_67890#bypass.json
+        • TC#05_11111#market.json
+        
+        Captured Groups:
+        • Group 1: Test case number
+        • Group 2: Test case ID
+        • Group 3: Suffix (deny, bypass, market, date)
+        """
+        self.doc.add_paragraph(filename3_text.strip())
+        
+        # 4-Part Filename Pattern
+        filename4_text = """
+        4-Part Filename Pattern
+        Format: TC#XX_XXXXX#edit_id#suffix.json
+        Regex: r'TC#(\\d+)_([A-Za-z0-9]+)#([A-Za-z0-9]+)#([A-Za-z]+)\\.json$'
+        
+        Examples:
+        • TC#01_12345#rvn001#deny.json
+        • TC#02_67890#rvn002#bypass.json
+        
+        Captured Groups:
+        • Group 1: Test case number
+        • Group 2: Test case ID
+        • Group 3: Edit ID
+        • Group 4: Suffix
+        """
+        self.doc.add_paragraph(filename4_text.strip())
+        
+        # 5-Part Filename Pattern
+        filename5_text = """
+        5-Part Filename Pattern (Target Format)
+        Format: TC#XX_XXXXX#edit_id#code#mapped_suffix.json
+        Regex: r'TC#(\\d+)_([A-Za-z0-9]+)#([A-Za-z0-9]+)#([A-Za-z0-9]+)#([A-Za-z]+)\\.json$'
+        
+        Examples:
+        • TC#01_12345#rvn001#00W5#LR.json
+        • TC#02_67890#rvn002#00W6#NR.json
+        • TC#05_11111#rvn001#00W5#EX.json
+        
+        Captured Groups:
+        • Group 1: Test case number
+        • Group 2: Test case ID
+        • Group 3: Edit ID
+        • Group 4: EOB Code
+        • Group 5: Mapped suffix (LR, NR, EX)
+        """
+        self.doc.add_paragraph(filename5_text.strip())
+        
+        # Sub Edit Pattern
+        subedit_text = """
+        Sub Edit Number Extraction Pattern
+        Regex: r'Sub Edit (\\d+)'
+        
+        Purpose: Extracts the sub edit number from Revenue code Services folder names
+        
+        Examples:
+        • "Revenue code Services not payable on Facility claim Sub Edit 5" → "5"
+        • "Revenue code Services not payable on Facility claim Sub Edit 4" → "4"
+        
+        Captured Groups:
+        • Group 1: Sub edit number
+        """
+        self.doc.add_paragraph(subedit_text.strip())
+        
+        # TS Number Normalization
+        ts_normalization_text = """
+        TS Number Normalization Logic
+        
+        The system normalizes TS numbers to handle different digit patterns:
+        
+        Single Digit (1-9): "1" → "01", "7" → "07"
+        Two Digits (10-99): "10" → "10", "50" → "50"
+        Three Digits (100-999): "100" → "100", "120" → "120"
+        
+        This ensures consistent naming across all collections and prevents conflicts.
+        """
+        self.doc.add_paragraph(ts_normalization_text.strip())
+        
         # Error Handling
         subheading = self.doc.add_heading("Error Handling and Validation", level=2)
         subheading.style = 'CustomHeading2'
