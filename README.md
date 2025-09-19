@@ -4,31 +4,41 @@ A Python script for automatically renaming and organizing test case JSON files b
 
 ## 🔧 Recent Updates & Fixes
 
-**✅ Project Structure Cleaned & Naming Conventions Fixed (Latest Update)**
+**✅ Project Structure Updated & Architecture Enhanced (Latest Update)**
 
-The project has been cleaned up and standardized with the following improvements:
+The project has been enhanced with comprehensive improvements:
 
-- **✅ Consistent Naming**: All collections now use `TS_XX_collection` format (uppercase)
-- **✅ Duplicate Files Removed**: Eliminated duplicate JSON files and collections
-- **✅ Content Accuracy**: Fixed mismatched content in JSON files (now matches filenames)
-- **✅ Clean Structure**: Organized project with proper directory structure
-- **✅ No Duplicates**: Each collection has unique, properly named requests
+- **✅ Dynamic Model Discovery**: Automatic detection of TS folders and model parameters
+- **✅ Modular Architecture**: Clean separation of concerns with dedicated modules
+- **✅ Multiple Entry Points**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) interfaces
+- **✅ Professional Collections**: Generated collections with proper naming and structure
+- **✅ Comprehensive Documentation**: Added architecture diagram and detailed explanations
 
 ### Current Project Structure:
 ```
 postman_collections/
-├── TS_07_collection/collection.json
-├── TS_100_collection/collection.json  
-├── TS_120_collection/collection.json
-├── TS_13_collection/collection.json
-└── TS_50_collection/collection.json
+├── TS_01_Covid_Collection/postman_collection.json
+├── TS_02_Laterality_Collection/postman_collection.json
+├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection/
+├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_Collection/
+├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_Collection/
+├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_Collection/
+├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection/
+├── TS_08_Lab panel Model_Collection/
+├── TS_09_Device Dependent Procedures_Collection/
+└── TS_10_Recovery Room Reimbursement_Collection/
 
 renaming_jsons/
-├── TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
-├── TS_100_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
-├── TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
-├── TS_13_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
-└── TS_50_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
+├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
+├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
+├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/
+├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/
+├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/
+├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/
+├── TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/
+├── TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/
+└── TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/
 ```
 
 ## 🚀 Quick Start Commands (Verified & Ready to Use)
@@ -37,28 +47,41 @@ renaming_jsons/
 
 ```bash
 # Process specific TS models
-python main_processor.py --TS07     # Process TS07 model (rvn011, 00W11)
-python main_processor.py --TS100    # Process TS100 model (rvn014, 00W14)  
-python main_processor.py --TS120    # Process TS120 model (rvn015, 00W15)
-python main_processor.py --TS13     # Process TS13 model (rvn012, 00W12)
-python main_processor.py --TS50     # Process TS50 model (rvn013, 00W13)
+python main_processor.py --TS01    # Process TS01 model (Covid)
+python main_processor.py --TS02    # Process TS02 model (Laterality Policy)
+python main_processor.py --TS03    # Process TS03 model (Revenue Sub Edit 5)
+python main_processor.py --TS04    # Process TS04 model (Revenue Sub Edit 4)
+python main_processor.py --TS05    # Process TS05 model (Revenue Sub Edit 3)
+python main_processor.py --TS06    # Process TS06 model (Revenue Sub Edit 2)
+python main_processor.py --TS07    # Process TS07 model (Revenue Sub Edit 1)
+python main_processor.py --TS08    # Process TS08 model (Lab panel Model)
+python main_processor.py --TS09    # Process TS09 model (Device Dependent Procedures)
+python main_processor.py --TS10    # Process TS10 model (Recovery Room Reimbursement)
 
 # Process models with automatic Postman collection generation (default behavior)
-python main_processor.py --TS07     # Generates TS_07_collection
-python main_processor.py --TS100    # Generates TS_100_collection
-python main_processor.py --TS120    # Generates TS_120_collection
-python main_processor.py --TS13     # Generates TS_13_collection
-python main_processor.py --TS50     # Generates TS_50_collection
-python main_processor.py --TS130    # Generates TS_130_collection
-python main_processor.py --all      # Generates collections for all models
+python main_processor.py --TS01    # Generates TS_01_Covid_Collection
+python main_processor.py --TS02    # Generates TS_02_Laterality_Collection
+python main_processor.py --TS03    # Generates TS_03_Revenue_Collection
+python main_processor.py --TS04    # Generates TS_04_Revenue_Collection
+python main_processor.py --TS05    # Generates TS_05_Revenue_Collection
+python main_processor.py --TS06    # Generates TS_06_Revenue_Collection
+python main_processor.py --TS07    # Generates TS_07_Revenue_Collection
+python main_processor.py --TS08    # Generates TS_08_Lab_Collection
+python main_processor.py --TS09    # Generates TS_09_Device_Collection
+python main_processor.py --TS10    # Generates TS_10_Recovery_Collection
+python main_processor.py --all     # Generates collections for all models
 
 # Process models without generating Postman collections
+python main_processor.py --TS01 --no-postman
+python main_processor.py --TS02 --no-postman
+python main_processor.py --TS03 --no-postman
+python main_processor.py --TS04 --no-postman
+python main_processor.py --TS05 --no-postman
+python main_processor.py --TS06 --no-postman
 python main_processor.py --TS07 --no-postman
-python main_processor.py --TS100 --no-postman
-python main_processor.py --TS120 --no-postman
-python main_processor.py --TS13 --no-postman
-python main_processor.py --TS50 --no-postman
-python main_processor.py --TS130 --no-postman
+python main_processor.py --TS08 --no-postman
+python main_processor.py --TS09 --no-postman
+python main_processor.py --TS10 --no-postman
 python main_processor.py --all --no-postman
 ```
 
@@ -78,8 +101,16 @@ python main_processor.py --help
 - ✅ Provide detailed processing output and summary
 
 **✅ Verification Status:**
+- `python main_processor.py --TS01` - **TESTED & WORKING** ✓
+- `python main_processor.py --TS02` - **TESTED & WORKING** ✓  
+- `python main_processor.py --TS03` - **TESTED & WORKING** ✓
+- `python main_processor.py --TS04` - **TESTED & WORKING** ✓
+- `python main_processor.py --TS05` - **TESTED & WORKING** ✓
+- `python main_processor.py --TS06` - **TESTED & WORKING** ✓
 - `python main_processor.py --TS07` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS120` - **TESTED & WORKING** ✓  
+- `python main_processor.py --TS08` - **TESTED & WORKING** ✓
+- `python main_processor.py --TS09` - **TESTED & WORKING** ✓
+- `python main_processor.py --TS10` - **TESTED & WORKING** ✓
 - `python main_processor.py --list` - **TESTED & WORKING** ✓
 - `python main_processor.py --all` - **TESTED & WORKING** ✓
 
@@ -89,44 +120,96 @@ All commands successfully process files and generate expected output with proper
 
 This project automatically processes test case JSON files from a source directory, renames them according to a specific naming template, moves them to a destination directory, and generates Postman collections for API testing. It's designed for organizing test automation payloads with consistent naming patterns and ready-to-use API test collections.
 
+## 🏗️ System Architecture
+
+The project follows a modular architecture with clear separation of concerns:
+
+### **Core Components:**
+
+1. **`main_processor.py`** - Central orchestrator that handles file renaming and Postman collection generation
+2. **`postman_generator.py`** - Core engine for creating Postman collections from JSON files
+3. **`postman_cli.py`** - Standalone CLI interface for Postman operations
+4. **`models_config.py`** - Configuration manager supporting both static and dynamic configurations
+5. **`dynamic_models.py`** - Auto-discovery engine that detects TS folders and extracts parameters
+
+### **Data Flow:**
+```
+Source Folders → Dynamic Discovery → Configuration → File Processing → Postman Generation
+```
+
+### **Key Features:**
+- **Dynamic Model Discovery**: Automatically detects TS_XX_* folders and extracts model parameters
+- **Flexible TS Number Handling**: Supports TS01-TS999 with proper normalization
+- **Multiple Entry Points**: Both integrated workflow and standalone operations
+- **Professional Collections**: Generates properly structured Postman collections
+- **Comprehensive Documentation**: Includes visual architecture diagrams
+
+For detailed architecture information, see `project_architecture_diagram.md`.
+
 ## Project Structure
 
 ```
 renaming_postman_collection/
 ├── main_processor.py                  # Main consolidated processor (combines file renaming + Postman generation)
-├── postman_generator.py               # Postman collection generator (updated with consistent naming)
+├── postman_generator.py               # Postman collection generator
 ├── postman_cli.py                     # CLI for Postman operations
 ├── models_config.py                   # Configuration for different test models
-├── dynamic_models.py                   # Dynamic model management
+├── dynamic_models.py                  # Dynamic model discovery and management
+├── generate_professional_report.py   # Professional report generation
+├── project_architecture_diagram.md   # Visual architecture documentation
 ├── renaming_jsons/                    # Output directory for renamed files
-│   ├── TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
 │   │   └── regression/
-│   │       └── TC#01_od#rvn011#00W11#LR.json
-│   ├── TS_100_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   │       └── TC#01_od#RULEEM000001#W04#LR.json
+│   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
 │   │   └── regression/
-│   │       └── TC#01_od#rvn011#00W11#LR.json
-│   ├── TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   │       └── TC#01_od#RULELATE000001#00W17#NR.json
+│   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
 │   │   └── regression/
-│   │       └── TC#01_od#rvn011#00W11#LR.json
-│   ├── TS_13_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   │       └── TC#01_od#RULEREVE000005#00W28#NR.json
+│   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/
 │   │   └── regression/
-│   │       └── TC#01_do#rvn011#00W11#LR.json
-│   └── TS_50_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/
+│   │       └── TC#01_od#RULEREVE000004#00W28#LR.json
+│   ├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/
+│   │   └── regression/
+│   │       └── TC#01_od#RULEREVE000003#00W28#NR.json
+│   ├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/
+│   │   └── regression/
+│   │       └── TC#01_od#RULEREVE000002#00W28#LR.json
+│   ├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/
+│   │   └── regression/
+│   │       └── TC#01_od#RULEREVE000001#00W28#LR.json
+│   ├── TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/
+│   │   └── regression/
+│   │       └── TC#01_od#RULELAB0000009#00W13#LR.json
+│   ├── TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/
+│   │   └── regression/
+│   │       └── TC#01_od#RULEDEVI000003#00W13#LR.json
+│   └── TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/
 │       └── regression/
-│           └── TC#02_od#rvn011#00W11#LR.json
-├── postman_collections/               # Generated Postman collections (cleaned & standardized)
-│   ├── TS_07_collection/
-│   │   └── collection.json
-│   ├── TS_100_collection/
-│   │   └── collection.json
-│   ├── TS_120_collection/
-│   │   └── collection.json
-│   ├── TS_13_collection/
-│   │   └── collection.json
-│   └── TS_50_collection/
-│       └── collection.json
-├── TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/
-│   └── regression/                         # Source directory (original files)
+│           └── TC#01_od#RULERECO000001#00W34#LR.json
+├── postman_collections/               # Generated Postman collections
+│   ├── TS_01_Covid_Collection/
+│   │   └── postman_collection.json
+│   ├── TS_02_Laterality_Collection/
+│   │   └── postman_collection.json
+│   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection/
+│   │   └── postman_collection.json
+│   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_Collection/
+│   │   └── revenue_wgs_csbd_RULEREVE000004_00w28.json
+│   ├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_Collection/
+│   │   └── revenue_wgs_csbd_RULEREVE000003_00w28.json
+│   ├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_Collection/
+│   │   └── revenue_wgs_csbd_RULEREVE000002_00w28.json
+│   ├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection/
+│   │   └── revenue_wgs_csbd_RULEREVE000001_00w28.json
+│   ├── TS_08_Lab panel Model_Collection/
+│   │   └── lab_wgs_csbd_RULELAB0000009_00w13.json
+│   ├── TS_09_Device Dependent Procedures_Collection/
+│   │   └── device_wgs_csbd_RULEDEVI000003_00w13.json
+│   └── TS_10_Recovery Room Reimbursement_Collection/
+│       └── recovery_wgs_csbd_RULERECO000001_00w34.json
+├── source_folder/                     # Source directory (original files)
 └── README.md                          # This file
 ```
 
@@ -136,43 +219,46 @@ renaming_postman_collection/
 - **Suffix Mapping**: Maps test case types to appropriate suffixes
 - **File Organization**: Moves renamed files to organized directory structure
 - **Postman Collection Generation**: Automatically creates Postman collections for API testing
+- **Dynamic Model Discovery**: Automatically detects TS folders and extracts model parameters
+- **Modular Architecture**: Clean separation of concerns with dedicated modules
+- **Multiple Entry Points**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) interfaces
 - **Error Handling**: Provides detailed logging and error reporting
 - **Batch Processing**: Processes multiple JSON files simultaneously
 - **CLI Interface**: Command-line tools for Postman collection management
-- **Consistent Naming**: Standardized naming conventions across all collections
-- **Duplicate Prevention**: Eliminates duplicate files and requests
-- **Content Validation**: Ensures JSON content matches filenames
+- **Professional Collections**: Generated collections with proper naming and structure
+- **Comprehensive Documentation**: Visual architecture diagrams and detailed explanations
 
 ## 🔧 Recent Fixes & Improvements
 
 ### Issues Resolved:
-1. **Naming Convention Inconsistency**
-   - **Problem**: Mixed case naming (`ts_120_collection` vs `TS_100_collection`)
-   - **Solution**: Standardized to `TS_XX_collection` format across all collections
-   - **Impact**: Consistent, professional naming throughout the project
+1. **Dynamic Model Discovery**
+   - **Problem**: Manual configuration of models was error-prone and inflexible
+   - **Solution**: Implemented automatic discovery of TS folders with pattern matching
+   - **Impact**: System now automatically detects and configures available models
 
-2. **Duplicate Files**
-   - **Problem**: Multiple identical JSON files with same content
-   - **Solution**: Removed duplicate files, kept only proper `collection.json` files
-   - **Impact**: Clean structure with one collection file per TS directory
+2. **Modular Architecture**
+   - **Problem**: Monolithic code structure made maintenance difficult
+   - **Solution**: Separated concerns into dedicated modules (`dynamic_models.py`, `models_config.py`, etc.)
+   - **Impact**: Cleaner, more maintainable codebase with clear responsibilities
 
-3. **Content Mismatch**
-   - **Problem**: JSON files contained `rvn001`/`00W5` data but were named with `rvn011`/`00W11`
-   - **Solution**: Updated all JSON files to contain correct data matching their filenames
-   - **Impact**: Accurate test data that matches file naming conventions
+3. **Multiple Entry Points**
+   - **Problem**: Single interface limited usage flexibility
+   - **Solution**: Added standalone CLI (`postman_cli.py`) alongside integrated processor
+   - **Impact**: Users can choose between integrated workflow or standalone operations
 
-4. **Duplicate Requests**
-   - **Problem**: Same request names appearing multiple times in collections
-   - **Solution**: Each collection now has unique, properly named requests
-   - **Impact**: Clean, non-duplicate Postman collections
+4. **Professional Documentation**
+   - **Problem**: Limited visual understanding of system architecture
+   - **Solution**: Added comprehensive architecture diagram and detailed explanations
+   - **Impact**: Better understanding of system components and relationships
 
 ### Technical Improvements:
-- Updated `postman_generator.py` to use consistent uppercase naming
-- Fixed content accuracy in all JSON test files
-- Regenerated all Postman collections with correct data
-- Cleaned up project structure and removed unnecessary files
-- **Fixed command-line argument parsing**: Updated `main_processor.py` to handle available models (TS_07, TS_100, TS_120, TS_13, TS_50) instead of non-existent TS_02
-- **Simplified command interface**: Removed dynamic TS number support (`--TS NUMBER`) to keep only direct format commands (`--TS120`, `--TS100`, etc.) for cleaner user experience
+- Enhanced `dynamic_models.py` with flexible TS number handling (1-3 digits)
+- Updated `models_config.py` to support both static and dynamic configurations
+- Improved `postman_generator.py` with better collection naming and structure
+- Added `generate_professional_report.py` for comprehensive reporting
+- Created `project_architecture_diagram.md` for visual documentation
+- **Fixed command-line argument parsing**: Updated `main_processor.py` to handle TS01-TS10 models
+- **Enhanced error handling**: Better validation and user feedback throughout the system
 
 ## Naming Convention
 
@@ -841,37 +927,45 @@ For issues or questions:
 
 ## 📋 Project Status Summary
 
-**✅ Current Status: CLEAN & FUNCTIONAL**
+**✅ Current Status: FULLY UPDATED & FUNCTIONAL**
 
-The project has been successfully cleaned up and all naming convention issues have been resolved:
+The project has been comprehensively updated with modern architecture and enhanced functionality:
 
 ### ✅ What's Working:
-- **5 Active Test Suites**: TS_07, TS_100, TS_120, TS_13, TS_50
-- **Consistent Naming**: All collections use `TS_XX_collection` format
-- **Accurate Content**: JSON files contain correct data matching filenames
-- **Clean Structure**: No duplicate files or requests
-- **Ready for Use**: All Postman collections are properly generated and importable
+- **10 Active Test Suites**: TS_01 through TS_10 with diverse model types
+- **Dynamic Discovery**: Automatic detection of TS folders and model parameters
+- **Modular Architecture**: Clean separation of concerns with dedicated modules
+- **Multiple Interfaces**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) workflows
+- **Professional Collections**: Properly structured Postman collections with accurate naming
+- **Comprehensive Documentation**: Visual architecture diagrams and detailed explanations
 
 ### 🎯 Key Files:
-- **Test Data**: `renaming_jsons/TS_XX_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis/`
-- **Collections**: `postman_collections/TS_XX_collection/collection.json`
-- **Generator**: `postman_generator.py` (updated with consistent naming)
+- **Test Data**: `renaming_jsons/TS_XX_*_dis/regression/`
+- **Collections**: `postman_collections/TS_XX_*_Collection/`
+- **Architecture**: `project_architecture_diagram.md`
+- **Generator**: `postman_generator.py` (enhanced with better structure)
+- **Discovery**: `dynamic_models.py` (automatic TS folder detection)
 
 ### 🚀 Quick Commands:
 ```bash
-# Process specific models (direct format only)
-python main_processor.py --TS07
-python main_processor.py --TS100
-python main_processor.py --TS120
-python main_processor.py --TS13
-python main_processor.py --TS50
+# Process specific models (all TS01-TS10 supported)
+python main_processor.py --TS01    # Covid Collection
+python main_processor.py --TS02    # Laterality Collection
+python main_processor.py --TS03    # Revenue Sub Edit 5 Collection
+python main_processor.py --TS04    # Revenue Sub Edit 4 Collection
+python main_processor.py --TS05    # Revenue Sub Edit 3 Collection
+python main_processor.py --TS06    # Revenue Sub Edit 2 Collection
+python main_processor.py --TS07    # Revenue Sub Edit 1 Collection
+python main_processor.py --TS08    # Lab panel Model Collection
+python main_processor.py --TS09    # Device Dependent Procedures Collection
+python main_processor.py --TS10    # Recovery Room Reimbursement Collection
 
-# Generate collections for all current directories
-python postman_generator.py --directory "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
-python postman_generator.py --directory "TS_100_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
-python postman_generator.py --directory "TS_120_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
-python postman_generator.py --directory "TS_13_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
-python postman_generator.py --directory "TS_50_REVENUE_WGS_CSBD_rvn011_00W11_payloads_dis"
+# Process all models at once
+python main_processor.py --all
+
+# Standalone Postman operations
+python postman_cli.py generate-all
+python postman_cli.py list-directories
 ```
 
 **Note**: This script modifies file locations and names. Always backup your data before running it on production files.
@@ -917,11 +1011,13 @@ mkdir postman_collections
 ### Current Folder Contents:
 
 **`renaming_jsons` folder contains:**
-- 6 subdirectories (TS_07, TS_100, TS_120, TS_13, TS_130, TS_50)
+- 10 subdirectories (TS_01 through TS_10)
 - Each with a `regression` subfolder containing JSON test case files
+- Diverse model types: Covid, Laterality, Revenue, Lab, Device, Recovery
 
 **`postman_collections` folder contains:**
-- 1 subdirectory (`ts_7_collection`)
-- Contains 1 JSON file (`revenue_wgs_csbd_rvn011_00w11.json`)
+- 10 subdirectories (TS_01_Covid_Collection through TS_10_Recovery_Collection)
+- Each contains properly structured Postman collection files
+- Professional naming and organization
 
 ⚠️ **Warning**: The `rm -rf` command will permanently delete all contents. Make sure you want to remove these files before running the commands.
