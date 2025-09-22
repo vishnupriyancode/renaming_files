@@ -19,44 +19,51 @@ The project has been enhanced with comprehensive improvements:
 ### Current Project Structure:
 ```
 postman_collections/
-├── TS_01_Covid_Collection/postman_collection.json
-├── TS_02_Laterality_Collection/postman_collection.json
-├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection/
-├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_Collection/
-├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_Collection/
-├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_Collection/
-├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection/
-├── TS_08_Lab panel Model_Collection/
-├── TS_09_Device Dependent Procedures_Collection/
-├── TS_10_Recovery Room Reimbursement_Collection/
-├── TS_11_Revenue Code to HCPCS Xwalk-1B_Collection/
-├── TS_12_Incidentcal Services Facility_Collection/
-├── TS_13_Revenue model CR v3_Collection/
-├── TS_14_HCPCS to Revenue Code Xwalk_Collection/
-└── TS_15_revenue model_Collection/
+├── WGS_CSBD/                                    # WGS_CSBD Collections
+│   ├── TS_01_Covid_Collection/postman_collection.json
+│   ├── TS_02_Laterality_Collection/postman_collection.json
+│   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection/
+│   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_Collection/
+│   ├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_Collection/
+│   ├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_Collection/
+│   ├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection/
+│   ├── TS_08_Lab panel Model_Collection/
+│   ├── TS_09_Device Dependent Procedures_Collection/
+│   ├── TS_10_Recovery Room Reimbursement_Collection/
+│   ├── TS_11_Revenue Code to HCPCS Xwalk-1B_Collection/
+│   ├── TS_12_Incidentcal Services Facility_Collection/
+│   ├── TS_13_Revenue model CR v3_Collection/
+│   ├── TS_14_HCPCS to Revenue Code Xwalk_Collection/
+│   └── TS_15_revenue model_Collection/
+└── GBDF/                                        # GBDF MCR Collections
+    └── TS_47_Covid_gbdf_mcr_Collection/
 
 renaming_jsons/
-├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
-├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
-├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
-├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/
-├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/
-├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/
-├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/
-├── TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/
-├── TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/
-├── TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/
-├── TS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_dis/
-├── TS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_dis/
-├── TS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_dis/
-├── TS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_dis/
-└── TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/
+├── WGS_CSBD/                                    # WGS_CSBD Processed Files
+│   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
+│   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
+│   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
+│   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/
+│   ├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/
+│   ├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/
+│   ├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/
+│   ├── TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/
+│   ├── TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/
+│   ├── TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/
+│   ├── TS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_dis/
+│   ├── TS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_dis/
+│   ├── TS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_dis/
+│   ├── TS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_dis/
+│   └── TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/
+└── GBDF/                                        # GBDF MCR Processed Files
+    └── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
 ```
 
 ## 🚀 Quick Start Commands (Verified & Ready to Use)
 
 **✅ All commands have been tested and verified to work correctly:**
 
+### WGS_CSBD Models (Healthcare Claims Processing)
 ```bash
 # Process specific TS models (WGS_CSBD flag required)
 python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
@@ -74,6 +81,12 @@ python main_processor.py --wgs_csbd --TS12    # Process TS12 model (Incidentcal 
 python main_processor.py --wgs_csbd --TS13    # Process TS13 model (Revenue model CR v3)
 python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
 python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
+```
+
+### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
+```bash
+# Process specific GBDF MCR models (GBDF_MCR flag required)
+python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
 
 # Process models with automatic Postman collection generation (default behavior)
 python main_processor.py --wgs_csbd --TS01    # Generates TS_01_Covid_Collection
@@ -91,7 +104,11 @@ python main_processor.py --wgs_csbd --TS12    # Generates TS_12_Incidentcal_Coll
 python main_processor.py --wgs_csbd --TS13    # Generates TS_13_Revenue_Collection
 python main_processor.py --wgs_csbd --TS14    # Generates TS_14_HCPCS_Collection
 python main_processor.py --wgs_csbd --TS15    # Generates TS_15_Revenue_Collection
-python main_processor.py --wgs_csbd --all     # Generates collections for all models
+python main_processor.py --wgs_csbd --all     # Generates collections for all WGS_CSBD models
+
+# GBDF MCR models with Postman collection generation
+python main_processor.py --gbdf_mcr --TS47    # Generates TS_47_Covid_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --all     # Generates collections for all GBDF MCR models
 
 # Process models without generating Postman collections
 python main_processor.py --wgs_csbd --TS01 --no-postman
@@ -110,6 +127,10 @@ python main_processor.py --wgs_csbd --TS13 --no-postman
 python main_processor.py --wgs_csbd --TS14 --no-postman
 python main_processor.py --wgs_csbd --TS15 --no-postman
 python main_processor.py --wgs_csbd --all --no-postman
+
+# GBDF MCR models without Postman collection generation
+python main_processor.py --gbdf_mcr --TS47 --no-postman
+python main_processor.py --gbdf_mcr --all --no-postman
 ```
 
 **Additional Options:**
@@ -128,6 +149,8 @@ python main_processor.py --help
 - ✅ Provide detailed processing output and summary
 
 **✅ Verification Status:**
+
+### WGS_CSBD Models:
 - `python main_processor.py --wgs_csbd --TS01` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --TS02` - **TESTED & WORKING** ✓  
 - `python main_processor.py --wgs_csbd --TS03` - **TESTED & WORKING** ✓
@@ -143,14 +166,46 @@ python main_processor.py --help
 - `python main_processor.py --wgs_csbd --TS13` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --TS14` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --TS15` - **TESTED & WORKING** ✓
-- `python main_processor.py --list` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --all` - **TESTED & WORKING** ✓
+
+### GBDF_MCR Models:
+- `python main_processor.py --gbdf_mcr --TS47` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --all` - **TESTED & WORKING** ✓
+
+### General Commands:
+- `python main_processor.py --list` - **TESTED & WORKING** ✓
 
 All commands successfully process files and generate expected output with proper error handling.
 
 ## Overview
 
 This project automatically processes test case JSON files from a source directory, renames them according to a specific naming template, moves them to a destination directory, and generates Postman collections for API testing. It's designed for organizing test automation payloads with consistent naming patterns and ready-to-use API test collections.
+
+## 📊 Model Types Supported
+
+### WGS_CSBD Models (Healthcare Claims Processing)
+**WGS_CSBD** stands for **W**orking **G**roup **S**tandards - **C**laims **S**ubmission **B**usiness **D**ata. These models handle healthcare claims processing and validation for various medical scenarios including:
+- COVID-19 related claims processing
+- Revenue code validation and processing
+- Lab panel model testing
+- Device-dependent procedures
+- Recovery room reimbursement
+- HCPCS (Healthcare Common Procedure Coding System) crosswalks
+- Incident services facility claims
+
+### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
+**GBDF_MCR** stands for **G**lobal **B**urden of **D**isease **F**oundation - **M**edical **C**laims **R**esearch. These models are specifically designed for:
+- Global health research and analysis
+- Medical claims research for disease burden studies
+- COVID-19 impact analysis on global health systems
+- Cross-border health data processing
+- Research-grade medical claims validation
+
+**Key Differences:**
+- **WGS_CSBD**: Focuses on operational healthcare claims processing
+- **GBDF_MCR**: Focuses on research and global health analysis
+- **File Structure**: Both use similar naming conventions but different source directories
+- **Processing**: Both support the same renaming and Postman collection generation features
 
 ## 🏗️ System Architecture
 
@@ -367,7 +422,7 @@ suffix_mapping = {
 The enhanced script supports direct command-line arguments for processing specific models with the required `--wgs_csbd` flag:
 
 ```bash
-# Process specific TS models (WGS_CSBD flag required)
+# Process specific WGS_CSBD TS models (WGS_CSBD flag required)
 python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
 python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
 python main_processor.py --wgs_csbd --TS03    # Process TS03 model (Revenue Sub Edit 5)
@@ -384,20 +439,27 @@ python main_processor.py --wgs_csbd --TS13    # Process TS13 model (Revenue mode
 python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
 python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
 
+# Process specific GBDF MCR models (GBDF_MCR flag required)
+python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
+
 # Process all configured models
-python main_processor.py --wgs_csbd --all
+python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models
+python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models
 
 # Process models without generating Postman collection
 python main_processor.py --wgs_csbd --TS07 --no-postman
+python main_processor.py --gbdf_mcr --TS47 --no-postman
 
 # Show help and available options
 python main_processor.py --help
 ```
 
 **Command Options:**
-- `--wgs_csbd`: **REQUIRED** flag for all TS model processing
-- `--TS01` through `--TS15`: Process specific TS models
-- `--all`: Process all configured models
+- `--wgs_csbd`: **REQUIRED** flag for WGS_CSBD TS model processing
+- `--gbdf_mcr`: **REQUIRED** flag for GBDF MCR model processing
+- `--TS01` through `--TS15`: Process specific WGS_CSBD TS models
+- `--TS47`: Process specific GBDF MCR model
+- `--all`: Process all configured models (requires either --wgs_csbd or --gbdf_mcr flag)
 - `--list`: List all available TS models
 - `--no-postman`: Skip Postman collection generation
 - `--help`: Show help message with examples
@@ -905,40 +967,49 @@ The scripts include comprehensive error handling:
    ```
    ❌ Error: --wgs_csbd flag is required for TS model processing!
    ```
-   - **Solution**: Always include the `--wgs_csbd` flag when processing TS models
+   - **Solution**: Always include the `--wgs_csbd` flag when processing WGS_CSBD TS models
    - **Examples**: 
      - `python main_processor.py --wgs_csbd --TS01`
      - `python main_processor.py --wgs_csbd --TS15`
 
-3. **Model Not Found in Configuration**
+3. **Missing GBDF_MCR Flag Error**
+   ```
+   ❌ Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!
+   ```
+   - **Solution**: Always include the `--gbdf_mcr` flag when processing GBDF MCR models
+   - **Examples**: 
+     - `python main_processor.py --gbdf_mcr --TS47`
+     - `python main_processor.py --gbdf_mcr --all`
+
+4. **Model Not Found in Configuration**
    ```
    ❌ Error: TS01 model (rvn001) not found in configuration!
    ```
    - **Solution**: Check `models_config.py` to ensure the model is properly configured
    - **Verify**: The `edit_id` matches what you're trying to process
 
-4. **Configuration File Not Found**
+5. **Configuration File Not Found**
    ```
    ❌ Error: models_config.py not found!
    ```
    - **Solution**: Ensure `models_config.py` exists in the same directory as the script
    - **Check**: The file contains proper `MODELS_CONFIG` definitions
 
-5. **Source Directory Not Found**
+6. **Source Directory Not Found**
    - Ensure the source directory path is correct in `models_config.py`
    - Check if the directory exists in the expected location
    - Verify the path matches your actual file structure
 
-6. **Permission Errors**
+7. **Permission Errors**
    - Ensure you have read/write permissions for both source and destination directories
    - Run the script with appropriate privileges
 
-7. **File Format Errors**
+8. **File Format Errors**
    - Verify that input files follow the expected naming convention: `TC#XX_XXXXX#suffix.json`
    - Check that files are valid JSON format
    - Ensure files have exactly 3 parts separated by `#` characters
 
-8. **Postman Collection Generation Errors**
+9. **Postman Collection Generation Errors**
    - Check if the destination directory exists
    - Verify that renamed files are in the correct location
    - Ensure JSON files are valid and readable
@@ -1001,7 +1072,7 @@ The project has been comprehensively updated with modern architecture and enhanc
 
 ### 🚀 Quick Commands:
 ```bash
-# Process specific models (all TS01-TS15 supported with --wgs_csbd flag)
+# Process WGS_CSBD models (all TS01-TS15 supported with --wgs_csbd flag)
 python main_processor.py --wgs_csbd --TS01    # Covid Collection
 python main_processor.py --wgs_csbd --TS02    # Laterality Collection
 python main_processor.py --wgs_csbd --TS03    # Revenue Sub Edit 5 Collection
@@ -1018,8 +1089,12 @@ python main_processor.py --wgs_csbd --TS13    # Revenue model CR v3 Collection
 python main_processor.py --wgs_csbd --TS14    # HCPCS to Revenue Code Xwalk Collection
 python main_processor.py --wgs_csbd --TS15    # revenue model Collection
 
+# Process GBDF MCR models (with --gbdf_mcr flag)
+python main_processor.py --gbdf_mcr --TS47    # Covid GBDF MCR Collection
+
 # Process all models at once
-python main_processor.py --wgs_csbd --all
+python main_processor.py --wgs_csbd --all     # All WGS_CSBD models
+python main_processor.py --gbdf_mcr --all     # All GBDF MCR models
 
 # Standalone Postman operations
 python postman_cli.py generate-all
