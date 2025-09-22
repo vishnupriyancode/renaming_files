@@ -47,9 +47,10 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
     
     # Auto-generate paths if not provided
     if source_dir is None:
-        source_dir = f"TS_01_REVENUE_WGS_CSBD_{edit_id}_{code}_payloads_sur/regression"
+        source_dir = f"source_folder/WGS_CSBD/TS_01_REVENUE_WGS_CSBD_{edit_id}_{code}_payloads_sur/regression"
     
     if dest_dir is None:
+        # Default to renaming_jsons for backward compatibility
         dest_dir = f"renaming_jsons/TS_01_REVENUE_WGS_CSBD_{edit_id}_{code}_payloads_dis/regression"
     
     if not os.path.exists(source_dir):
@@ -93,13 +94,23 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             print(f"Moving to: {dest_dir}")
             print("-" * 40)
             
-            # Source and destination paths
-            source_path = os.path.join(source_dir, filename)
-            dest_path = os.path.join(dest_dir, new_filename)
+            # Source and destination paths - normalize paths for Windows compatibility
+            source_path = os.path.normpath(os.path.join(source_dir, filename))
+            dest_path = os.path.normpath(os.path.join(dest_dir, new_filename))
             
             try:
                 # Copy the file to destination with new name
-                shutil.copy2(source_path, dest_path)
+                # Handle Windows path issues with special characters by using subprocess
+                if os.name == 'nt':  # Windows
+                    # Use subprocess to handle special characters in filenames
+                    import subprocess
+                    # Use cp command (available in Git Bash) to handle special characters
+                    cmd = f'cp "{source_path}" "{dest_path}"'
+                    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+                    if result.returncode != 0:
+                        raise Exception(f"Copy failed: {result.stderr}")
+                else:
+                    shutil.copy2(source_path, dest_path)
                 print(f"✓ Successfully copied and renamed: {filename} → {new_filename}")
                 
                 # Remove the original file
@@ -134,9 +145,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             print(f"Moving to: {dest_dir}")
             print("-" * 40)
             
-            # Source and destination paths
-            source_path = os.path.join(source_dir, filename)
-            dest_path = os.path.join(dest_dir, new_filename)
+            # Source and destination paths - normalize paths for Windows compatibility
+            source_path = os.path.normpath(os.path.join(source_dir, filename))
+            dest_path = os.path.normpath(os.path.join(dest_dir, new_filename))
             
             try:
                 # Copy the file to destination with new name
@@ -206,9 +217,16 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
         
         try:
             # Initialize Postman generator with specific model directory
+            # Use appropriate subdirectory when processing models
+            output_dir = "postman_collections"
+            if "WGS_CSBD" in dest_dir:
+                output_dir = "postman_collections/WGS_CSBD"
+            elif "GBDF" in dest_dir:
+                output_dir = "postman_collections/GBDF"
+            
             generator = PostmanCollectionGenerator(
                 source_dir=dest_dir,  # Use the specific model's destination directory
-                output_dir="postman_collections"
+                output_dir=output_dir
             )
             
             # Extract collection name from destination directory if not provided
@@ -266,14 +284,14 @@ def process_multiple_models(models_config, generate_postman=True):
         {
             "edit_id": "rvn001",
             "code": "00W5",
-            "source_dir": "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/regression",
+            "source_dir": "WGS_CSBD/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/regression",
             "dest_dir": "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis/regression",
             "postman_collection_name": "TS_01_REVENUE_WGS_CSBD_rvn001_00W5"
         },
         {
             "edit_id": "rvn002", 
             "code": "00W6",
-            "source_dir": "TS_01_REVENUE_WGS_CSBD_rvn002_00W6_payloads_sur/regression",
+            "source_dir": "WGS_CSBD/TS_01_REVENUE_WGS_CSBD_rvn002_00W6_payloads_sur/regression",
             "dest_dir": "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn002_00W6_payloads_dis/regression",
             "postman_collection_name": "TS_01_REVENUE_WGS_CSBD_rvn002_00W6"
         }
@@ -369,25 +387,38 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Process specific TS models
-  python main_processor.py --TS01    # Process TS01 model (Covid)
-  python main_processor.py --TS02    # Process TS02 model (Laterality Policy)
-  python main_processor.py --TS07    # Process TS07 model
-  python main_processor.py --TS10    # Process TS10 model
+  # Process specific TS models (WGS_CSBD flag required)
+  python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
+  python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
+  python main_processor.py --wgs_csbd --TS07    # Process TS07 model
+  python main_processor.py --wgs_csbd --TS10    # Process TS10 model
+  
+  # Process GBDF MCR models (GBDF MCR flag required)
+  python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
   
   # Process all discovered models
-  python main_processor.py --all     # Process all discovered models
+  python main_processor.py --wgs_csbd --all     # Process all discovered WGS_CSBD models
+  python main_processor.py --gbdf_mcr --all     # Process all discovered GBDF MCR models
   
   # List available models
   python main_processor.py --list    # List all available TS models
   
   # Skip Postman generation
-  python main_processor.py --TS07 --no-postman
+  python main_processor.py --wgs_csbd --TS07 --no-postman
+  python main_processor.py --gbdf_mcr --TS47 --no-postman
   
   # Process with custom parameters
   python main_processor.py --edit-id rvn001 --code 00W5 --source-dir custom/path
         """
     )
+    
+    # Add WGS_CSBD flag
+    parser.add_argument("--wgs_csbd", action="store_true", 
+                       help="Process WGS_CSBD models (required for TS model processing)")
+    
+    # Add GBDF MCR flag
+    parser.add_argument("--gbdf_mcr", action="store_true", 
+                       help="Process GBDF MCR models (required for GBDF model processing)")
     
     # Add model-specific arguments for available models
     parser.add_argument("--TS01", action="store_true", 
@@ -410,6 +441,18 @@ Examples:
                        help="Process TS08 model (Lab panel Model)")
     parser.add_argument("--TS09", action="store_true", 
                        help="Process TS09 model (Device Dependent Procedures)")
+    parser.add_argument("--TS11", action="store_true", 
+                       help="Process TS11 model (Revenue Code to HCPCS Xwalk-1B)")
+    parser.add_argument("--TS12", action="store_true", 
+                       help="Process TS12 model (Incidentcal Services Facility)")
+    parser.add_argument("--TS13", action="store_true", 
+                       help="Process TS13 model (Revenue model CR v3)")
+    parser.add_argument("--TS14", action="store_true", 
+                       help="Process TS14 model (HCPCS to Revenue Code Xwalk)")
+    parser.add_argument("--TS15", action="store_true", 
+                       help="Process TS15 model (revenue model)")
+    parser.add_argument("--TS47", action="store_true", 
+                       help="Process TS47 model (Covid GBDF MCR)")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
@@ -429,7 +472,7 @@ Examples:
     # Load model configurations with dynamic discovery
     try:
         from models_config import get_models_config, get_model_by_ts
-        models_config = get_models_config(use_dynamic=True)
+        models_config = get_models_config(use_dynamic=True, use_wgs_csbd_destination=args.wgs_csbd, use_gbdf_mcr=args.gbdf_mcr)
         print("✅ Configuration loaded with dynamic discovery")
     except ImportError as e:
         print(f"❌ Error: {e}")
@@ -438,16 +481,20 @@ Examples:
     
     # Handle --list option
     if args.list:
-        print("\n📋 AVAILABLE TS MODELS")
-        print("=" * 50)
-        if models_config:
-            for model in models_config:
-                print(f"TS_{model['ts_number']}: {model['edit_id']}_{model['code']}")
-                print(f"  📁 Source: {model['source_dir']}")
-                print(f"  📁 Dest:   {model['dest_dir']}")
-                print()
-        else:
-            print("❌ No TS models found")
+        try:
+            from dynamic_models import print_nested_models_display
+            print_nested_models_display()
+        except ImportError:
+            print("\n📋 AVAILABLE TS MODELS")
+            print("=" * 50)
+            if models_config:
+                for model in models_config:
+                    print(f"TS_{model['ts_number']}: {model['edit_id']}_{model['code']}")
+                    print(f"  📁 Source: {model['source_dir']}")
+                    print(f"  📁 Dest:   {model['dest_dir']}")
+                    print()
+            else:
+                print("❌ No TS models found")
         sys.exit(0)
     
     # Handle custom parameters
@@ -562,25 +609,124 @@ Examples:
             print("❌ Error: TS09 model not found!")
             sys.exit(1)
     
+    if args.TS11:
+        ts11_model = next((model for model in models_config if model.get("ts_number") == "11"), None)
+        if ts11_model:
+            models_to_process.append(ts11_model)
+        else:
+            print("❌ Error: TS11 model not found!")
+            sys.exit(1)
+    
+    if args.TS12:
+        ts12_model = next((model for model in models_config if model.get("ts_number") == "12"), None)
+        if ts12_model:
+            models_to_process.append(ts12_model)
+        else:
+            print("❌ Error: TS12 model not found!")
+            sys.exit(1)
+    
+    if args.TS13:
+        ts13_model = next((model for model in models_config if model.get("ts_number") == "13"), None)
+        if ts13_model:
+            models_to_process.append(ts13_model)
+        else:
+            print("❌ Error: TS13 model not found!")
+            sys.exit(1)
+    
+    if args.TS14:
+        ts14_model = next((model for model in models_config if model.get("ts_number") == "14"), None)
+        if ts14_model:
+            models_to_process.append(ts14_model)
+        else:
+            print("❌ Error: TS14 model not found!")
+            sys.exit(1)
+    
+    if args.TS15:
+        ts15_model = next((model for model in models_config if model.get("ts_number") == "15"), None)
+        if ts15_model:
+            models_to_process.append(ts15_model)
+        else:
+            print("❌ Error: TS15 model not found!")
+            sys.exit(1)
+    
+    if args.TS47:
+        ts47_model = next((model for model in models_config if model.get("ts_number") == "47"), None)
+        if ts47_model:
+            models_to_process.append(ts47_model)
+        else:
+            print("❌ Error: TS47 model not found!")
+            sys.exit(1)
+    
     if args.all:
         models_to_process = models_config
         print(f"✅ Processing all {len(models_config)} discovered models")
+    
+    # Check if appropriate flag is required for TS model processing
+    wgs_csbd_models = any([args.TS01, args.TS02, args.TS03, args.TS04, args.TS05, 
+                          args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
+                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15])
+    gbdf_mcr_models = args.TS47
+    all_models = args.all
+    
+    if wgs_csbd_models and not args.wgs_csbd:
+        print("❌ Error: --wgs_csbd flag is required for WGS_CSBD TS model processing!")
+        print("\nPlease use the --wgs_csbd flag with WGS_CSBD TS model commands:")
+        print("  python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)")
+        print("  python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)")
+        print("  python main_processor.py --wgs_csbd --TS03    # Process TS03 model")
+        print("  python main_processor.py --wgs_csbd --TS04    # Process TS04 model")
+        print("  python main_processor.py --wgs_csbd --TS05    # Process TS05 model")
+        print("  python main_processor.py --wgs_csbd --TS06    # Process TS06 model")
+        print("  python main_processor.py --wgs_csbd --TS07    # Process TS07 model")
+        print("  python main_processor.py --wgs_csbd --TS08    # Process TS08 model")
+        print("  python main_processor.py --wgs_csbd --TS09    # Process TS09 model")
+        print("  python main_processor.py --wgs_csbd --TS10    # Process TS10 model")
+        print("  python main_processor.py --wgs_csbd --TS11    # Process TS11 model")
+        print("  python main_processor.py --wgs_csbd --TS12    # Process TS12 model")
+        print("  python main_processor.py --wgs_csbd --TS13    # Process TS13 model")
+        print("  python main_processor.py --wgs_csbd --TS14    # Process TS14 model")
+        print("  python main_processor.py --wgs_csbd --TS15    # Process TS15 model")
+        print("  python main_processor.py --wgs_csbd --all     # Process all discovered models")
+        print("\nUse --help for more information.")
+        sys.exit(1)
+    
+    if gbdf_mcr_models and not args.gbdf_mcr:
+        print("❌ Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!")
+        print("\nPlease use the --gbdf_mcr flag with GBDF MCR TS model commands:")
+        print("  python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)")
+        print("\nUse --help for more information.")
+        sys.exit(1)
+    
+    if all_models and not args.wgs_csbd and not args.gbdf_mcr:
+        print("❌ Error: Either --wgs_csbd or --gbdf_mcr flag is required for --all processing!")
+        print("\nPlease specify which type of models to process:")
+        print("  python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models")
+        print("  python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models")
+        print("\nUse --help for more information.")
+        sys.exit(1)
     
     # If no specific model is selected, show help
     if not models_to_process:
         print("❌ Error: No model specified!")
         print("\nPlease specify which model to process:")
-        print("  --TS01    Process TS01 model (Covid)")
-        print("  --TS02    Process TS02 model (Laterality Policy)")
-        print("  --TS03    Process TS03 model (Revenue code Services not payable on Facility claim Sub Edit 5)")
-        print("  --TS04    Process TS04 model (Revenue code Services not payable on Facility claim - Sub Edit 4)")
-        print("  --TS05    Process TS05 model (Revenue code Services not payable on Facility claim Sub Edit 3)")
-        print("  --TS06    Process TS06 model (Revenue code Services not payable on Facility claim Sub Edit 2)")
-        print("  --TS07    Process TS07 model (Revenue code Services not payable on Facility claim Sub Edit 1)")
-        print("  --TS08    Process TS08 model (Lab panel Model)")
-        print("  --TS09    Process TS09 model (Device Dependent Procedures)")
-        print("  --TS10    Process TS10 model")
-        print("  --all     Process all discovered models")
+        print("  --wgs_csbd --TS01    Process TS01 model (Covid)")
+        print("  --wgs_csbd --TS02    Process TS02 model (Laterality Policy)")
+        print("  --wgs_csbd --TS03    Process TS03 model (Revenue code Services not payable on Facility claim Sub Edit 5)")
+        print("  --wgs_csbd --TS04    Process TS04 model (Revenue code Services not payable on Facility claim - Sub Edit 4)")
+        print("  --wgs_csbd --TS05    Process TS05 model (Revenue code Services not payable on Facility claim Sub Edit 3)")
+        print("  --wgs_csbd --TS06    Process TS06 model (Revenue code Services not payable on Facility claim Sub Edit 2)")
+        print("  --wgs_csbd --TS07    Process TS07 model (Revenue code Services not payable on Facility claim Sub Edit 1)")
+        print("  --wgs_csbd --TS08    Process TS08 model (Lab panel Model)")
+        print("  --wgs_csbd --TS09    Process TS09 model (Device Dependent Procedures)")
+        print("  --wgs_csbd --TS10    Process TS10 model")
+        print("  --wgs_csbd --TS11    Process TS11 model (Revenue Code to HCPCS Xwalk-1B)")
+        print("  --wgs_csbd --TS12    Process TS12 model (Incidentcal Services Facility)")
+        print("  --wgs_csbd --TS13    Process TS13 model (Revenue model CR v3)")
+        print("  --wgs_csbd --TS14    Process TS14 model (HCPCS to Revenue Code Xwalk)")
+        print("  --wgs_csbd --TS15    Process TS15 model (revenue model)")
+        print("  --gbdf_mcr --TS47    Process TS47 model (Covid GBDF MCR)")
+        print("  --wgs_csbd --all     Process all discovered WGS_CSBD models")
+        print("  --gbdf_mcr --all     Process all discovered GBDF MCR models")
         print("  --list    List all available TS models")
         print("\nUse --help for more information.")
         sys.exit(1)

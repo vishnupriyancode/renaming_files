@@ -1,0 +1,64 @@
+{
+  "info": {
+    "name": "TS_01_Covid_Collection API Collection",
+    "description": "API collection for TS_01_Covid_Collection test cases",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC#01_sample#RULEEM000001#W04#LR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "X-Edit-ID",
+            "value": "RULEEM000001",
+            "type": "text"
+          },
+          {
+            "key": "X-EOB-Code",
+            "value": "W04",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Type",
+            "value": "LR",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEEM000001\",\n  \"code\": \"W04\",\n  \"description\": \"Test case for Covid WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

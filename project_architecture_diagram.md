@@ -139,7 +139,7 @@
 
 ```
 renaming_postman_collection/
-├── 📁 source_folder/                    # Source TS folders
+├── 📁 WGS_CSBD/                         # Source TS folders
 │   ├── TS_01_Covid_WGS_CSBD_*/sur/regression/
 │   ├── TS_02_Laterality_*/sur/regression/
 │   ├── TS_03_Revenue_*/sur/regression/

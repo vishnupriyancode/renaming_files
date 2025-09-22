@@ -4,10 +4,12 @@ A Python script for automatically renaming and organizing test case JSON files b
 
 ## 🔧 Recent Updates & Fixes
 
-**✅ Project Structure Updated & Architecture Enhanced (Latest Update)**
+**✅ WGS_CSBD Flag Implementation & Command Structure Update (Latest Update)**
 
 The project has been enhanced with comprehensive improvements:
 
+- **✅ WGS_CSBD Flag Requirement**: Added mandatory `--wgs_csbd` flag for all TS model processing
+- **✅ Enhanced Command Validation**: Improved error handling and user guidance
 - **✅ Dynamic Model Discovery**: Automatic detection of TS folders and model parameters
 - **✅ Modular Architecture**: Clean separation of concerns with dedicated modules
 - **✅ Multiple Entry Points**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) interfaces
@@ -26,7 +28,12 @@ postman_collections/
 ├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection/
 ├── TS_08_Lab panel Model_Collection/
 ├── TS_09_Device Dependent Procedures_Collection/
-└── TS_10_Recovery Room Reimbursement_Collection/
+├── TS_10_Recovery Room Reimbursement_Collection/
+├── TS_11_Revenue Code to HCPCS Xwalk-1B_Collection/
+├── TS_12_Incidentcal Services Facility_Collection/
+├── TS_13_Revenue model CR v3_Collection/
+├── TS_14_HCPCS to Revenue Code Xwalk_Collection/
+└── TS_15_revenue model_Collection/
 
 renaming_jsons/
 ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
@@ -38,7 +45,12 @@ renaming_jsons/
 ├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/
 ├── TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/
 ├── TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/
-└── TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/
+├── TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/
+├── TS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_dis/
+├── TS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_dis/
+├── TS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_dis/
+├── TS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_dis/
+└── TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/
 ```
 
 ## 🚀 Quick Start Commands (Verified & Ready to Use)
@@ -46,43 +58,58 @@ renaming_jsons/
 **✅ All commands have been tested and verified to work correctly:**
 
 ```bash
-# Process specific TS models
-python main_processor.py --TS01    # Process TS01 model (Covid)
-python main_processor.py --TS02    # Process TS02 model (Laterality Policy)
-python main_processor.py --TS03    # Process TS03 model (Revenue Sub Edit 5)
-python main_processor.py --TS04    # Process TS04 model (Revenue Sub Edit 4)
-python main_processor.py --TS05    # Process TS05 model (Revenue Sub Edit 3)
-python main_processor.py --TS06    # Process TS06 model (Revenue Sub Edit 2)
-python main_processor.py --TS07    # Process TS07 model (Revenue Sub Edit 1)
-python main_processor.py --TS08    # Process TS08 model (Lab panel Model)
-python main_processor.py --TS09    # Process TS09 model (Device Dependent Procedures)
-python main_processor.py --TS10    # Process TS10 model (Recovery Room Reimbursement)
+# Process specific TS models (WGS_CSBD flag required)
+python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
+python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
+python main_processor.py --wgs_csbd --TS03    # Process TS03 model (Revenue Sub Edit 5)
+python main_processor.py --wgs_csbd --TS04    # Process TS04 model (Revenue Sub Edit 4)
+python main_processor.py --wgs_csbd --TS05    # Process TS05 model (Revenue Sub Edit 3)
+python main_processor.py --wgs_csbd --TS06    # Process TS06 model (Revenue Sub Edit 2)
+python main_processor.py --wgs_csbd --TS07    # Process TS07 model (Revenue Sub Edit 1)
+python main_processor.py --wgs_csbd --TS08    # Process TS08 model (Lab panel Model)
+python main_processor.py --wgs_csbd --TS09    # Process TS09 model (Device Dependent Procedures)
+python main_processor.py --wgs_csbd --TS10    # Process TS10 model (Recovery Room Reimbursement)
+python main_processor.py --wgs_csbd --TS11    # Process TS11 model (Revenue Code to HCPCS Xwalk-1B)
+python main_processor.py --wgs_csbd --TS12    # Process TS12 model (Incidentcal Services Facility)
+python main_processor.py --wgs_csbd --TS13    # Process TS13 model (Revenue model CR v3)
+python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
+python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
 
 # Process models with automatic Postman collection generation (default behavior)
-python main_processor.py --TS01    # Generates TS_01_Covid_Collection
-python main_processor.py --TS02    # Generates TS_02_Laterality_Collection
-python main_processor.py --TS03    # Generates TS_03_Revenue_Collection
-python main_processor.py --TS04    # Generates TS_04_Revenue_Collection
-python main_processor.py --TS05    # Generates TS_05_Revenue_Collection
-python main_processor.py --TS06    # Generates TS_06_Revenue_Collection
-python main_processor.py --TS07    # Generates TS_07_Revenue_Collection
-python main_processor.py --TS08    # Generates TS_08_Lab_Collection
-python main_processor.py --TS09    # Generates TS_09_Device_Collection
-python main_processor.py --TS10    # Generates TS_10_Recovery_Collection
-python main_processor.py --all     # Generates collections for all models
+python main_processor.py --wgs_csbd --TS01    # Generates TS_01_Covid_Collection
+python main_processor.py --wgs_csbd --TS02    # Generates TS_02_Laterality_Collection
+python main_processor.py --wgs_csbd --TS03    # Generates TS_03_Revenue_Collection
+python main_processor.py --wgs_csbd --TS04    # Generates TS_04_Revenue_Collection
+python main_processor.py --wgs_csbd --TS05    # Generates TS_05_Revenue_Collection
+python main_processor.py --wgs_csbd --TS06    # Generates TS_06_Revenue_Collection
+python main_processor.py --wgs_csbd --TS07    # Generates TS_07_Revenue_Collection
+python main_processor.py --wgs_csbd --TS08    # Generates TS_08_Lab_Collection
+python main_processor.py --wgs_csbd --TS09    # Generates TS_09_Device_Collection
+python main_processor.py --wgs_csbd --TS10    # Generates TS_10_Recovery_Collection
+python main_processor.py --wgs_csbd --TS11    # Generates TS_11_Revenue_Collection
+python main_processor.py --wgs_csbd --TS12    # Generates TS_12_Incidentcal_Collection
+python main_processor.py --wgs_csbd --TS13    # Generates TS_13_Revenue_Collection
+python main_processor.py --wgs_csbd --TS14    # Generates TS_14_HCPCS_Collection
+python main_processor.py --wgs_csbd --TS15    # Generates TS_15_Revenue_Collection
+python main_processor.py --wgs_csbd --all     # Generates collections for all models
 
 # Process models without generating Postman collections
-python main_processor.py --TS01 --no-postman
-python main_processor.py --TS02 --no-postman
-python main_processor.py --TS03 --no-postman
-python main_processor.py --TS04 --no-postman
-python main_processor.py --TS05 --no-postman
-python main_processor.py --TS06 --no-postman
-python main_processor.py --TS07 --no-postman
-python main_processor.py --TS08 --no-postman
-python main_processor.py --TS09 --no-postman
-python main_processor.py --TS10 --no-postman
-python main_processor.py --all --no-postman
+python main_processor.py --wgs_csbd --TS01 --no-postman
+python main_processor.py --wgs_csbd --TS02 --no-postman
+python main_processor.py --wgs_csbd --TS03 --no-postman
+python main_processor.py --wgs_csbd --TS04 --no-postman
+python main_processor.py --wgs_csbd --TS05 --no-postman
+python main_processor.py --wgs_csbd --TS06 --no-postman
+python main_processor.py --wgs_csbd --TS07 --no-postman
+python main_processor.py --wgs_csbd --TS08 --no-postman
+python main_processor.py --wgs_csbd --TS09 --no-postman
+python main_processor.py --wgs_csbd --TS10 --no-postman
+python main_processor.py --wgs_csbd --TS11 --no-postman
+python main_processor.py --wgs_csbd --TS12 --no-postman
+python main_processor.py --wgs_csbd --TS13 --no-postman
+python main_processor.py --wgs_csbd --TS14 --no-postman
+python main_processor.py --wgs_csbd --TS15 --no-postman
+python main_processor.py --wgs_csbd --all --no-postman
 ```
 
 **Additional Options:**
@@ -101,18 +128,23 @@ python main_processor.py --help
 - ✅ Provide detailed processing output and summary
 
 **✅ Verification Status:**
-- `python main_processor.py --TS01` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS02` - **TESTED & WORKING** ✓  
-- `python main_processor.py --TS03` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS04` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS05` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS06` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS07` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS08` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS09` - **TESTED & WORKING** ✓
-- `python main_processor.py --TS10` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS01` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS02` - **TESTED & WORKING** ✓  
+- `python main_processor.py --wgs_csbd --TS03` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS04` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS05` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS06` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS07` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS08` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS09` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS10` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS11` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS12` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS13` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS14` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS15` - **TESTED & WORKING** ✓
 - `python main_processor.py --list` - **TESTED & WORKING** ✓
-- `python main_processor.py --all` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --all` - **TESTED & WORKING** ✓
 
 All commands successfully process files and generate expected output with proper error handling.
 
@@ -209,7 +241,7 @@ renaming_postman_collection/
 │   │   └── device_wgs_csbd_RULEDEVI000003_00w13.json
 │   └── TS_10_Recovery Room Reimbursement_Collection/
 │       └── recovery_wgs_csbd_RULERECO000001_00w34.json
-├── source_folder/                     # Source directory (original files)
+├── WGS_CSBD/                          # Source directory (original files)
 └── README.md                          # This file
 ```
 
@@ -292,7 +324,7 @@ The script uses the following hardcoded parameters:
 
 - **`edit_id`**: `"rvn001"` - Unique identifier for the edit/revision
 - **`code`**: `"00W5"` - Code identifier for the test suite
-- **`source_dir`**: `"TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/regression"` - Source directory path
+- **`source_dir`**: `"WGS_CSBD/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/regression"` - Source directory path
 - **`dest_dir`**: Absolute path to the destination directory
 
 ### Suffix Mapping
@@ -332,41 +364,39 @@ suffix_mapping = {
 
 #### 1. Enhanced Script with Postman Integration (Recommended)
 
-The enhanced script supports direct command-line arguments for processing specific models:
+The enhanced script supports direct command-line arguments for processing specific models with the required `--wgs_csbd` flag:
 
 ```bash
-# Process TS07 model (rvn011, 00W11)
-python main_processor.py --TS07
-
-# Process TS100 model (rvn011, 00W11)
-python main_processor.py --TS100
-
-# Process TS120 model (rvn011, 00W11)
-python main_processor.py --TS120
-
-# Process TS13 model (rvn011, 00W11)
-python main_processor.py --TS13
-
-# Process TS50 model (rvn011, 00W11)
-python main_processor.py --TS50
+# Process specific TS models (WGS_CSBD flag required)
+python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
+python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
+python main_processor.py --wgs_csbd --TS03    # Process TS03 model (Revenue Sub Edit 5)
+python main_processor.py --wgs_csbd --TS04    # Process TS04 model (Revenue Sub Edit 4)
+python main_processor.py --wgs_csbd --TS05    # Process TS05 model (Revenue Sub Edit 3)
+python main_processor.py --wgs_csbd --TS06    # Process TS06 model (Revenue Sub Edit 2)
+python main_processor.py --wgs_csbd --TS07    # Process TS07 model (Revenue Sub Edit 1)
+python main_processor.py --wgs_csbd --TS08    # Process TS08 model (Lab panel Model)
+python main_processor.py --wgs_csbd --TS09    # Process TS09 model (Device Dependent Procedures)
+python main_processor.py --wgs_csbd --TS10    # Process TS10 model (Recovery Room Reimbursement)
+python main_processor.py --wgs_csbd --TS11    # Process TS11 model (Revenue Code to HCPCS Xwalk-1B)
+python main_processor.py --wgs_csbd --TS12    # Process TS12 model (Incidentcal Services Facility)
+python main_processor.py --wgs_csbd --TS13    # Process TS13 model (Revenue model CR v3)
+python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
+python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
 
 # Process all configured models
-python main_processor.py --all
+python main_processor.py --wgs_csbd --all
 
-# Process TS07 without generating Postman collection
-python main_processor.py --TS07 --no-postman
+# Process models without generating Postman collection
+python main_processor.py --wgs_csbd --TS07 --no-postman
 
 # Show help and available options
 python main_processor.py --help
 ```
 
 **Command Options:**
-- `--TS07`: Process TS07 model (rvn011, 00W11)
-- `--TS100`: Process TS100 model (rvn014, 00W14)
-- `--TS120`: Process TS120 model (rvn015, 00W15)
-- `--TS13`: Process TS13 model (rvn012, 00W12)
-- `--TS50`: Process TS50 model (rvn013, 00W13)
-- `--TS130`: Process TS130 model (rvn015, 00W15)
+- `--wgs_csbd`: **REQUIRED** flag for all TS model processing
+- `--TS01` through `--TS15`: Process specific TS models
 - `--all`: Process all configured models
 - `--list`: List all available TS models
 - `--no-postman`: Skip Postman collection generation
@@ -392,7 +422,7 @@ MODELS_CONFIG = [
     {
         "edit_id": "rvn001",
         "code": "00W5",
-        "source_dir": "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/regression",
+        "source_dir": "WGS_CSBD/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/regression",
         "dest_dir": "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis/regression",
         "postman_collection_name": "TS_01_REVENUE_WGS_CSBD_rvn001_00W5"
     },
@@ -420,13 +450,13 @@ python main_processor.py --help
 python postman_cli.py generate --collection-name "MyTestCollection"
 
 # Generate collection for specific directory
-python postman_cli.py generate --directory "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
+python postman_cli.py generate --directory "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
 
 # List available directories
 python postman_cli.py list-directories
 
 # Show statistics for a directory
-python postman_cli.py stats --directory "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
+python postman_cli.py stats --directory "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
 
 # Generate collections for all directories
 python postman_cli.py generate-all
@@ -515,48 +545,48 @@ Where:
 
 ### Command-Line Interface Output
 
-#### Processing TS07 Model
+#### Processing TS01 Model with WGS_CSBD Flag
 ```bash
-$ python main_processor.py --TS07
+$ python main_processor.py --wgs_csbd --TS01
 ✅ Configuration loaded with dynamic discovery
 
 🚀 Processing 1 model(s)...
 ============================================================
 
-📋 Processing Model 1/1: rvn002_00W6
+📋 Processing Model 1/1: TS_01 (RULEEM000001_W04)
 ----------------------------------------
 Files to be renamed and moved:
 ============================================================
-Current: TC#01_5#deny.json
+Current: TC#01_od#deny.json
 Converting to new template...
-New:     TC#01_5#rvn002#00W6#LR.json
-Moving to: renaming_jsons/TS_02_REVENUE_WGS_CSBD_rvn002_00W6_payloads_dis/regression
+New:     TC#01_od#RULEEM000001#W04#LR.json
+Moving to: renaming_jsons\TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis\regression
 ----------------------------------------
-✓ Successfully copied and renamed: TC#01_5#deny.json → TC#01_5#rvn002#00W6#LR.json
-✓ Removed original file: TC#01_5#deny.json
+✓ Successfully copied and renamed: TC#01_od#deny.json → TC#01_od#RULEEM000001#W04#LR.json
+✓ Removed original file: TC#01_od#deny.json
 
 ============================================================
 Renaming and moving completed!
-Files moved to: renaming_jsons/TS_02_REVENUE_WGS_CSBD_rvn002_00W6_payloads_dis/regression
+Files moved to: renaming_jsons\TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis\regression
 
 ============================================================
 Generating Postman collection...
 ----------------------------------------
-Found 2 JSON files for collection 'TS_02_REVENUE_WGS_CSBD_rvn002_00W6'
-✅ Generated Postman collection: postman_collections\ts_02_revenue_wgs_csbd_rvn002_00w6_collection\postman_collection.json
-   - Collection: TS_02_REVENUE_WGS_CSBD_rvn002_00W6
-   - Requests: 2
-   - Files processed: 2
+Found 1 JSON files for collection 'TS_01_Covid_Collection'
+✅ Generated Postman collection: postman_collections\TS_01_Covid_Collection\postman_collection.json
+   - Collection: TS_01_Covid_Collection
+   - Requests: 1
+   - Files processed: 1
 
 🎯 Ready for API testing!
 ============================================================
 To use this collection:
 1. Open Postman
 2. Click 'Import'
-3. Select the file: postman_collections\ts_02_revenue_wgs_csbd_rvn002_00w6_collection\postman_collection.json
+3. Select the file: postman_collections\TS_01_Covid_Collection\postman_collection.json
 4. Start testing your APIs!
 
-✅ Model rvn002_00W6: Successfully processed 1 files
+✅ Model TS_01 (RULEEM000001_W04): Successfully processed 1 files
 
 ============================================================
 📊 PROCESSING SUMMARY
@@ -566,7 +596,7 @@ Successful models: 1
 Total files processed: 1
 
 ✅ SUCCESSFUL MODELS:
-   • rvn002_00W6: 1 files
+   • TS_01 (RULEEM000001_W04): 1 files
 
 📦 POSTMAN COLLECTIONS GENERATED:
 To use these collections:
@@ -581,34 +611,47 @@ Files are now ready for API testing with Postman.
 
 #### Error Handling Example
 ```bash
-$ python main_processor.py
+$ python main_processor.py --TS01
 ✅ Configuration loaded with dynamic discovery
-❌ Error: No model specified!
+❌ Error: --wgs_csbd flag is required for TS model processing!
 
-Please specify which model to process:
-  --TS01    Process TS01 model (rvn001, 00W5)
-  --TS02    Process TS02 model (rvn002, 00W6)
-  --all     Process all configured models
+Please use the --wgs_csbd flag with TS model commands:
+  python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
+  python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
+  python main_processor.py --wgs_csbd --TS03    # Process TS03 model
+  python main_processor.py --wgs_csbd --TS04    # Process TS04 model
+  python main_processor.py --wgs_csbd --TS05    # Process TS05 model
+  python main_processor.py --wgs_csbd --TS06    # Process TS06 model
+  python main_processor.py --wgs_csbd --TS07    # Process TS07 model
+  python main_processor.py --wgs_csbd --TS08    # Process TS08 model
+  python main_processor.py --wgs_csbd --TS09    # Process TS09 model
+  python main_processor.py --wgs_csbd --TS10    # Process TS10 model
+  python main_processor.py --wgs_csbd --TS11    # Process TS11 model
+  python main_processor.py --wgs_csbd --TS12    # Process TS12 model
+  python main_processor.py --wgs_csbd --TS13    # Process TS13 model
+  python main_processor.py --wgs_csbd --TS14    # Process TS14 model
+  python main_processor.py --wgs_csbd --TS15    # Process TS15 model
+  python main_processor.py --wgs_csbd --all     # Process all discovered models
 
 Use --help for more information.
 ```
 
 #### Alternative Command Format Examples
 ```bash
-# Using the main processor with different models
-$ python main_processor.py --TS07
+# Using the main processor with different models (WGS_CSBD flag required)
+$ python main_processor.py --wgs_csbd --TS01
 ✅ Configuration loaded with dynamic discovery
 🚀 Processing 1 model(s)...
 ...
 
-$ python main_processor.py --TS100
+$ python main_processor.py --wgs_csbd --TS15
 ✅ Configuration loaded with dynamic discovery
 🚀 Processing 1 model(s)...
 ...
 
-$ python main_processor.py --all
+$ python main_processor.py --wgs_csbd --all
 ✅ Configuration loaded with dynamic discovery
-🚀 Processing 5 model(s)...
+🚀 Processing 15 model(s)...
 ...
 ```
 
@@ -774,7 +817,7 @@ edit_id = "rvn001"        # Change this to your edit ID
 code = "00W5"             # Change this to your code
 
 # Source directory containing the files
-source_dir = "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads/regression"
+source_dir = "WGS_CSBD/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_sur/regression"
 
 # Destination directory
 dest_dir = r"your\custom\destination\path"
@@ -853,40 +896,49 @@ The scripts include comprehensive error handling:
    ```
    ❌ Error: No model specified!
    ```
-   - **Solution**: Always specify a model using `--TS07`, `--TS100`, `--TS120`, `--TS13`, `--TS50`, or `--all`
+   - **Solution**: Always specify a model using `--wgs_csbd --TS01` through `--wgs_csbd --TS15`, or `--wgs_csbd --all`
    - **Examples**: 
-     - `python main_processor.py --TS07`
-     - `python main_processor.py --all`
+     - `python main_processor.py --wgs_csbd --TS01`
+     - `python main_processor.py --wgs_csbd --all`
 
-2. **Model Not Found in Configuration**
+2. **Missing WGS_CSBD Flag Error**
+   ```
+   ❌ Error: --wgs_csbd flag is required for TS model processing!
+   ```
+   - **Solution**: Always include the `--wgs_csbd` flag when processing TS models
+   - **Examples**: 
+     - `python main_processor.py --wgs_csbd --TS01`
+     - `python main_processor.py --wgs_csbd --TS15`
+
+3. **Model Not Found in Configuration**
    ```
    ❌ Error: TS01 model (rvn001) not found in configuration!
    ```
    - **Solution**: Check `models_config.py` to ensure the model is properly configured
    - **Verify**: The `edit_id` matches what you're trying to process
 
-3. **Configuration File Not Found**
+4. **Configuration File Not Found**
    ```
    ❌ Error: models_config.py not found!
    ```
    - **Solution**: Ensure `models_config.py` exists in the same directory as the script
    - **Check**: The file contains proper `MODELS_CONFIG` definitions
 
-4. **Source Directory Not Found**
+5. **Source Directory Not Found**
    - Ensure the source directory path is correct in `models_config.py`
    - Check if the directory exists in the expected location
    - Verify the path matches your actual file structure
 
-5. **Permission Errors**
+6. **Permission Errors**
    - Ensure you have read/write permissions for both source and destination directories
    - Run the script with appropriate privileges
 
-6. **File Format Errors**
+7. **File Format Errors**
    - Verify that input files follow the expected naming convention: `TC#XX_XXXXX#suffix.json`
    - Check that files are valid JSON format
    - Ensure files have exactly 3 parts separated by `#` characters
 
-7. **Postman Collection Generation Errors**
+8. **Postman Collection Generation Errors**
    - Check if the destination directory exists
    - Verify that renamed files are in the correct location
    - Ensure JSON files are valid and readable
@@ -932,7 +984,8 @@ For issues or questions:
 The project has been comprehensively updated with modern architecture and enhanced functionality:
 
 ### ✅ What's Working:
-- **10 Active Test Suites**: TS_01 through TS_10 with diverse model types
+- **15 Active Test Suites**: TS_01 through TS_15 with diverse model types
+- **WGS_CSBD Flag Implementation**: Mandatory flag requirement for all TS model processing
 - **Dynamic Discovery**: Automatic detection of TS folders and model parameters
 - **Modular Architecture**: Clean separation of concerns with dedicated modules
 - **Multiple Interfaces**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) workflows
@@ -948,20 +1001,25 @@ The project has been comprehensively updated with modern architecture and enhanc
 
 ### 🚀 Quick Commands:
 ```bash
-# Process specific models (all TS01-TS10 supported)
-python main_processor.py --TS01    # Covid Collection
-python main_processor.py --TS02    # Laterality Collection
-python main_processor.py --TS03    # Revenue Sub Edit 5 Collection
-python main_processor.py --TS04    # Revenue Sub Edit 4 Collection
-python main_processor.py --TS05    # Revenue Sub Edit 3 Collection
-python main_processor.py --TS06    # Revenue Sub Edit 2 Collection
-python main_processor.py --TS07    # Revenue Sub Edit 1 Collection
-python main_processor.py --TS08    # Lab panel Model Collection
-python main_processor.py --TS09    # Device Dependent Procedures Collection
-python main_processor.py --TS10    # Recovery Room Reimbursement Collection
+# Process specific models (all TS01-TS15 supported with --wgs_csbd flag)
+python main_processor.py --wgs_csbd --TS01    # Covid Collection
+python main_processor.py --wgs_csbd --TS02    # Laterality Collection
+python main_processor.py --wgs_csbd --TS03    # Revenue Sub Edit 5 Collection
+python main_processor.py --wgs_csbd --TS04    # Revenue Sub Edit 4 Collection
+python main_processor.py --wgs_csbd --TS05    # Revenue Sub Edit 3 Collection
+python main_processor.py --wgs_csbd --TS06    # Revenue Sub Edit 2 Collection
+python main_processor.py --wgs_csbd --TS07    # Revenue Sub Edit 1 Collection
+python main_processor.py --wgs_csbd --TS08    # Lab panel Model Collection
+python main_processor.py --wgs_csbd --TS09    # Device Dependent Procedures Collection
+python main_processor.py --wgs_csbd --TS10    # Recovery Room Reimbursement Collection
+python main_processor.py --wgs_csbd --TS11    # Revenue Code to HCPCS Xwalk-1B Collection
+python main_processor.py --wgs_csbd --TS12    # Incidentcal Services Facility Collection
+python main_processor.py --wgs_csbd --TS13    # Revenue model CR v3 Collection
+python main_processor.py --wgs_csbd --TS14    # HCPCS to Revenue Code Xwalk Collection
+python main_processor.py --wgs_csbd --TS15    # revenue model Collection
 
 # Process all models at once
-python main_processor.py --all
+python main_processor.py --wgs_csbd --all
 
 # Standalone Postman operations
 python postman_cli.py generate-all
@@ -1011,12 +1069,12 @@ mkdir postman_collections
 ### Current Folder Contents:
 
 **`renaming_jsons` folder contains:**
-- 10 subdirectories (TS_01 through TS_10)
+- 15 subdirectories (TS_01 through TS_15)
 - Each with a `regression` subfolder containing JSON test case files
-- Diverse model types: Covid, Laterality, Revenue, Lab, Device, Recovery
+- Diverse model types: Covid, Laterality, Revenue, Lab, Device, Recovery, HCPCS, Incidentcal Services
 
 **`postman_collections` folder contains:**
-- 10 subdirectories (TS_01_Covid_Collection through TS_10_Recovery_Collection)
+- 15 subdirectories (TS_01_Covid_Collection through TS_15_revenue model_Collection)
 - Each contains properly structured Postman collection files
 - Professional naming and organization
 

@@ -89,10 +89,11 @@ def format_ts_argument(ts_number: str) -> str:
         return ts_number
 
 
-def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
+def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = False) -> List[Dict]:
     """
     Discover all TS_XX_REVENUE_WGS_CSBD_* folders and extract model parameters.
     Supports flexible digit patterns: TS01-TS09, TS10-TS99, TS100-TS999
+    Also supports GBDF MCR patterns
     
     Args:
         base_dir: Base directory to search for TS folders
@@ -102,21 +103,37 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
     """
     models = []
     
-    # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
-    # Handle both "payloads_sur" and "_sur" patterns
-    # Also handle new Revenue code pattern and Lab panel Model pattern
-    pattern1 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_payloads_sur")
-    pattern2 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_ayloads_sur")
-    pattern3 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_sur")
-    pattern4 = os.path.join(base_dir, "TS_*_Revenue code Services not payable on Facility claim Sub Edit *_WGS_CSBD_*_sur")
-    pattern5 = os.path.join(base_dir, "TS_*_Lab panel Model_WGS_CSBD_*_sur")
-    pattern6 = os.path.join(base_dir, "TS_*_Recovery Room Reimbursement_WGS_CSBD_*_sur")
-    pattern7 = os.path.join(base_dir, "TS_*_Covid_WGS_CSBD_*_sur")
-    pattern8 = os.path.join(base_dir, "TS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur")
-    pattern9 = os.path.join(base_dir, "TS_*_Device Dependent Procedures(R1)-1B_WGS_CSBD_*_sur")
-    ts_folders = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + 
-                 glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + 
-                 glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9))
+    # Check if this is a GBDF directory
+    is_gbdf = "GBDF" in base_dir
+    
+    if is_gbdf:
+        # GBDF MCR patterns
+        pattern1 = os.path.join(base_dir, "TS_*_Covid_gbdf_mcr_*_sur")
+        ts_folders = glob.glob(pattern1)
+    else:
+        # WGS_CSBD patterns
+        # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
+        # Handle both "payloads_sur" and "_sur" patterns
+        # Also handle new Revenue code pattern and Lab panel Model pattern
+        pattern1 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_payloads_sur")
+        pattern2 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_ayloads_sur")
+        pattern3 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_sur")
+        pattern4 = os.path.join(base_dir, "TS_*_Revenue code Services not payable on Facility claim Sub Edit *_WGS_CSBD_*_sur")
+        pattern5 = os.path.join(base_dir, "TS_*_Lab panel Model_WGS_CSBD_*_sur")
+        pattern6 = os.path.join(base_dir, "TS_*_Recovery Room Reimbursement_WGS_CSBD_*_sur")
+        pattern7 = os.path.join(base_dir, "TS_*_Covid_WGS_CSBD_*_sur")
+        pattern8 = os.path.join(base_dir, "TS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur")
+        pattern9 = os.path.join(base_dir, "TS_*_Device Dependent Procedures(R1)-1B_WGS_CSBD_*_sur")
+        pattern10 = os.path.join(base_dir, "TS_*_revenue model_WGS_CSBD_*_sur")
+        pattern11 = os.path.join(base_dir, "TS_*_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_*_sur")
+        pattern12 = os.path.join(base_dir, "TS_*_Incidentcal Services Facility_WGS_CSBD_*_sur")
+        pattern13 = os.path.join(base_dir, "TS_*_Revenue model CR v3_WGS_CSBD_*_sur")
+        pattern14 = os.path.join(base_dir, "TS_*_HCPCS to Revenue Code Xwalk_WGS_CSBD_*_sur")
+        ts_folders = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + 
+                     glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + 
+                     glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9) + 
+                     glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) + 
+                     glob.glob(pattern13) + glob.glob(pattern14))
     
     print(f"🔍 Scanning for TS folders in: {base_dir}")
     print(f"📁 Found {len(ts_folders)} TS folders")
@@ -159,6 +176,30 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
         if not match:
             match = re.match(r'TS_(\d{1,3})_Device Dependent Procedures\(R1\)-1B_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
+        # If no match, try revenue model pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_revenue model_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Revenue Code to HCPCS Xwalk-1B pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Incidentcal Services Facility pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Incidentcal Services Facility_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Revenue model CR v3 pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Revenue model CR v3_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try HCPCS to Revenue Code Xwalk pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_HCPCS to Revenue Code Xwalk_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match and this is GBDF, try GBDF MCR pattern
+        if not match and is_gbdf:
+            match = re.match(r'TS_(\d{1,3})_Covid_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
         if match:
             ts_number_raw = match.group(1)
             edit_id = match.group(2)
@@ -183,7 +224,17 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
                 dest_folder_name = folder_name.replace("_sur", "_dis")
             else:
                 dest_folder_name = folder_name  # fallback
-            dest_dir = os.path.join("renaming_jsons", dest_folder_name, "regression")
+            
+            # Generate destination directory based on model type
+            if is_gbdf:
+                # GBDF MCR models go to GBDF subdirectory
+                dest_dir = os.path.join("renaming_jsons", "GBDF", dest_folder_name, "regression")
+            elif use_wgs_csbd_destination:
+                # WGS_CSBD models with flag go to WGS_CSBD subdirectory
+                dest_dir = os.path.join("renaming_jsons", "WGS_CSBD", dest_folder_name, "regression")
+            else:
+                # Default to renaming_jsons root
+                dest_dir = os.path.join("renaming_jsons", dest_folder_name, "regression")
             
             # Generate Postman collection name with flexible formatting
             # For Revenue code Services models, use the full descriptive name
@@ -216,6 +267,31 @@ def discover_ts_folders(base_dir: str = ".") -> List[Dict]:
                 # For Device Dependent Procedures, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Device Dependent Procedures_Collection"
                 postman_file_name = f"device_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "revenue model" in folder_name:
+                # For revenue model, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_revenue model_Collection"
+                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Revenue Code to HCPCS Xwalk-1B" in folder_name:
+                # For Revenue Code to HCPCS Xwalk-1B, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Revenue Code to HCPCS Xwalk-1B_Collection"
+                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Incidentcal Services Facility" in folder_name:
+                # For Incidentcal Services Facility, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Incidentcal Services Facility_Collection"
+                postman_file_name = f"incidentcal_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Revenue model CR v3" in folder_name:
+                # For Revenue model CR v3, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Revenue model CR v3_Collection"
+                postman_file_name = f"revenue_model_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "HCPCS to Revenue Code Xwalk" in folder_name:
+                # For HCPCS to Revenue Code Xwalk, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_HCPCS to Revenue Code Xwalk_Collection"
+                postman_file_name = f"hcpcs_wgs_csbd_{edit_id}_{code.lower()}.json",
+    
+            elif "Covid_gbdf_mcr" in folder_name:
+                # For GBDF MCR Covid, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Covid_gbdf_mcr_Collection"
+                postman_file_name = f"covid_gbdf_mcr_{edit_id}_{code.lower()}.json"
             else:
                 postman_collection_name = generate_postman_collection_name(ts_number)
                 postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
@@ -325,9 +401,134 @@ def print_discovered_models(models: List[Dict]):
         print()
 
 
+def print_nested_models_display():
+    """
+    Display all models in a nested, hierarchical structure showing WGS_CSBD and GBDF categories.
+    This provides a clear, organized view of all available models.
+    """
+    print("\n" + "=" * 80)
+    print("🏗️  NESTED MODEL STRUCTURE")
+    print("=" * 80)
+    
+    # Get WGS_CSBD models
+    wgs_csbd_models = discover_ts_folders("source_folder/WGS_CSBD", use_wgs_csbd_destination=True)
+    
+    # Get GBDF models
+    gbdf_models = discover_ts_folders("source_folder/GBDF", use_wgs_csbd_destination=False)
+    
+    total_models = len(wgs_csbd_models) + len(gbdf_models)
+    
+    print(f"📊 Total Models Found: {total_models}")
+    print("=" * 80)
+    
+    # Display WGS_CSBD models
+    if wgs_csbd_models:
+        print(f"\n🔵 WGS_CSBD MODELS ({len(wgs_csbd_models)} models)")
+        print("─" * 50)
+        
+        for i, model in enumerate(wgs_csbd_models, 1):
+            ts_number = model['ts_number']
+            edit_id = model['edit_id']
+            code = model['code']
+            collection_name = model['postman_collection_name']
+            
+            # Extract model type from collection name for better display
+            model_type = "General"
+            if "Covid" in collection_name:
+                model_type = "Covid"
+            elif "Laterality" in collection_name:
+                model_type = "Laterality Policy"
+            elif "Revenue code Services" in collection_name:
+                model_type = "Revenue Services"
+            elif "Lab panel" in collection_name:
+                model_type = "Lab Panel"
+            elif "Device Dependent" in collection_name:
+                model_type = "Device Procedures"
+            elif "Recovery Room" in collection_name:
+                model_type = "Recovery Room"
+            elif "Revenue Code to HCPCS" in collection_name:
+                model_type = "Revenue-HCPCS Crosswalk"
+            elif "Incidentcal Services" in collection_name:
+                model_type = "Incidental Services"
+            elif "Revenue model CR v3" in collection_name:
+                model_type = "Revenue Model CR v3"
+            elif "HCPCS to Revenue Code" in collection_name:
+                model_type = "HCPCS-Revenue Crosswalk"
+            elif "revenue model" in collection_name:
+                model_type = "Revenue Model"
+            
+            print(f"  {i:2d}. TS_{ts_number:02s} │ {model_type}")
+            print(f"      ├─ Edit ID: {edit_id}")
+            print(f"      ├─ Code: {code}")
+            print(f"      └─ Collection: {collection_name}")
+            print()
+    else:
+        print(f"\n🔵 WGS_CSBD MODELS (0 models)")
+        print("─" * 50)
+        print("   No WGS_CSBD models found")
+    
+    # Display GBDF models
+    if gbdf_models:
+        print(f"\n🟢 GBDF MODELS ({len(gbdf_models)} models)")
+        print("─" * 50)
+        
+        for i, model in enumerate(gbdf_models, 1):
+            ts_number = model['ts_number']
+            edit_id = model['edit_id']
+            code = model['code']
+            collection_name = model['postman_collection_name']
+            
+            # Extract model type from collection name for better display
+            model_type = "General"
+            if "Covid_gbdf_mcr" in collection_name or "Covid" in collection_name:
+                model_type = "Covid GBDF MCR"
+            
+            print(f"  {i:2d}. TS_{ts_number:02s} │ {model_type}")
+            print(f"      ├─ Edit ID: {edit_id}")
+            print(f"      ├─ Code: {code}")
+            print(f"      └─ Collection: {collection_name}")
+            print()
+    else:
+        print(f"\n🟢 GBDF MODELS (0 models)")
+        print("─" * 50)
+        print("   No GBDF models found")
+    
+    # Summary
+    print("=" * 80)
+    print("📋 SUMMARY")
+    print("=" * 80)
+    print(f"🔵 WGS_CSBD Models: {len(wgs_csbd_models)}")
+    print(f"🟢 GBDF Models: {len(gbdf_models)}")
+    print(f"📊 Total Models: {total_models}")
+    
+    if total_models > 0:
+        print(f"\n💡 USAGE EXAMPLES:")
+        print("─" * 30)
+        print("WGS_CSBD Models:")
+        print("  python main_processor.py --wgs_csbd --TS01")
+        print("  python main_processor.py --wgs_csbd --all")
+        print()
+        print("GBDF Models:")
+        print("  python main_processor.py --gbdf_mcr --TS47")
+        print("  python main_processor.py --gbdf_mcr --all")
+        print()
+        print("List all models:")
+        print("  python main_processor.py --list")
+    
+    print("=" * 80)
+
+
 if __name__ == "__main__":
     # Test the discovery system
     print("🧪 Testing Dynamic Model Discovery")
+    print("=" * 50)
+    
+    # Show nested display
+    print_nested_models_display()
+    
+    # Also show traditional display for comparison
+    print("\n" + "=" * 50)
+    print("📋 TRADITIONAL DISPLAY")
     print("=" * 50)
     
     models = discover_ts_folders()

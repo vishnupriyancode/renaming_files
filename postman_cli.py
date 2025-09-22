@@ -23,13 +23,13 @@ Examples:
     python postman_cli.py generate --collection-name "RevenueTestCollection"
     
     # Generate collection for specific directory
-    python postman_cli.py generate --directory "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
+    python postman_cli.py generate --directory "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
     
     # List available directories
     python postman_cli.py list-directories
     
     # Show statistics for a directory
-    python postman_cli.py stats --directory "TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
+    python postman_cli.py stats --directory "renaming_jsons/TS_01_REVENUE_WGS_CSBD_rvn001_00W5_payloads_dis"
     
     # Generate collections for all directories
     python postman_cli.py generate-all
