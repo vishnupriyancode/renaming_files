@@ -101,20 +101,14 @@ class PostmanCollectionGenerator:
                 },
                 {
                     "uid": str(uuid.uuid4()),
-                    "name": "X-Edit-ID",
-                    "value": parsed_info['edit_id'],
+                    "name": "meta-transid",
+                    "value": "20220117181853TMBL20359Cl893580999",
                     "enabled": True
                 },
                 {
                     "uid": str(uuid.uuid4()),
-                    "name": "X-EOB-Code",
-                    "value": parsed_info['eob_code'],
-                    "enabled": True
-                },
-                {
-                    "uid": str(uuid.uuid4()),
-                    "name": "X-Test-Type",
-                    "value": parsed_info['suffix'],
+                    "name": "meta-src-envrmt",
+                    "value": "IMSH",
                     "enabled": True
                 }
             ],
@@ -203,18 +197,13 @@ class PostmanCollectionGenerator:
                                 "type": "text"
                             },
                             {
-                                "key": "X-Edit-ID",
-                                "value": parsed_info['edit_id'],
+                                "key": "meta-transid",
+                                "value": "20220117181853TMBL20359Cl893580999",
                                 "type": "text"
                             },
                             {
-                                "key": "X-EOB-Code",
-                                "value": parsed_info['eob_code'],
-                                "type": "text"
-                            },
-                            {
-                                "key": "X-Test-Type",
-                                "value": parsed_info['suffix'],
+                                "key": "meta-src-envrmt",
+                                "value": "IMSH",
                                 "type": "text"
                             }
                         ],
@@ -253,7 +242,7 @@ class PostmanCollectionGenerator:
             with open(postman_file, 'w', encoding='utf-8') as f:
                 json.dump(postman_collection, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ Generated Postman collection: {postman_file}")
+            print(f"SUCCESS: Generated Postman collection: {postman_file}")
             print(f"   - Collection: {collection_name}")
             print(f"   - Requests: {len(postman_collection['item'])}")
             print(f"   - Files processed: {len(json_files)}")
@@ -261,7 +250,7 @@ class PostmanCollectionGenerator:
             return postman_file
             
         except Exception as e:
-            print(f"❌ Error saving Postman collection for {collection_name}: {e}")
+            print(f"ERROR: Error saving Postman collection for {collection_name}: {e}")
             return None
 
     def generate_collection_for_directory(self, dir_name: str) -> Optional[Path]:
@@ -326,7 +315,7 @@ class PostmanCollectionGenerator:
             with open(collection_file, 'w', encoding='utf-8') as f:
                 json.dump(collection, f, indent=2, ensure_ascii=False)
             
-            print(f"✅ Generated Postman collection: {collection_file}")
+            print(f"SUCCESS: Generated Postman collection: {collection_file}")
             print(f"   - Directory: {dir_name}")
             print(f"   - Requests: {len(requests)}")
             print(f"   - Files processed: {len(json_files)}")
@@ -335,7 +324,7 @@ class PostmanCollectionGenerator:
             return collection_file
             
         except Exception as e:
-            print(f"❌ Error saving collection for {dir_name}: {e}")
+            print(f"ERROR: Error saving collection for {dir_name}: {e}")
             return None
     
     def generate_all_collections(self) -> Dict[str, Path]:

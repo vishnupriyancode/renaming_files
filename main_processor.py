@@ -100,27 +100,18 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             
             try:
                 # Copy the file to destination with new name
-                # Handle Windows path issues with special characters by using subprocess
-                if os.name == 'nt':  # Windows
-                    # Use subprocess to handle special characters in filenames
-                    import subprocess
-                    # Use cp command (available in Git Bash) to handle special characters
-                    cmd = f'cp "{source_path}" "{dest_path}"'
-                    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-                    if result.returncode != 0:
-                        raise Exception(f"Copy failed: {result.stderr}")
-                else:
-                    shutil.copy2(source_path, dest_path)
-                print(f"✓ Successfully copied and renamed: {filename} → {new_filename}")
+                # Use shutil.copy2 for cross-platform compatibility
+                shutil.copy2(source_path, dest_path)
+                print(f"Successfully copied and renamed: {filename} -> {new_filename}")
                 
                 # Remove the original file
                 os.remove(source_path)
-                print(f"✓ Removed original file: {filename}")
+                print(f"Removed original file: {filename}")
                 
                 renamed_files.append(new_filename)
                 
             except Exception as e:
-                print(f"✗ Error processing {filename}: {e}")
+                print(f"Error processing {filename}: {e}")
                 
         elif len(parts) == 4:
             # Handle 4-part template: TC#XX_XXXXX#edit_id#suffix.json
@@ -152,16 +143,16 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             try:
                 # Copy the file to destination with new name
                 shutil.copy2(source_path, dest_path)
-                print(f"✓ Successfully copied and renamed: {filename} → {new_filename}")
+                print(f"Successfully copied and renamed: {filename} -> {new_filename}")
                 
                 # Remove the original file
                 os.remove(source_path)
-                print(f"✓ Removed original file: {filename}")
+                print(f"Removed original file: {filename}")
                 
                 renamed_files.append(new_filename)
                 
             except Exception as e:
-                print(f"✗ Error processing {filename}: {e}")
+                print(f"Error processing {filename}: {e}")
                 
         elif len(parts) == 5:
             # Handle 5-part template: TC#XX_XXXXX#edit_id#code#suffix.json (already converted)
@@ -188,16 +179,16 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 try:
                     # Copy the file to destination
                     shutil.copy2(source_path, dest_path)
-                    print(f"✓ Successfully moved: {filename}")
+                    print(f"Successfully moved: {filename}")
                     
                     # Remove the original file
                     os.remove(source_path)
-                    print(f"✓ Removed original file: {filename}")
+                    print(f"Removed original file: {filename}")
                     
                     renamed_files.append(new_filename)
                     
                 except Exception as e:
-                    print(f"✗ Error processing {filename}: {e}")
+                    print(f"Error processing {filename}: {e}")
             else:
                 print(f"Warning: {filename} has different model parameters ({file_edit_id}_{file_code}) than target ({edit_id}_{code})")
                 continue
@@ -253,9 +244,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             collection_path = generator.generate_postman_collection(postman_collection_name, custom_filename)
             
             if collection_path:
-                print(f"✅ Postman collection generated: {collection_path}")
-                print(f"📦 Collection name: {postman_collection_name}")
-                print("\n🎯 Ready for API testing!")
+                print(f"Postman collection generated: {collection_path}")
+                print(f"Collection name: {postman_collection_name}")
+                print("\nReady for API testing!")
                 print("=" * 60)
                 print("To use this collection:")
                 print("1. Open Postman")
@@ -263,10 +254,10 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 print(f"3. Select the file: {collection_path}")
                 print("4. Start testing your APIs!")
             else:
-                print("❌ Failed to generate Postman collection")
+                print("Failed to generate Postman collection")
                 
         except Exception as e:
-            print(f"❌ Error generating Postman collection: {e}")
+            print(f"Error generating Postman collection: {e}")
     
     return renamed_files
 
@@ -298,7 +289,7 @@ def process_multiple_models(models_config, generate_postman=True):
     ]
     """
     
-    print("🚀 Starting Multi-Model Processing")
+    print("Starting Multi-Model Processing")
     print("=" * 80)
     
     total_processed = 0
@@ -312,7 +303,7 @@ def process_multiple_models(models_config, generate_postman=True):
         dest_dir = model_config.get("dest_dir")
         postman_collection_name = model_config.get("postman_collection_name")
         
-        print(f"\n📋 Processing Model {i}/{len(models_config)}")
+        print(f"\nProcessing Model {i}/{len(models_config)}")
         print(f"   Edit ID: {edit_id}")
         print(f"   Code: {code}")
         print(f"   Source: {source_dir}")
@@ -331,7 +322,7 @@ def process_multiple_models(models_config, generate_postman=True):
             )
             
             if renamed_files:
-                print(f"✅ Model {edit_id}_{code}: Successfully processed {len(renamed_files)} files")
+                print(f"SUCCESS Model {edit_id}_{code}: Successfully processed {len(renamed_files)} files")
                 successful_models.append({
                     "edit_id": edit_id,
                     "code": code,
@@ -340,7 +331,7 @@ def process_multiple_models(models_config, generate_postman=True):
                 })
                 total_processed += len(renamed_files)
             else:
-                print(f"⚠️  Model {edit_id}_{code}: No files were processed")
+                print(f"WARNING  Model {edit_id}_{code}: No files were processed")
                 failed_models.append({
                     "edit_id": edit_id,
                     "code": code,
@@ -348,7 +339,7 @@ def process_multiple_models(models_config, generate_postman=True):
                 })
                 
         except Exception as e:
-            print(f"❌ Model {edit_id}_{code}: Failed with error - {e}")
+            print(f"ERROR Model {edit_id}_{code}: Failed with error - {e}")
             failed_models.append({
                 "edit_id": edit_id,
                 "code": code,
@@ -357,7 +348,7 @@ def process_multiple_models(models_config, generate_postman=True):
     
     # Summary
     print("\n" + "=" * 80)
-    print("📊 PROCESSING SUMMARY")
+    print("SUMMARY PROCESSING SUMMARY")
     print("=" * 80)
     print(f"Total models processed: {len(models_config)}")
     print(f"Successful models: {len(successful_models)}")
@@ -365,16 +356,16 @@ def process_multiple_models(models_config, generate_postman=True):
     print(f"Total files processed: {total_processed}")
     
     if successful_models:
-        print(f"\n✅ SUCCESSFUL MODELS:")
+        print(f"\nSUCCESS SUCCESSFUL MODELS:")
         for model in successful_models:
-            print(f"   • {model['edit_id']}_{model['code']}: {model['files_count']} files")
+            print(f"   - {model['edit_id']}_{model['code']}: {model['files_count']} files")
     
     if failed_models:
-        print(f"\n❌ FAILED MODELS:")
+        print(f"\nERROR FAILED MODELS:")
         for model in failed_models:
-            print(f"   • {model['edit_id']}_{model['code']}: {model['reason']}")
+            print(f"   - {model['edit_id']}_{model['code']}: {model['reason']}")
     
-    print("\n🎯 All models processed!")
+    print("\nTARGET All models processed!")
     return successful_models, failed_models
 
 
@@ -451,6 +442,8 @@ Examples:
                        help="Process TS14 model (HCPCS to Revenue Code Xwalk)")
     parser.add_argument("--TS15", action="store_true", 
                        help="Process TS15 model (revenue model)")
+    parser.add_argument("--TS46", action="store_true", 
+                       help="Process TS46 model (Multiple E&M Same day)")
     parser.add_argument("--TS47", action="store_true", 
                        help="Process TS47 model (Covid GBDF MCR)")
     parser.add_argument("--all", action="store_true", 
@@ -473,9 +466,9 @@ Examples:
     try:
         from models_config import get_models_config, get_model_by_ts
         models_config = get_models_config(use_dynamic=True, use_wgs_csbd_destination=args.wgs_csbd, use_gbdf_mcr=args.gbdf_mcr)
-        print("✅ Configuration loaded with dynamic discovery")
+        print("Configuration loaded with dynamic discovery")
     except ImportError as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
         print("Please ensure models_config.py and dynamic_models.py exist.")
         sys.exit(1)
     
@@ -485,21 +478,21 @@ Examples:
             from dynamic_models import print_nested_models_display
             print_nested_models_display()
         except ImportError:
-            print("\n📋 AVAILABLE TS MODELS")
+            print("\nINFO AVAILABLE TS MODELS")
             print("=" * 50)
             if models_config:
                 for model in models_config:
                     print(f"TS_{model['ts_number']}: {model['edit_id']}_{model['code']}")
-                    print(f"  📁 Source: {model['source_dir']}")
-                    print(f"  📁 Dest:   {model['dest_dir']}")
+                    print(f"  FOLDER Source: {model['source_dir']}")
+                    print(f"  FOLDER Dest:   {model['dest_dir']}")
                     print()
             else:
-                print("❌ No TS models found")
+                print("No TS models found")
         sys.exit(0)
     
     # Handle custom parameters
     if args.edit_id and args.code:
-        print(f"\n🔧 Processing custom model: {args.edit_id}_{args.code}")
+        print(f"\nTOOL Processing custom model: {args.edit_id}_{args.code}")
         print("=" * 60)
         
         try:
@@ -513,12 +506,12 @@ Examples:
             )
             
             if renamed_files:
-                print(f"✅ Custom model {args.edit_id}_{args.code}: Successfully processed {len(renamed_files)} files")
+                print(f"SUCCESS Custom model {args.edit_id}_{args.code}: Successfully processed {len(renamed_files)} files")
             else:
-                print(f"⚠️  Custom model {args.edit_id}_{args.code}: No files were processed")
+                print(f"WARNING  Custom model {args.edit_id}_{args.code}: No files were processed")
                 
         except Exception as e:
-            print(f"❌ Custom model {args.edit_id}_{args.code}: Failed with error - {e}")
+            print(f"ERROR Custom model {args.edit_id}_{args.code}: Failed with error - {e}")
             sys.exit(1)
         
         sys.exit(0)
@@ -533,7 +526,7 @@ Examples:
         if ts01_model:
             models_to_process.append(ts01_model)
         else:
-            print("❌ Error: TS01 model not found!")
+            print("ERROR Error: TS01 model not found!")
             sys.exit(1)
     
     if args.TS02:
@@ -541,7 +534,7 @@ Examples:
         if ts02_model:
             models_to_process.append(ts02_model)
         else:
-            print("❌ Error: TS02 model not found!")
+            print("ERROR Error: TS02 model not found!")
             sys.exit(1)
     
     if args.TS10:
@@ -549,7 +542,7 @@ Examples:
         if ts10_model:
             models_to_process.append(ts10_model)
         else:
-            print("❌ Error: TS10 model not found!")
+            print("ERROR Error: TS10 model not found!")
             sys.exit(1)
     
 
@@ -558,7 +551,7 @@ Examples:
         if ts04_model:
             models_to_process.append(ts04_model)
         else:
-            print("❌ Error: TS04 model not found!")
+            print("ERROR Error: TS04 model not found!")
             sys.exit(1)
     
     if args.TS03:
@@ -566,7 +559,7 @@ Examples:
         if ts03_model:
             models_to_process.append(ts03_model)
         else:
-            print("❌ Error: TS03 model not found!")
+            print("ERROR Error: TS03 model not found!")
             sys.exit(1)
     
     if args.TS05:
@@ -574,7 +567,7 @@ Examples:
         if ts05_model:
             models_to_process.append(ts05_model)
         else:
-            print("❌ Error: TS05 model not found!")
+            print("ERROR Error: TS05 model not found!")
             sys.exit(1)
     
     if args.TS06:
@@ -582,7 +575,7 @@ Examples:
         if ts06_model:
             models_to_process.append(ts06_model)
         else:
-            print("❌ Error: TS06 model not found!")
+            print("ERROR Error: TS06 model not found!")
             sys.exit(1)
     
     if args.TS07:
@@ -590,7 +583,7 @@ Examples:
         if ts07_model:
             models_to_process.append(ts07_model)
         else:
-            print("❌ Error: TS07 model not found!")
+            print("ERROR Error: TS07 model not found!")
             sys.exit(1)
     
     if args.TS08:
@@ -598,7 +591,7 @@ Examples:
         if ts08_model:
             models_to_process.append(ts08_model)
         else:
-            print("❌ Error: TS08 model not found!")
+            print("ERROR Error: TS08 model not found!")
             sys.exit(1)
     
     if args.TS09:
@@ -606,7 +599,7 @@ Examples:
         if ts09_model:
             models_to_process.append(ts09_model)
         else:
-            print("❌ Error: TS09 model not found!")
+            print("ERROR Error: TS09 model not found!")
             sys.exit(1)
     
     if args.TS11:
@@ -614,7 +607,7 @@ Examples:
         if ts11_model:
             models_to_process.append(ts11_model)
         else:
-            print("❌ Error: TS11 model not found!")
+            print("ERROR Error: TS11 model not found!")
             sys.exit(1)
     
     if args.TS12:
@@ -622,7 +615,7 @@ Examples:
         if ts12_model:
             models_to_process.append(ts12_model)
         else:
-            print("❌ Error: TS12 model not found!")
+            print("ERROR Error: TS12 model not found!")
             sys.exit(1)
     
     if args.TS13:
@@ -630,7 +623,7 @@ Examples:
         if ts13_model:
             models_to_process.append(ts13_model)
         else:
-            print("❌ Error: TS13 model not found!")
+            print("ERROR Error: TS13 model not found!")
             sys.exit(1)
     
     if args.TS14:
@@ -638,7 +631,7 @@ Examples:
         if ts14_model:
             models_to_process.append(ts14_model)
         else:
-            print("❌ Error: TS14 model not found!")
+            print("ERROR Error: TS14 model not found!")
             sys.exit(1)
     
     if args.TS15:
@@ -646,7 +639,15 @@ Examples:
         if ts15_model:
             models_to_process.append(ts15_model)
         else:
-            print("❌ Error: TS15 model not found!")
+            print("ERROR Error: TS15 model not found!")
+            sys.exit(1)
+    
+    if args.TS46:
+        ts46_model = next((model for model in models_config if model.get("ts_number") == "46"), None)
+        if ts46_model:
+            models_to_process.append(ts46_model)
+        else:
+            print("ERROR Error: TS46 model not found!")
             sys.exit(1)
     
     if args.TS47:
@@ -654,22 +655,22 @@ Examples:
         if ts47_model:
             models_to_process.append(ts47_model)
         else:
-            print("❌ Error: TS47 model not found!")
+            print("ERROR Error: TS47 model not found!")
             sys.exit(1)
     
     if args.all:
         models_to_process = models_config
-        print(f"✅ Processing all {len(models_config)} discovered models")
+        print(f"SUCCESS Processing all {len(models_config)} discovered models")
     
     # Check if appropriate flag is required for TS model processing
     wgs_csbd_models = any([args.TS01, args.TS02, args.TS03, args.TS04, args.TS05, 
                           args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
-                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15])
+                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46])
     gbdf_mcr_models = args.TS47
     all_models = args.all
     
     if wgs_csbd_models and not args.wgs_csbd:
-        print("❌ Error: --wgs_csbd flag is required for WGS_CSBD TS model processing!")
+        print("ERROR Error: --wgs_csbd flag is required for WGS_CSBD TS model processing!")
         print("\nPlease use the --wgs_csbd flag with WGS_CSBD TS model commands:")
         print("  python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)")
         print("  python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)")
@@ -686,19 +687,20 @@ Examples:
         print("  python main_processor.py --wgs_csbd --TS13    # Process TS13 model")
         print("  python main_processor.py --wgs_csbd --TS14    # Process TS14 model")
         print("  python main_processor.py --wgs_csbd --TS15    # Process TS15 model")
+        print("  python main_processor.py --wgs_csbd --TS46    # Process TS46 model")
         print("  python main_processor.py --wgs_csbd --all     # Process all discovered models")
         print("\nUse --help for more information.")
         sys.exit(1)
     
     if gbdf_mcr_models and not args.gbdf_mcr:
-        print("❌ Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!")
+        print("ERROR Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!")
         print("\nPlease use the --gbdf_mcr flag with GBDF MCR TS model commands:")
         print("  python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)")
         print("\nUse --help for more information.")
         sys.exit(1)
     
     if all_models and not args.wgs_csbd and not args.gbdf_mcr:
-        print("❌ Error: Either --wgs_csbd or --gbdf_mcr flag is required for --all processing!")
+        print("ERROR Error: Either --wgs_csbd or --gbdf_mcr flag is required for --all processing!")
         print("\nPlease specify which type of models to process:")
         print("  python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models")
         print("  python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models")
@@ -707,7 +709,7 @@ Examples:
     
     # If no specific model is selected, show help
     if not models_to_process:
-        print("❌ Error: No model specified!")
+        print("ERROR Error: No model specified!")
         print("\nPlease specify which model to process:")
         print("  --wgs_csbd --TS01    Process TS01 model (Covid)")
         print("  --wgs_csbd --TS02    Process TS02 model (Laterality Policy)")
@@ -724,6 +726,7 @@ Examples:
         print("  --wgs_csbd --TS13    Process TS13 model (Revenue model CR v3)")
         print("  --wgs_csbd --TS14    Process TS14 model (HCPCS to Revenue Code Xwalk)")
         print("  --wgs_csbd --TS15    Process TS15 model (revenue model)")
+        print("  --wgs_csbd --TS46    Process TS46 model (Multiple E&M Same day)")
         print("  --gbdf_mcr --TS47    Process TS47 model (Covid GBDF MCR)")
         print("  --wgs_csbd --all     Process all discovered WGS_CSBD models")
         print("  --gbdf_mcr --all     Process all discovered GBDF MCR models")
@@ -734,7 +737,7 @@ Examples:
     # Process selected models
     generate_postman = not args.no_postman
     
-    print(f"\n🚀 Processing {len(models_to_process)} model(s)...")
+    print(f"\nSTARTING Processing {len(models_to_process)} model(s)...")
     print("=" * 60)
     
     total_processed = 0
@@ -748,7 +751,7 @@ Examples:
         postman_collection_name = model_config["postman_collection_name"]
         ts_number = model_config.get("ts_number", "??")
         
-        print(f"\n📋 Processing Model {i}/{len(models_to_process)}: TS_{ts_number} ({edit_id}_{code})")
+        print(f"\nINFO Processing Model {i}/{len(models_to_process)}: TS_{ts_number} ({edit_id}_{code})")
         print("-" * 40)
         
         try:
@@ -763,7 +766,7 @@ Examples:
             )
             
             if renamed_files:
-                print(f"✅ Model TS_{ts_number} ({edit_id}_{code}): Successfully processed {len(renamed_files)} files")
+                print(f"SUCCESS Model TS_{ts_number} ({edit_id}_{code}): Successfully processed {len(renamed_files)} files")
                 successful_models.append({
                     "ts_number": ts_number,
                     "edit_id": edit_id,
@@ -772,26 +775,26 @@ Examples:
                 })
                 total_processed += len(renamed_files)
             else:
-                print(f"⚠️  Model TS_{ts_number} ({edit_id}_{code}): No files were processed")
+                print(f"WARNING  Model TS_{ts_number} ({edit_id}_{code}): No files were processed")
                 
         except Exception as e:
-            print(f"❌ Model TS_{ts_number} ({edit_id}_{code}): Failed with error - {e}")
+            print(f"ERROR Model TS_{ts_number} ({edit_id}_{code}): Failed with error - {e}")
     
     # Summary
     print("\n" + "=" * 60)
-    print("📊 PROCESSING SUMMARY")
+    print("SUMMARY PROCESSING SUMMARY")
     print("=" * 60)
     print(f"Models processed: {len(models_to_process)}")
     print(f"Successful models: {len(successful_models)}")
     print(f"Total files processed: {total_processed}")
     
     if successful_models:
-        print(f"\n✅ SUCCESSFUL MODELS:")
+        print(f"\nSUCCESS SUCCESSFUL MODELS:")
         for model in successful_models:
-            print(f"   • TS_{model['ts_number']} ({model['edit_id']}_{model['code']}): {model['files_count']} files")
+            print(f"   - TS_{model['ts_number']} ({model['edit_id']}_{model['code']}): {model['files_count']} files")
         
         if generate_postman:
-            print(f"\n📦 POSTMAN COLLECTIONS GENERATED:")
+            print(f"\nCOLLECTION POSTMAN COLLECTIONS GENERATED:")
             print("To use these collections:")
             print("1. Open Postman")
             print("2. Click 'Import'")
@@ -799,10 +802,10 @@ Examples:
             print("4. Start testing your APIs!")
     
     if total_processed > 0:
-        print(f"\n🎉 Successfully processed {total_processed} files!")
+        print(f"\nCELEBRATION Successfully processed {total_processed} files!")
         print("Files are now ready for API testing with Postman.")
     else:
-        print("\n❌ No files were processed.")
+        print("\nERROR No files were processed.")
 
 
 if __name__ == "__main__":

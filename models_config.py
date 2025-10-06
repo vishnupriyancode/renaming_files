@@ -141,6 +141,15 @@ STATIC_MODELS_CONFIG = {
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/regression",
         "postman_collection_name": "TS_15_revenue model_Collection",
         "postman_file_name": "revenue_wgs_csbd_RULERCE000005_00w06.json"
+    },
+    {
+        "ts_number": "46",
+        "edit_id": "RULEEM000046",
+        "code": "00W46",
+        "source_dir": "source_folder/WGS_CSBD/TS_46_Multiple E&M Same day_WGS_CSBD_RULEEM000046_00W46_sur/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/TS_46_Multiple E&M Same day_WGS_CSBD_RULEEM000046_00W46_dis/regression",
+        "postman_collection_name": "TS_46_Multiple E&M Same day_Collection",
+        "postman_file_name": "multiple_em_wgs_csbd_RULEEM000046_00w46.json"
     }
     ],
     "gbdf": [
@@ -175,22 +184,22 @@ def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf
                 # Use dynamic discovery for GBDF MCR
                 discovered_models = discover_ts_folders("source_folder/GBDF", False)
                 if discovered_models:
-                    print(f"✅ Dynamic discovery found {len(discovered_models)} GBDF MCR models")
+                    print(f"Dynamic discovery found {len(discovered_models)} GBDF MCR models")
                     return discovered_models
                 else:
-                    print("⚠️  No GBDF MCR models found via dynamic discovery, falling back to static config")
+                    print("No GBDF MCR models found via dynamic discovery, falling back to static config")
                     return STATIC_MODELS_CONFIG.get("gbdf", [])
             else:
                 # Use dynamic discovery for WGS_CSBD
                 discovered_models = discover_ts_folders("source_folder/WGS_CSBD", use_wgs_csbd_destination)
                 if discovered_models:
-                    print(f"✅ Dynamic discovery found {len(discovered_models)} WGS_CSBD models")
+                    print(f"Dynamic discovery found {len(discovered_models)} WGS_CSBD models")
                     return discovered_models
                 else:
-                    print("⚠️  No WGS_CSBD models found via dynamic discovery, falling back to static config")
+                    print("No WGS_CSBD models found via dynamic discovery, falling back to static config")
                     return STATIC_MODELS_CONFIG.get("wgs_csbd", [])
         except Exception as e:
-            print(f"⚠️  Dynamic discovery failed: {e}, falling back to static config")
+            print(f"Dynamic discovery failed: {e}, falling back to static config")
             if use_gbdf_mcr:
                 return STATIC_MODELS_CONFIG.get("gbdf", [])
             else:
@@ -214,7 +223,7 @@ def get_model_by_ts(ts_number):
     try:
         return get_model_by_ts_number(ts_number, "source_folder/WGS_CSBD")
     except Exception as e:
-        print(f"❌ Error getting model for TS_{ts_number}: {e}")
+        print(f"Error getting model for TS_{ts_number}: {e}")
         return None
 
 # For backward compatibility, keep MODELS_CONFIG as a property

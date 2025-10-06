@@ -11,23 +11,13 @@
         "method": "POST",
         "header": [
           {
-            "key": "Content-Type",
-            "value": "application/json",
+            "key": "meta-transid",
+            "value": "20220117181853TMBL20359Cl893580999",
             "type": "text"
           },
           {
-            "key": "X-Edit-ID",
-            "value": "RULEEM000001",
-            "type": "text"
-          },
-          {
-            "key": "X-EOB-Code",
-            "value": "v04",
-            "type": "text"
-          },
-          {
-            "key": "X-Test-Type",
-            "value": "LR",
+            "key": "meta-src-envrmt",
+            "value": "IMSH",
             "type": "text"
           }
         ],

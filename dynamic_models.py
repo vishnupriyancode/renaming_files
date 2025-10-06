@@ -129,14 +129,15 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         pattern12 = os.path.join(base_dir, "TS_*_Incidentcal Services Facility_WGS_CSBD_*_sur")
         pattern13 = os.path.join(base_dir, "TS_*_Revenue model CR v3_WGS_CSBD_*_sur")
         pattern14 = os.path.join(base_dir, "TS_*_HCPCS to Revenue Code Xwalk_WGS_CSBD_*_sur")
+        pattern15 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_WGS_CSBD_*_sur")
         ts_folders = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + 
                      glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + 
                      glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9) + 
                      glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) + 
-                     glob.glob(pattern13) + glob.glob(pattern14))
+                     glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15))
     
-    print(f"🔍 Scanning for TS folders in: {base_dir}")
-    print(f"📁 Found {len(ts_folders)} TS folders")
+    print(f"Scanning for TS folders in: {base_dir}")
+    print(f"Found {len(ts_folders)} TS folders")
     
     for folder_path in ts_folders:
         folder_name = os.path.basename(folder_path)
@@ -196,6 +197,10 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         if not match:
             match = re.match(r'TS_(\d{1,3})_HCPCS to Revenue Code Xwalk_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
+        # If no match, try Multiple E&M Same day pattern
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Multiple E&M Same day_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
         # If no match and this is GBDF, try GBDF MCR pattern
         if not match and is_gbdf:
             match = re.match(r'TS_(\d{1,3})_Covid_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
@@ -211,7 +216,7 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
             # Check if regression subfolder exists
             regression_path = os.path.join(folder_path, "regression")
             if not os.path.exists(regression_path):
-                print(f"⚠️  Warning: Regression folder not found in {folder_name}")
+                print(f"Warning: Regression folder not found in {folder_name}")
                 continue
             
             # Generate destination directory name
@@ -286,8 +291,11 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
             elif "HCPCS to Revenue Code Xwalk" in folder_name:
                 # For HCPCS to Revenue Code Xwalk, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_HCPCS to Revenue Code Xwalk_Collection"
-                postman_file_name = f"hcpcs_wgs_csbd_{edit_id}_{code.lower()}.json",
-    
+                postman_file_name = f"hcpcs_wgs_csbd_{edit_id}_{code.lower()}.json"
+            elif "Multiple E&M Same day" in folder_name:
+                # For Multiple E&M Same day, use the full descriptive name
+                postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_Collection"
+                postman_file_name = f"multiple_em_wgs_csbd_{edit_id}_{code.lower()}.json"
             elif "Covid_gbdf_mcr" in folder_name:
                 # For GBDF MCR Covid, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Covid_gbdf_mcr_Collection"
@@ -309,9 +317,9 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
             }
             
             models.append(model_config)
-            print(f"✅ Discovered: TS_{ts_number} ({edit_id}_{code}) [Raw: {ts_number_raw}]")
+            print(f"Discovered: TS_{ts_number} ({edit_id}_{code}) [Raw: {ts_number_raw}]")
         else:
-            print(f"⚠️  Warning: Could not parse folder name: {folder_name}")
+            print(f"Warning: Could not parse folder name: {folder_name}")
     
     return models
 
@@ -368,12 +376,12 @@ def validate_model_config(model: Dict) -> bool:
     # Check required fields
     for field in required_fields:
         if field not in model:
-            print(f"❌ Missing required field: {field}")
+            print(f"Missing required field: {field}")
             return False
     
     # Check if source directory exists
     if not os.path.exists(model["source_dir"]):
-        print(f"❌ Source directory does not exist: {model['source_dir']}")
+        print(f"Source directory does not exist: {model['source_dir']}")
         return False
     
     return True
@@ -387,17 +395,17 @@ def print_discovered_models(models: List[Dict]):
         models: List of model configurations
     """
     if not models:
-        print("❌ No TS models discovered")
+        print("No TS models discovered")
         return
     
-    print(f"\n📋 DISCOVERED TS MODELS ({len(models)} found)")
+    print(f"\nDISCOVERED TS MODELS ({len(models)} found)")
     print("=" * 60)
     
     for i, model in enumerate(models, 1):
         print(f"{i}. TS_{model['ts_number']}: {model['edit_id']}_{model['code']}")
-        print(f"   📁 Source: {model['source_dir']}")
-        print(f"   📁 Dest:   {model['dest_dir']}")
-        print(f"   📦 Collection: {model['postman_collection_name']}")
+        print(f"   Source: {model['source_dir']}")
+        print(f"   Dest:   {model['dest_dir']}")
+        print(f"   Collection: {model['postman_collection_name']}")
         print()
 
 
@@ -454,6 +462,8 @@ def print_nested_models_display():
                 model_type = "Revenue Model CR v3"
             elif "HCPCS to Revenue Code" in collection_name:
                 model_type = "HCPCS-Revenue Crosswalk"
+            elif "Multiple E&M Same day" in collection_name:
+                model_type = "Multiple E&M Same day"
             elif "revenue model" in collection_name:
                 model_type = "Revenue Model"
             

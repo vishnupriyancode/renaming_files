@@ -1,0 +1,56 @@
+{
+  "version": "1",
+  "name": "GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis API Collection",
+  "type": "collection",
+  "items": [
+    {
+      "uid": "85f78aec-02b8-4b9e-871e-d85a1bf92026",
+      "name": "TC#01_sample#RULEEM000001#v04#LR",
+      "type": "http",
+      "method": "POST",
+      "url": "{{baseUrl}}/api/validate/{{tc_id}}",
+      "headers": [
+        {
+          "uid": "4de4d192-39fa-4787-8a56-91b463b9f804",
+          "name": "Content-Type",
+          "value": "application/json",
+          "enabled": true
+        },
+        {
+          "uid": "62fde79b-9bd8-496d-9488-00a524475064",
+          "name": "X-Edit-ID",
+          "value": "RULEEM000001",
+          "enabled": true
+        },
+        {
+          "uid": "cce4c23a-b2b7-43e3-b5fe-f2a87fba2c13",
+          "name": "X-EOB-Code",
+          "value": "v04",
+          "enabled": true
+        },
+        {
+          "uid": "8723641e-77d5-4b85-b740-5f51d7be6b76",
+          "name": "X-Test-Type",
+          "value": "LR",
+          "enabled": true
+        },
+        {
+          "uid": "927114c7-77b4-4362-997e-babf4e49aeda",
+          "name": "meta-transid",
+          "value": "20220117181853TMBL20359Cl893580999",
+          "enabled": true
+        },
+        {
+          "uid": "ebf17441-0ae1-4ba1-a8fb-36fdef9f6d46",
+          "name": "meta-src-envrmt",
+          "value": "IMSH",
+          "enabled": true
+        }
+      ],
+      "body": {
+        "mode": "raw",
+        "raw": "{\n  \"testCaseId\": \"TC#01_sample#deny\",\n  \"testSuite\": \"TS_01_Covid_gbdf_mcr_RULEEM000001_v04_sur\",\n  \"ruleId\": \"RULEEM000001\",\n  \"testType\": \"regression\",\n  \"expectedResult\": \"deny\",\n  \"testData\": {\n    \"claim\": {\n      \"claimId\": \"CLM2024001\",\n      \"patientId\": \"PAT001\",\n      \"providerId\": \"PROV001\",\n      \"serviceDate\": \"2024-01-15\",\n      \"diagnosisCodes\": [\n        {\n          \"code\": \"U07.1\",\n          \"description\": \"COVID-19, virus identified\",\n          \"primary\": true\n        }\n      ],\n      \"procedureCodes\": [\n        {\n          \"code\": \"99213\",\n          \"description\": \"Office visit, established patient\",\n          \"modifier\": null\n        }\n      ],\n      \"totalAmount\": 150.0,\n      \"facilityType\": \"outpatient\"\n    },\n    \"ruleConfiguration\": {\n      \"ruleName\": \"COVID Emergency Rule\",\n      \"effectiveDate\": \"2020-03-01\",\n      \"expirationDate\": \"2024-12-31\",\n      \"denyConditions\": [\n        \"COVID diagnosis without proper documentation\",\n        \"Non-emergency COVID testing\"\n      ]\n    }\n  },\n  \"expectedOutcome\": {\n    \"action\": \"deny\",\n    \"reasonCode\": \"COVID_EMERGENCY_RULE_VIOLATION\",\n    \"message\": \"Claim denied due to COVID emergency rule violation\"\n  }\n}"
+      }
+    }
+  ]
+}
