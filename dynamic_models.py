@@ -4,11 +4,19 @@ Dynamic model discovery system for TS folders.
 Automatically detects TS_XX_REVENUE_WGS_CSBD_* folders and extracts model parameters.
 """
 
+# STAGE 1: Import required libraries
+# - os: For file system operations (checking paths, joining paths)
+# - re: For regular expressions (pattern matching in folder names)
+# - glob: For finding files/folders using wildcard patterns
+# - typing: For type hints to make code more readable and maintainable
 import os
 import re
 import glob
 from typing import List, Dict, Optional
 
+
+# STAGE 2: TS Number Normalization Functions
+# These functions ensure consistent formatting of TS numbers across the system
 
 def normalize_ts_number(ts_number_raw: str) -> str:
     """
@@ -89,6 +97,9 @@ def format_ts_argument(ts_number: str) -> str:
         return ts_number
 
 
+# STAGE 3: Main Folder Discovery Function
+# This is the core function that scans directories and finds TS folders
+
 def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = False) -> List[Dict]:
     """
     Discover all TS_XX_REVENUE_WGS_CSBD_* folders and extract model parameters.
@@ -106,12 +117,13 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
     # Check if this is a GBDF directory
     is_gbdf = "GBDF" in base_dir
     
+    # STAGE 3.1: Define search patterns based on directory type
     if is_gbdf:
-        # GBDF MCR patterns
+        # GBDF MCR patterns - simpler pattern for GBDF directories
         pattern1 = os.path.join(base_dir, "TS_*_Covid_gbdf_mcr_*_sur")
         ts_folders = glob.glob(pattern1)
     else:
-        # WGS_CSBD patterns
+        # WGS_CSBD patterns - multiple patterns to catch different folder naming conventions
         # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
         # Handle both "payloads_sur" and "_sur" patterns
         # Also handle new Revenue code pattern and Lab panel Model pattern
@@ -138,12 +150,15 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                      glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15) + 
                      glob.glob(pattern16))
     
+    # STAGE 3.2: Display scanning progress
     print(f"Scanning for TS folders in: {base_dir}")
     print(f"Found {len(ts_folders)} TS folders")
     
+    # STAGE 4: Process each found folder and extract parameters
     for folder_path in ts_folders:
         folder_name = os.path.basename(folder_path)
         
+        # STAGE 4.1: Pattern matching - try different regex patterns to extract folder information
         # Extract parameters using flexible regex pattern
         # Pattern 1: TS_XX_REVENUE_WGS_CSBD_EDIT_ID_EOB_CODE_sur (original pattern)
         # Pattern 2: TS_XX_Revenue code Services not payable on Facility claim Sub Edit X_WGS_CSBD_RULEREVE00000X_00W28_sur (new pattern)
@@ -155,6 +170,7 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         # Try original pattern first
         match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
+        # STAGE 4.2: Try multiple regex patterns until one matches
         # If no match, try new Revenue code pattern
         if not match:
             match = re.match(r'TS_(\d{1,3})_Revenue code Services not payable on Facility claim Sub Edit \d+_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
@@ -211,21 +227,24 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         if not match and is_gbdf:
             match = re.match(r'TS_(\d{1,3})_Covid_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
+        # STAGE 5: Process successfully matched folders
         if match:
-            ts_number_raw = match.group(1)
-            edit_id = match.group(2)
-            code = match.group(3)
+            # Extract the three main components from the folder name
+            ts_number_raw = match.group(1)  # TS number (e.g., "1", "01", "47")
+            edit_id = match.group(2)        # Edit ID (e.g., "RULEEM000001")
+            code = match.group(3)           # Code (e.g., "v04", "00W28")
             
             # Normalize TS number to handle different digit patterns
             ts_number = normalize_ts_number(ts_number_raw)
             
+            # STAGE 5.1: Validate folder structure
             # Check if regression subfolder exists
             regression_path = os.path.join(folder_path, "regression")
             if not os.path.exists(regression_path):
                 print(f"Warning: Regression folder not found in {folder_name}")
                 continue
             
-            # Generate destination directory name
+            # STAGE 5.2: Generate destination directory names
             # Handle "payloads_sur", "ayloads_sur" (typo), and "_sur" patterns
             if "_payloads_sur" in folder_name:
                 dest_folder_name = folder_name.replace("_payloads_sur", "_payloads_dis")
@@ -247,6 +266,7 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 # Default to renaming_jsons root
                 dest_dir = os.path.join("renaming_jsons", dest_folder_name, "regression")
             
+            # STAGE 5.3: Generate Postman collection and file names based on model type
             # Generate Postman collection name with flexible formatting
             # For Revenue code Services models, use the full descriptive name
             if "Revenue code Services not payable on Facility claim" in folder_name:
@@ -314,6 +334,7 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 postman_collection_name = generate_postman_collection_name(ts_number)
                 postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
             
+            # STAGE 5.4: Create model configuration dictionary
             model_config = {
                 "ts_number": ts_number,
                 "ts_number_raw": ts_number_raw,  # Keep original for reference
@@ -326,13 +347,19 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 "folder_name": folder_name
             }
             
+            # Add the model to our list and display success message
             models.append(model_config)
             print(f"Discovered: TS_{ts_number} ({edit_id}_{code}) [Raw: {ts_number_raw}]")
         else:
+            # STAGE 5.5: Handle unmatched folders
             print(f"Warning: Could not parse folder name: {folder_name}")
     
+    # STAGE 6: Return all discovered models
     return models
 
+
+# STAGE 7: Utility Functions
+# These functions provide convenient ways to access and validate model data
 
 def get_model_by_ts_number(ts_number: str, base_dir: str = ".") -> Optional[Dict]:
     """
@@ -397,6 +424,9 @@ def validate_model_config(model: Dict) -> bool:
     return True
 
 
+# STAGE 8: Display and Output Functions
+# These functions format and display the discovered models in various ways
+
 def print_discovered_models(models: List[Dict]):
     """
     Print a formatted list of discovered models.
@@ -428,6 +458,7 @@ def print_nested_models_display():
     print("NESTED MODEL STRUCTURE")
     print("=" * 80)
     
+    # STAGE 8.1: Discover models from both WGS_CSBD and GBDF directories
     # Get WGS_CSBD models
     wgs_csbd_models = discover_ts_folders("source_folder/WGS_CSBD", use_wgs_csbd_destination=True)
     
@@ -439,7 +470,7 @@ def print_nested_models_display():
     print(f"Total Models Found: {total_models}")
     print("=" * 80)
     
-    # Display WGS_CSBD models
+    # STAGE 8.2: Display WGS_CSBD models with categorized formatting
     if wgs_csbd_models:
         print(f"\nWGS_CSBD MODELS ({len(wgs_csbd_models)} models)")
         print("-" * 50)
@@ -487,7 +518,7 @@ def print_nested_models_display():
         print("-" * 50)
         print("   No WGS_CSBD models found")
     
-    # Display GBDF models
+    # STAGE 8.3: Display GBDF models with categorized formatting
     if gbdf_models:
         print(f"\nGBDF MODELS ({len(gbdf_models)} models)")
         print("-" * 50)
@@ -513,7 +544,7 @@ def print_nested_models_display():
         print("-" * 50)
         print("   No GBDF models found")
     
-    # Summary
+    # STAGE 8.4: Display summary and usage examples
     print("=" * 80)
     print("SUMMARY")
     print("=" * 80)
@@ -537,6 +568,9 @@ def print_nested_models_display():
     
     print("=" * 80)
 
+
+# STAGE 9: Main Execution Block
+# This section runs when the script is executed directly (not imported)
 
 if __name__ == "__main__":
     # Test the discovery system

@@ -7,6 +7,13 @@ This file combines the functionality of:
 - rename_files.py (simple interface wrapper)
 
 Supports both single model processing and batch processing of multiple models.
+
+SCRIPT FLOW OVERVIEW:
+===================
+1. FILE RENAMING STAGE: Convert JSON files from old naming convention to new format
+2. POSTMAN GENERATION STAGE: Create Postman collections for API testing
+3. BATCH PROCESSING STAGE: Handle multiple models simultaneously
+4. COMMAND LINE INTERFACE STAGE: Provide user-friendly CLI for different operations
 """
 
 import os
@@ -19,7 +26,18 @@ from postman_generator import PostmanCollectionGenerator
 
 
 def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, generate_postman=True, postman_collection_name=None, postman_file_name=None):
-    """Rename files and optionally generate Postman collection for a specific model.
+    """
+    STAGE 1: FILE RENAMING FUNCTION
+    ===============================
+    This is the core function that handles file renaming and Postman collection generation.
+    
+    PROCESSING FLOW:
+    1. Setup suffix mapping for file conversion
+    2. Auto-generate source/destination paths if not provided
+    3. Process JSON files with different naming patterns (3-part, 4-part, 5-part)
+    4. Convert files to new naming convention: TC#XX_XXXXX#edit_id#code#suffix.json
+    5. Move files from source to destination directory
+    6. Generate Postman collection for API testing
     
     Args:
         edit_id: The edit ID (e.g., "rvn001", "rvn002")
@@ -31,6 +49,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
         postman_file_name: Custom filename for the Postman collection JSON file
     """
     
+    # STAGE 1.1: SUFFIX MAPPING CONFIGURATION
+    # =======================================
     # Mapping for suffixes based on the expected output format
     suffix_mapping = {
         "positive": {
@@ -44,6 +64,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
         }
     }
     
+    # STAGE 1.2: PATH CONFIGURATION AND VALIDATION
+    # ============================================
     # Auto-generate paths if not provided
     if source_dir is None:
         source_dir = f"source_folder/WGS_CSBD/TS_01_REVENUE_WGS_CSBD_{edit_id}_{code}_payloads_sur/regression"
@@ -59,6 +81,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
     # Create destination directory if it doesn't exist
     os.makedirs(dest_dir, exist_ok=True)
     
+    # STAGE 1.3: FILE DISCOVERY
+    # =========================
     # Get all JSON files in the source directory
     json_files = [f for f in os.listdir(source_dir) if f.endswith('.json')]
     
@@ -67,11 +91,18 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
     
     renamed_files = []
     
+    # STAGE 1.4: FILE PROCESSING LOOP
+    # ===============================
+    # Process each JSON file and convert to new naming convention
     for filename in json_files:
-        # Parse the current filename
+        # STAGE 1.4.1: FILENAME PARSING
+        # =============================
+        # Parse the current filename to understand its structure
         parts = filename.split('#')
         
         if len(parts) == 3:
+            # STAGE 1.4.1A: 3-PART TEMPLATE PROCESSING
+            # ========================================
             # Handle 3-part template: TC#XX_XXXXX#suffix.json
             tc_part = parts[0]  # TC
             tc_id_part = parts[1]  # 01_12345
@@ -84,6 +115,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                     mapped_suffix = category[suffix]
                     break
             
+            # STAGE 1.4.1A: CREATE NEW FILENAME
+            # =================================
             # Create new filename according to new template: TC#XX_XXXXX#rvn001#00W5#LR.json
             new_filename = f"{tc_part}#{tc_id_part}#{edit_id}#{code}#{mapped_suffix}.json"
             
@@ -93,6 +126,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             print(f"Moving to: {dest_dir}")
             print("-" * 40)
             
+            # STAGE 1.4.1A: FILE OPERATIONS
+            # =============================
             # Source and destination paths - normalize paths for Windows compatibility
             source_path = os.path.normpath(os.path.join(source_dir, filename))
             dest_path = os.path.normpath(os.path.join(dest_dir, new_filename))
@@ -113,6 +148,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 print(f"Error processing {filename}: {e}")
                 
         elif len(parts) == 4:
+            # STAGE 1.4.1B: 4-PART TEMPLATE PROCESSING
+            # ========================================
             # Handle 4-part template: TC#XX_XXXXX#edit_id#suffix.json
             tc_part = parts[0]  # TC
             tc_id_part = parts[1]  # 01_12345
@@ -154,6 +191,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 print(f"Error processing {filename}: {e}")
                 
         elif len(parts) == 5:
+            # STAGE 1.4.1C: 5-PART TEMPLATE PROCESSING
+            # ========================================
             # Handle 5-part template: TC#XX_XXXXX#edit_id#code#suffix.json (already converted)
             tc_part = parts[0]  # TC
             tc_id_part = parts[1]  # 01_12345
@@ -199,6 +238,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
     print("Renaming and moving completed!")
     print(f"Files moved to: {dest_dir}")
     
+    # STAGE 2: POSTMAN COLLECTION GENERATION
+    # =====================================
     # Generate Postman collection if requested
     if generate_postman and renamed_files:
         print("\n" + "=" * 60)
@@ -206,6 +247,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
         print("-" * 40)
         
         try:
+            # STAGE 2.1: POSTMAN GENERATOR SETUP
+            # ==================================
             # Initialize Postman generator with specific model directory
             # Use appropriate subdirectory when processing models
             output_dir = "postman_collections"
@@ -219,6 +262,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 output_dir=output_dir
             )
             
+            # STAGE 2.2: COLLECTION NAME EXTRACTION
+            # =====================================
             # Extract collection name from destination directory if not provided
             if postman_collection_name is None:
                 # Extract from dest_dir path
@@ -239,6 +284,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             # Get custom filename from model config if available
             custom_filename = postman_file_name
             
+            # STAGE 2.3: COLLECTION GENERATION
+            # ===============================
             # Generate collection
             collection_path = generator.generate_postman_collection(postman_collection_name, custom_filename)
             
@@ -263,7 +310,16 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
 
 def process_multiple_models(models_config, generate_postman=True):
     """
+    STAGE 3: BATCH PROCESSING FUNCTION
+    =================================
     Process multiple models with their respective configurations.
+    This function handles batch processing of multiple TS models simultaneously.
+    
+    PROCESSING FLOW:
+    1. Iterate through each model configuration
+    2. Call rename_files() for each model
+    3. Track success/failure for each model
+    4. Provide comprehensive summary report
     
     Args:
         models_config: List of dictionaries containing model configurations
@@ -288,6 +344,8 @@ def process_multiple_models(models_config, generate_postman=True):
     ]
     """
     
+    # STAGE 3.1: BATCH PROCESSING INITIALIZATION
+    # ==========================================
     print("Starting Multi-Model Processing")
     print("=" * 80)
     
@@ -295,6 +353,8 @@ def process_multiple_models(models_config, generate_postman=True):
     successful_models = []
     failed_models = []
     
+    # STAGE 3.2: MODEL ITERATION LOOP
+    # ===============================
     for i, model_config in enumerate(models_config, 1):
         edit_id = model_config.get("edit_id")
         code = model_config.get("code")
@@ -345,6 +405,8 @@ def process_multiple_models(models_config, generate_postman=True):
                 "reason": str(e)
             })
     
+    # STAGE 3.3: BATCH PROCESSING SUMMARY
+    # ==================================
     # Summary
     print("\n" + "=" * 80)
     print("SUMMARY PROCESSING SUMMARY")
@@ -369,8 +431,29 @@ def process_multiple_models(models_config, generate_postman=True):
 
 
 def main():
-    """Main function with comprehensive command line interface."""
+    """
+    STAGE 4: COMMAND LINE INTERFACE FUNCTION
+    =======================================
+    Main function with comprehensive command line interface.
+    This function provides the CLI for users to interact with the script.
     
+    CLI FEATURES:
+    1. Process specific TS models (WGS_CSBD or GBDF MCR)
+    2. Process all discovered models
+    3. List available models
+    4. Custom parameter processing
+    5. Skip Postman generation option
+    
+    PROCESSING FLOW:
+    1. Parse command line arguments
+    2. Load model configurations
+    3. Handle different processing modes
+    4. Execute file renaming and Postman generation
+    5. Provide comprehensive feedback
+    """
+    
+    # STAGE 4.1: ARGUMENT PARSER SETUP
+    # ================================
     # Set up argument parser
     parser = argparse.ArgumentParser(
         description="Main Processor - Rename files and generate Postman collections for TS models",
@@ -461,6 +544,8 @@ Examples:
     
     args = parser.parse_args()
     
+    # STAGE 4.2: MODEL CONFIGURATION LOADING
+    # ======================================
     # Load model configurations with dynamic discovery
     try:
         from models_config import get_models_config, get_model_by_ts
@@ -471,6 +556,8 @@ Examples:
         print("Please ensure models_config.py and dynamic_models.py exist.")
         sys.exit(1)
     
+    # STAGE 4.3: LIST MODE HANDLING
+    # =============================
     # Handle --list option
     if args.list:
         try:
@@ -489,6 +576,8 @@ Examples:
                 print("No TS models found")
         sys.exit(0)
     
+    # STAGE 4.4: CUSTOM PARAMETER HANDLING
+    # ====================================
     # Handle custom parameters
     if args.edit_id and args.code:
         print(f"\nTOOL Processing custom model: {args.edit_id}_{args.code}")
@@ -515,6 +604,8 @@ Examples:
         
         sys.exit(0)
     
+    # STAGE 4.5: MODEL SELECTION LOGIC
+    # ================================
     # Determine which models to process
     models_to_process = []
     
@@ -754,6 +845,8 @@ Examples:
         print("\nUse --help for more information.")
         sys.exit(1)
     
+    # STAGE 4.6: MODEL PROCESSING EXECUTION
+    # ====================================
     # Process selected models
     generate_postman = not args.no_postman
     
@@ -800,6 +893,8 @@ Examples:
         except Exception as e:
             print(f"ERROR Model TS_{ts_number} ({edit_id}_{code}): Failed with error - {e}")
     
+    # STAGE 4.7: FINAL SUMMARY REPORT
+    # ===============================
     # Summary
     print("\n" + "=" * 60)
     print("SUMMARY PROCESSING SUMMARY")

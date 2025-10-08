@@ -153,12 +153,12 @@ STATIC_MODELS_CONFIG = {
     },
     {
         "ts_number": "47",
-        "edit_id": "RULEEMSD000002",
+        "edit_id": "RULEMDOS000001",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEEMSD000002_00W28_sur/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEEMSD000002_00W28_dis/regression",
+        "source_dir": "source_folder/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMDOS000001_00W28_sur/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMDOS000001_00W28_dis/regression",
         "postman_collection_name": "TS_47_Multiple Billing of Obstetrical Services_Collection",
-        "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEEMSD000002_00w28.json"
+        "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEMDOS000001_00w28.json"
     }
     ],
     "gbdf": [
