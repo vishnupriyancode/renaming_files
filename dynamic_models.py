@@ -425,7 +425,7 @@ def print_nested_models_display():
     This provides a clear, organized view of all available models.
     """
     print("\n" + "=" * 80)
-    print("🏗️  NESTED MODEL STRUCTURE")
+    print("NESTED MODEL STRUCTURE")
     print("=" * 80)
     
     # Get WGS_CSBD models
@@ -436,13 +436,13 @@ def print_nested_models_display():
     
     total_models = len(wgs_csbd_models) + len(gbdf_models)
     
-    print(f"📊 Total Models Found: {total_models}")
+    print(f"Total Models Found: {total_models}")
     print("=" * 80)
     
     # Display WGS_CSBD models
     if wgs_csbd_models:
-        print(f"\n🔵 WGS_CSBD MODELS ({len(wgs_csbd_models)} models)")
-        print("─" * 50)
+        print(f"\nWGS_CSBD MODELS ({len(wgs_csbd_models)} models)")
+        print("-" * 50)
         
         for i, model in enumerate(wgs_csbd_models, 1):
             ts_number = model['ts_number']
@@ -477,20 +477,20 @@ def print_nested_models_display():
             elif "revenue model" in collection_name:
                 model_type = "Revenue Model"
             
-            print(f"  {i:2d}. TS_{ts_number:02s} │ {model_type}")
-            print(f"      ├─ Edit ID: {edit_id}")
-            print(f"      ├─ Code: {code}")
-            print(f"      └─ Collection: {collection_name}")
+            print(f"  {i:2d}. TS_{ts_number:02s} | {model_type}")
+            print(f"      |- Edit ID: {edit_id}")
+            print(f"      |- Code: {code}")
+            print(f"      `- Collection: {collection_name}")
             print()
     else:
-        print(f"\n🔵 WGS_CSBD MODELS (0 models)")
-        print("─" * 50)
+        print(f"\nWGS_CSBD MODELS (0 models)")
+        print("-" * 50)
         print("   No WGS_CSBD models found")
     
     # Display GBDF models
     if gbdf_models:
-        print(f"\n🟢 GBDF MODELS ({len(gbdf_models)} models)")
-        print("─" * 50)
+        print(f"\nGBDF MODELS ({len(gbdf_models)} models)")
+        print("-" * 50)
         
         for i, model in enumerate(gbdf_models, 1):
             ts_number = model['ts_number']
@@ -503,27 +503,27 @@ def print_nested_models_display():
             if "Covid_gbdf_mcr" in collection_name or "Covid" in collection_name:
                 model_type = "Covid GBDF MCR"
             
-            print(f"  {i:2d}. TS_{ts_number:02s} │ {model_type}")
-            print(f"      ├─ Edit ID: {edit_id}")
-            print(f"      ├─ Code: {code}")
-            print(f"      └─ Collection: {collection_name}")
+            print(f"  {i:2d}. TS_{ts_number:02s} | {model_type}")
+            print(f"      |- Edit ID: {edit_id}")
+            print(f"      |- Code: {code}")
+            print(f"      `- Collection: {collection_name}")
             print()
     else:
-        print(f"\n🟢 GBDF MODELS (0 models)")
-        print("─" * 50)
+        print(f"\nGBDF MODELS (0 models)")
+        print("-" * 50)
         print("   No GBDF models found")
     
     # Summary
     print("=" * 80)
-    print("📋 SUMMARY")
+    print("SUMMARY")
     print("=" * 80)
-    print(f"🔵 WGS_CSBD Models: {len(wgs_csbd_models)}")
-    print(f"🟢 GBDF Models: {len(gbdf_models)}")
-    print(f"📊 Total Models: {total_models}")
+    print(f"WGS_CSBD Models: {len(wgs_csbd_models)}")
+    print(f"GBDF Models: {len(gbdf_models)}")
+    print(f"Total Models: {total_models}")
     
     if total_models > 0:
-        print(f"\n💡 USAGE EXAMPLES:")
-        print("─" * 30)
+        print(f"\nUSAGE EXAMPLES:")
+        print("-" * 30)
         print("WGS_CSBD Models:")
         print("  python main_processor.py --wgs_csbd --TS01")
         print("  python main_processor.py --wgs_csbd --all")
@@ -540,7 +540,7 @@ def print_nested_models_display():
 
 if __name__ == "__main__":
     # Test the discovery system
-    print("🧪 Testing Dynamic Model Discovery")
+    print("Testing Dynamic Model Discovery")
     print("=" * 50)
     
     # Show nested display
@@ -548,7 +548,7 @@ if __name__ == "__main__":
     
     # Also show traditional display for comparison
     print("\n" + "=" * 50)
-    print("📋 TRADITIONAL DISPLAY")
+    print("TRADITIONAL DISPLAY")
     print("=" * 50)
     
     models = discover_ts_folders()
@@ -558,10 +558,10 @@ if __name__ == "__main__":
     if models:
         first_model = models[0]
         ts_number = first_model["ts_number"]
-        print(f"🔍 Testing lookup for TS_{ts_number}...")
+        print(f"Testing lookup for TS_{ts_number}...")
         
         found_model = get_model_by_ts_number(ts_number)
         if found_model:
-            print(f"✅ Found model: {found_model['edit_id']}_{found_model['code']}")
+            print(f"Found model: {found_model['edit_id']}_{found_model['code']}")
         else:
-            print(f"❌ Model not found for TS_{ts_number}")
+            print(f"Model not found for TS_{ts_number}")

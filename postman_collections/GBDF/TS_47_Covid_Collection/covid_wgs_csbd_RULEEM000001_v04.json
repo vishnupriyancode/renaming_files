@@ -6,10 +6,15 @@
   },
   "item": [
     {
-      "name": "TC#01_sample#RULEEM000001#v04#LR",
+      "name": "TC#01_sample#RULEEM000001#v04#NR",
       "request": {
         "method": "POST",
         "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
           {
             "key": "meta-transid",
             "value": "20220117181853TMBL20359Cl893580999",
@@ -34,7 +39,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"testCaseId\": \"TC#01_sample#deny\",\n  \"testSuite\": \"TS_01_Covid_gbdf_mcr_RULEEM000001_v04_sur\",\n  \"ruleId\": \"RULEEM000001\",\n  \"testType\": \"regression\",\n  \"expectedResult\": \"deny\",\n  \"testData\": {\n    \"claim\": {\n      \"claimId\": \"CLM2024001\",\n      \"patientId\": \"PAT001\",\n      \"providerId\": \"PROV001\",\n      \"serviceDate\": \"2024-01-15\",\n      \"diagnosisCodes\": [\n        {\n          \"code\": \"U07.1\",\n          \"description\": \"COVID-19, virus identified\",\n          \"primary\": true\n        }\n      ],\n      \"procedureCodes\": [\n        {\n          \"code\": \"99213\",\n          \"description\": \"Office visit, established patient\",\n          \"modifier\": null\n        }\n      ],\n      \"totalAmount\": 150.0,\n      \"facilityType\": \"outpatient\"\n    },\n    \"ruleConfiguration\": {\n      \"ruleName\": \"COVID Emergency Rule\",\n      \"effectiveDate\": \"2020-03-01\",\n      \"expirationDate\": \"2024-12-31\",\n      \"denyConditions\": [\n        \"COVID diagnosis without proper documentation\",\n        \"Non-emergency COVID testing\"\n      ]\n    }\n  },\n  \"expectedOutcome\": {\n    \"action\": \"deny\",\n    \"reasonCode\": \"COVID_EMERGENCY_RULE_VIOLATION\",\n    \"message\": \"Claim denied due to COVID emergency rule violation\"\n  }\n}",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
           "options": {
             "raw": {
               "language": "json"

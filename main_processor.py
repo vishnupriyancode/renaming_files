@@ -650,11 +650,29 @@ Examples:
             sys.exit(1)
     
     if args.TS47:
-        ts47_model = next((model for model in models_config if model.get("ts_number") == "47"), None)
-        if ts47_model:
-            models_to_process.append(ts47_model)
+        # TS47 can be either WGS_CSBD or GBDF depending on the flag used
+        if args.wgs_csbd:
+            # Look for WGS_CSBD TS47 model
+            ts47_model = next((model for model in models_config if model.get("ts_number") == "47"), None)
+            if ts47_model:
+                models_to_process.append(ts47_model)
+            else:
+                print("ERROR Error: WGS_CSBD TS47 model not found!")
+                sys.exit(1)
+        elif args.gbdf_mcr:
+            # Look for GBDF TS47 model
+            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
+            ts47_model = next((model for model in gbdf_models if model.get("ts_number") == "47"), None)
+            if ts47_model:
+                models_to_process.append(ts47_model)
+            else:
+                print("ERROR Error: GBDF TS47 model not found!")
+                sys.exit(1)
         else:
-            print("ERROR Error: TS47 model not found!")
+            print("ERROR Error: TS47 requires either --wgs_csbd or --gbdf_mcr flag!")
+            print("\nPlease specify which TS47 model to process:")
+            print("  python main_processor.py --wgs_csbd --TS47    # Process WGS_CSBD TS47 model")
+            print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model")
             sys.exit(1)
     
     if args.all:
@@ -664,8 +682,10 @@ Examples:
     # Check if appropriate flag is required for TS model processing
     wgs_csbd_models = any([args.TS01, args.TS02, args.TS03, args.TS04, args.TS05, 
                           args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
-                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46, args.TS47])
-    gbdf_mcr_models = False  # TS47 is now WGS_CSBD, not GBDF
+                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46,
+                          (args.TS47 and args.wgs_csbd)])  # TS47 is WGS_CSBD when wgs_csbd flag is used
+    # TS47 can be either WGS_CSBD or GBDF depending on flag - only consider it GBDF if gbdf_mcr flag is used
+    gbdf_mcr_models = args.TS47 and args.gbdf_mcr
     all_models = args.all
     
     if wgs_csbd_models and not args.wgs_csbd:
@@ -687,6 +707,7 @@ Examples:
         print("  python main_processor.py --wgs_csbd --TS14    # Process TS14 model")
         print("  python main_processor.py --wgs_csbd --TS15    # Process TS15 model")
         print("  python main_processor.py --wgs_csbd --TS46    # Process TS46 model")
+        print("  python main_processor.py --wgs_csbd --TS47    # Process WGS_CSBD TS47 model")
         print("  python main_processor.py --wgs_csbd --all     # Process all discovered models")
         print("\nUse --help for more information.")
         sys.exit(1)
@@ -694,7 +715,7 @@ Examples:
     if gbdf_mcr_models and not args.gbdf_mcr:
         print("ERROR Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!")
         print("\nPlease use the --gbdf_mcr flag with GBDF MCR TS model commands:")
-        print("  python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)")
+        print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model (Covid GBDF MCR)")
         print("\nUse --help for more information.")
         sys.exit(1)
     

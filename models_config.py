@@ -144,17 +144,26 @@ STATIC_MODELS_CONFIG = {
     },
     {
         "ts_number": "46",
-        "edit_id": "RULEEM000046",
-        "code": "00W46",
-        "source_dir": "source_folder/WGS_CSBD/TS_46_Multiple E&M Same day_WGS_CSBD_RULEEM000046_00W46_sur/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/TS_46_Multiple E&M Same day_WGS_CSBD_RULEEM000046_00W46_dis/regression",
+        "edit_id": "RULEEMSD000002",
+        "code": "00W09",
+        "source_dir": "source_folder/WGS_CSBD/TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_sur/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/regression",
         "postman_collection_name": "TS_46_Multiple E&M Same day_Collection",
-        "postman_file_name": "multiple_em_wgs_csbd_RULEEM000046_00w46.json"
+        "postman_file_name": "multiple_em_wgs_csbd_RULEEMSD000002_00w09.json"
+    },
+    {
+        "ts_number": "47",
+        "edit_id": "RULEEMSD000002",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEEMSD000002_00W28_sur/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEEMSD000002_00W28_dis/regression",
+        "postman_collection_name": "TS_47_Multiple Billing of Obstetrical Services_Collection",
+        "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEEMSD000002_00w28.json"
     }
     ],
     "gbdf": [
         {
-            "ts_number": "01",
+            "ts_number": "47",
             "edit_id": "RULEEM000001",
             "code": "v04",
             "source_dir": "source_folder/GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_sur/regression",
