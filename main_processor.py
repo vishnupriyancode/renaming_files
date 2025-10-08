@@ -40,8 +40,7 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             "bypass": "NR",  # bypass -> NR
         },
         "Exclusion": {
-            "market": "EX",   # market -> EX
-            "date": "EX"      # date -> EX
+            "exclusion": "EX",   # exclusion -> EX
         }
     }
     
@@ -665,8 +664,8 @@ Examples:
     # Check if appropriate flag is required for TS model processing
     wgs_csbd_models = any([args.TS01, args.TS02, args.TS03, args.TS04, args.TS05, 
                           args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
-                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46])
-    gbdf_mcr_models = args.TS47
+                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46, args.TS47])
+    gbdf_mcr_models = False  # TS47 is now WGS_CSBD, not GBDF
     all_models = args.all
     
     if wgs_csbd_models and not args.wgs_csbd:

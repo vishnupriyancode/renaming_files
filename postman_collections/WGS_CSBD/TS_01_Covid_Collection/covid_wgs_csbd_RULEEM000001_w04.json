@@ -1,0 +1,59 @@
+{
+  "info": {
+    "name": "TS_01_Covid_Collection API Collection",
+    "description": "API collection for TS_01_Covid_Collection test cases",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC#01_sample#RULEEM000001#W04#LR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "meta-transid",
+            "value": "20220117181853TMBL20359Cl893580999",
+            "type": "text"
+          },
+          {
+            "key": "meta-src-envrmt",
+            "value": "IMSH",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

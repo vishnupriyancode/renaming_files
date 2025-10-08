@@ -34,7 +34,9 @@ postman_collections/
 │   ├── TS_12_Incidentcal Services Facility_Collection/
 │   ├── TS_13_Revenue model CR v3_Collection/
 │   ├── TS_14_HCPCS to Revenue Code Xwalk_Collection/
-│   └── TS_15_revenue model_Collection/
+│   ├── TS_15_revenue model_Collection/
+│   ├── TS_46_Multiple E&M Same day_Collection/
+│   └── TS_47_Multiple Billing of Obstetrical Services_Collection/
 └── GBDF/                                        # GBDF MCR Collections
     └── TS_47_Covid_gbdf_mcr_Collection/
 
@@ -54,7 +56,9 @@ renaming_jsons/
 │   ├── TS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_dis/
 │   ├── TS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_dis/
 │   ├── TS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_dis/
-│   └── TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/
+│   ├── TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/
+│   ├── TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/
+│   └── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEEMSD000002_00W28_dis/
 └── GBDF/                                        # GBDF MCR Processed Files
     └── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
 ```
@@ -81,6 +85,8 @@ python main_processor.py --wgs_csbd --TS12    # Process TS12 model (Incidentcal 
 python main_processor.py --wgs_csbd --TS13    # Process TS13 model (Revenue model CR v3)
 python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
 python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
+python main_processor.py --wgs_csbd --TS46    # Process TS46 model (Multiple E&M Same day)
+python main_processor.py --wgs_csbd --TS47    # Process TS47 model (Multiple Billing of Obstetrical Services)
 ```
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
@@ -104,6 +110,8 @@ python main_processor.py --wgs_csbd --TS12    # Generates TS_12_Incidentcal_Coll
 python main_processor.py --wgs_csbd --TS13    # Generates TS_13_Revenue_Collection
 python main_processor.py --wgs_csbd --TS14    # Generates TS_14_HCPCS_Collection
 python main_processor.py --wgs_csbd --TS15    # Generates TS_15_Revenue_Collection
+python main_processor.py --wgs_csbd --TS46    # Generates TS_46_Multiple E&M Same day_Collection
+python main_processor.py --wgs_csbd --TS47    # Generates TS_47_Multiple Billing of Obstetrical Services_Collection
 python main_processor.py --wgs_csbd --all     # Generates collections for all WGS_CSBD models
 
 # GBDF MCR models with Postman collection generation
@@ -126,6 +134,8 @@ python main_processor.py --wgs_csbd --TS12 --no-postman
 python main_processor.py --wgs_csbd --TS13 --no-postman
 python main_processor.py --wgs_csbd --TS14 --no-postman
 python main_processor.py --wgs_csbd --TS15 --no-postman
+python main_processor.py --wgs_csbd --TS46 --no-postman
+python main_processor.py --wgs_csbd --TS47 --no-postman
 python main_processor.py --wgs_csbd --all --no-postman
 
 # GBDF MCR models without Postman collection generation
@@ -166,6 +176,8 @@ python main_processor.py --help
 - `python main_processor.py --wgs_csbd --TS13` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --TS14` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --TS15` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS46` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS47` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --all` - **TESTED & WORKING** ✓
 
 ### GBDF_MCR Models:
@@ -458,7 +470,8 @@ python main_processor.py --help
 - `--wgs_csbd`: **REQUIRED** flag for WGS_CSBD TS model processing
 - `--gbdf_mcr`: **REQUIRED** flag for GBDF MCR model processing
 - `--TS01` through `--TS15`: Process specific WGS_CSBD TS models
-- `--TS47`: Process specific GBDF MCR model
+- `--TS46`, `--TS47`: Process additional WGS_CSBD TS models (Multiple E&M Same day, Multiple Billing of Obstetrical Services)
+- `--TS47`: Process GBDF MCR model (Covid GBDF MCR) - requires `--gbdf_mcr` flag
 - `--all`: Process all configured models (requires either --wgs_csbd or --gbdf_mcr flag)
 - `--list`: List all available TS models
 - `--no-postman`: Skip Postman collection generation
@@ -978,8 +991,11 @@ The scripts include comprehensive error handling:
    ```
    - **Solution**: Always include the `--gbdf_mcr` flag when processing GBDF MCR models
    - **Examples**: 
-     - `python main_processor.py --gbdf_mcr --TS47`
+     - `python main_processor.py --gbdf_mcr --TS47` (Covid GBDF MCR model)
      - `python main_processor.py --gbdf_mcr --all`
+   - **Note**: There are two different TS47 models:
+     - `python main_processor.py --wgs_csbd --TS47` (Multiple Billing of Obstetrical Services - WGS_CSBD)
+     - `python main_processor.py --gbdf_mcr --TS47` (Covid GBDF MCR - GBDF MCR)
 
 4. **Model Not Found in Configuration**
    ```
@@ -1088,6 +1104,8 @@ python main_processor.py --wgs_csbd --TS12    # Incidentcal Services Facility Co
 python main_processor.py --wgs_csbd --TS13    # Revenue model CR v3 Collection
 python main_processor.py --wgs_csbd --TS14    # HCPCS to Revenue Code Xwalk Collection
 python main_processor.py --wgs_csbd --TS15    # revenue model Collection
+python main_processor.py --wgs_csbd --TS46    # Multiple E&M Same day Collection
+python main_processor.py --wgs_csbd --TS47    # Multiple Billing of Obstetrical Services Collection
 
 # Process GBDF MCR models (with --gbdf_mcr flag)
 python main_processor.py --gbdf_mcr --TS47    # Covid GBDF MCR Collection
