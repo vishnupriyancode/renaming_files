@@ -153,12 +153,12 @@ STATIC_MODELS_CONFIG = {
     },
     {
         "ts_number": "47",
-        "edit_id": "RULEMDOS000001",
+        "edit_id": "RULEMBOS000001",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMDOS000001_00W28_sur/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMDOS000001_00W28_dis/regression",
+        "source_dir": "source_folder/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_sur/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_dis/regression",
         "postman_collection_name": "TS_47_Multiple Billing of Obstetrical Services_Collection",
-        "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEMDOS000001_00W28.json"
+        "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEMBOS000001_00W28.json"
     }
     ],
     "gbdf": [
@@ -170,6 +170,24 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/regression",
             "postman_collection_name": "TS_47_Covid_gbdf_mcr_Collection",
             "postman_file_name": "covid_gbdf_mcr_RULEEM000001_v04.json"
+        },
+        {
+            "ts_number": "48",
+            "edit_id": "RULEEMSD000002",
+            "code": "v09",
+            "source_dir": "source_folder/GBDF/TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_sur/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/regression",
+            "postman_collection_name": "TS_48_Multiple E&M Same day_gbdf_mcr_Collection",
+            "postman_file_name": "multiple_em_gbdf_mcr_RULEEMSD000002_v09.json"
+        },
+        {
+            "ts_number": "49",
+            "edit_id": "RULEEMSD000002",
+            "code": "v09",
+            "source_dir": "source_folder/GBDF/TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_sur/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/regression",
+            "postman_collection_name": "TS_49_Multiple E&M Same day_gbdf_grs_Collection",
+            "postman_file_name": "multiple_em_gbdf_grs_RULEEMSD000002_v09.json"
         }
     ]
 }

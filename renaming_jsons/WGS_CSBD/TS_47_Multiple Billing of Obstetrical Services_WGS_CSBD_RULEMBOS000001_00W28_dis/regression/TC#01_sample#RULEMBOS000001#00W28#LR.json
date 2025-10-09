@@ -1,6 +1,6 @@
 {
-  "test_case": "TC#01_sample#RULEMDOS000001#00W28#LR",
-  "edit_id": "RULEMDOS000001",
+  "test_case": "TC#01_sample#RULEMBOS000001#00W28#LR",
+  "edit_id": "RULEMBOS000001",
   "code": "00W28",
   "description": "Test case for Multiple Billing of Obstetrical Services WGS_CSBD model",
   "expected_result": "LR"

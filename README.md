@@ -60,7 +60,9 @@ renaming_jsons/
 │   ├── TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/
 │   └── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEEMSD000002_00W28_dis/
 └── GBDF/                                        # GBDF MCR Processed Files
-    └── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
+    ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
+    ├── TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
+    └── TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
 ```
 
 ## 🚀 Quick Start Commands (Verified & Ready to Use)
@@ -93,6 +95,8 @@ python main_processor.py --wgs_csbd --TS47    # Process TS47 model (Multiple Bil
 ```bash
 # Process specific GBDF MCR models (GBDF_MCR flag required)
 python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
+python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --TS49    # Process TS49 model (Multiple E&M Same day GBDF GRS)
 
 # Process models with automatic Postman collection generation (default behavior)
 python main_processor.py --wgs_csbd --TS01    # Generates TS_01_Covid_Collection
@@ -116,6 +120,8 @@ python main_processor.py --wgs_csbd --all     # Generates collections for all WG
 
 # GBDF MCR models with Postman collection generation
 python main_processor.py --gbdf_mcr --TS47    # Generates TS_47_Covid_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --TS48    # Generates TS_48_Multiple E&M Same day_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --TS49    # Generates TS_49_Multiple E&M Same day_gbdf_grs_Collection
 python main_processor.py --gbdf_mcr --all     # Generates collections for all GBDF MCR models
 
 # Process models without generating Postman collections
@@ -140,6 +146,8 @@ python main_processor.py --wgs_csbd --all --no-postman
 
 # GBDF MCR models without Postman collection generation
 python main_processor.py --gbdf_mcr --TS47 --no-postman
+python main_processor.py --gbdf_mcr --TS48 --no-postman
+python main_processor.py --gbdf_mcr --TS49 --no-postman
 python main_processor.py --gbdf_mcr --all --no-postman
 ```
 
@@ -182,6 +190,8 @@ python main_processor.py --help
 
 ### GBDF_MCR Models:
 - `python main_processor.py --gbdf_mcr --TS47` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --TS48` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --TS49` - **TESTED & WORKING** ✓
 - `python main_processor.py --gbdf_mcr --all` - **TESTED & WORKING** ✓
 
 ### General Commands:
@@ -471,7 +481,7 @@ python main_processor.py --help
 - `--gbdf_mcr`: **REQUIRED** flag for GBDF MCR model processing
 - `--TS01` through `--TS15`: Process specific WGS_CSBD TS models
 - `--TS46`, `--TS47`: Process additional WGS_CSBD TS models (Multiple E&M Same day, Multiple Billing of Obstetrical Services)
-- `--TS47`: Process GBDF MCR model (Covid GBDF MCR) - requires `--gbdf_mcr` flag
+- `--TS47`, `--TS48`, `--TS49`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Multiple E&M Same day GBDF GRS) - requires `--gbdf_mcr` flag
 - `--all`: Process all configured models (requires either --wgs_csbd or --gbdf_mcr flag)
 - `--list`: List all available TS models
 - `--no-postman`: Skip Postman collection generation
@@ -1109,6 +1119,8 @@ python main_processor.py --wgs_csbd --TS47    # Multiple Billing of Obstetrical 
 
 # Process GBDF MCR models (with --gbdf_mcr flag)
 python main_processor.py --gbdf_mcr --TS47    # Covid GBDF MCR Collection
+python main_processor.py --gbdf_mcr --TS48    # Multiple E&M Same day GBDF MCR Collection
+python main_processor.py --gbdf_mcr --TS49    # Multiple E&M Same day GBDF GRS Collection
 
 # Process all models at once
 python main_processor.py --wgs_csbd --all     # All WGS_CSBD models
@@ -1162,12 +1174,14 @@ mkdir postman_collections
 ### Current Folder Contents:
 
 **`renaming_jsons` folder contains:**
-- 15 subdirectories (TS_01 through TS_15)
+- 15 WGS_CSBD subdirectories (TS_01 through TS_15)
+- 3 GBDF subdirectories (TS_47, TS_48, TS_49)
 - Each with a `regression` subfolder containing JSON test case files
-- Diverse model types: Covid, Laterality, Revenue, Lab, Device, Recovery, HCPCS, Incidentcal Services
+- Diverse model types: Covid, Laterality, Revenue, Lab, Device, Recovery, HCPCS, Incidentcal Services, Multiple E&M Same day
 
 **`postman_collections` folder contains:**
-- 15 subdirectories (TS_01_Covid_Collection through TS_15_revenue model_Collection)
+- 15 WGS_CSBD subdirectories (TS_01_Covid_Collection through TS_15_revenue model_Collection)
+- 3 GBDF subdirectories (TS_47_Covid_gbdf_mcr_Collection, TS_48_Multiple E&M Same day_gbdf_mcr_Collection, TS_49_Multiple E&M Same day_gbdf_grs_Collection)
 - Each contains properly structured Postman collection files
 - Professional naming and organization
 

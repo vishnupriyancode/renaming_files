@@ -468,6 +468,7 @@ Examples:
   
   # Process GBDF MCR models (GBDF MCR flag required)
   python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
+  python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
   
   # Process all discovered models
   python main_processor.py --wgs_csbd --all     # Process all discovered WGS_CSBD models
@@ -479,6 +480,7 @@ Examples:
   # Skip Postman generation
   python main_processor.py --wgs_csbd --TS07 --no-postman
   python main_processor.py --gbdf_mcr --TS47 --no-postman
+  python main_processor.py --gbdf_mcr --TS48 --no-postman
   
   # Process with custom parameters
   python main_processor.py --edit-id rvn001 --code 00W5 --source-dir custom/path
@@ -528,6 +530,10 @@ Examples:
                        help="Process TS46 model (Multiple E&M Same day)")
     parser.add_argument("--TS47", action="store_true", 
                        help="Process TS47 model (Covid GBDF MCR)")
+    parser.add_argument("--TS48", action="store_true", 
+                       help="Process TS48 model (Multiple E&M Same day GBDF MCR)")
+    parser.add_argument("--TS49", action="store_true", 
+                       help="Process TS49 model (Multiple E&M Same day GBDF GRS)")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
@@ -766,6 +772,40 @@ Examples:
             print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model")
             sys.exit(1)
     
+    if args.TS48:
+        # TS48 is GBDF MCR only
+        if args.gbdf_mcr:
+            # Look for GBDF TS48 model
+            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
+            ts48_model = next((model for model in gbdf_models if model.get("ts_number") == "48"), None)
+            if ts48_model:
+                models_to_process.append(ts48_model)
+            else:
+                print("ERROR Error: GBDF TS48 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS48 requires --gbdf_mcr flag!")
+            print("\nPlease specify GBDF MCR flag:")
+            print("  python main_processor.py --gbdf_mcr --TS48    # Process GBDF TS48 model")
+            sys.exit(1)
+    
+    if args.TS49:
+        # TS49 is GBDF GRS only
+        if args.gbdf_mcr:
+            # Look for GBDF TS49 model
+            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
+            ts49_model = next((model for model in gbdf_models if model.get("ts_number") == "49"), None)
+            if ts49_model:
+                models_to_process.append(ts49_model)
+            else:
+                print("ERROR Error: GBDF TS49 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS49 requires --gbdf_mcr flag!")
+            print("\nPlease specify GBDF MCR flag:")
+            print("  python main_processor.py --gbdf_mcr --TS49    # Process GBDF TS49 model")
+            sys.exit(1)
+    
     if args.all:
         models_to_process = models_config
         print(f"SUCCESS Processing all {len(models_config)} discovered models")
@@ -775,8 +815,8 @@ Examples:
                           args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
                           args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46,
                           (args.TS47 and args.wgs_csbd)])  # TS47 is WGS_CSBD when wgs_csbd flag is used
-    # TS47 can be either WGS_CSBD or GBDF depending on flag - only consider it GBDF if gbdf_mcr flag is used
-    gbdf_mcr_models = args.TS47 and args.gbdf_mcr
+    # TS47, TS48, and TS49 can be GBDF depending on flag - only consider it GBDF if gbdf_mcr flag is used
+    gbdf_mcr_models = (args.TS47 and args.gbdf_mcr) or (args.TS48 and args.gbdf_mcr) or (args.TS49 and args.gbdf_mcr)
     all_models = args.all
     
     if wgs_csbd_models and not args.wgs_csbd:
@@ -807,6 +847,8 @@ Examples:
         print("ERROR Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!")
         print("\nPlease use the --gbdf_mcr flag with GBDF MCR TS model commands:")
         print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model (Covid GBDF MCR)")
+        print("  python main_processor.py --gbdf_mcr --TS48    # Process GBDF TS48 model (Multiple E&M Same day GBDF MCR)")
+        print("  python main_processor.py --gbdf_mcr --TS49    # Process GBDF TS49 model (Multiple E&M Same day GBDF GRS)")
         print("\nUse --help for more information.")
         sys.exit(1)
     
@@ -839,6 +881,8 @@ Examples:
         print("  --wgs_csbd --TS15    Process TS15 model (revenue model)")
         print("  --wgs_csbd --TS46    Process TS46 model (Multiple E&M Same day)")
         print("  --gbdf_mcr --TS47    Process TS47 model (Covid GBDF MCR)")
+        print("  --gbdf_mcr --TS48    Process TS48 model (Multiple E&M Same day GBDF MCR)")
+        print("  --gbdf_mcr --TS49    Process TS49 model (Multiple E&M Same day GBDF GRS)")
         print("  --wgs_csbd --all     Process all discovered WGS_CSBD models")
         print("  --gbdf_mcr --all     Process all discovered GBDF MCR models")
         print("  --list    List all available TS models")

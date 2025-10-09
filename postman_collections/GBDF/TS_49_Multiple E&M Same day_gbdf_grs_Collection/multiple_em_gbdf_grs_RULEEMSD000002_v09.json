@@ -1,12 +1,12 @@
 {
   "info": {
-    "name": "TS_47_Covid_Collection API Collection",
-    "description": "API collection for TS_47_Covid_Collection test cases",
+    "name": "TS_49_Multiple E&M Same day_gbdf_grs_Collection API Collection",
+    "description": "API collection for TS_49_Multiple E&M Same day_gbdf_grs_Collection test cases",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "TC#01_sample#RULEEM000001#v04#NR",
+      "name": "TC#01_sample#RULEEMSD000002#v09#LR",
       "request": {
         "method": "POST",
         "header": [

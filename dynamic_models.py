@@ -119,9 +119,11 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
     
     # STAGE 3.1: Define search patterns based on directory type
     if is_gbdf:
-        # GBDF MCR patterns - simpler pattern for GBDF directories
+        # GBDF MCR patterns - multiple patterns to catch different folder naming conventions
         pattern1 = os.path.join(base_dir, "TS_*_Covid_gbdf_mcr_*_sur")
-        ts_folders = glob.glob(pattern1)
+        pattern2 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_gbdf_mcr_*_sur")
+        pattern3 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_gbdf_grs_*_sur")
+        ts_folders = glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3)
     else:
         # WGS_CSBD patterns - multiple patterns to catch different folder naming conventions
         # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
@@ -223,9 +225,18 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         if not match:
             match = re.match(r'TS_(\d{1,3})_Multiple Billing of Obstetrical Services_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
-        # If no match and this is GBDF, try GBDF MCR pattern
+        # If no match and this is GBDF, try GBDF MCR patterns
         if not match and is_gbdf:
+            # Try Covid GBDF MCR pattern
             match = re.match(r'TS_(\d{1,3})_Covid_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try Multiple E&M Same day GBDF MCR pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_Multiple E&M Same day_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try Multiple E&M Same day GBDF GRS pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_Multiple E&M Same day_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
         # STAGE 5: Process successfully matched folders
         if match:
@@ -318,8 +329,8 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 # For HCPCS to Revenue Code Xwalk, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_HCPCS to Revenue Code Xwalk_Collection"
                 postman_file_name = f"hcpcs_wgs_csbd_{edit_id}_{code}.json"
-            elif "Multiple E&M Same day" in folder_name:
-                # For Multiple E&M Same day, use the full descriptive name
+            elif "Multiple E&M Same day" in folder_name and not is_gbdf:
+                # For Multiple E&M Same day (WGS_CSBD), use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_Collection"
                 postman_file_name = f"multiple_em_wgs_csbd_{edit_id}_{code}.json"
             elif "Multiple Billing of Obstetrical Services" in folder_name:
@@ -330,6 +341,17 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 # For GBDF MCR Covid, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Covid_gbdf_mcr_Collection"
                 postman_file_name = f"covid_gbdf_mcr_{edit_id}_{code}.json"
+            elif "Multiple E&M Same day" in folder_name and is_gbdf:
+                # For any GBDF Multiple E&M Same day model, use GBDF naming
+                if "gbdf_mcr" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_mcr_Collection"
+                    postman_file_name = f"multiple_em_gbdf_mcr_{edit_id}_{code}.json"
+                elif "gbdf_grs" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_grs_Collection"
+                    postman_file_name = f"multiple_em_gbdf_grs_{edit_id}_{code}.json"
+                else:
+                    postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_Collection"
+                    postman_file_name = f"multiple_em_gbdf_{edit_id}_{code}.json"
             else:
                 postman_collection_name = generate_postman_collection_name(ts_number)
                 postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
@@ -533,6 +555,12 @@ def print_nested_models_display():
             model_type = "General"
             if "Covid_gbdf_mcr" in collection_name or "Covid" in collection_name:
                 model_type = "Covid GBDF MCR"
+            elif "Multiple E&M Same day_gbdf_mcr" in collection_name:
+                model_type = "Multiple E&M Same day GBDF MCR"
+            elif "Multiple E&M Same day_gbdf_grs" in collection_name:
+                model_type = "Multiple E&M Same day GBDF GRS"
+            elif "Multiple E&M Same day" in collection_name and "gbdf" in collection_name.lower():
+                model_type = "Multiple E&M Same day GBDF"
             
             print(f"  {i:2d}. TS_{ts_number:02s} | {model_type}")
             print(f"      |- Edit ID: {edit_id}")

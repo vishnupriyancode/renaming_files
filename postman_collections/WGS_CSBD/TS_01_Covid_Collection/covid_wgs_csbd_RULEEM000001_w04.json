@@ -39,7 +39,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"test_case\": \"TC#01_sample#RULEMDOS000001#00W28#LR\",\n  \"edit_id\": \"RULEMDOS000001\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Multiple Billing of Obstetrical Services WGS_CSBD model\",\n  \"expected_result\": \"LR\"\n}",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#RULEMBOS000001#00W28#LR\",\n  \"edit_id\": \"RULEMBOS000001\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Multiple Billing of Obstetrical Services WGS_CSBD model\",\n  \"expected_result\": \"LR\"\n}",
           "options": {
             "raw": {
               "language": "json"

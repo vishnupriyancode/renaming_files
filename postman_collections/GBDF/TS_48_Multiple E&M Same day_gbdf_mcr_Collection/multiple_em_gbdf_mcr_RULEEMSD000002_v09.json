@@ -1,12 +1,12 @@
 {
   "info": {
-    "name": "TS_46_Multiple E&M Same day_Collection API Collection",
-    "description": "API collection for TS_46_Multiple E&M Same day_Collection test cases",
+    "name": "TS_48_Multiple E&M Same day_gbdf_mcr_Collection API Collection",
+    "description": "API collection for TS_48_Multiple E&M Same day_gbdf_mcr_Collection test cases",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "TC#01_sample#RULEEMSD000002#00W09#LR",
+      "name": "TC#01_sample#RULEEMSD000002#v09#LR",
       "request": {
         "method": "POST",
         "header": [
@@ -39,7 +39,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"test_case\": \"TC#01_sample#RULEMBOS000001#00W28#LR\",\n  \"edit_id\": \"RULEMBOS000001\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Multiple Billing of Obstetrical Services WGS_CSBD model\",\n  \"expected_result\": \"LR\"\n}",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
           "options": {
             "raw": {
               "language": "json"
