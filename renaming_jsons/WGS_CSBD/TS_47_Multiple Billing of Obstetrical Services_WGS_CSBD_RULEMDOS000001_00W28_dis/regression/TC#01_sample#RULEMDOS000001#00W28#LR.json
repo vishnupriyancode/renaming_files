@@ -1,7 +1,7 @@
 {
-  "test_case": "TC#01_sample#deny",
+  "test_case": "TC#01_sample#RULEMDOS000001#00W28#LR",
   "edit_id": "RULEMDOS000001",
   "code": "00W28",
-  "description": "Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model",
-  "expected_result": "deny"
+  "description": "Test case for Multiple Billing of Obstetrical Services WGS_CSBD model",
+  "expected_result": "LR"
 }

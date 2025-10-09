@@ -277,62 +277,62 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                     postman_collection_name = f"TS_{ts_number}_Revenue code Services not payable on Facility claim Sub Edit {sub_edit_num}_Collection"
                 else:
                     postman_collection_name = generate_postman_collection_name(ts_number)
-                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
             elif "Lab panel Model" in folder_name:
                 # For Lab panel Model, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Lab panel Model_Collection"
-                postman_file_name = f"lab_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"lab_wgs_csbd_{edit_id}_{code}.json"
             elif "Recovery Room Reimbursement" in folder_name:
                 # For Recovery Room Reimbursement, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Recovery Room Reimbursement_Collection"
-                postman_file_name = f"recovery_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"recovery_wgs_csbd_{edit_id}_{code}.json"
             elif "Covid" in folder_name:
                 # For Covid, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Covid_Collection"
-                postman_file_name = f"covid_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"covid_wgs_csbd_{edit_id}_{code}.json"
             elif "Laterality Policy" in folder_name:
                 # For Laterality Policy, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Laterality_Collection"
-                postman_file_name = f"laterality_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"laterality_wgs_csbd_{edit_id}_{code}.json"
             elif "Device Dependent Procedures" in folder_name:
                 # For Device Dependent Procedures, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Device Dependent Procedures_Collection"
-                postman_file_name = f"device_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"device_wgs_csbd_{edit_id}_{code}.json"
             elif "revenue model" in folder_name:
                 # For revenue model, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_revenue model_Collection"
-                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
             elif "Revenue Code to HCPCS Xwalk-1B" in folder_name:
                 # For Revenue Code to HCPCS Xwalk-1B, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Revenue Code to HCPCS Xwalk-1B_Collection"
-                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
             elif "Incidentcal Services Facility" in folder_name:
                 # For Incidentcal Services Facility, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Incidentcal Services Facility_Collection"
-                postman_file_name = f"incidentcal_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"incidentcal_wgs_csbd_{edit_id}_{code}.json"
             elif "Revenue model CR v3" in folder_name:
                 # For Revenue model CR v3, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Revenue model CR v3_Collection"
-                postman_file_name = f"revenue_model_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"revenue_model_wgs_csbd_{edit_id}_{code}.json"
             elif "HCPCS to Revenue Code Xwalk" in folder_name:
                 # For HCPCS to Revenue Code Xwalk, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_HCPCS to Revenue Code Xwalk_Collection"
-                postman_file_name = f"hcpcs_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"hcpcs_wgs_csbd_{edit_id}_{code}.json"
             elif "Multiple E&M Same day" in folder_name:
                 # For Multiple E&M Same day, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_Collection"
-                postman_file_name = f"multiple_em_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"multiple_em_wgs_csbd_{edit_id}_{code}.json"
             elif "Multiple Billing of Obstetrical Services" in folder_name:
                 # For Multiple Billing of Obstetrical Services, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Multiple Billing of Obstetrical Services_Collection"
-                postman_file_name = f"multiple_billing_obstetrical_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"multiple_billing_obstetrical_wgs_csbd_{edit_id}_{code}.json"
             elif "Covid_gbdf_mcr" in folder_name:
                 # For GBDF MCR Covid, use the full descriptive name
                 postman_collection_name = f"TS_{ts_number}_Covid_gbdf_mcr_Collection"
-                postman_file_name = f"covid_gbdf_mcr_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"covid_gbdf_mcr_{edit_id}_{code}.json"
             else:
                 postman_collection_name = generate_postman_collection_name(ts_number)
-                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code.lower()}.json"
+                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
             
             # STAGE 5.4: Create model configuration dictionary
             model_config = {

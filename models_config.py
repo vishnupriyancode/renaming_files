@@ -14,7 +14,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_01_Covid_WGS_CSBD_RULEEM000001_W04_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/regression",
         "postman_collection_name": "TS_01_Covid_Collection",
-        "postman_file_name": "covid_wgs_csbd_RULEEM000001_w04.json"
+        "postman_file_name": "covid_wgs_csbd_RULEEM000001_W04.json"
     },
     {
         "ts_number": "02",
@@ -23,7 +23,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/regression",
         "postman_collection_name": "TS_02_Laterality_Collection",
-        "postman_file_name": "laterality_wgs_csbd_RULELATE000001_00w17.json"
+        "postman_file_name": "laterality_wgs_csbd_RULELATE000001_00W17.json"
     },
     {
         "ts_number": "03",
@@ -32,7 +32,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/regression",
         "postman_collection_name": "TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000005_00w28.json"
+        "postman_file_name": "revenue_wgs_csbd_RULEREVE000005_00W28.json"
     },
     {
         "ts_number": "04",
@@ -41,7 +41,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/regression",
         "postman_collection_name": "TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000004_00w28.json"
+        "postman_file_name": "revenue_wgs_csbd_RULEREVE000004_00W28.json"
     },
     {
         "ts_number": "05",
@@ -50,7 +50,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/regression",
         "postman_collection_name": "TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000003_00w28.json"
+        "postman_file_name": "revenue_wgs_csbd_RULEREVE000003_00W28.json"
     },
     {
         "ts_number": "06",
@@ -59,7 +59,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/regression",
         "postman_collection_name": "TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000002_00w28.json"
+        "postman_file_name": "revenue_wgs_csbd_RULEREVE000002_00W28.json"
     },
     {
         "ts_number": "07",
@@ -68,7 +68,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/regression",
         "postman_collection_name": "TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000001_00w28.json"
+        "postman_file_name": "revenue_wgs_csbd_RULEREVE000001_00W28.json"
     },
     {
         "ts_number": "08",
@@ -77,7 +77,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/regression",
         "postman_collection_name": "TS_08_Lab panel Model_Collection",
-        "postman_file_name": "lab_wgs_csbd_RULELAB0000009_00w13.json"
+        "postman_file_name": "lab_wgs_csbd_RULELAB0000009_00W13.json"
     },
     {
         "ts_number": "09",
@@ -86,7 +86,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/regression",
         "postman_collection_name": "TS_09_Device Dependent Procedures_Collection",
-        "postman_file_name": "device_wgs_csbd_RULEDEVI000003_00w13.json"
+        "postman_file_name": "device_wgs_csbd_RULEDEVI000003_00W13.json"
     },
     {
         "ts_number": "10",
@@ -95,7 +95,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/regression",
         "postman_collection_name": "TS_10_Recovery Room Reimbursement_Collection",
-        "postman_file_name": "recovery_wgs_csbd_RULERECO000001_00w34.json"
+        "postman_file_name": "recovery_wgs_csbd_RULERECO000001_00W34.json"
     },
     {
         "ts_number": "11",
@@ -104,7 +104,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_dis/regression",
         "postman_collection_name": "TS_11_Revenue Code to HCPCS Xwalk-1B_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULERECO000003_00w26.json"
+        "postman_file_name": "revenue_wgs_csbd_RULERECO000003_00W26.json"
     },
     {
         "ts_number": "12",
@@ -113,7 +113,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_dis/regression",
         "postman_collection_name": "TS_12_Incidentcal Services Facility_Collection",
-        "postman_file_name": "incidentcal_wgs_csbd_RULEINCI000001_00w34.json"
+        "postman_file_name": "incidentcal_wgs_csbd_RULEINCI000001_00W34.json"
     },
     {
         "ts_number": "13",
@@ -122,7 +122,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_dis/regression",
         "postman_collection_name": "TS_13_Revenue model CR v3_Collection",
-        "postman_file_name": "revenue_model_wgs_csbd_RULERCE0000006_00w06.json"
+        "postman_file_name": "revenue_model_wgs_csbd_RULERCE0000006_00W06.json"
     },
     {
         "ts_number": "14",
@@ -131,7 +131,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_dis/regression",
         "postman_collection_name": "TS_14_HCPCS to Revenue Code Xwalk_Collection",
-        "postman_file_name": "hcpcs_wgs_csbd_RULERCE000001_00w26.json"
+        "postman_file_name": "hcpcs_wgs_csbd_RULERCE000001_00W26.json"
     },
     {
         "ts_number": "15",
@@ -140,7 +140,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/regression",
         "postman_collection_name": "TS_15_revenue model_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULERCE000005_00w06.json"
+        "postman_file_name": "revenue_wgs_csbd_RULERCE000005_00W06.json"
     },
     {
         "ts_number": "46",
@@ -149,7 +149,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/regression",
         "postman_collection_name": "TS_46_Multiple E&M Same day_Collection",
-        "postman_file_name": "multiple_em_wgs_csbd_RULEEMSD000002_00w09.json"
+        "postman_file_name": "multiple_em_wgs_csbd_RULEEMSD000002_00W09.json"
     },
     {
         "ts_number": "47",
@@ -158,7 +158,7 @@ STATIC_MODELS_CONFIG = {
         "source_dir": "source_folder/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMDOS000001_00W28_sur/regression",
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMDOS000001_00W28_dis/regression",
         "postman_collection_name": "TS_47_Multiple Billing of Obstetrical Services_Collection",
-        "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEMDOS000001_00w28.json"
+        "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEMDOS000001_00W28.json"
     }
     ],
     "gbdf": [
