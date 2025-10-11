@@ -4,7 +4,16 @@ A Python script for automatically renaming and organizing test case JSON files b
 
 ## 🔧 Recent Updates & Fixes
 
-**✅ WGS_CSBD Flag Implementation & Command Structure Update (Latest Update)**
+**✅ WGS_CSBD Header/Footer Integration (Latest Update)**
+
+The project has been enhanced with automatic header/footer transformation for WGS_CSBD files:
+
+- **✅ Integrated Header/Footer Transformation**: WGS_CSBD files automatically get header/footer structure during renaming process
+- **✅ Selective Application**: Only WGS_CSBD files are transformed; GBDF files remain unchanged
+- **✅ Seamless Integration**: Transformation happens automatically during the renaming workflow
+- **✅ Preserved Workflow**: Existing GBDF and other workflows remain completely unaffected
+
+**✅ WGS_CSBD Flag Implementation & Command Structure Update**
 
 The project has been enhanced with comprehensive improvements:
 

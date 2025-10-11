@@ -22,7 +22,132 @@ import shutil
 import sys
 import subprocess
 import argparse
+import json
 from postman_generator import PostmanCollectionGenerator
+
+
+def clean_duplicate_fields_csbd(file_path):
+    """
+    Clean up duplicate fields in existing CSBD JSON files.
+    This function removes duplicate fields that may have been created by previous versions.
+    
+    Args:
+        file_path: Path to the JSON file to clean
+        
+    Returns:
+        bool: True if cleaning was successful, False otherwise
+    """
+    try:
+        # Read the existing JSON content
+        with open(file_path, 'r', encoding='utf-8') as f:
+            existing_data = json.load(f)
+        
+        # Check if the file has duplicate fields in the payload
+        if (isinstance(existing_data, dict) and 
+            "payload" in existing_data and 
+            isinstance(existing_data["payload"], dict)):
+            
+            payload = existing_data["payload"]
+            
+            # Check for duplicate fields in payload
+            duplicate_fields = []
+            for field in ["adhoc", "analyticId", "hints", "responseRequired", "meta-src-envrmt", "meta-transid"]:
+                if field in payload and field in existing_data:
+                    duplicate_fields.append(field)
+            
+            if duplicate_fields:
+                print(f"[INFO] Found duplicate fields in {file_path}: {duplicate_fields}")
+                
+                # Remove duplicate fields from payload, keep only the test case data
+                cleaned_payload = {}
+                for key, value in payload.items():
+                    if key not in ["adhoc", "analyticId", "hints", "responseRequired", "meta-src-envrmt", "meta-transid"]:
+                        cleaned_payload[key] = value
+                
+                # Update the structure
+                existing_data["payload"] = cleaned_payload
+                
+                # Write the cleaned JSON back to the file
+                with open(file_path, 'w', encoding='utf-8') as f:
+                    json.dump(existing_data, f, indent=2, ensure_ascii=False)
+                
+                print(f"[SUCCESS] Cleaned duplicate fields from {file_path}")
+                return True
+            else:
+                print(f"[INFO] No duplicate fields found in {file_path}")
+                return True
+        else:
+            print(f"[INFO] File {file_path} doesn't have the expected structure for cleaning")
+            return True
+        
+    except json.JSONDecodeError as e:
+        print(f"[ERROR] Error parsing JSON in {file_path}: {e}")
+        return False
+    except Exception as e:
+        print(f"[ERROR] Error cleaning duplicate fields in {file_path}: {e}")
+        return False
+
+
+def apply_wgs_csbd_header_footer(file_path):
+    """
+    Apply header and footer structure to WGS_CSBD JSON files.
+    This function transforms the JSON content by wrapping the existing data
+    with the required header and footer metadata, avoiding duplicate fields.
+    
+    Args:
+        file_path: Path to the JSON file to transform
+        
+    Returns:
+        bool: True if transformation was successful, False otherwise
+    """
+    try:
+        # Read the existing JSON content
+        with open(file_path, 'r', encoding='utf-8') as f:
+            existing_data = json.load(f)
+        
+        # Check if the file already has the correct structure to avoid duplicates
+        if (isinstance(existing_data, dict) and 
+            "adhoc" in existing_data and 
+            "payload" in existing_data and 
+            "responseRequired" in existing_data):
+            # File already has the correct structure, no need to modify
+            print(f"[INFO] File {file_path} already has correct structure, skipping transformation")
+            return True
+        
+        # Header and footer structure
+        header_footer = {
+            "adhoc": "true",
+            "analyticId": " ",
+            "hints": ["congnitive_claims_async"],
+            "responseRequired": "false",
+            "meta-src-envrmt": "IMST",
+            "meta-transid": "20220117181853TMBL20359Cl893580999"
+        }
+        
+        # Create the new structure with header, payload, and footer
+        # Only include the existing data as payload, not as duplicate fields
+        new_structure = {
+            "adhoc": header_footer["adhoc"],
+            "analyticId": header_footer["analyticId"],
+            "hints": header_footer["hints"],
+            "payload": existing_data,  # The existing JSON becomes the payload
+            "responseRequired": header_footer["responseRequired"],
+            "meta-src-envrmt": header_footer["meta-src-envrmt"],
+            "meta-transid": header_footer["meta-transid"]
+        }
+        
+        # Write the transformed JSON back to the file
+        with open(file_path, 'w', encoding='utf-8') as f:
+            json.dump(new_structure, f, indent=2, ensure_ascii=False)
+        
+        return True
+        
+    except json.JSONDecodeError as e:
+        print(f"[ERROR] Error parsing JSON in {file_path}: {e}")
+        return False
+    except Exception as e:
+        print(f"[ERROR] Error applying header/footer to {file_path}: {e}")
+        return False
 
 
 def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, generate_postman=True, postman_collection_name=None, postman_file_name=None):
@@ -138,6 +263,14 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 shutil.copy2(source_path, dest_path)
                 print(f"Successfully copied and renamed: {filename} -> {new_filename}")
                 
+                # Apply header/footer transformation for WGS_CSBD files
+                if "WGS_CSBD" in dest_dir:
+                    print(f"Applying WGS_CSBD header/footer transformation to: {new_filename}")
+                    if apply_wgs_csbd_header_footer(dest_path):
+                        print(f"[SUCCESS] Header/footer applied to: {new_filename}")
+                    else:
+                        print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
+                
                 # Remove the original file
                 os.remove(source_path)
                 print(f"Removed original file: {filename}")
@@ -181,6 +314,14 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 shutil.copy2(source_path, dest_path)
                 print(f"Successfully copied and renamed: {filename} -> {new_filename}")
                 
+                # Apply header/footer transformation for WGS_CSBD files
+                if "WGS_CSBD" in dest_dir:
+                    print(f"Applying WGS_CSBD header/footer transformation to: {new_filename}")
+                    if apply_wgs_csbd_header_footer(dest_path):
+                        print(f"[SUCCESS] Header/footer applied to: {new_filename}")
+                    else:
+                        print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
+                
                 # Remove the original file
                 os.remove(source_path)
                 print(f"Removed original file: {filename}")
@@ -218,6 +359,14 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                     # Copy the file to destination
                     shutil.copy2(source_path, dest_path)
                     print(f"Successfully moved: {filename}")
+                    
+                    # Apply header/footer transformation for WGS_CSBD files
+                    if "WGS_CSBD" in dest_dir:
+                        print(f"Applying WGS_CSBD header/footer transformation to: {new_filename}")
+                        if apply_wgs_csbd_header_footer(dest_path):
+                            print(f"[SUCCESS] Header/footer applied to: {new_filename}")
+                        else:
+                            print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
                     
                     # Remove the original file
                     os.remove(source_path)
