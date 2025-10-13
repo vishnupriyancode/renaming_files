@@ -1,12 +1,12 @@
 {
   "info": {
-    "name": "TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection API Collection",
-    "description": "API collection for TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection test cases",
+    "name": "TS_01_Covid_Collection API Collection",
+    "description": "API collection for TS_01_Covid_Collection test cases",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "TC#01_sample#RULEREVE000005#00W28#LR",
+      "name": "TC#01_sample#RULEEM000001#W04#LR",
       "request": {
         "method": "POST",
         "header": [
@@ -39,7 +39,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test_case\": \"TC#01_sample#deny\",\n    \"edit_id\": \"RULEEM000001\",\n    \"code\": \"W04\",\n    \"description\": \"Test case for Covid E&M Services not payable on Facility claim Sub Edit 1 WGS_CSBD model\",\n    \"expected_result\": \"deny\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\"\n}",
+          "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test_case\": \"TC#01_sample#deny\",\n    \"edit_id\": \"RULEEM000001\",\n    \"KEY_CHK_CDN_NBR\": \"30115220225\",\n    \"code\": \"W04\",\n    \"description\": \"Test case for Covid E&M Services not payable on Facility claim Sub Edit 1 WGS_CSBD model\",\n    \"expected_result\": \"deny\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\"\n}",
           "options": {
             "raw": {
               "language": "json"

@@ -137,6 +137,7 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         pattern6 = os.path.join(base_dir, "TS_*_Recovery Room Reimbursement_WGS_CSBD_*_sur")
         pattern7 = os.path.join(base_dir, "TS_*_Covid_WGS_CSBD_*_sur")
         pattern8 = os.path.join(base_dir, "TS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur")
+        pattern8_copy = os.path.join(base_dir, "TS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur copy")
         pattern9 = os.path.join(base_dir, "TS_*_Device Dependent Procedures(R1)-1B_WGS_CSBD_*_sur")
         pattern10 = os.path.join(base_dir, "TS_*_revenue model_WGS_CSBD_*_sur")
         pattern11 = os.path.join(base_dir, "TS_*_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_*_sur")
@@ -147,7 +148,7 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         pattern16 = os.path.join(base_dir, "TS_*_Multiple Billing of Obstetrical Services_WGS_CSBD_*_sur")
         ts_folders = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + 
                      glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + 
-                     glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9) + 
+                     glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern8_copy) + glob.glob(pattern9) + 
                      glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) + 
                      glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15) + 
                      glob.glob(pattern16))
@@ -192,6 +193,10 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         # If no match, try Laterality Policy pattern
         if not match:
             match = re.match(r'TS_(\d{1,3})_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        
+        # If no match, try Laterality Policy pattern with "_sur copy" suffix
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur copy$', folder_name)
         
         # If no match, try Device Dependent Procedures pattern
         if not match:

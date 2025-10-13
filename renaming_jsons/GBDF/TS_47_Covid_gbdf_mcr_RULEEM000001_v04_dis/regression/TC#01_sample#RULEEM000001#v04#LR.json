@@ -1,6 +1,7 @@
 {
   "test_case": "TC#01_sample#deny",
   "edit_id": "RULEREVE000005",
+  "CLCL_ID": "77814587370",
   "code": "00W28",
   "description": "Test case for Revenue code Services not payable on Facility claim Sub Edit 5 GBDF model",
   "expected_result": "deny"

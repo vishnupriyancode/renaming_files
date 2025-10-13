@@ -80,7 +80,7 @@ class PostmanCollectionGenerator:
         
         return None
     
-    def _create_postman_request(self, json_file_path: Path, parsed_info: Dict[str, str]) -> Dict[str, Any]:
+    def _create_postman_request(self, json_file_path: Path, parsed_info: Dict[str, str], is_gbdf_model: bool = False) -> Dict[str, Any]:
         """
         STAGE 4: POSTMAN REQUEST CREATION
         Create a Postman request from a JSON file with proper structure and headers.
@@ -88,6 +88,7 @@ class PostmanCollectionGenerator:
         Args:
             json_file_path: Path to the JSON file
             parsed_info: Parsed filename information
+            is_gbdf_model: Whether this is a GBDF model (affects headers)
             
         Returns:
             Postman request structure
@@ -113,13 +114,18 @@ class PostmanCollectionGenerator:
         method = method_map.get(parsed_info['suffix'], 'POST')
         
         # Step 4.4: Create Postman request structure - ultra-minimal format
-        request = {
-            "uid": str(uuid.uuid4()),  # Unique identifier for the request
-            "name": request_name,      # Request name (filename without extension)
-            "type": "http",            # Request type
-            "method": method,          # HTTP method (POST for all validation requests)
-            "url": "{{baseUrl}}/api/validate/{{tc_id}}",  # API endpoint with variables
-            "headers": [
+        # Determine headers based on model type
+        if is_gbdf_model:
+            headers = [
+                {
+                    "uid": str(uuid.uuid4()),
+                    "name": "Client_Transaction_ID",
+                    "value": "20115660390020220225161114893",
+                    "enabled": True
+                }
+            ]
+        else:
+            headers = [
                 {
                     "uid": str(uuid.uuid4()),
                     "name": "Content-Type",
@@ -138,7 +144,15 @@ class PostmanCollectionGenerator:
                     "value": "IMSH",  # Source environment
                     "enabled": True
                 }
-            ],
+            ]
+        
+        request = {
+            "uid": str(uuid.uuid4()),  # Unique identifier for the request
+            "name": request_name,      # Request name (filename without extension)
+            "type": "http",            # Request type
+            "method": method,          # HTTP method (POST for all validation requests)
+            "url": "{{baseUrl}}/api/validate/{{tc_id}}",  # API endpoint with variables
+            "headers": headers,
             "body": {
                 "mode": "raw",  # Raw JSON body
                 "raw": json.dumps(json_content, indent=2)  # Pretty-printed JSON content
@@ -148,7 +162,7 @@ class PostmanCollectionGenerator:
         return request
     
     
-    def generate_postman_collection(self, collection_name: str = "TestCollection", custom_filename: str = None) -> Optional[Path]:
+    def generate_postman_collection(self, collection_name: str = "TestCollection", custom_filename: str = None, is_gbdf_model: bool = False) -> Optional[Path]:
         """
         STAGE 5: MAIN COLLECTION GENERATION
         Generate Postman-compatible collection for JSON files in source directory.
@@ -157,6 +171,7 @@ class PostmanCollectionGenerator:
         Args:
             collection_name: Name of the collection to generate
             custom_filename: Optional custom filename for the collection file
+            is_gbdf_model: Whether this is a GBDF model (affects headers)
             
         Returns:
             Path to generated Postman collection file or None if no files found
@@ -221,27 +236,39 @@ class PostmanCollectionGenerator:
                 request_name = json_file.stem  # This gets the filename without extension
                 
                 # Step 5.4.4: Build Postman request structure (v2.1.0 format)
+                # Determine headers based on model type
+                if is_gbdf_model:
+                    headers = [
+                        {
+                            "key": "Client_Transaction_ID",
+                            "value": "20115660390020220225161114893",
+                            "type": "text"
+                        }
+                    ]
+                else:
+                    headers = [
+                        {
+                            "key": "Content-Type",
+                            "value": "application/json",
+                            "type": "text"
+                        },
+                        {
+                            "key": "meta-transid",
+                            "value": "20220117181853TMBL20359Cl893580999",  # Transaction ID
+                            "type": "text"
+                        },
+                        {
+                            "key": "meta-src-envrmt",
+                            "value": "IMSH",  # Source environment
+                            "type": "text"
+                        }
+                    ]
+                
                 postman_request = {
                     "name": request_name,
                     "request": {
                         "method": method,
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json",
-                                "type": "text"
-                            },
-                            {
-                                "key": "meta-transid",
-                                "value": "20220117181853TMBL20359Cl893580999",  # Transaction ID
-                                "type": "text"
-                            },
-                            {
-                                "key": "meta-src-envrmt",
-                                "value": "IMSH",  # Source environment
-                                "type": "text"
-                            }
-                        ],
+                        "header": headers,
                         "url": {
                             "raw": "{{baseUrl}}/api/validate/{{tc_id}}",  # Full URL with variables
                             "host": ["{{baseUrl}}"],  # Host part
@@ -292,7 +319,7 @@ class PostmanCollectionGenerator:
             print(f"ERROR: Error saving Postman collection for {collection_name}: {e}")
             return None
 
-    def generate_collection_for_directory(self, dir_name: str) -> Optional[Path]:
+    def generate_collection_for_directory(self, dir_name: str, is_gbdf_model: bool = False) -> Optional[Path]:
         """
         STAGE 6: DIRECTORY-SPECIFIC COLLECTION GENERATION
         Generate Postman collection for a specific directory using minimal format.
@@ -300,6 +327,7 @@ class PostmanCollectionGenerator:
         
         Args:
             dir_name: Name of the directory to generate collection for
+            is_gbdf_model: Whether this is a GBDF model (affects headers)
             
         Returns:
             Path to generated collection file or None if no files found
@@ -325,7 +353,7 @@ class PostmanCollectionGenerator:
         for json_file in json_files:
             parsed_info = self._parse_filename(json_file.name)
             if parsed_info:
-                request = self._create_postman_request(json_file, parsed_info)
+                request = self._create_postman_request(json_file, parsed_info, is_gbdf_model)
                 requests.append(request)
             else:
                 print(f"Warning: Could not parse filename '{json_file.name}'")
