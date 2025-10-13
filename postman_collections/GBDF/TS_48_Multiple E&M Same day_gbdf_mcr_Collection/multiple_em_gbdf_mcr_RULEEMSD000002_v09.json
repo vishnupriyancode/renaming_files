@@ -11,18 +11,8 @@
         "method": "POST",
         "header": [
           {
-            "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
-          },
-          {
-            "key": "meta-transid",
-            "value": "20220117181853TMBL20359Cl893580999",
-            "type": "text"
-          },
-          {
-            "key": "meta-src-envrmt",
-            "value": "IMSH",
+            "key": "Client_Transaction_ID",
+            "value": "20115660390020220225161114893",
             "type": "text"
           }
         ],
@@ -39,7 +29,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"99265715132\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
           "options": {
             "raw": {
               "language": "json"

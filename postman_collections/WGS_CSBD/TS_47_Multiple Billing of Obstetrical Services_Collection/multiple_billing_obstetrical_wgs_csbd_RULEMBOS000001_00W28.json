@@ -1,0 +1,102 @@
+{
+  "info": {
+    "name": "TS_47_Multiple Billing of Obstetrical Services_Collection API Collection",
+    "description": "API collection for TS_47_Multiple Billing of Obstetrical Services_Collection test cases",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC#01_sample#RULEMBOS000001#00W28#LR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "meta-transid",
+            "value": "20220117181853TMBL20359Cl893580999",
+            "type": "text"
+          },
+          {
+            "key": "meta-src-envrmt",
+            "value": "IMSH",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test_case\": \"TC#01_sample#deny\",\n    \"edit_id\": \"RULEEM000001\",\n    \"KEY_CHK_CDN_NBR\": \"94028423715\",\n    \"code\": \"W04\",\n    \"description\": \"Test case for Covid E&M Services not payable on Facility claim Sub Edit 1 WGS_CSBD model\",\n    \"expected_result\": \"deny\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC#02_sample#RULEMBOS000001#00W28#NR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "meta-transid",
+            "value": "20220117181853TMBL20359Cl893580999",
+            "type": "text"
+          },
+          {
+            "key": "meta-src-envrmt",
+            "value": "IMSH",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test_case\": \"TC#01_sample#deny\",\n    \"edit_id\": \"RULEEM000001\",\n    \"KEY_CHK_CDN_NBR\": \"44933670827\",\n    \"code\": \"W04\",\n    \"description\": \"Test case for Covid E&M Services not payable on Facility claim Sub Edit 1 WGS_CSBD model\",\n    \"expected_result\": \"deny\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

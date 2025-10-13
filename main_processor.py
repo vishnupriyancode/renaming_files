@@ -93,6 +93,7 @@ def apply_wgs_csbd_header_footer(file_path):
     Apply header and footer structure to WGS_CSBD JSON files.
     This function transforms the JSON content by wrapping the existing data
     with the required header and footer metadata, avoiding duplicate fields.
+    Additionally, generates random 11-digit numbers for KEY_CHK_CDN_NBR field.
     
     Args:
         file_path: Path to the JSON file to transform
@@ -100,6 +101,8 @@ def apply_wgs_csbd_header_footer(file_path):
     Returns:
         bool: True if transformation was successful, False otherwise
     """
+    import random
+    
     try:
         # Read the existing JSON content
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -113,6 +116,13 @@ def apply_wgs_csbd_header_footer(file_path):
             # File already has the correct structure, no need to modify
             print(f"[INFO] File {file_path} already has correct structure, skipping transformation")
             return True
+        
+        # Generate random 11-digit number for KEY_CHK_CDN_NBR field
+        # Only modify if the field exists in the existing data
+        if isinstance(existing_data, dict) and "KEY_CHK_CDN_NBR" in existing_data:
+            random_11_digit = str(random.randint(10000000000, 99999999999))
+            existing_data["KEY_CHK_CDN_NBR"] = random_11_digit
+            print(f"[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR: {random_11_digit}")
         
         # Header and footer structure
         header_footer = {
@@ -147,6 +157,49 @@ def apply_wgs_csbd_header_footer(file_path):
         return False
     except Exception as e:
         print(f"[ERROR] Error applying header/footer to {file_path}: {e}")
+        return False
+
+
+def apply_gbdf_clcl_id_generation(file_path):
+    """
+    Generate random 11-digit number for CLCL_ID field in GBDF JSON files.
+    This function modifies the CLCL_ID field to have a random 11-digit value.
+    
+    Args:
+        file_path: Path to the JSON file to transform
+        
+    Returns:
+        bool: True if transformation was successful, False otherwise
+    """
+    import random
+    
+    try:
+        # Read the existing JSON content
+        with open(file_path, 'r', encoding='utf-8') as f:
+            existing_data = json.load(f)
+        
+        # Generate random 11-digit number for CLCL_ID field
+        # Only modify if the field exists in the existing data
+        if isinstance(existing_data, dict) and "CLCL_ID" in existing_data:
+            random_11_digit = str(random.randint(10000000000, 99999999999))
+            existing_data["CLCL_ID"] = random_11_digit
+            print(f"[INFO] Generated random 11-digit number for CLCL_ID: {random_11_digit}")
+            
+            # Write the modified JSON back to the file
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(existing_data, f, indent=2, ensure_ascii=False)
+            
+            print(f"[SUCCESS] Applied CLCL_ID generation to: {file_path}")
+            return True
+        else:
+            print(f"[WARNING] CLCL_ID field not found in {file_path}, skipping transformation")
+            return False
+        
+    except json.JSONDecodeError as e:
+        print(f"[ERROR] Error parsing JSON in {file_path}: {e}")
+        return False
+    except Exception as e:
+        print(f"[ERROR] Error applying CLCL_ID generation to {file_path}: {e}")
         return False
 
 
@@ -271,6 +324,14 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                     else:
                         print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
                 
+                # Apply CLCL_ID generation for GBDF files
+                elif "GBDF" in dest_dir:
+                    print(f"Applying GBDF CLCL_ID generation to: {new_filename}")
+                    if apply_gbdf_clcl_id_generation(dest_path):
+                        print(f"[SUCCESS] CLCL_ID generation applied to: {new_filename}")
+                    else:
+                        print(f"[WARNING] Failed to apply CLCL_ID generation to: {new_filename}")
+                
                 # Remove the original file
                 os.remove(source_path)
                 print(f"Removed original file: {filename}")
@@ -321,6 +382,14 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                         print(f"[SUCCESS] Header/footer applied to: {new_filename}")
                     else:
                         print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
+                
+                # Apply CLCL_ID generation for GBDF files
+                elif "GBDF" in dest_dir:
+                    print(f"Applying GBDF CLCL_ID generation to: {new_filename}")
+                    if apply_gbdf_clcl_id_generation(dest_path):
+                        print(f"[SUCCESS] CLCL_ID generation applied to: {new_filename}")
+                    else:
+                        print(f"[WARNING] Failed to apply CLCL_ID generation to: {new_filename}")
                 
                 # Remove the original file
                 os.remove(source_path)
@@ -435,8 +504,11 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             
             # STAGE 2.3: COLLECTION GENERATION
             # ===============================
+            # Determine if this is a GBDF model
+            is_gbdf_model = "GBDF" in dest_dir
+            
             # Generate collection
-            collection_path = generator.generate_postman_collection(postman_collection_name, custom_filename)
+            collection_path = generator.generate_postman_collection(postman_collection_name, custom_filename, is_gbdf_model)
             
             if collection_path:
                 print(f"Postman collection generated: {collection_path}")
