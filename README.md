@@ -1074,6 +1074,23 @@ print(f"Postman request name: {request_name}")
 
 This project is open source and available under the [MIT License](LICENSE).
 
+## 📊 Presentation Tools
+
+### Converting Markdown to PowerPoint
+
+To convert the team presentation from Markdown to PowerPoint format:
+
+```bash
+# Convert team_presentation.md to PowerPoint format
+pandoc team_presentation.md -o team_presentation.pptx
+```
+
+**Prerequisites:**
+- Install pandoc: https://pandoc.org/installing.html
+- Ensure `team_presentation.md` exists in the project root
+
+**Note:** The presentation file is located in the `PPT/` directory and contains project documentation and team information.
+
 ## Support
 
 For issues or questions:
