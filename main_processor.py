@@ -108,47 +108,62 @@ def apply_wgs_csbd_header_footer(file_path):
         with open(file_path, 'r', encoding='utf-8') as f:
             existing_data = json.load(f)
         
-        # Check if the file already has the correct structure to avoid duplicates
-        if (isinstance(existing_data, dict) and 
-            "adhoc" in existing_data and 
-            "payload" in existing_data and 
-            "responseRequired" in existing_data):
-            # File already has the correct structure, no need to modify
-            print(f"[INFO] File {file_path} already has correct structure, skipping transformation")
-            return True
+        # Check if the file already has the correct structure
+        has_correct_structure = (isinstance(existing_data, dict) and 
+                                "adhoc" in existing_data and 
+                                "payload" in existing_data and 
+                                "responseRequired" in existing_data)
+        
+        if has_correct_structure:
+            print(f"[INFO] File {file_path} already has correct structure, will only update KEY_CHK_CDN_NBR if needed")
         
         # Generate random 11-digit number for KEY_CHK_CDN_NBR field
-        # Only modify if the field exists in the existing data
-        if isinstance(existing_data, dict) and "KEY_CHK_CDN_NBR" in existing_data:
-            random_11_digit = str(random.randint(10000000000, 99999999999))
-            existing_data["KEY_CHK_CDN_NBR"] = random_11_digit
-            print(f"[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR: {random_11_digit}")
+        # Check both root level and payload level for KEY_CHK_CDN_NBR
+        if isinstance(existing_data, dict):
+            # Check root level
+            if "KEY_CHK_CDN_NBR" in existing_data:
+                random_11_digit = str(random.randint(10000000000, 99999999999))
+                existing_data["KEY_CHK_CDN_NBR"] = random_11_digit
+                print(f"[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (root level): {random_11_digit}")
+            
+            # Check payload level
+            if "payload" in existing_data and isinstance(existing_data["payload"], dict):
+                if "KEY_CHK_CDN_NBR" in existing_data["payload"]:
+                    random_11_digit = str(random.randint(10000000000, 99999999999))
+                    existing_data["payload"]["KEY_CHK_CDN_NBR"] = random_11_digit
+                    print(f"[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (payload level): {random_11_digit}")
         
-        # Header and footer structure
-        header_footer = {
-            "adhoc": "true",
-            "analyticId": " ",
-            "hints": ["congnitive_claims_async"],
-            "responseRequired": "false",
-            "meta-src-envrmt": "IMST",
-            "meta-transid": "20220117181853TMBL20359Cl893580999"
-        }
-        
-        # Create the new structure with header, payload, and footer
-        # Only include the existing data as payload, not as duplicate fields
-        new_structure = {
-            "adhoc": header_footer["adhoc"],
-            "analyticId": header_footer["analyticId"],
-            "hints": header_footer["hints"],
-            "payload": existing_data,  # The existing JSON becomes the payload
-            "responseRequired": header_footer["responseRequired"],
-            "meta-src-envrmt": header_footer["meta-src-envrmt"],
-            "meta-transid": header_footer["meta-transid"]
-        }
-        
-        # Write the transformed JSON back to the file
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(new_structure, f, indent=2, ensure_ascii=False)
+        # Only apply header/footer transformation if the file doesn't already have correct structure
+        if not has_correct_structure:
+            # Header and footer structure
+            header_footer = {
+                "adhoc": "true",
+                "analyticId": " ",
+                "hints": ["congnitive_claims_async"],
+                "responseRequired": "false",
+                "meta-src-envrmt": "IMST",
+                "meta-transid": "20220117181853TMBL20359Cl893580999"
+            }
+            
+            # Create the new structure with header, payload, and footer
+            # Only include the existing data as payload, not as duplicate fields
+            new_structure = {
+                "adhoc": header_footer["adhoc"],
+                "analyticId": header_footer["analyticId"],
+                "hints": header_footer["hints"],
+                "payload": existing_data,  # The existing JSON becomes the payload
+                "responseRequired": header_footer["responseRequired"],
+                "meta-src-envrmt": header_footer["meta-src-envrmt"],
+                "meta-transid": header_footer["meta-transid"]
+            }
+            
+            # Write the transformed JSON back to the file
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(new_structure, f, indent=2, ensure_ascii=False)
+        else:
+            # File already has correct structure, just write the updated data back
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(existing_data, f, indent=2, ensure_ascii=False)
         
         return True
         
