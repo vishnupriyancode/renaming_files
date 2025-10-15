@@ -4,11 +4,13 @@ A Python script for automatically renaming and organizing test case JSON files b
 
 ## 🔧 Recent Updates & Fixes
 
-**✅ WGS_CSBD Header/Footer Integration (Latest Update)**
+**✅ WGS_CSBD Header/Footer Integration with KEY_CHK_CDN_NBR Generator (Latest Update)**
 
 The project has been enhanced with automatic header/footer transformation for WGS_CSBD files:
 
 - **✅ Integrated Header/Footer Transformation**: WGS_CSBD files automatically get header/footer structure during renaming process
+- **✅ KEY_CHK_CDN_NBR Generator**: Automatically generates random 11-digit numbers for KEY_CHK_CDN_NBR fields in both root and payload levels
+- **✅ Smart Field Updates**: Updates existing KEY_CHK_CDN_NBR values with new random numbers during processing
 - **✅ Selective Application**: Only WGS_CSBD files are transformed; GBDF files remain unchanged
 - **✅ Seamless Integration**: Transformation happens automatically during the renaming workflow
 - **✅ Preserved Workflow**: Existing GBDF and other workflows remain completely unaffected
@@ -339,6 +341,8 @@ renaming_postman_collection/
 - **Suffix Mapping**: Maps test case types to appropriate suffixes
 - **File Organization**: Moves renamed files to organized directory structure
 - **Postman Collection Generation**: Automatically creates Postman collections for API testing
+- **KEY_CHK_CDN_NBR Generator**: Automatically generates random 11-digit numbers for KEY_CHK_CDN_NBR fields
+- **WGS_CSBD Header/Footer Transformation**: Applies proper header/footer structure to WGS_CSBD files
 - **Dynamic Model Discovery**: Automatically detects TS folders and extracts model parameters
 - **Modular Architecture**: Clean separation of concerns with dedicated modules
 - **Multiple Entry Points**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) interfaces
@@ -658,6 +662,7 @@ Converting to new template...
 New:     TC#01_od#RULEEM000001#W04#LR.json
 Moving to: renaming_jsons\TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis\regression
 ----------------------------------------
+[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (payload level): 62620451899
 ✓ Successfully copied and renamed: TC#01_od#deny.json → TC#01_od#RULEEM000001#W04#LR.json
 ✓ Removed original file: TC#01_od#deny.json
 
@@ -861,6 +866,39 @@ The script processes JSON files containing test case information:
     }
   ]
 }
+```
+
+## KEY_CHK_CDN_NBR Generator
+
+The project includes an automatic KEY_CHK_CDN_NBR generator that creates random 11-digit numbers for test case validation:
+
+### Generator Features:
+- **Random Number Generation**: Creates 11-digit numbers between 10000000000 and 99999999999
+- **Dual-Level Updates**: Updates KEY_CHK_CDN_NBR fields at both root level and payload level
+- **Smart Detection**: Automatically detects existing KEY_CHK_CDN_NBR fields and updates them
+- **WGS_CSBD Integration**: Works seamlessly with WGS_CSBD header/footer transformation
+
+### How It Works:
+1. **Field Detection**: Scans JSON files for existing KEY_CHK_CDN_NBR fields
+2. **Number Generation**: Creates a new random 11-digit number for each field found
+3. **Field Updates**: Updates both root-level and payload-level KEY_CHK_CDN_NBR fields
+4. **Logging**: Provides detailed logging of all generated numbers
+
+### Example Output:
+```json
+{
+  "KEY_CHK_CDN_NBR": "42488458762",
+  "payload": {
+    "KEY_CHK_CDN_NBR": "85872060683",
+    "test_case": "TC#01_sample#deny"
+  }
+}
+```
+
+### Console Output:
+```
+[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (root level): 42488458762
+[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (payload level): 85872060683
 ```
 
 ## How the Mapping Works
@@ -1111,6 +1149,8 @@ The project has been comprehensively updated with modern architecture and enhanc
 ### ✅ What's Working:
 - **15 Active Test Suites**: TS_01 through TS_15 with diverse model types
 - **WGS_CSBD Flag Implementation**: Mandatory flag requirement for all TS model processing
+- **KEY_CHK_CDN_NBR Generator**: Automatic random 11-digit number generation for test validation
+- **WGS_CSBD Header/Footer Transformation**: Proper structure application with field updates
 - **Dynamic Discovery**: Automatic detection of TS folders and model parameters
 - **Modular Architecture**: Clean separation of concerns with dedicated modules
 - **Multiple Interfaces**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) workflows

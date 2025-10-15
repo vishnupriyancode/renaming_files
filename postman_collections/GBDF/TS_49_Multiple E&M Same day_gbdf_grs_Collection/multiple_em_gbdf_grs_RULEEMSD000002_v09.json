@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "TC#01_sample#RULEEMSD000002#v09#LR",
+      "name": "TC#01_sample#RULEEMSD000002#v09#deny",
       "request": {
         "method": "POST",
         "header": [
@@ -29,7 +29,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"12909527794\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"67585521935\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -39,7 +39,7 @@
       }
     },
     {
-      "name": "TC#02_sample#RULEEMSD000002#v09#LR",
+      "name": "TC#02_sample#RULEEMSD000002#v09#bypass",
       "request": {
         "method": "POST",
         "header": [
@@ -62,7 +62,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"63215358802\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"96682368196\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
           "options": {
             "raw": {
               "language": "json"

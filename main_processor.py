@@ -179,6 +179,7 @@ def apply_gbdf_clcl_id_generation(file_path):
     """
     Generate random 11-digit number for CLCL_ID field in GBDF JSON files.
     This function modifies the CLCL_ID field to have a random 11-digit value.
+    Handles both root-level and nested payload structure.
     
     Args:
         file_path: Path to the JSON file to transform
@@ -194,12 +195,25 @@ def apply_gbdf_clcl_id_generation(file_path):
             existing_data = json.load(f)
         
         # Generate random 11-digit number for CLCL_ID field
-        # Only modify if the field exists in the existing data
+        random_11_digit = str(random.randint(10000000000, 99999999999))
+        clcl_id_updated = False
+        
+        # Check if CLCL_ID exists at root level
         if isinstance(existing_data, dict) and "CLCL_ID" in existing_data:
-            random_11_digit = str(random.randint(10000000000, 99999999999))
             existing_data["CLCL_ID"] = random_11_digit
-            print(f"[INFO] Generated random 11-digit number for CLCL_ID: {random_11_digit}")
-            
+            print(f"[INFO] Generated random 11-digit number for CLCL_ID (root level): {random_11_digit}")
+            clcl_id_updated = True
+        
+        # Check if CLCL_ID exists in payload object (nested structure)
+        if (isinstance(existing_data, dict) and 
+            "payload" in existing_data and 
+            isinstance(existing_data["payload"], dict) and 
+            "CLCL_ID" in existing_data["payload"]):
+            existing_data["payload"]["CLCL_ID"] = random_11_digit
+            print(f"[INFO] Generated random 11-digit number for CLCL_ID (payload level): {random_11_digit}")
+            clcl_id_updated = True
+        
+        if clcl_id_updated:
             # Write the modified JSON back to the file
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(existing_data, f, indent=2, ensure_ascii=False)
@@ -451,6 +465,14 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                             print(f"[SUCCESS] Header/footer applied to: {new_filename}")
                         else:
                             print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
+                    
+                    # Apply CLCL_ID generation for GBDF files
+                    elif "GBDF" in dest_dir:
+                        print(f"Applying GBDF CLCL_ID generation to: {new_filename}")
+                        if apply_gbdf_clcl_id_generation(dest_path):
+                            print(f"[SUCCESS] CLCL_ID generation applied to: {new_filename}")
+                        else:
+                            print(f"[WARNING] Failed to apply CLCL_ID generation to: {new_filename}")
                     
                     # Remove the original file
                     os.remove(source_path)
