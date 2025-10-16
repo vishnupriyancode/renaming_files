@@ -329,6 +329,28 @@ def apply_gbdf_clcl_id_generation(file_path):
         return False
 
 
+def validate_suffix(suffix, filename):
+    """
+    Validate that the suffix is one of the allowed values.
+    
+    Args:
+        suffix: The suffix to validate
+        filename: The filename being processed (for error reporting)
+        
+    Returns:
+        bool: True if valid, False if invalid
+    """
+    valid_suffixes = {"deny", "bypass", "exclusion"}
+    
+    if suffix not in valid_suffixes:
+        print(f"ERROR: Invalid suffix '{suffix}' found in file '{filename}'")
+        print(f"Valid suffixes are: {', '.join(sorted(valid_suffixes))}")
+        print("No files will be created due to invalid suffix.")
+        return False
+    
+    return True
+
+
 def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, generate_postman=True, postman_collection_name=None, postman_file_name=None, excel_reporter=None):
     """
     STAGE 1: FILE RENAMING FUNCTION
@@ -375,10 +397,13 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
         "negative": {
             "bypass": "NR",  # bypass -> NR
         },
-        "Exclusion": {
+        "exclusion": {
             "exclusion": "EX",   # exclusion -> EX
         }
     }
+    
+    # Valid suffixes that are allowed
+    valid_suffixes = {"deny", "bypass", "exclusion"}
     
     # STAGE 1.2: PATH CONFIGURATION AND VALIDATION
     # ============================================
@@ -422,7 +447,11 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             # Handle 3-part template: TC#XX_XXXXX#suffix.json
             tc_part = parts[0]  # TC
             tc_id_part = parts[1]  # 01_12345
-            suffix = parts[2].replace('.json', '')  # deny, bypass, market
+            suffix = parts[2].replace('.json', '')  # deny, bypass, exclusion
+            
+            # Validate suffix before processing
+            if not validate_suffix(suffix, filename):
+                continue  # Skip this file and move to next
             
             # Get the correct suffix mapping for the new template
             mapped_suffix = suffix
@@ -486,7 +515,11 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             tc_part = parts[0]  # TC
             tc_id_part = parts[1]  # 01_12345
             file_edit_id = parts[2]  # rvn001
-            suffix = parts[3].replace('.json', '')  # deny, bypass, market
+            suffix = parts[3].replace('.json', '')  # deny, bypass, exclusion
+            
+            # Validate suffix before processing
+            if not validate_suffix(suffix, filename):
+                continue  # Skip this file and move to next
             
             # Get the correct suffix mapping for the new template
             mapped_suffix = suffix
@@ -547,6 +580,19 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             file_edit_id = parts[2]  # rvn001
             file_code = parts[3]  # 00W5
             suffix = parts[4].replace('.json', '')  # LR, NR, EX, exclusion, etc.
+            
+            # Validate suffix before processing (check if it's a valid input suffix)
+            # For 5-part files, we need to check if the suffix is a valid input suffix
+            # or if it's already a mapped suffix (LR, NR, EX)
+            valid_input_suffixes = {"deny", "bypass", "exclusion"}
+            valid_mapped_suffixes = {"LR", "NR", "EX"}
+            
+            if suffix not in valid_input_suffixes and suffix not in valid_mapped_suffixes:
+                print(f"ERROR: Invalid suffix '{suffix}' found in file '{filename}'")
+                print(f"Valid input suffixes are: {', '.join(sorted(valid_input_suffixes))}")
+                print(f"Valid mapped suffixes are: {', '.join(sorted(valid_mapped_suffixes))}")
+                print("No files will be created due to invalid suffix.")
+                continue  # Skip this file and move to next
             
             # Apply suffix mapping to ensure correct format
             mapped_suffix = suffix
