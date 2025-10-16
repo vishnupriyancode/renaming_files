@@ -254,8 +254,13 @@ python main_processor.py --gbdf_grs --all --no-postman
 
 **Additional Options:**
 ```bash
-# List all available models
+# List all available models with detailed information
 python main_processor.py --list
+
+# Generate timing report for specific model (without processing files)
+python main_processor.py --wgs_csbd --TS47 --list    # Generate timing report for TS47 WGS_CSBD
+python main_processor.py --gbdf_mcr --TS47 --list    # Generate timing report for TS47 GBDF MCR
+python main_processor.py --gbdf_grs --TS139 --list   # Generate timing report for TS139 GBDF GRS
 
 # Show help and all available options
 python main_processor.py --help
@@ -266,6 +271,7 @@ python main_processor.py --help
 - ✅ Move files to organized directory structure
 - ✅ Generate Postman collections for API testing (unless `--no-postman` is used)
 - ✅ Provide detailed processing output and summary
+- ✅ Generate timing reports for performance analysis (when using `--list` with model flags)
 
 **✅ Verification Status:**
 
@@ -312,6 +318,9 @@ python main_processor.py --help
 
 ### General Commands:
 - `python main_processor.py --list` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --TS47 --list` - **TESTED & WORKING** ✓ (Generates timing report)
+- `python main_processor.py --gbdf_mcr --TS47 --list` - **TESTED & WORKING** ✓ (Generates timing report)
+- `python main_processor.py --gbdf_grs --TS139 --list` - **TESTED & WORKING** ✓ (Generates timing report)
 
 All commands successfully process files and generate expected output with proper error handling.
 
@@ -444,9 +453,11 @@ renaming_files/
 │       ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
 │       └── TS_147_No match of Procedure code_gbdf_grs_Collection/
 ├── reports/                           # Excel timing reports
-│   ├── JSON_Renaming_Timing_Report_20251016_085007.xlsx
-│   ├── JSON_Renaming_Timing_Report_GBDF_MCR_20251016_090034.xlsx
-│   └── JSON_Renaming_Timing_Report_GBDF_MCR_20251016_090331.xlsx
+│   ├── collection_reports/            # Excel timing reports with timestamps
+│   │   ├── JSON_Renaming_Timing_Report_WGS_CSBD_20251016_192351.xlsx
+│   │   ├── JSON_Renaming_Timing_Report_GBDF_MCR_YYYYMMDD_HHMMSS.xlsx
+│   │   └── JSON_Renaming_Timing_Report_GBDF_GRS_YYYYMMDD_HHMMSS.xlsx
+│   └── list_reports/                  # List-based reports and analytics
 ├── source_folder/                     # Source directory (original files)
 │   ├── WGS_CSBD/                      # WGS_CSBD source files
 │   │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_sur/
@@ -663,7 +674,7 @@ python main_processor.py --help
 - `--TS47`, `--TS48`, `--TS60`, `--TS138`, `--TS140`, `--TS144`, `--TS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
 - `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
 - `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, or --gbdf_grs flag)
-- `--list`: List all available TS models
+- `--list`: List all available TS models (standalone) or generate timing report (with model flags)
 - `--no-postman`: Skip Postman collection generation
 - `--help`: Show help message with examples
 
@@ -1058,12 +1069,50 @@ The project includes a comprehensive Excel reporting system that automatically t
 11. **Status** - Operation status (Success, Failed, etc.)
 
 ### Report Location:
-Excel reports are automatically generated in the `reports/` directory with timestamps:
-- `JSON_Renaming_Timing_Report_YYYYMMDD_HHMMSS.xlsx`
-- `JSON_Renaming_Timing_Report_GBDF_MCR_YYYYMMDD_HHMMSS.xlsx`
-- `JSON_Renaming_Timing_Report_GBDF_GRS_YYYYMMDD_HHMMSS.xlsx`
+Excel reports are automatically generated in the `reports/` directory with organized subdirectories:
+- `reports/collection_reports/` - Contains Excel timing reports with timestamps:
+  - `JSON_Renaming_Timing_Report_WGS_CSBD_YYYYMMDD_HHMMSS.xlsx`
+  - `JSON_Renaming_Timing_Report_GBDF_MCR_YYYYMMDD_HHMMSS.xlsx`
+  - `JSON_Renaming_Timing_Report_GBDF_GRS_YYYYMMDD_HHMMSS.xlsx`
+- `reports/list_reports/` - Contains list-based reports and analytics
 
 For detailed Excel reporting information, see `EXCEL_REPORTING_GUIDE.md`.
+
+### Timing Report Generation with --list Flag
+
+The `--list` flag has dual functionality depending on how it's used:
+
+#### 1. Standalone --list Command
+```bash
+python main_processor.py --list
+```
+**Purpose**: Lists all available models with detailed information
+**Output**: 
+- Shows all WGS_CSBD and GBDF models
+- Displays Edit IDs, Codes, and Collection names
+- Provides usage examples
+- Shows model counts and summaries
+
+#### 2. Model-Specific --list Command
+```bash
+python main_processor.py --wgs_csbd --TS47 --list    # Generate timing report for TS47 WGS_CSBD
+python main_processor.py --gbdf_mcr --TS47 --list    # Generate timing report for TS47 GBDF MCR
+python main_processor.py --gbdf_grs --TS139 --list   # Generate timing report for TS139 GBDF GRS
+```
+**Purpose**: Generates timing reports for specific models without processing files
+**Output**:
+- Processes files in the source directory
+- Measures timing for file renaming operations
+- Estimates Postman collection generation time
+- Saves detailed Excel report to `reports/list_reports/`
+- Provides performance analytics and statistics
+
+**Report Features**:
+- Individual file processing times
+- Total processing time
+- Average time per file
+- Success/failure status for each file
+- Timestamped Excel reports with model-specific naming
 
 ## KEY_CHK_CDN_NBR Generator
 
@@ -1476,10 +1525,10 @@ mkdir postman_collections
 - Professional naming and organization
 
 **`reports` folder contains:**
-- Excel timing reports with timestamps
-- Performance analytics and statistics
-- Model breakdown and status tracking
+- `collection_reports/` - Excel timing reports with timestamps and performance analytics
+- `list_reports/` - List-based reports and analytics (currently available for future use)
 - Professional formatting with headers and color coding
+- Model breakdown and status tracking across all processed models
 
 **`source_folder` folder contains:**
 - Original source files before processing

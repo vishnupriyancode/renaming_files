@@ -67,7 +67,7 @@ class TimingTracker:
 class ExcelReportGenerator:
     """Generate Excel reports with timing information for JSON renaming operations."""
     
-    def __init__(self, output_dir: str = "reports"):
+    def __init__(self, output_dir: str = "reports/Collection_Reports"):
         """
         Initialize the Excel report generator.
         
@@ -75,7 +75,7 @@ class ExcelReportGenerator:
             output_dir: Directory to save Excel reports
         """
         self.output_dir = Path(output_dir)
-        self.output_dir.mkdir(exist_ok=True)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
         
         # Initialize data storage
         self.timing_data = []
@@ -388,7 +388,7 @@ class ExcelReportGenerator:
 
 
 # Global instance for easy access
-excel_reporter = ExcelReportGenerator()
+excel_reporter = ExcelReportGenerator("reports/Collection_Reports")
 
 
 def create_timing_tracker() -> TimingTracker:
@@ -411,7 +411,7 @@ def create_excel_reporter_for_model_type(model_type: str) -> ExcelReportGenerato
     Returns:
         New ExcelReportGenerator instance
     """
-    return ExcelReportGenerator()
+    return ExcelReportGenerator("reports/Collection_Reports")
 
 
 if __name__ == "__main__":
@@ -419,7 +419,7 @@ if __name__ == "__main__":
     Test the Excel report generator functionality.
     """
     # Create test data
-    reporter = ExcelReportGenerator()
+    reporter = ExcelReportGenerator("reports/Collection_Reports")
     reporter.start_timing_session("Test Session")
     
     # Add some test records

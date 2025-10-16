@@ -7,7 +7,7 @@
   "payload": {
     "test_case": "TC#01_sample#deny",
     "edit_id": "RULEEM000001",
-    "KEY_CHK_CDN_NBR": "92334307191",
+    "KEY_CHK_CDN_NBR": "79842243688",
     "code": "W04",
     "description": "Test case for Covid E&M Services not payable on Facility claim Sub Edit 1 WGS_CSBD model",
     "expected_result": "deny"
