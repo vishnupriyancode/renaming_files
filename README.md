@@ -4,7 +4,43 @@ A Python script for automatically renaming and organizing test case JSON files b
 
 ## 🔧 Recent Updates & Fixes
 
-**✅ WGS_CSBD Header/Footer Integration with KEY_CHK_CDN_NBR Generator (Latest Update)**
+**✅ Excel Reporting System (Latest Update)**
+
+The project has been enhanced with comprehensive Excel reporting functionality:
+
+- **✅ Automatic Timing Tracking**: Tracks timing for file renaming and Postman collection generation
+- **✅ Professional Excel Reports**: Generates detailed Excel reports with timing data and statistics
+- **✅ Multiple Report Formats**: Supports individual model reports and batch processing reports
+- **✅ Performance Analytics**: Calculates total time, average time, and performance metrics
+- **✅ Report Management**: Automatic report generation with timestamps and status tracking
+- **✅ Enhanced Documentation**: Added Excel Reporting Guide and File Connections Demo Guide
+- **✅ Backward Compatibility**: All existing functionality remains unchanged
+
+**✅ TS140, TS141, TS146, TS147 Model Support**
+
+The project has been enhanced with support for additional GBDF models:
+
+- **✅ Added TS140 Support**: NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR model
+- **✅ Added TS141 Support**: NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS model  
+- **✅ Added TS146 Support**: No match of Procedure code GBDF MCR model
+- **✅ Added TS147 Support**: No match of Procedure code GBDF GRS model
+- **✅ Enhanced Dynamic Discovery**: Updated patterns and regex matching for new model types
+- **✅ Updated Command Line Interface**: Added --TS140, --TS141, --TS146, --TS147 arguments
+- **✅ Comprehensive Documentation**: Updated all examples and help text to include new models
+- **✅ Error Handling**: Added proper validation and error messages for new model flags
+
+**✅ GBDF_GRS Flag Implementation**
+
+The project has been enhanced with support for GBDF GRS (Global Research Standards) models:
+
+- **✅ Added --gbdf_grs Flag**: New command-line flag for processing GBDF GRS models
+- **✅ TS49 Model Support**: TS49 model now requires --gbdf_grs flag instead of --gbdf_mcr
+- **✅ Updated Model Configuration**: Enhanced models_config.py to support GBDF GRS parameter
+- **✅ Comprehensive Documentation**: Updated all examples and help text to include --gbdf_grs flag
+- **✅ Error Handling**: Added proper validation and error messages for GBDF GRS flag usage
+- **✅ Backward Compatibility**: All existing functionality remains unchanged
+
+**✅ WGS_CSBD Header/Footer Integration with KEY_CHK_CDN_NBR Generator**
 
 The project has been enhanced with automatic header/footer transformation for WGS_CSBD files:
 
@@ -50,8 +86,12 @@ postman_collections/
 │   └── TS_47_Multiple Billing of Obstetrical Services_Collection/
 └── GBDF/                                        # GBDF MCR Collections
     ├── TS_47_Covid_gbdf_mcr_Collection/
-    ├── TS_48_Multiple E&M Same day_gbdf_mcr_Collection/
-    └── TS_49_Multiple E&M Same day_gbdf_grs_Collection/
+    ├── TS_138_Multiple E&M Same day_gbdf_mcr_Collection/
+    ├── TS_139_Multiple E&M Same day_gbdf_grs_Collection/
+    ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection/
+    ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection/
+    ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
+    └── TS_147_No match of Procedure code_gbdf_grs_Collection/
 
 renaming_jsons/
 ├── WGS_CSBD/                                    # WGS_CSBD Processed Files
@@ -74,8 +114,12 @@ renaming_jsons/
 │   └── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEEMSD000002_00W28_dis/
 └── GBDF/                                        # GBDF MCR Processed Files
     ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
-    ├── TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
-    └── TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
+    ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
+    ├── TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
+    ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/
+    ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/
+    ├── TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/
+    └── TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/
 ```
 
 ## 🚀 Quick Start Commands (Verified & Ready to Use)
@@ -109,7 +153,21 @@ python main_processor.py --wgs_csbd --TS47    # Process TS47 model (Multiple Bil
 # Process specific GBDF MCR models (GBDF_MCR flag required)
 python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
 python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
-python main_processor.py --gbdf_mcr --TS49    # Process TS49 model (Multiple E&M Same day GBDF GRS)
+python main_processor.py --gbdf_mcr --TS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
+python main_processor.py --gbdf_mcr --TS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --TS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
+python main_processor.py --gbdf_mcr --TS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
+python main_processor.py --gbdf_mcr --TS146   # Process TS146 model (No match of Procedure code GBDF MCR)
+
+# Process specific GBDF GRS models (GBDF_GRS flag required)
+python main_processor.py --gbdf_grs --TS49    # Process TS49 model (Multiple E&M Same day GBDF GRS)
+python main_processor.py --gbdf_grs --TS59    # Process TS59 model (Unspecified dx code outpt GBDF GRS)
+python main_processor.py --gbdf_grs --TS61    # Process TS61 model (Unspecified dx code prof GBDF GRS)
+python main_processor.py --gbdf_grs --TS62    # Process TS62 model (Unspecified dx code prof GBDF GRS)
+python main_processor.py --gbdf_grs --TS139   # Process TS139 model (Multiple E&M Same day GBDF GRS)
+python main_processor.py --gbdf_grs --TS141   # Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS)
+python main_processor.py --gbdf_grs --TS145   # Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)
+python main_processor.py --gbdf_grs --TS147   # Process TS147 model (No match of Procedure code GBDF GRS)
 
 # Process models with automatic Postman collection generation (default behavior)
 python main_processor.py --wgs_csbd --TS01    # Generates TS_01_Covid_Collection
@@ -134,8 +192,23 @@ python main_processor.py --wgs_csbd --all     # Generates collections for all WG
 # GBDF MCR models with Postman collection generation
 python main_processor.py --gbdf_mcr --TS47    # Generates TS_47_Covid_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --TS48    # Generates TS_48_Multiple E&M Same day_gbdf_mcr_Collection
-python main_processor.py --gbdf_mcr --TS49    # Generates TS_49_Multiple E&M Same day_gbdf_grs_Collection
+python main_processor.py --gbdf_mcr --TS60    # Generates TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --TS138   # Generates TS_138_Multiple E&M Same day_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --TS140   # Generates TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --TS144   # Generates TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --TS146   # Generates TS_146_No match of Procedure code_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --all     # Generates collections for all GBDF MCR models
+
+# GBDF GRS models with Postman collection generation
+python main_processor.py --gbdf_grs --TS49    # Generates TS_49_Multiple E&M Same day_gbdf_grs_Collection
+python main_processor.py --gbdf_grs --TS59    # Generates TS_59_Unspecified_dx_code_outpt_gbdf_grs_Collection
+python main_processor.py --gbdf_grs --TS61    # Generates TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection
+python main_processor.py --gbdf_grs --TS62    # Generates TS_62_Unspecified_dx_code_prof_gbdf_grs_Collection
+python main_processor.py --gbdf_grs --TS139   # Generates TS_139_Multiple E&M Same day_gbdf_grs_Collection
+python main_processor.py --gbdf_grs --TS141   # Generates TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection
+python main_processor.py --gbdf_grs --TS145   # Generates TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_Collection
+python main_processor.py --gbdf_grs --TS147   # Generates TS_147_No match of Procedure code_gbdf_grs_Collection
+python main_processor.py --gbdf_grs --all     # Generates collections for all GBDF GRS models
 
 # Process models without generating Postman collections
 python main_processor.py --wgs_csbd --TS01 --no-postman
@@ -160,8 +233,23 @@ python main_processor.py --wgs_csbd --all --no-postman
 # GBDF MCR models without Postman collection generation
 python main_processor.py --gbdf_mcr --TS47 --no-postman
 python main_processor.py --gbdf_mcr --TS48 --no-postman
-python main_processor.py --gbdf_mcr --TS49 --no-postman
+python main_processor.py --gbdf_mcr --TS60 --no-postman
+python main_processor.py --gbdf_mcr --TS138 --no-postman
+python main_processor.py --gbdf_mcr --TS140 --no-postman
+python main_processor.py --gbdf_mcr --TS144 --no-postman
+python main_processor.py --gbdf_mcr --TS146 --no-postman
 python main_processor.py --gbdf_mcr --all --no-postman
+
+# GBDF GRS models without Postman collection generation
+python main_processor.py --gbdf_grs --TS49 --no-postman
+python main_processor.py --gbdf_grs --TS59 --no-postman
+python main_processor.py --gbdf_grs --TS61 --no-postman
+python main_processor.py --gbdf_grs --TS62 --no-postman
+python main_processor.py --gbdf_grs --TS139 --no-postman
+python main_processor.py --gbdf_grs --TS141 --no-postman
+python main_processor.py --gbdf_grs --TS145 --no-postman
+python main_processor.py --gbdf_grs --TS147 --no-postman
+python main_processor.py --gbdf_grs --all --no-postman
 ```
 
 **Additional Options:**
@@ -204,8 +292,23 @@ python main_processor.py --help
 ### GBDF_MCR Models:
 - `python main_processor.py --gbdf_mcr --TS47` - **TESTED & WORKING** ✓
 - `python main_processor.py --gbdf_mcr --TS48` - **TESTED & WORKING** ✓
-- `python main_processor.py --gbdf_mcr --TS49` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --TS60` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --TS138` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --TS140` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --TS144` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --TS146` - **TESTED & WORKING** ✓
 - `python main_processor.py --gbdf_mcr --all` - **TESTED & WORKING** ✓
+
+### GBDF_GRS Models:
+- `python main_processor.py --gbdf_grs --TS49` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_grs --TS59` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_grs --TS61` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_grs --TS62` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_grs --TS139` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_grs --TS141` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_grs --TS145` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_grs --TS147` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_grs --all` - **TESTED & WORKING** ✓
 
 ### General Commands:
 - `python main_processor.py --list` - **TESTED & WORKING** ✓
@@ -236,11 +339,20 @@ This project automatically processes test case JSON files from a source director
 - Cross-border health data processing
 - Research-grade medical claims validation
 
+### GBDF_GRS Models (Global Burden of Disease Foundation - Global Research Standards)
+**GBDF_GRS** stands for **G**lobal **B**urden of **D**isease **F**oundation - **G**lobal **R**esearch **S**tandards. These models are specifically designed for:
+- Global research standards compliance
+- International health data standardization
+- Cross-border research protocol validation
+- Global health metrics standardization
+- Research-grade data quality assurance
+
 **Key Differences:**
 - **WGS_CSBD**: Focuses on operational healthcare claims processing
 - **GBDF_MCR**: Focuses on research and global health analysis
-- **File Structure**: Both use similar naming conventions but different source directories
-- **Processing**: Both support the same renaming and Postman collection generation features
+- **GBDF_GRS**: Focuses on global research standards and international compliance
+- **File Structure**: All use similar naming conventions but different source directories
+- **Processing**: All support the same renaming and Postman collection generation features
 
 ## 🏗️ System Architecture
 
@@ -268,70 +380,85 @@ Source Folders → Dynamic Discovery → Configuration → File Processing → P
 
 For detailed architecture information, see `project_architecture_diagram.md`.
 
+For comprehensive file connections and demo guide, see `FILE_CONNECTIONS_DEMO_GUIDE.md`.
+
+For Excel reporting functionality, see `EXCEL_REPORTING_GUIDE.md`.
+
 ## Project Structure
 
 ```
-renaming_postman_collection/
+renaming_files/
 ├── main_processor.py                  # Main consolidated processor (combines file renaming + Postman generation)
 ├── postman_generator.py               # Postman collection generator
 ├── postman_cli.py                     # CLI for Postman operations
 ├── models_config.py                   # Configuration for different test models
 ├── dynamic_models.py                  # Dynamic model discovery and management
-├── generate_professional_report.py   # Professional report generation
-├── project_architecture_diagram.md   # Visual architecture documentation
+├── excel_report_generator.py          # Excel report generation with timing data
+├── requirements.txt                   # Python dependencies
+├── project_architecture_diagram.md    # Visual architecture documentation
+├── EXCEL_REPORTING_GUIDE.md          # Excel reporting functionality guide
+├── FILE_CONNECTIONS_DEMO_GUIDE.md    # File architecture and connections demo guide
 ├── renaming_jsons/                    # Output directory for renamed files
-│   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULEEM000001#W04#LR.json
-│   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULELATE000001#00W17#NR.json
-│   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULEREVE000005#00W28#NR.json
-│   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULEREVE000004#00W28#LR.json
-│   ├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULEREVE000003#00W28#NR.json
-│   ├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULEREVE000002#00W28#LR.json
-│   ├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULEREVE000001#00W28#LR.json
-│   ├── TS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULELAB0000009#00W13#LR.json
-│   ├── TS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/
-│   │   └── regression/
-│   │       └── TC#01_od#RULEDEVI000003#00W13#LR.json
-│   └── TS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/
-│       └── regression/
-│           └── TC#01_od#RULERECO000001#00W34#LR.json
+│   ├── WGS_CSBD/                      # WGS_CSBD processed files
+│   │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
+│   │   │   └── regression/
+│   │   │       └── TC#01_sample#RULEEM000001#W04#LR.json
+│   │   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
+│   │   │   └── regression/
+│   │   │       └── TC#01_sample#RULELATE000001#00W17#NR.json
+│   │   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
+│   │   │   └── regression/
+│   │   │       └── TC#01_sample#RULEREVE000005#00W28#NR.json
+│   │   ├── TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/
+│   │   │   └── regression/
+│   │   │       └── TC#01_sample#RULEEMSD000002#00W09#LR.json
+│   │   └── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_dis/
+│   │       └── regression/
+│   │           └── TC#01_sample#RULEMBOS000001#00W28#LR.json
+│   └── GBDF/                          # GBDF processed files
+│       ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
+│       ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
+│       ├── TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
+│       ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/
+│       ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/
+│       ├── TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/
+│       └── TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/
 ├── postman_collections/               # Generated Postman collections
-│   ├── TS_01_Covid_Collection/
-│   │   └── postman_collection.json
-│   ├── TS_02_Laterality_Collection/
-│   │   └── postman_collection.json
-│   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection/
-│   │   └── postman_collection.json
-│   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_Collection/
-│   │   └── revenue_wgs_csbd_RULEREVE000004_00w28.json
-│   ├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_Collection/
-│   │   └── revenue_wgs_csbd_RULEREVE000003_00w28.json
-│   ├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_Collection/
-│   │   └── revenue_wgs_csbd_RULEREVE000002_00w28.json
-│   ├── TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection/
-│   │   └── revenue_wgs_csbd_RULEREVE000001_00w28.json
-│   ├── TS_08_Lab panel Model_Collection/
-│   │   └── lab_wgs_csbd_RULELAB0000009_00w13.json
-│   ├── TS_09_Device Dependent Procedures_Collection/
-│   │   └── device_wgs_csbd_RULEDEVI000003_00w13.json
-│   └── TS_10_Recovery Room Reimbursement_Collection/
-│       └── recovery_wgs_csbd_RULERECO000001_00w34.json
-├── WGS_CSBD/                          # Source directory (original files)
+│   ├── WGS_CSBD/                      # WGS_CSBD collections
+│   │   ├── TS_01_Covid_Collection/
+│   │   │   └── postman_collection.json
+│   │   ├── TS_02_Laterality_Collection/
+│   │   │   └── postman_collection.json
+│   │   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection/
+│   │   │   └── postman_collection.json
+│   │   ├── TS_46_Multiple E&M Same day_Collection/
+│   │   │   └── postman_collection.json
+│   │   └── TS_47_Multiple Billing of Obstetrical Services_Collection/
+│   │       └── postman_collection.json
+│   └── GBDF/                          # GBDF collections
+│       ├── TS_47_Covid_Collection/
+│       ├── TS_138_Multiple E&M Same day_gbdf_mcr_Collection/
+│       ├── TS_139_Multiple E&M Same day_gbdf_grs_Collection/
+│       ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection/
+│       ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection/
+│       ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
+│       └── TS_147_No match of Procedure code_gbdf_grs_Collection/
+├── reports/                           # Excel timing reports
+│   ├── JSON_Renaming_Timing_Report_20251016_085007.xlsx
+│   ├── JSON_Renaming_Timing_Report_GBDF_MCR_20251016_090034.xlsx
+│   └── JSON_Renaming_Timing_Report_GBDF_MCR_20251016_090331.xlsx
+├── source_folder/                     # Source directory (original files)
+│   ├── WGS_CSBD/                      # WGS_CSBD source files
+│   │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_sur/
+│   │   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur/
+│   │   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur/
+│   │   ├── TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_sur/
+│   │   └── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_sur/
+│   └── GBDF/                          # GBDF source files
+├── PPT/                               # Presentation materials
+│   ├── presentation_conversion_guide.md
+│   ├── team_presentation.md
+│   └── team_presentation.pptx
 └── README.md                          # This file
 ```
 
@@ -341,6 +468,10 @@ renaming_postman_collection/
 - **Suffix Mapping**: Maps test case types to appropriate suffixes
 - **File Organization**: Moves renamed files to organized directory structure
 - **Postman Collection Generation**: Automatically creates Postman collections for API testing
+- **Excel Reporting System**: Generates comprehensive Excel reports with timing data and performance analytics
+- **Automatic Timing Tracking**: Tracks timing for file renaming and Postman collection generation operations
+- **Performance Analytics**: Calculates total time, average time, and performance metrics
+- **Professional Excel Reports**: Detailed reports with formatting, statistics, and model breakdowns
 - **KEY_CHK_CDN_NBR Generator**: Automatically generates random 11-digit numbers for KEY_CHK_CDN_NBR fields
 - **WGS_CSBD Header/Footer Transformation**: Applies proper header/footer structure to WGS_CSBD files
 - **Dynamic Model Discovery**: Automatically detects TS folders and extracts model parameters
@@ -350,7 +481,9 @@ renaming_postman_collection/
 - **Batch Processing**: Processes multiple JSON files simultaneously
 - **CLI Interface**: Command-line tools for Postman collection management
 - **Professional Collections**: Generated collections with proper naming and structure
-- **Comprehensive Documentation**: Visual architecture diagrams and detailed explanations
+- **Comprehensive Documentation**: Visual architecture diagrams, Excel reporting guide, and file connections demo guide
+- **Report Management**: Automatic report generation with timestamps and status tracking
+- **Multi-Format Support**: Supports individual model reports and batch processing reports
 
 ## 🔧 Recent Fixes & Improvements
 
@@ -431,8 +564,7 @@ suffix_mapping = {
         "bypass": "NR",  # bypass -> NR
     },
     "Exclusion": {
-        "market": "EX",   # market -> EX
-        "date": "EX"     # date -> EX
+        "exclusion": "EX",   # exclusion -> EX
     }
 }
 ```
@@ -441,14 +573,22 @@ suffix_mapping = {
 |----------------|---------------|----------|-------------|
 | `deny`         | `LR`          | positive | Limited Response test cases |
 | `bypass`       | `NR`          | negative | No Response test cases |
-| `market`       | `EX`          | Exclusion | Exception test cases |
-| `date`         | `EX`          | Exclusion | Exception test cases |
+
 
 ## Usage
 
 ### Prerequisites
 - Python 3.6 or higher
 - Required Python modules: `os`, `re`, `shutil`, `json`, `uuid`, `pathlib` (all are standard library modules)
+- Additional dependencies: `pandas`, `openpyxl` (for Excel reporting functionality)
+
+### Installation
+```bash
+# Install required dependencies
+pip install -r requirements.txt
+```
+
+**Note**: The `requirements.txt` file contains all necessary dependencies for the project including Excel reporting functionality.
 
 ### Running the Scripts
 
@@ -478,14 +618,37 @@ python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue mode
 
 # Process specific GBDF MCR models (GBDF_MCR flag required)
 python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
+python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --TS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
+python main_processor.py --gbdf_mcr --TS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --TS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
+python main_processor.py --gbdf_mcr --TS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
+python main_processor.py --gbdf_mcr --TS146   # Process TS146 model (No match of Procedure code GBDF MCR)
+
+# Process specific GBDF GRS models (GBDF_GRS flag required)
+python main_processor.py --gbdf_grs --TS49    # Process TS49 model (Multiple E&M Same day GBDF GRS)
+python main_processor.py --gbdf_grs --TS59    # Process TS59 model (Unspecified dx code outpt GBDF GRS)
+python main_processor.py --gbdf_grs --TS61    # Process TS61 model (Unspecified dx code prof GBDF GRS)
+python main_processor.py --gbdf_grs --TS62    # Process TS62 model (Unspecified dx code prof GBDF GRS)
+python main_processor.py --gbdf_grs --TS139   # Process TS139 model (Multiple E&M Same day GBDF GRS)
+python main_processor.py --gbdf_grs --TS141   # Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS)
+python main_processor.py --gbdf_grs --TS145   # Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)
+python main_processor.py --gbdf_grs --TS147   # Process TS147 model (No match of Procedure code GBDF GRS)
 
 # Process all configured models
 python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models
 python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models
+python main_processor.py --gbdf_grs --all     # Process all GBDF GRS models
 
 # Process models without generating Postman collection
 python main_processor.py --wgs_csbd --TS07 --no-postman
 python main_processor.py --gbdf_mcr --TS47 --no-postman
+python main_processor.py --gbdf_mcr --TS138 --no-postman
+python main_processor.py --gbdf_mcr --TS140 --no-postman
+python main_processor.py --gbdf_mcr --TS146 --no-postman
+python main_processor.py --gbdf_grs --TS139 --no-postman
+python main_processor.py --gbdf_grs --TS141 --no-postman
+python main_processor.py --gbdf_grs --TS147 --no-postman
 
 # Show help and available options
 python main_processor.py --help
@@ -494,10 +657,12 @@ python main_processor.py --help
 **Command Options:**
 - `--wgs_csbd`: **REQUIRED** flag for WGS_CSBD TS model processing
 - `--gbdf_mcr`: **REQUIRED** flag for GBDF MCR model processing
+- `--gbdf_grs`: **REQUIRED** flag for GBDF GRS model processing
 - `--TS01` through `--TS15`: Process specific WGS_CSBD TS models
 - `--TS46`, `--TS47`: Process additional WGS_CSBD TS models (Multiple E&M Same day, Multiple Billing of Obstetrical Services)
-- `--TS47`, `--TS48`, `--TS49`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Multiple E&M Same day GBDF GRS) - requires `--gbdf_mcr` flag
-- `--all`: Process all configured models (requires either --wgs_csbd or --gbdf_mcr flag)
+- `--TS47`, `--TS48`, `--TS60`, `--TS138`, `--TS140`, `--TS144`, `--TS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
+- `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
+- `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, or --gbdf_grs flag)
 - `--list`: List all available TS models
 - `--no-postman`: Skip Postman collection generation
 - `--help`: Show help message with examples
@@ -868,6 +1033,38 @@ The script processes JSON files containing test case information:
 }
 ```
 
+## Excel Reporting System
+
+The project includes a comprehensive Excel reporting system that automatically tracks and reports timing data for all operations:
+
+### Excel Report Features:
+- **Automatic Timing Tracking**: Tracks timing for file renaming and Postman collection generation
+- **Professional Excel Reports**: Generates detailed Excel reports with timing data and statistics
+- **Performance Analytics**: Calculates total time, average time, and performance metrics
+- **Report Management**: Automatic report generation with timestamps and status tracking
+- **Multiple Report Formats**: Supports individual model reports and batch processing reports
+
+### Report Columns:
+1. **TC#ID** - Test Case ID extracted from directory names
+2. **Model LOB** - Line of Business (WGS_CSBD, GBDF_MCR, GBDF_GRS)
+3. **Model Name** - Model name (Covid, Multiple E&M Same day, etc.)
+4. **Edit ID** - Edit identifier (e.g., RULEEM000001, RULEEMSD000002)
+5. **EOB Code** - EOB code (e.g., W04, v04, 00W17, v09)
+6. **Naming Convention Time (ms)** - Time taken for file renaming
+7. **Postman Collection Time (ms)** - Time taken for Postman collection generation
+8. **Total Time (ms)** - Sum of both operations
+9. **Average Time (ms)** - Average time per operation
+10. **Timestamp** - When the operation was performed
+11. **Status** - Operation status (Success, Failed, etc.)
+
+### Report Location:
+Excel reports are automatically generated in the `reports/` directory with timestamps:
+- `JSON_Renaming_Timing_Report_YYYYMMDD_HHMMSS.xlsx`
+- `JSON_Renaming_Timing_Report_GBDF_MCR_YYYYMMDD_HHMMSS.xlsx`
+- `JSON_Renaming_Timing_Report_GBDF_GRS_YYYYMMDD_HHMMSS.xlsx`
+
+For detailed Excel reporting information, see `EXCEL_REPORTING_GUIDE.md`.
+
 ## KEY_CHK_CDN_NBR Generator
 
 The project includes an automatic KEY_CHK_CDN_NBR generator that creates random 11-digit numbers for test case validation:
@@ -1051,40 +1248,50 @@ The scripts include comprehensive error handling:
    - **Solution**: Always include the `--gbdf_mcr` flag when processing GBDF MCR models
    - **Examples**: 
      - `python main_processor.py --gbdf_mcr --TS47` (Covid GBDF MCR model)
+     - `python main_processor.py --gbdf_mcr --TS138` (Multiple E&M Same day GBDF MCR model)
      - `python main_processor.py --gbdf_mcr --all`
    - **Note**: There are two different TS47 models:
      - `python main_processor.py --wgs_csbd --TS47` (Multiple Billing of Obstetrical Services - WGS_CSBD)
      - `python main_processor.py --gbdf_mcr --TS47` (Covid GBDF MCR - GBDF MCR)
 
-4. **Model Not Found in Configuration**
+4. **Missing GBDF_GRS Flag Error**
+   ```
+   ❌ Error: --gbdf_grs flag is required for GBDF GRS TS model processing!
+   ```
+   - **Solution**: Always include the `--gbdf_grs` flag when processing GBDF GRS models
+   - **Examples**: 
+     - `python main_processor.py --gbdf_grs --TS139` (Multiple E&M Same day GBDF GRS model)
+     - `python main_processor.py --gbdf_grs --all`
+
+5. **Model Not Found in Configuration**
    ```
    ❌ Error: TS01 model (rvn001) not found in configuration!
    ```
    - **Solution**: Check `models_config.py` to ensure the model is properly configured
    - **Verify**: The `edit_id` matches what you're trying to process
 
-5. **Configuration File Not Found**
+6. **Configuration File Not Found**
    ```
    ❌ Error: models_config.py not found!
    ```
    - **Solution**: Ensure `models_config.py` exists in the same directory as the script
    - **Check**: The file contains proper `MODELS_CONFIG` definitions
 
-6. **Source Directory Not Found**
+7. **Source Directory Not Found**
    - Ensure the source directory path is correct in `models_config.py`
    - Check if the directory exists in the expected location
    - Verify the path matches your actual file structure
 
-7. **Permission Errors**
+8. **Permission Errors**
    - Ensure you have read/write permissions for both source and destination directories
    - Run the script with appropriate privileges
 
-8. **File Format Errors**
+9. **File Format Errors**
    - Verify that input files follow the expected naming convention: `TC#XX_XXXXX#suffix.json`
    - Check that files are valid JSON format
    - Ensure files have exactly 3 parts separated by `#` characters
 
-9. **Postman Collection Generation Errors**
+10. **Postman Collection Generation Errors**
    - Check if the destination directory exists
    - Verify that renamed files are in the correct location
    - Ensure JSON files are valid and readable
@@ -1188,11 +1395,26 @@ python main_processor.py --wgs_csbd --TS47    # Multiple Billing of Obstetrical 
 # Process GBDF MCR models (with --gbdf_mcr flag)
 python main_processor.py --gbdf_mcr --TS47    # Covid GBDF MCR Collection
 python main_processor.py --gbdf_mcr --TS48    # Multiple E&M Same day GBDF MCR Collection
-python main_processor.py --gbdf_mcr --TS49    # Multiple E&M Same day GBDF GRS Collection
+python main_processor.py --gbdf_mcr --TS60    # Unspecified dx code outpt GBDF MCR Collection
+python main_processor.py --gbdf_mcr --TS138   # Multiple E&M Same day GBDF MCR Collection
+python main_processor.py --gbdf_mcr --TS140   # NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR Collection
+python main_processor.py --gbdf_mcr --TS144   # Nebulizer A52466 IPERP-132 GBDF MCR Collection
+python main_processor.py --gbdf_mcr --TS146   # No match of Procedure code GBDF MCR Collection
+
+# Process GBDF GRS models (with --gbdf_grs flag)
+python main_processor.py --gbdf_grs --TS49    # Multiple E&M Same day GBDF GRS Collection
+python main_processor.py --gbdf_grs --TS59    # Unspecified dx code outpt GBDF GRS Collection
+python main_processor.py --gbdf_grs --TS61    # Unspecified dx code prof GBDF GRS Collection
+python main_processor.py --gbdf_grs --TS62    # Unspecified dx code prof GBDF GRS Collection
+python main_processor.py --gbdf_grs --TS139   # Multiple E&M Same day GBDF GRS Collection
+python main_processor.py --gbdf_grs --TS141   # NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS Collection
+python main_processor.py --gbdf_grs --TS145   # Nebulizer A52466 IPERP-132 GBDF GRS Collection
+python main_processor.py --gbdf_grs --TS147   # No match of Procedure code GBDF GRS Collection
 
 # Process all models at once
 python main_processor.py --wgs_csbd --all     # All WGS_CSBD models
 python main_processor.py --gbdf_mcr --all     # All GBDF MCR models
+python main_processor.py --gbdf_grs --all     # All GBDF GRS models
 
 # Standalone Postman operations
 python postman_cli.py generate-all
@@ -1242,15 +1464,26 @@ mkdir postman_collections
 ### Current Folder Contents:
 
 **`renaming_jsons` folder contains:**
-- 15 WGS_CSBD subdirectories (TS_01 through TS_15)
-- 3 GBDF subdirectories (TS_47, TS_48, TS_49)
+- 5 WGS_CSBD subdirectories (TS_01, TS_02, TS_03, TS_46, TS_47)
+- 13 GBDF subdirectories (TS_47, TS_48, TS_49, TS_59, TS_60, TS_61, TS_62, TS_138, TS_139, TS_140, TS_141, TS_146, TS_147)
 - Each with a `regression` subfolder containing JSON test case files
-- Diverse model types: Covid, Laterality, Revenue, Lab, Device, Recovery, HCPCS, Incidentcal Services, Multiple E&M Same day
+- Diverse model types: Covid, Laterality, Revenue, Lab, Device, Recovery, HCPCS, Incidentcal Services, Multiple E&M Same day, NDC UOM Validation Edit Expansion Iprep-138, No match of Procedure code
 
 **`postman_collections` folder contains:**
-- 15 WGS_CSBD subdirectories (TS_01_Covid_Collection through TS_15_revenue model_Collection)
-- 3 GBDF subdirectories (TS_47_Covid_gbdf_mcr_Collection, TS_48_Multiple E&M Same day_gbdf_mcr_Collection, TS_49_Multiple E&M Same day_gbdf_grs_Collection)
+- 5 WGS_CSBD subdirectories (TS_01_Covid_Collection, TS_02_Laterality_Collection, TS_03_Revenue_Collection, TS_46_Multiple E&M Same day_Collection, TS_47_Multiple Billing of Obstetrical Services_Collection)
+- 13 GBDF subdirectories (TS_47_Covid_gbdf_mcr_Collection, TS_48_Multiple E&M Same day_gbdf_mcr_Collection, TS_49_Multiple E&M Same day_gbdf_grs_Collection, TS_59_Unspecified_dx_code_outpt_gbdf_grs_Collection, TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection, TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection, TS_62_Unspecified_dx_code_prof_gbdf_grs_Collection, TS_138_Multiple E&M Same day_gbdf_mcr_Collection, TS_139_Multiple E&M Same day_gbdf_grs_Collection, TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection, TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection, TS_146_No match of Procedure code_gbdf_mcr_Collection, TS_147_No match of Procedure code_gbdf_grs_Collection)
 - Each contains properly structured Postman collection files
 - Professional naming and organization
+
+**`reports` folder contains:**
+- Excel timing reports with timestamps
+- Performance analytics and statistics
+- Model breakdown and status tracking
+- Professional formatting with headers and color coding
+
+**`source_folder` folder contains:**
+- Original source files before processing
+- WGS_CSBD and GBDF source directories
+- Maintains original file structure for reference
 
 ⚠️ **Warning**: The `rm -rf` command will permanently delete all contents. Make sure you want to remove these files before running the commands.

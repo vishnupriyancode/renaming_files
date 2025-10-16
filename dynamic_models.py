@@ -123,7 +123,17 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         pattern1 = os.path.join(base_dir, "TS_*_Covid_gbdf_mcr_*_sur")
         pattern2 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_gbdf_mcr_*_sur")
         pattern3 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_gbdf_grs_*_sur")
-        ts_folders = glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3)
+        pattern4 = os.path.join(base_dir, "TS_*_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_*_sur")
+        pattern5 = os.path.join(base_dir, "TS_*_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_*_sur")
+        pattern6 = os.path.join(base_dir, "TS_*_No match of Procedure code_gbdf_mcr_*_sur")
+        pattern7 = os.path.join(base_dir, "TS_*_No match of Procedure code_gbdf_grs_*_sur")
+        pattern8 = os.path.join(base_dir, "TS_*_Nebulizer A52466 IPERP-132_gbdf_mcr_*_sur")
+        pattern9 = os.path.join(base_dir, "TS_*_Nebulizer A52466 IPERP-132_gbdf_grs_*_sur")
+        pattern10 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_outpt_gbdf_mcr_*_sur")
+        pattern11 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_outpt_gbdf_grs_*_sur")
+        pattern12 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_prof_gbdf_mcr_*_sur")
+        pattern13 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_prof_gbdf_grs_*_sur")
+        ts_folders = glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9) + glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) + glob.glob(pattern13)
     else:
         # WGS_CSBD patterns - multiple patterns to catch different folder naming conventions
         # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
@@ -242,6 +252,46 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
             # Try Multiple E&M Same day GBDF GRS pattern
             if not match:
                 match = re.match(r'TS_(\d{1,3})_Multiple E&M Same day_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try No match of Procedure code GBDF MCR pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_No match of Procedure code_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try No match of Procedure code GBDF GRS pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_No match of Procedure code_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try Nebulizer A52466 IPERP-132 GBDF MCR pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_Nebulizer A52466 IPERP-132_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try Nebulizer A52466 IPERP-132 GBDF GRS pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_Nebulizer A52466 IPERP-132_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try Unspecified_dx_code_outpt GBDF MCR pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_outpt_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try Unspecified_dx_code_outpt GBDF GRS pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_outpt_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try Unspecified_dx_code_prof GBDF MCR pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_prof_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try Unspecified_dx_code_prof GBDF GRS pattern
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_prof_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
         # STAGE 5: Process successfully matched folders
         if match:
@@ -357,6 +407,61 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 else:
                     postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_Collection"
                     postman_file_name = f"multiple_em_gbdf_{edit_id}_{code}.json"
+            elif "NDC UOM Validation Edit Expansion Iprep-138" in folder_name and is_gbdf:
+                # For NDC UOM Validation Edit Expansion Iprep-138 models, use GBDF naming
+                if "gbdf_mcr" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection"
+                    postman_file_name = f"ndc_uom_gbdf_mcr_{edit_id}_{code}.json"
+                elif "gbdf_grs" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection"
+                    postman_file_name = f"ndc_uom_gbdf_grs_{edit_id}_{code}.json"
+                else:
+                    postman_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_Collection"
+                    postman_file_name = f"ndc_uom_gbdf_{edit_id}_{code}.json"
+            elif "No match of Procedure code" in folder_name and is_gbdf:
+                # For No match of Procedure code models, use GBDF naming
+                if "gbdf_mcr" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_mcr_Collection"
+                    postman_file_name = f"no_match_procedure_gbdf_mcr_{edit_id}_{code}.json"
+                elif "gbdf_grs" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_grs_Collection"
+                    postman_file_name = f"no_match_procedure_gbdf_grs_{edit_id}_{code}.json"
+                else:
+                    postman_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_Collection"
+                    postman_file_name = f"no_match_procedure_gbdf_{edit_id}_{code}.json"
+            elif "Nebulizer A52466 IPERP-132" in folder_name and is_gbdf:
+                # For Nebulizer A52466 IPERP-132 models, use GBDF naming
+                if "gbdf_mcr" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection"
+                    postman_file_name = f"nebulizer_gbdf_mcr_{edit_id}_{code}.json"
+                elif "gbdf_grs" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_grs_Collection"
+                    postman_file_name = f"nebulizer_gbdf_grs_{edit_id}_{code}.json"
+                else:
+                    postman_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_Collection"
+                    postman_file_name = f"nebulizer_gbdf_{edit_id}_{code}.json"
+            elif "Unspecified_dx_code_outpt" in folder_name and is_gbdf:
+                # For Unspecified_dx_code_outpt models, use GBDF naming
+                if "gbdf_mcr" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_mcr_Collection"
+                    postman_file_name = f"unspecified_dx_code_outpt_gbdf_mcr_{edit_id}_{code}.json"
+                elif "gbdf_grs" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_grs_Collection"
+                    postman_file_name = f"unspecified_dx_code_outpt_gbdf_grs_{edit_id}_{code}.json"
+                else:
+                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_Collection"
+                    postman_file_name = f"unspecified_dx_code_outpt_gbdf_{edit_id}_{code}.json"
+            elif "Unspecified_dx_code_prof" in folder_name and is_gbdf:
+                # For Unspecified_dx_code_prof models, use GBDF naming
+                if "gbdf_mcr" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_mcr_Collection"
+                    postman_file_name = f"unspecified_dx_code_prof_gbdf_mcr_{edit_id}_{code}.json"
+                elif "gbdf_grs" in folder_name:
+                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_grs_Collection"
+                    postman_file_name = f"unspecified_dx_code_prof_gbdf_grs_{edit_id}_{code}.json"
+                else:
+                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_Collection"
+                    postman_file_name = f"unspecified_dx_code_prof_gbdf_{edit_id}_{code}.json"
             else:
                 postman_collection_name = generate_postman_collection_name(ts_number)
                 postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
@@ -566,6 +671,18 @@ def print_nested_models_display():
                 model_type = "Multiple E&M Same day GBDF GRS"
             elif "Multiple E&M Same day" in collection_name and "gbdf" in collection_name.lower():
                 model_type = "Multiple E&M Same day GBDF"
+            elif "Unspecified_dx_code_outpt_gbdf_mcr" in collection_name:
+                model_type = "Unspecified dx code outpt GBDF MCR"
+            elif "Unspecified_dx_code_outpt_gbdf_grs" in collection_name:
+                model_type = "Unspecified dx code outpt GBDF GRS"
+            elif "Unspecified_dx_code_outpt" in collection_name and "gbdf" in collection_name.lower():
+                model_type = "Unspecified dx code outpt GBDF"
+            elif "Unspecified_dx_code_prof_gbdf_mcr" in collection_name:
+                model_type = "Unspecified dx code prof GBDF MCR"
+            elif "Unspecified_dx_code_prof_gbdf_grs" in collection_name:
+                model_type = "Unspecified dx code prof GBDF GRS"
+            elif "Unspecified_dx_code_prof" in collection_name and "gbdf" in collection_name.lower():
+                model_type = "Unspecified dx code prof GBDF"
             
             print(f"  {i:2d}. TS_{ts_number:02s} | {model_type}")
             print(f"      |- Edit ID: {edit_id}")

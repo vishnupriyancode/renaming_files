@@ -1,0 +1,115 @@
+{
+  "info": {
+    "name": "TS_139_Multiple E&M Same day_gbdf_grs_Collection API Collection",
+    "description": "API collection for TS_139_Multiple E&M Same day_gbdf_grs_Collection test cases",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC#01_sample#RULEEMSD000002#v09#EX",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Client_Transaction_ID",
+            "value": "20115660390020220225161114893",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#exclusion\",\n  \"edit_id\": \"RULEEMSD000002\",\n  \"CLCL_ID\": \"63436197390\",\n  \"code\": \"v09\",\n  \"description\": \"Test case for Multiple E&M Same day GBDF GRS model - Exclusion scenario\",\n  \"expected_result\": \"exclusion\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC#01_sample#RULEEMSD000002#v09#LR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Client_Transaction_ID",
+            "value": "20115660390020220225161114893",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEEMSD000002\",\n  \"CLCL_ID\": \"63715853819\",\n  \"code\": \"v09\",\n  \"description\": \"Test case for Multiple E&M Same day GBDF GRS model - Deny scenario\",\n  \"expected_result\": \"deny\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "TC#01_sample#RULEEMSD000002#v09#NR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Client_Transaction_ID",
+            "value": "20115660390020220225161114893",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#bypass\",\n  \"edit_id\": \"RULEEMSD000002\",\n  \"CLCL_ID\": \"29557043781\",\n  \"code\": \"v09\",\n  \"description\": \"Test case for Multiple E&M Same day GBDF GRS model - Bypass scenario\",\n  \"expected_result\": \"bypass\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

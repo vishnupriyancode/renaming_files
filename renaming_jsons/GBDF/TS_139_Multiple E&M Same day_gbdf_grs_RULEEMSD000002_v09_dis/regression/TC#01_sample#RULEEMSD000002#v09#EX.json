@@ -1,0 +1,8 @@
+{
+  "test_case": "TC#01_sample#exclusion",
+  "edit_id": "RULEEMSD000002",
+  "CLCL_ID": "63436197390",
+  "code": "v09",
+  "description": "Test case for Multiple E&M Same day GBDF GRS model - Exclusion scenario",
+  "expected_result": "exclusion"
+}

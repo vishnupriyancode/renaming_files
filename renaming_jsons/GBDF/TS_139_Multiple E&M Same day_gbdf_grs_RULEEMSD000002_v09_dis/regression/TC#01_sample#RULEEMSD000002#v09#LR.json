@@ -1,0 +1,8 @@
+{
+  "test_case": "TC#01_sample#deny",
+  "edit_id": "RULEEMSD000002",
+  "CLCL_ID": "63715853819",
+  "code": "v09",
+  "description": "Test case for Multiple E&M Same day GBDF GRS model - Deny scenario",
+  "expected_result": "deny"
+}

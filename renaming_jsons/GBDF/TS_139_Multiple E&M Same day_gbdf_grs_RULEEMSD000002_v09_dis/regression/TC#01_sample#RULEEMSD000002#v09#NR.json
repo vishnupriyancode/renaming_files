@@ -1,0 +1,8 @@
+{
+  "test_case": "TC#01_sample#bypass",
+  "edit_id": "RULEEMSD000002",
+  "CLCL_ID": "29557043781",
+  "code": "v09",
+  "description": "Test case for Multiple E&M Same day GBDF GRS model - Bypass scenario",
+  "expected_result": "bypass"
+}

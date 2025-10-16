@@ -24,6 +24,103 @@ import subprocess
 import argparse
 import json
 from postman_generator import PostmanCollectionGenerator
+from excel_report_generator import ExcelReportGenerator, TimingTracker, get_excel_reporter, create_excel_reporter_for_model_type
+import re
+
+
+def extract_model_info_from_directory(dest_dir: str, renamed_files: list) -> dict:
+    """
+    Extract model information from directory structure and file names.
+    
+    Args:
+        dest_dir: Destination directory path
+        renamed_files: List of renamed files
+        
+    Returns:
+        Dictionary with extracted model information
+    """
+    model_info = {
+        "tc_id": "Unknown",
+        "model_lob": "Unknown", 
+        "model_name": "Unknown",
+        "edit_id": "Unknown",
+        "eob_code": "Unknown"
+    }
+    
+    try:
+        # Extract directory name from path - get the parent directory name
+        dir_name = os.path.basename(os.path.dirname(dest_dir))
+        
+        # Parse WGS_CSBD directory structure: TS_01_Covid_WGS_CSBD_RULEEM000001_W04_sur
+        if "WGS_CSBD" in dest_dir:
+            model_info["model_lob"] = "WGS_CSBD"
+            
+            # Extract TS number and model name - handle spaces and underscores
+            wgs_match = re.match(r'TS_(\d+)_(.+?)_WGS_CSBD_(.+?)_(.+?)_(sur|dis)', dir_name)
+            if wgs_match:
+                ts_number = wgs_match.group(1)
+                model_name = wgs_match.group(2).replace('_', ' ').replace('-', ' ')
+                edit_id = wgs_match.group(3)
+                eob_code = wgs_match.group(4)
+                
+                model_info["tc_id"] = f"TS_{ts_number}"
+                model_info["model_name"] = model_name
+                model_info["edit_id"] = edit_id
+                model_info["eob_code"] = eob_code
+            else:
+                # Fallback: try to extract just TS number
+                ts_match = re.search(r'TS_(\d+)_', dir_name)
+                if ts_match:
+                    model_info["tc_id"] = f"TS_{ts_match.group(1)}"
+        
+        # Parse GBDF directory structure: TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis
+        elif "GBDF" in dest_dir:
+            if "mcr" in dest_dir.lower():
+                model_info["model_lob"] = "GBDF_MCR"
+            elif "grs" in dest_dir.lower():
+                model_info["model_lob"] = "GBDF_GRS"
+            else:
+                model_info["model_lob"] = "GBDF"
+            
+            # Extract TS number and model name - handle spaces and underscores
+            gbdf_match = re.match(r'TS_(\d+)_(.+?)_gbdf_(mcr|grs)_(.+?)_(.+?)_(sur|dis)', dir_name)
+            if gbdf_match:
+                ts_number = gbdf_match.group(1)
+                model_name = gbdf_match.group(2).replace('_', ' ').replace('-', ' ')
+                edit_id = gbdf_match.group(4)
+                eob_code = gbdf_match.group(5)
+                
+                model_info["tc_id"] = f"TS_{ts_number}"
+                model_info["model_name"] = model_name
+                model_info["edit_id"] = edit_id
+                model_info["eob_code"] = eob_code
+            else:
+                # Fallback: try to extract just TS number
+                ts_match = re.search(r'TS_(\d+)_', dir_name)
+                if ts_match:
+                    model_info["tc_id"] = f"TS_{ts_match.group(1)}"
+        
+        # If we have renamed files, try to extract TC ID from the first file
+        if renamed_files and model_info["tc_id"] == "Unknown":
+            first_file = renamed_files[0]
+            if '#' in first_file:
+                parts = first_file.split('#')
+                if len(parts) >= 2:
+                    # Extract TC ID from filename like TC#01_99202#...
+                    tc_part = parts[1]
+                    if '_' in tc_part:
+                        tc_id_parts = tc_part.split('_')
+                        if len(tc_id_parts) >= 2:
+                            model_info["tc_id"] = f"TS_{tc_id_parts[0]}_{tc_id_parts[1]}"
+                        else:
+                            model_info["tc_id"] = f"TS_{tc_id_parts[0]}"
+                    else:
+                        model_info["tc_id"] = f"TS_{tc_part}"
+    
+    except Exception as e:
+        print(f"[WARNING] Error extracting model info from directory: {e}")
+    
+    return model_info
 
 
 def clean_duplicate_fields_csbd(file_path):
@@ -232,7 +329,7 @@ def apply_gbdf_clcl_id_generation(file_path):
         return False
 
 
-def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, generate_postman=True, postman_collection_name=None, postman_file_name=None):
+def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, generate_postman=True, postman_collection_name=None, postman_file_name=None, excel_reporter=None):
     """
     STAGE 1: FILE RENAMING FUNCTION
     ===============================
@@ -245,6 +342,7 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
     4. Convert files to new naming convention: TC#XX_XXXXX#edit_id#code#suffix.json
     5. Move files from source to destination directory
     6. Generate Postman collection for API testing
+    7. Track timing information for Excel reporting
     
     Args:
         edit_id: The edit ID (e.g., "rvn001", "rvn002")
@@ -255,6 +353,17 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
         postman_collection_name: Name for the Postman collection
         postman_file_name: Custom filename for the Postman collection JSON file
     """
+    
+    # STAGE 1.0: TIMING INITIALIZATION
+    # ================================
+    # Initialize timing tracking for this operation
+    naming_tracker = TimingTracker()
+    postman_tracker = TimingTracker()
+    if excel_reporter is None:
+        excel_reporter = get_excel_reporter()
+    
+    # Start timing for naming convention operations
+    naming_tracker.start("naming_convention")
     
     # STAGE 1.1: SUFFIX MAPPING CONFIGURATION
     # =======================================
@@ -437,15 +546,24 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             tc_id_part = parts[1]  # 01_12345
             file_edit_id = parts[2]  # rvn001
             file_code = parts[3]  # 00W5
-            suffix = parts[4].replace('.json', '')  # LR, NR, EX
+            suffix = parts[4].replace('.json', '')  # LR, NR, EX, exclusion, etc.
+            
+            # Apply suffix mapping to ensure correct format
+            mapped_suffix = suffix
+            for category in suffix_mapping.values():
+                if suffix in category:
+                    mapped_suffix = category[suffix]
+                    break
             
             # Check if this file matches our target model
             if file_edit_id == edit_id and file_code == code:
-                # File is already in correct format, just move it
-                new_filename = filename  # Keep the same name
+                # Create new filename with mapped suffix
+                new_filename = f"{tc_part}#{tc_id_part}#{file_edit_id}#{file_code}#{mapped_suffix}.json"
                 
                 print(f"Current: {filename}")
-                print(f"Already in correct format, moving as-is...")
+                if mapped_suffix != suffix:
+                    print(f"Applying suffix mapping: '{suffix}' -> '{mapped_suffix}'")
+                print(f"New:     {new_filename}")
                 print(f"Moving to: {dest_dir}")
                 print("-" * 40)
                 
@@ -493,10 +611,16 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
     print("Renaming and moving completed!")
     print(f"Files moved to: {dest_dir}")
     
+    # End timing for naming convention operations
+    naming_convention_time = naming_tracker.end()
+    print(f"[TIMING] Naming convention operations completed in {naming_convention_time:.2f}ms")
+    
     # STAGE 2: POSTMAN COLLECTION GENERATION
     # =====================================
     # Generate Postman collection if requested
     if generate_postman and renamed_files:
+        # Start timing for Postman collection generation
+        postman_tracker.start("postman_collection")
         print("\n" + "=" * 60)
         print("Generating Postman collection...")
         print("-" * 40)
@@ -562,11 +686,38 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 
         except Exception as e:
             print(f"Error generating Postman collection: {e}")
+        
+        # End timing for Postman collection generation
+        postman_collection_time = postman_tracker.end()
+        print(f"[TIMING] Postman collection generation completed in {postman_collection_time:.2f}ms")
+    else:
+        postman_collection_time = 0.0
+    
+    # STAGE 3: TIMING RECORD CREATION
+    # ===============================
+    # Add timing record to Excel reporter
+    if renamed_files:
+        # Extract model information from directory structure
+        model_info = extract_model_info_from_directory(dest_dir, renamed_files)
+        
+        # Add timing record with extracted information
+        excel_reporter.add_timing_record(
+            tc_id=model_info["tc_id"],
+            model_lob=model_info["model_lob"],
+            model_name=model_info["model_name"],
+            edit_id=model_info["edit_id"],
+            eob_code=model_info["eob_code"],
+            naming_convention_time_ms=naming_convention_time,
+            postman_collection_time_ms=postman_collection_time,
+            status="Success" if renamed_files else "Failed"
+        )
+        
+        print(f"[TIMING] Added timing record: {model_info['tc_id']} - {model_info['model_lob']} - {model_info['model_name']} - Total: {naming_convention_time + postman_collection_time:.2f}ms")
     
     return renamed_files
 
 
-def process_multiple_models(models_config, generate_postman=True):
+def process_multiple_models(models_config, generate_postman=True, model_type=None):
     """
     STAGE 3: BATCH PROCESSING FUNCTION
     =================================
@@ -578,6 +729,7 @@ def process_multiple_models(models_config, generate_postman=True):
     2. Call rename_files() for each model
     3. Track success/failure for each model
     4. Provide comprehensive summary report
+    5. Generate Excel timing report
     
     Args:
         models_config: List of dictionaries containing model configurations
@@ -607,6 +759,14 @@ def process_multiple_models(models_config, generate_postman=True):
     print("Starting Multi-Model Processing")
     print("=" * 80)
     
+    # Initialize Excel reporter session
+    if model_type:
+        excel_reporter = create_excel_reporter_for_model_type(model_type)
+        excel_reporter.start_timing_session(f"{model_type} Multi-Model Processing")
+    else:
+        excel_reporter = get_excel_reporter()
+        excel_reporter.start_timing_session("Multi-Model Processing")
+    
     total_processed = 0
     successful_models = []
     failed_models = []
@@ -635,7 +795,8 @@ def process_multiple_models(models_config, generate_postman=True):
                 source_dir=source_dir,
                 dest_dir=dest_dir,
                 generate_postman=generate_postman,
-                postman_collection_name=postman_collection_name
+                postman_collection_name=postman_collection_name,
+                excel_reporter=excel_reporter
             )
             
             if renamed_files:
@@ -685,6 +846,30 @@ def process_multiple_models(models_config, generate_postman=True):
             print(f"   - {model['edit_id']}_{model['code']}: {model['reason']}")
     
     print("\nTARGET All models processed!")
+    
+    # Generate Excel timing report
+    if excel_reporter.timing_data:
+        print("\n" + "=" * 80)
+        print("GENERATING EXCEL TIMING REPORT")
+        print("=" * 80)
+        
+        excel_report_path = excel_reporter.generate_excel_report(model_type=model_type)
+        if excel_report_path:
+            print(f"Excel timing report generated: {excel_report_path}")
+            
+            # Print session summary
+            summary = excel_reporter.get_session_summary()
+            print(f"\nTIMING SUMMARY:")
+            print(f"  Total Records: {summary['total_records']}")
+            print(f"  Total Naming Time: {summary['total_naming_time_ms']:.2f}ms")
+            print(f"  Total Postman Time: {summary['total_postman_time_ms']:.2f}ms")
+            print(f"  Total Time: {summary['total_time_ms']:.2f}ms")
+            print(f"  Average Time: {summary['average_time_ms']:.2f}ms")
+            print(f"  Model LOBs: {', '.join(summary['model_lobs'])}")
+            print(f"  Model Names: {', '.join(summary['model_names'])}")
+        else:
+            print("Failed to generate Excel timing report")
+    
     return successful_models, failed_models
 
 
@@ -726,11 +911,19 @@ Examples:
   
   # Process GBDF MCR models (GBDF MCR flag required)
   python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
-  python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
+  python main_processor.py --gbdf_mcr --TS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
+  python main_processor.py --gbdf_mcr --TS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
+  
+  # Process GBDF GRS models (GBDF GRS flag required)
+  python main_processor.py --gbdf_grs --TS139   # Process TS139 model (Multiple E&M Same day GBDF GRS)
+  python main_processor.py --gbdf_grs --TS59    # Process TS59 model (Unspecified dx code outpt GBDF GRS)
+  python main_processor.py --gbdf_grs --TS61    # Process TS61 model (Unspecified dx code prof GBDF GRS)
+  python main_processor.py --gbdf_grs --TS62    # Process TS62 model (Unspecified dx code prof GBDF GRS)
   
   # Process all discovered models
   python main_processor.py --wgs_csbd --all     # Process all discovered WGS_CSBD models
   python main_processor.py --gbdf_mcr --all     # Process all discovered GBDF MCR models
+  python main_processor.py --gbdf_grs --all     # Process all discovered GBDF GRS models
   
   # List available models
   python main_processor.py --list    # List all available TS models
@@ -738,7 +931,9 @@ Examples:
   # Skip Postman generation
   python main_processor.py --wgs_csbd --TS07 --no-postman
   python main_processor.py --gbdf_mcr --TS47 --no-postman
-  python main_processor.py --gbdf_mcr --TS48 --no-postman
+  python main_processor.py --gbdf_mcr --TS138 --no-postman
+  python main_processor.py --gbdf_mcr --TS144 --no-postman
+  python main_processor.py --gbdf_grs --TS139 --no-postman
   
   # Process with custom parameters
   python main_processor.py --edit-id rvn001 --code 00W5 --source-dir custom/path
@@ -752,6 +947,10 @@ Examples:
     # Add GBDF MCR flag
     parser.add_argument("--gbdf_mcr", action="store_true", 
                        help="Process GBDF MCR models (required for GBDF model processing)")
+    
+    # Add GBDF GRS flag
+    parser.add_argument("--gbdf_grs", action="store_true", 
+                       help="Process GBDF GRS models (required for GBDF GRS model processing)")
     
     # Add model-specific arguments for available models
     parser.add_argument("--TS01", action="store_true", 
@@ -788,10 +987,30 @@ Examples:
                        help="Process TS46 model (Multiple E&M Same day)")
     parser.add_argument("--TS47", action="store_true", 
                        help="Process TS47 model (Covid GBDF MCR)")
-    parser.add_argument("--TS48", action="store_true", 
-                       help="Process TS48 model (Multiple E&M Same day GBDF MCR)")
-    parser.add_argument("--TS49", action="store_true", 
-                       help="Process TS49 model (Multiple E&M Same day GBDF GRS)")
+    parser.add_argument("--TS138", action="store_true", 
+                       help="Process TS138 model (Multiple E&M Same day GBDF MCR)")
+    parser.add_argument("--TS139", action="store_true", 
+                       help="Process TS139 model (Multiple E&M Same day GBDF GRS)")
+    parser.add_argument("--TS140", action="store_true", 
+                       help="Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)")
+    parser.add_argument("--TS141", action="store_true", 
+                       help="Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS)")
+    parser.add_argument("--TS146", action="store_true", 
+                       help="Process TS146 model (No match of Procedure code GBDF MCR)")
+    parser.add_argument("--TS147", action="store_true", 
+                       help="Process TS147 model (No match of Procedure code GBDF GRS)")
+    parser.add_argument("--TS144", action="store_true", 
+                       help="Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)")
+    parser.add_argument("--TS145", action="store_true", 
+                       help="Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)")
+    parser.add_argument("--TS59", action="store_true", 
+                       help="Process TS59 model (Unspecified dx code outpt GBDF GRS)")
+    parser.add_argument("--TS60", action="store_true", 
+                       help="Process TS60 model (Unspecified dx code outpt GBDF MCR)")
+    parser.add_argument("--TS61", action="store_true", 
+                       help="Process TS61 model (Unspecified dx code prof GBDF GRS)")
+    parser.add_argument("--TS62", action="store_true", 
+                       help="Process TS62 model (Unspecified dx code prof GBDF GRS)")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
@@ -813,7 +1032,7 @@ Examples:
     # Load model configurations with dynamic discovery
     try:
         from models_config import get_models_config, get_model_by_ts
-        models_config = get_models_config(use_dynamic=True, use_wgs_csbd_destination=args.wgs_csbd, use_gbdf_mcr=args.gbdf_mcr)
+        models_config = get_models_config(use_dynamic=True, use_wgs_csbd_destination=args.wgs_csbd, use_gbdf_mcr=args.gbdf_mcr, use_gbdf_grs=args.gbdf_grs)
         print("Configuration loaded with dynamic discovery")
     except ImportError as e:
         print(f"Error: {e}")
@@ -1030,38 +1249,208 @@ Examples:
             print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model")
             sys.exit(1)
     
-    if args.TS48:
-        # TS48 is GBDF MCR only
+    if args.TS138:
+        # TS138 is GBDF MCR only
         if args.gbdf_mcr:
-            # Look for GBDF TS48 model
+            # Look for GBDF TS138 model
             gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts48_model = next((model for model in gbdf_models if model.get("ts_number") == "48"), None)
-            if ts48_model:
-                models_to_process.append(ts48_model)
+            ts138_model = next((model for model in gbdf_models if model.get("ts_number") == "138"), None)
+            if ts138_model:
+                models_to_process.append(ts138_model)
             else:
-                print("ERROR Error: GBDF TS48 model not found!")
+                print("ERROR Error: GBDF TS138 model not found!")
                 sys.exit(1)
         else:
-            print("ERROR Error: TS48 requires --gbdf_mcr flag!")
+            print("ERROR Error: TS138 requires --gbdf_mcr flag!")
             print("\nPlease specify GBDF MCR flag:")
-            print("  python main_processor.py --gbdf_mcr --TS48    # Process GBDF TS48 model")
+            print("  python main_processor.py --gbdf_mcr --TS138   # Process GBDF TS138 model")
             sys.exit(1)
     
-    if args.TS49:
-        # TS49 is GBDF GRS only
-        if args.gbdf_mcr:
-            # Look for GBDF TS49 model
-            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts49_model = next((model for model in gbdf_models if model.get("ts_number") == "49"), None)
-            if ts49_model:
-                models_to_process.append(ts49_model)
+    if args.TS139:
+        # TS139 is GBDF GRS only
+        if args.gbdf_grs:
+            # Look for GBDF GRS TS139 model
+            gbdf_grs_models = get_models_config(use_dynamic=True, use_gbdf_grs=True)
+            ts139_model = next((model for model in gbdf_grs_models if model.get("ts_number") == "139"), None)
+            if ts139_model:
+                models_to_process.append(ts139_model)
             else:
-                print("ERROR Error: GBDF TS49 model not found!")
+                print("ERROR Error: GBDF GRS TS139 model not found!")
                 sys.exit(1)
         else:
-            print("ERROR Error: TS49 requires --gbdf_mcr flag!")
+            print("ERROR Error: TS139 requires --gbdf_grs flag!")
+            print("\nPlease specify GBDF GRS flag:")
+            print("  python main_processor.py --gbdf_grs --TS139   # Process GBDF GRS TS139 model")
+            sys.exit(1)
+    
+    if args.TS140:
+        # TS140 is GBDF MCR only
+        if args.gbdf_mcr:
+            # Look for GBDF MCR TS140 model
+            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
+            ts140_model = next((model for model in gbdf_models if model.get("ts_number") == "140"), None)
+            if ts140_model:
+                models_to_process.append(ts140_model)
+            else:
+                print("ERROR Error: GBDF MCR TS140 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS140 requires --gbdf_mcr flag!")
             print("\nPlease specify GBDF MCR flag:")
-            print("  python main_processor.py --gbdf_mcr --TS49    # Process GBDF TS49 model")
+            print("  python main_processor.py --gbdf_mcr --TS140   # Process GBDF MCR TS140 model")
+            sys.exit(1)
+    
+    if args.TS141:
+        # TS141 is GBDF GRS only
+        if args.gbdf_grs:
+            # Look for GBDF GRS TS141 model
+            gbdf_grs_models = get_models_config(use_dynamic=True, use_gbdf_grs=True)
+            ts141_model = next((model for model in gbdf_grs_models if model.get("ts_number") == "141"), None)
+            if ts141_model:
+                models_to_process.append(ts141_model)
+            else:
+                print("ERROR Error: GBDF GRS TS141 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS141 requires --gbdf_grs flag!")
+            print("\nPlease specify GBDF GRS flag:")
+            print("  python main_processor.py --gbdf_grs --TS141   # Process GBDF GRS TS141 model")
+            sys.exit(1)
+    
+    if args.TS146:
+        # TS146 is GBDF MCR only
+        if args.gbdf_mcr:
+            # Look for GBDF MCR TS146 model
+            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
+            ts146_model = next((model for model in gbdf_models if model.get("ts_number") == "146"), None)
+            if ts146_model:
+                models_to_process.append(ts146_model)
+            else:
+                print("ERROR Error: GBDF MCR TS146 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS146 requires --gbdf_mcr flag!")
+            print("\nPlease specify GBDF MCR flag:")
+            print("  python main_processor.py --gbdf_mcr --TS146   # Process GBDF MCR TS146 model")
+            sys.exit(1)
+    
+    if args.TS147:
+        # TS147 is GBDF GRS only
+        if args.gbdf_grs:
+            # Look for GBDF GRS TS147 model
+            gbdf_grs_models = get_models_config(use_dynamic=True, use_gbdf_grs=True)
+            ts147_model = next((model for model in gbdf_grs_models if model.get("ts_number") == "147"), None)
+            if ts147_model:
+                models_to_process.append(ts147_model)
+            else:
+                print("ERROR Error: GBDF GRS TS147 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS147 requires --gbdf_grs flag!")
+            print("\nPlease specify GBDF GRS flag:")
+            print("  python main_processor.py --gbdf_grs --TS147   # Process GBDF GRS TS147 model")
+            sys.exit(1)
+    
+    if args.TS144:
+        # TS144 is GBDF MCR only
+        if args.gbdf_mcr:
+            # Look for GBDF MCR TS144 model
+            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
+            ts144_model = next((model for model in gbdf_models if model.get("ts_number") == "144"), None)
+            if ts144_model:
+                models_to_process.append(ts144_model)
+            else:
+                print("ERROR Error: GBDF MCR TS144 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS144 requires --gbdf_mcr flag!")
+            print("\nPlease specify GBDF MCR flag:")
+            print("  python main_processor.py --gbdf_mcr --TS144   # Process GBDF MCR TS144 model")
+            sys.exit(1)
+    
+    if args.TS145:
+        # TS145 is GBDF GRS only
+        if args.gbdf_grs:
+            # Look for GBDF GRS TS145 model
+            gbdf_grs_models = get_models_config(use_dynamic=True, use_gbdf_grs=True)
+            ts145_model = next((model for model in gbdf_grs_models if model.get("ts_number") == "145"), None)
+            if ts145_model:
+                models_to_process.append(ts145_model)
+            else:
+                print("ERROR Error: GBDF GRS TS145 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS145 requires --gbdf_grs flag!")
+            print("\nPlease specify GBDF GRS flag:")
+            print("  python main_processor.py --gbdf_grs --TS145   # Process GBDF GRS TS145 model")
+            sys.exit(1)
+    
+    if args.TS59:
+        # TS59 is GBDF GRS only
+        if args.gbdf_grs:
+            # Look for GBDF GRS TS59 model
+            gbdf_grs_models = get_models_config(use_dynamic=True, use_gbdf_grs=True)
+            ts59_model = next((model for model in gbdf_grs_models if model.get("ts_number") == "59"), None)
+            if ts59_model:
+                models_to_process.append(ts59_model)
+            else:
+                print("ERROR Error: GBDF GRS TS59 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS59 requires --gbdf_grs flag!")
+            print("\nPlease specify GBDF GRS flag:")
+            print("  python main_processor.py --gbdf_grs --TS59   # Process GBDF GRS TS59 model")
+            sys.exit(1)
+    
+    if args.TS60:
+        # TS60 is GBDF MCR only
+        if args.gbdf_mcr:
+            # Look for GBDF MCR TS60 model
+            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
+            ts60_model = next((model for model in gbdf_models if model.get("ts_number") == "60"), None)
+            if ts60_model:
+                models_to_process.append(ts60_model)
+            else:
+                print("ERROR Error: GBDF MCR TS60 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS60 requires --gbdf_mcr flag!")
+            print("\nPlease specify GBDF MCR flag:")
+            print("  python main_processor.py --gbdf_mcr --TS60   # Process GBDF MCR TS60 model")
+            sys.exit(1)
+    
+    if args.TS61:
+        # TS61 is GBDF GRS only
+        if args.gbdf_grs:
+            # Look for GBDF GRS TS61 model
+            gbdf_grs_models = get_models_config(use_dynamic=True, use_gbdf_grs=True)
+            ts61_model = next((model for model in gbdf_grs_models if model.get("ts_number") == "61"), None)
+            if ts61_model:
+                models_to_process.append(ts61_model)
+            else:
+                print("ERROR Error: GBDF GRS TS61 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS61 requires --gbdf_grs flag!")
+            print("\nPlease specify GBDF GRS flag:")
+            print("  python main_processor.py --gbdf_grs --TS61   # Process GBDF GRS TS61 model")
+            sys.exit(1)
+    
+    if args.TS62:
+        # TS62 is GBDF GRS only
+        if args.gbdf_grs:
+            # Look for GBDF GRS TS62 model
+            gbdf_grs_models = get_models_config(use_dynamic=True, use_gbdf_grs=True)
+            ts62_model = next((model for model in gbdf_grs_models if model.get("ts_number") == "62"), None)
+            if ts62_model:
+                models_to_process.append(ts62_model)
+            else:
+                print("ERROR Error: GBDF GRS TS62 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS62 requires --gbdf_grs flag!")
+            print("\nPlease specify GBDF GRS flag:")
+            print("  python main_processor.py --gbdf_grs --TS62   # Process GBDF GRS TS62 model")
             sys.exit(1)
     
     if args.all:
@@ -1073,8 +1462,10 @@ Examples:
                           args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
                           args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46,
                           (args.TS47 and args.wgs_csbd)])  # TS47 is WGS_CSBD when wgs_csbd flag is used
-    # TS47, TS48, and TS49 can be GBDF depending on flag - only consider it GBDF if gbdf_mcr flag is used
-    gbdf_mcr_models = (args.TS47 and args.gbdf_mcr) or (args.TS48 and args.gbdf_mcr) or (args.TS49 and args.gbdf_mcr)
+    # TS47, TS138, TS140, TS144, TS146, TS60 can be GBDF MCR depending on flag - only consider it GBDF MCR if gbdf_mcr flag is used
+    gbdf_mcr_models = (args.TS47 and args.gbdf_mcr) or (args.TS138 and args.gbdf_mcr) or (args.TS140 and args.gbdf_mcr) or (args.TS144 and args.gbdf_mcr) or (args.TS146 and args.gbdf_mcr) or (args.TS60 and args.gbdf_mcr)
+    # TS139, TS141, TS145, TS147, TS59 are GBDF GRS only - only consider it GBDF GRS if gbdf_grs flag is used
+    gbdf_grs_models = (args.TS139 and args.gbdf_grs) or (args.TS141 and args.gbdf_grs) or (args.TS145 and args.gbdf_grs) or (args.TS147 and args.gbdf_grs) or (args.TS59 and args.gbdf_grs) or (args.TS61 and args.gbdf_grs) or (args.TS62 and args.gbdf_grs)
     all_models = args.all
     
     if wgs_csbd_models and not args.wgs_csbd:
@@ -1105,16 +1496,33 @@ Examples:
         print("ERROR Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!")
         print("\nPlease use the --gbdf_mcr flag with GBDF MCR TS model commands:")
         print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model (Covid GBDF MCR)")
-        print("  python main_processor.py --gbdf_mcr --TS48    # Process GBDF TS48 model (Multiple E&M Same day GBDF MCR)")
-        print("  python main_processor.py --gbdf_mcr --TS49    # Process GBDF TS49 model (Multiple E&M Same day GBDF GRS)")
+        print("  python main_processor.py --gbdf_mcr --TS138   # Process GBDF TS138 model (Multiple E&M Same day GBDF MCR)")
+        print("  python main_processor.py --gbdf_mcr --TS140   # Process GBDF TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)")
+        print("  python main_processor.py --gbdf_mcr --TS144   # Process GBDF TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)")
+        print("  python main_processor.py --gbdf_mcr --TS146   # Process GBDF TS146 model (No match of Procedure code GBDF MCR)")
+        print("  python main_processor.py --gbdf_mcr --TS60    # Process GBDF TS60 model (Unspecified dx code outpt GBDF MCR)")
         print("\nUse --help for more information.")
         sys.exit(1)
     
-    if all_models and not args.wgs_csbd and not args.gbdf_mcr:
-        print("ERROR Error: Either --wgs_csbd or --gbdf_mcr flag is required for --all processing!")
+    if gbdf_grs_models and not args.gbdf_grs:
+        print("ERROR Error: --gbdf_grs flag is required for GBDF GRS TS model processing!")
+        print("\nPlease use the --gbdf_grs flag with GBDF GRS TS model commands:")
+        print("  python main_processor.py --gbdf_grs --TS139   # Process GBDF TS139 model (Multiple E&M Same day GBDF GRS)")
+        print("  python main_processor.py --gbdf_grs --TS141   # Process GBDF TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS)")
+        print("  python main_processor.py --gbdf_grs --TS145   # Process GBDF TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)")
+        print("  python main_processor.py --gbdf_grs --TS147   # Process GBDF TS147 model (No match of Procedure code GBDF GRS)")
+        print("  python main_processor.py --gbdf_grs --TS59    # Process GBDF TS59 model (Unspecified dx code outpt GBDF GRS)")
+        print("  python main_processor.py --gbdf_grs --TS61    # Process GBDF TS61 model (Unspecified dx code prof GBDF GRS)")
+        print("  python main_processor.py --gbdf_grs --TS62    # Process GBDF TS62 model (Unspecified dx code prof GBDF GRS)")
+        print("\nUse --help for more information.")
+        sys.exit(1)
+    
+    if all_models and not args.wgs_csbd and not args.gbdf_mcr and not args.gbdf_grs:
+        print("ERROR Error: Either --wgs_csbd, --gbdf_mcr, or --gbdf_grs flag is required for --all processing!")
         print("\nPlease specify which type of models to process:")
         print("  python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models")
         print("  python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models")
+        print("  python main_processor.py --gbdf_grs --all     # Process all GBDF GRS models")
         print("\nUse --help for more information.")
         sys.exit(1)
     
@@ -1139,8 +1547,18 @@ Examples:
         print("  --wgs_csbd --TS15    Process TS15 model (revenue model)")
         print("  --wgs_csbd --TS46    Process TS46 model (Multiple E&M Same day)")
         print("  --gbdf_mcr --TS47    Process TS47 model (Covid GBDF MCR)")
-        print("  --gbdf_mcr --TS48    Process TS48 model (Multiple E&M Same day GBDF MCR)")
-        print("  --gbdf_mcr --TS49    Process TS49 model (Multiple E&M Same day GBDF GRS)")
+        print("  --gbdf_mcr --TS138   Process TS138 model (Multiple E&M Same day GBDF MCR)")
+        print("  --gbdf_mcr --TS140   Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)")
+        print("  --gbdf_mcr --TS144   Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)")
+        print("  --gbdf_mcr --TS146   Process TS146 model (No match of Procedure code GBDF MCR)")
+        print("  --gbdf_mcr --TS60    Process TS60 model (Unspecified dx code outpt GBDF MCR)")
+        print("  --gbdf_grs --TS139   Process TS139 model (Multiple E&M Same day GBDF GRS)")
+        print("  --gbdf_grs --TS141   Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS)")
+        print("  --gbdf_grs --TS145   Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)")
+        print("  --gbdf_grs --TS147   Process TS147 model (No match of Procedure code GBDF GRS)")
+        print("  --gbdf_grs --TS59    Process TS59 model (Unspecified dx code outpt GBDF GRS)")
+        print("  --gbdf_grs --TS61    Process TS61 model (Unspecified dx code prof GBDF GRS)")
+        print("  --gbdf_grs --TS62    Process TS62 model (Unspecified dx code prof GBDF GRS)")
         print("  --wgs_csbd --all     Process all discovered WGS_CSBD models")
         print("  --gbdf_mcr --all     Process all discovered GBDF MCR models")
         print("  --list    List all available TS models")
@@ -1151,6 +1569,19 @@ Examples:
     # ====================================
     # Process selected models
     generate_postman = not args.no_postman
+    
+    # Determine model type for Excel reporting
+    model_type = None
+    if args.wgs_csbd:
+        model_type = "WGS_CSBD"
+    elif args.gbdf_mcr:
+        model_type = "GBDF_MCR"
+    elif args.gbdf_grs:
+        model_type = "GBDF_GRS"
+    
+    # Create separate Excel reporter for this model type
+    excel_reporter = create_excel_reporter_for_model_type(model_type) if model_type else get_excel_reporter()
+    excel_reporter.start_timing_session(f"{model_type} Processing" if model_type else "Processing")
     
     print(f"\nSTARTING Processing {len(models_to_process)} model(s)...")
     print("=" * 60)
@@ -1177,7 +1608,8 @@ Examples:
                 dest_dir=dest_dir,
                 generate_postman=generate_postman,
                 postman_collection_name=postman_collection_name,
-                postman_file_name=model_config.get('postman_file_name')
+                postman_file_name=model_config.get('postman_file_name'),
+                excel_reporter=excel_reporter
             )
             
             if renamed_files:
@@ -1221,6 +1653,29 @@ Examples:
     if total_processed > 0:
         print(f"\nCELEBRATION Successfully processed {total_processed} files!")
         print("Files are now ready for API testing with Postman.")
+        
+        # Generate Excel timing report for single model processing
+        if excel_reporter.timing_data:
+            print("\n" + "=" * 60)
+            print("GENERATING EXCEL TIMING REPORT")
+            print("=" * 60)
+            
+            excel_report_path = excel_reporter.generate_excel_report(model_type=model_type)
+            if excel_report_path:
+                print(f"Excel timing report generated: {excel_report_path}")
+                
+                # Print session summary
+                summary = excel_reporter.get_session_summary()
+                print(f"\nTIMING SUMMARY:")
+                print(f"  Total Records: {summary['total_records']}")
+                print(f"  Total Naming Time: {summary['total_naming_time_ms']:.2f}ms")
+                print(f"  Total Postman Time: {summary['total_postman_time_ms']:.2f}ms")
+                print(f"  Total Time: {summary['total_time_ms']:.2f}ms")
+                print(f"  Average Time: {summary['average_time_ms']:.2f}ms")
+                print(f"  Model LOBs: {', '.join(summary['model_lobs'])}")
+                print(f"  Model Names: {', '.join(summary['model_names'])}")
+            else:
+                print("Failed to generate Excel timing report")
     else:
         print("\nERROR No files were processed.")
 

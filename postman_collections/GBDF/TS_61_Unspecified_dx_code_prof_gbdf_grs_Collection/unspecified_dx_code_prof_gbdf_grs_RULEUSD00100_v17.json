@@ -1,0 +1,49 @@
+{
+  "info": {
+    "name": "TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection API Collection",
+    "description": "API collection for TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection test cases",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "TC#01_sample#RULEUSD00100#v17#LR",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Client_Transaction_ID",
+            "value": "20115660390020220225161114893",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "validate",
+            "{{tc_id}}"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test_case\": \"TC#01_sample#deny\",\n    \"edit_id\": \"RULEEM000001\",\n    \"CLCL_ID\": \"82267857746\",\n    \"code\": \"W04\",\n    \"description\": \"Test case for Covid E&M Services not payable on Facility claim Sub Edit 1 WGS_CSBD model\",\n    \"expected_result\": \"deny\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+}

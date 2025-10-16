@@ -6,7 +6,7 @@
   },
   "item": [
     {
-      "name": "TC#01_sample#RULEEMSD000002#v09#deny",
+      "name": "TC#01_sample#RULEEMSD000002#v09#NR",
       "request": {
         "method": "POST",
         "header": [
@@ -17,19 +17,19 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "raw": "http://localhost:3000/api/validate/TC#01_sample#RULEEMSD000002#v09#NR",
           "host": [
-            "{{baseUrl}}"
+            "http://localhost:3000"
           ],
           "path": [
             "api",
             "validate",
-            "{{tc_id}}"
+            "TC#01_sample#RULEEMSD000002#v09#NR"
           ]
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"67585521935\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"47426775734\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -39,7 +39,7 @@
       }
     },
     {
-      "name": "TC#02_sample#RULEEMSD000002#v09#bypass",
+      "name": "TC#02_sample#RULEEMSD000002#v09#NR",
       "request": {
         "method": "POST",
         "header": [
@@ -50,19 +50,19 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "raw": "http://localhost:3000/api/validate/TC#02_sample#RULEEMSD000002#v09#NR",
           "host": [
-            "{{baseUrl}}"
+            "http://localhost:3000"
           ],
           "path": [
             "api",
             "validate",
-            "{{tc_id}}"
+            "TC#02_sample#RULEEMSD000002#v09#NR"
           ]
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"96682368196\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
+          "raw": "{\n  \"test_case\": \"TC#01_sample#deny\",\n  \"edit_id\": \"RULEREVE000005\",\n  \"CLCL_ID\": \"68109704758\",\n  \"code\": \"00W28\",\n  \"description\": \"Test case for Revenue code Services not payable on Facility claim Sub Edit 5 WGS_CSBD model\",\n  \"expected_result\": \"deny\"\n}",
           "options": {
             "raw": {
               "language": "json"
