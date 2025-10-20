@@ -212,23 +212,23 @@ def apply_wgs_csbd_header_footer(file_path):
                                 "responseRequired" in existing_data)
         
         if has_correct_structure:
-            print(f"[INFO] File {file_path} already has correct structure, will only update KEY_CHK_CDN_NBR if needed")
+            print(f"[INFO] File {file_path} already has correct structure, will only update KEY_CHK_DCN_NBR if needed")
         
-        # Generate random 11-digit number for KEY_CHK_CDN_NBR field
-        # Check both root level and payload level for KEY_CHK_CDN_NBR
+        # Generate random 11-digit number for KEY_CHK_DCN_NBR field
+        # Check both root level and payload level for KEY_CHK_DCN_NBR
         if isinstance(existing_data, dict):
             # Check root level
-            if "KEY_CHK_CDN_NBR" in existing_data:
+            if "KEY_CHK_DCN_NBR" in existing_data:
                 random_11_digit = str(random.randint(10000000000, 99999999999))
-                existing_data["KEY_CHK_CDN_NBR"] = random_11_digit
-                print(f"[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (root level): {random_11_digit}")
+                existing_data["KEY_CHK_DCN_NBR"] = random_11_digit
+                print(f"[INFO] Generated random 11-digit number for KEY_CHK_DCN_NBR (root level): {random_11_digit}")
             
             # Check payload level
             if "payload" in existing_data and isinstance(existing_data["payload"], dict):
-                if "KEY_CHK_CDN_NBR" in existing_data["payload"]:
+                if "KEY_CHK_DCN_NBR" in existing_data["payload"]:
                     random_11_digit = str(random.randint(10000000000, 99999999999))
-                    existing_data["payload"]["KEY_CHK_CDN_NBR"] = random_11_digit
-                    print(f"[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (payload level): {random_11_digit}")
+                    existing_data["payload"]["KEY_CHK_DCN_NBR"] = random_11_digit
+                    print(f"[INFO] Generated random 11-digit number for KEY_CHK_DCN_NBR (payload level): {random_11_digit}")
         
         # Only apply header/footer transformation if the file doesn't already have correct structure
         if not has_correct_structure:

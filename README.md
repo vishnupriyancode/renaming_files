@@ -1114,28 +1114,28 @@ python main_processor.py --gbdf_grs --TS139 --list   # Generate timing report fo
 - Success/failure status for each file
 - Timestamped Excel reports with model-specific naming
 
-## KEY_CHK_CDN_NBR Generator
+## KEY_CHK_DCN_NBR Generator
 
-The project includes an automatic KEY_CHK_CDN_NBR generator that creates random 11-digit numbers for test case validation:
+The project includes an automatic KEY_CHK_DCN_NBR generator that creates random 11-digit numbers for test case validation:
 
 ### Generator Features:
 - **Random Number Generation**: Creates 11-digit numbers between 10000000000 and 99999999999
-- **Dual-Level Updates**: Updates KEY_CHK_CDN_NBR fields at both root level and payload level
-- **Smart Detection**: Automatically detects existing KEY_CHK_CDN_NBR fields and updates them
+- **Dual-Level Updates**: Updates KEY_CHK_DCN_NBR fields at both root level and payload level
+- **Smart Detection**: Automatically detects existing KEY_CHK_DCN_NBR fields and updates them
 - **WGS_CSBD Integration**: Works seamlessly with WGS_CSBD header/footer transformation
 
 ### How It Works:
-1. **Field Detection**: Scans JSON files for existing KEY_CHK_CDN_NBR fields
+1. **Field Detection**: Scans JSON files for existing KEY_CHK_DCN_NBR fields
 2. **Number Generation**: Creates a new random 11-digit number for each field found
-3. **Field Updates**: Updates both root-level and payload-level KEY_CHK_CDN_NBR fields
+3. **Field Updates**: Updates both root-level and payload-level KEY_CHK_DCN_NBR fields
 4. **Logging**: Provides detailed logging of all generated numbers
 
 ### Example Output:
 ```json
 {
-  "KEY_CHK_CDN_NBR": "42488458762",
+  "KEY_CHK_DCN_NBR": "42488458762",
   "payload": {
-    "KEY_CHK_CDN_NBR": "85872060683",
+    "KEY_CHK_DCN_NBR": "85872060683",
     "test_case": "TC#01_sample#deny"
   }
 }
@@ -1143,8 +1143,8 @@ The project includes an automatic KEY_CHK_CDN_NBR generator that creates random 
 
 ### Console Output:
 ```
-[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (root level): 42488458762
-[INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (payload level): 85872060683
+[INFO] Generated random 11-digit number for KEY_CHK_DCN_NBR (root level): 42488458762
+[INFO] Generated random 11-digit number for KEY_CHK_DCN_NBR (payload level): 85872060683
 ```
 
 ## How the Mapping Works
