@@ -146,6 +146,9 @@ python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Rev
 python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
 python main_processor.py --wgs_csbd --TS46    # Process TS46 model (Multiple E&M Same day)
 python main_processor.py --wgs_csbd --TS47    # Process TS47 model (Multiple Billing of Obstetrical Services)
+
+# Process all WGS_CSBD models at once
+python main_processor.py --wgs_csbd --all     # Process all 17 WGS_CSBD models
 ```
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
@@ -159,6 +162,12 @@ python main_processor.py --gbdf_mcr --TS140   # Process TS140 model (NDC UOM Val
 python main_processor.py --gbdf_mcr --TS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
 python main_processor.py --gbdf_mcr --TS146   # Process TS146 model (No match of Procedure code GBDF MCR)
 
+# Process all GBDF MCR models at once
+python main_processor.py --gbdf_mcr --all     # Process all 7 GBDF MCR models
+```
+
+### GBDF_GRS Models (Global Burden of Disease Foundation - Global Research Services)
+```bash
 # Process specific GBDF GRS models (GBDF_GRS flag required)
 python main_processor.py --gbdf_grs --TS49    # Process TS49 model (Multiple E&M Same day GBDF GRS)
 python main_processor.py --gbdf_grs --TS59    # Process TS59 model (Unspecified dx code outpt GBDF GRS)
@@ -169,6 +178,41 @@ python main_processor.py --gbdf_grs --TS141   # Process TS141 model (NDC UOM Val
 python main_processor.py --gbdf_grs --TS145   # Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)
 python main_processor.py --gbdf_grs --TS147   # Process TS147 model (No match of Procedure code GBDF GRS)
 
+# Process all GBDF GRS models at once
+python main_processor.py --gbdf_grs --all     # Process all 8 GBDF GRS models
+```
+
+## 📊 Model Summary & Quick Reference
+
+### Available Models Overview
+| Model Type | Count | TS Numbers | Description |
+|------------|-------|------------|-------------|
+| **WGS_CSBD** | 17 | TS01-TS15, TS46-TS47 | Healthcare Claims Processing |
+| **GBDF_MCR** | 7 | TS47, TS48, TS60, TS138, TS140, TS144, TS146 | Global Burden of Disease Foundation - Medical Claims Research |
+| **GBDF_GRS** | 8 | TS49, TS59, TS61, TS62, TS139, TS141, TS145, TS147 | Global Burden of Disease Foundation - Global Research Services |
+| **TOTAL** | **32** | | **All Available Models** |
+
+### Quick Command Reference
+```bash
+# Process ALL models of each type
+python main_processor.py --wgs_csbd --all     # All 17 WGS_CSBD models
+python main_processor.py --gbdf_mcr --all     # All 7 GBDF MCR models  
+python main_processor.py --gbdf_grs --all     # All 8 GBDF GRS models
+
+# Process ALL models of each type WITHOUT Postman generation
+python main_processor.py --wgs_csbd --all --no-postman
+python main_processor.py --gbdf_mcr --all --no-postman
+python main_processor.py --gbdf_grs --all --no-postman
+
+# List all available models
+python main_processor.py --list
+
+# Get help
+python main_processor.py --help
+```
+
+### Postman Collection Generation Commands
+```bash
 # Process models with automatic Postman collection generation (default behavior)
 python main_processor.py --wgs_csbd --TS01    # Generates TS_01_Covid_Collection
 python main_processor.py --wgs_csbd --TS02    # Generates TS_02_Laterality_Collection

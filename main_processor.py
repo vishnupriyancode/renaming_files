@@ -276,7 +276,7 @@ def apply_gbdf_clcl_id_generation(file_path):
     """
     Generate random 11-digit number for CLCL_ID field in GBDF JSON files.
     This function modifies the CLCL_ID field to have a random 11-digit value.
-    Handles both root-level and nested payload structure.
+    Handles root-level, nested payload structure, and GBDF claim_header path.
     
     Args:
         file_path: Path to the JSON file to transform
@@ -308,6 +308,30 @@ def apply_gbdf_clcl_id_generation(file_path):
             "CLCL_ID" in existing_data["payload"]):
             existing_data["payload"]["CLCL_ID"] = random_11_digit
             print(f"[INFO] Generated random 11-digit number for CLCL_ID (payload level): {random_11_digit}")
+            clcl_id_updated = True
+
+        # GBDF structure: claim_header is a list; CLCL_ID is inside the first element
+        if (isinstance(existing_data, dict) and 
+            "claim_header" in existing_data and 
+            isinstance(existing_data["claim_header"], list) and 
+            len(existing_data["claim_header"]) > 0 and 
+            isinstance(existing_data["claim_header"][0], dict) and 
+            "CLCL_ID" in existing_data["claim_header"][0]):
+            existing_data["claim_header"][0]["CLCL_ID"] = random_11_digit
+            print(f"[INFO] Generated random 11-digit number for CLCL_ID (claim_header[0] level): {random_11_digit}")
+            clcl_id_updated = True
+
+        # Also handle payload.claim_header[0].CLCL_ID if the GBDF file is wrapped in a payload
+        if (isinstance(existing_data, dict) and 
+            "payload" in existing_data and 
+            isinstance(existing_data["payload"], dict) and 
+            "claim_header" in existing_data["payload"] and 
+            isinstance(existing_data["payload"]["claim_header"], list) and 
+            len(existing_data["payload"]["claim_header"]) > 0 and 
+            isinstance(existing_data["payload"]["claim_header"][0], dict) and 
+            "CLCL_ID" in existing_data["payload"]["claim_header"][0]):
+            existing_data["payload"]["claim_header"][0]["CLCL_ID"] = random_11_digit
+            print(f"[INFO] Generated random 11-digit number for CLCL_ID (payload.claim_header[0] level): {random_11_digit}")
             clcl_id_updated = True
         
         if clcl_id_updated:
@@ -1214,6 +1238,7 @@ Examples:
   
   # Process GBDF MCR models (GBDF MCR flag required)
   python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
+  python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
   python main_processor.py --gbdf_mcr --TS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
   python main_processor.py --gbdf_mcr --TS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
   
@@ -1293,6 +1318,10 @@ Examples:
                        help="Process TS46 model (Multiple E&M Same day)")
     parser.add_argument("--TS47", action="store_true", 
                        help="Process TS47 model (Covid GBDF MCR)")
+    parser.add_argument("--TS48", action="store_true", 
+                       help="Process TS48 model (Multiple E&M Same day GBDF MCR)")
+    parser.add_argument("--TS49", action="store_true", 
+                       help="Process TS49 model (Multiple E&M Same day GBDF GRS)")
     parser.add_argument("--TS138", action="store_true", 
                        help="Process TS138 model (Multiple E&M Same day GBDF MCR)")
     parser.add_argument("--TS139", action="store_true", 
@@ -1572,6 +1601,40 @@ Examples:
             print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model")
             sys.exit(1)
     
+    if args.TS48:
+        # TS48 is GBDF MCR only
+        if args.gbdf_mcr:
+            # Look for GBDF TS48 model
+            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
+            ts48_model = next((model for model in gbdf_models if model.get("ts_number") == "48"), None)
+            if ts48_model:
+                models_to_process.append(ts48_model)
+            else:
+                print("ERROR Error: GBDF TS48 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS48 requires --gbdf_mcr flag!")
+            print("\nPlease specify GBDF MCR flag:")
+            print("  python main_processor.py --gbdf_mcr --TS48   # Process GBDF TS48 model")
+            sys.exit(1)
+    
+    if args.TS49:
+        # TS49 is GBDF GRS only
+        if args.gbdf_grs:
+            # Look for GBDF GRS TS49 model
+            gbdf_grs_models = get_models_config(use_dynamic=True, use_gbdf_grs=True)
+            ts49_model = next((model for model in gbdf_grs_models if model.get("ts_number") == "49"), None)
+            if ts49_model:
+                models_to_process.append(ts49_model)
+            else:
+                print("ERROR Error: GBDF GRS TS49 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS49 requires --gbdf_grs flag!")
+            print("\nPlease specify GBDF GRS flag:")
+            print("  python main_processor.py --gbdf_grs --TS49   # Process GBDF GRS TS49 model")
+            sys.exit(1)
+
     if args.TS138:
         # TS138 is GBDF MCR only
         if args.gbdf_mcr:
@@ -1785,10 +1848,10 @@ Examples:
                           args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
                           args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46,
                           (args.TS47 and args.wgs_csbd)])  # TS47 is WGS_CSBD when wgs_csbd flag is used
-    # TS47, TS138, TS140, TS144, TS146, TS60 can be GBDF MCR depending on flag - only consider it GBDF MCR if gbdf_mcr flag is used
-    gbdf_mcr_models = (args.TS47 and args.gbdf_mcr) or (args.TS138 and args.gbdf_mcr) or (args.TS140 and args.gbdf_mcr) or (args.TS144 and args.gbdf_mcr) or (args.TS146 and args.gbdf_mcr) or (args.TS60 and args.gbdf_mcr)
+    # TS47, TS48, TS138, TS140, TS144, TS146, TS60 can be GBDF MCR depending on flag - only consider it GBDF MCR if gbdf_mcr flag is used
+    gbdf_mcr_models = (args.TS47 and args.gbdf_mcr) or (args.TS48 and args.gbdf_mcr) or (args.TS138 and args.gbdf_mcr) or (args.TS140 and args.gbdf_mcr) or (args.TS144 and args.gbdf_mcr) or (args.TS146 and args.gbdf_mcr) or (args.TS60 and args.gbdf_mcr)
     # TS139, TS141, TS145, TS147, TS59 are GBDF GRS only - only consider it GBDF GRS if gbdf_grs flag is used
-    gbdf_grs_models = (args.TS139 and args.gbdf_grs) or (args.TS141 and args.gbdf_grs) or (args.TS145 and args.gbdf_grs) or (args.TS147 and args.gbdf_grs) or (args.TS59 and args.gbdf_grs) or (args.TS61 and args.gbdf_grs) or (args.TS62 and args.gbdf_grs)
+    gbdf_grs_models = (args.TS49 and args.gbdf_grs) or (args.TS139 and args.gbdf_grs) or (args.TS141 and args.gbdf_grs) or (args.TS145 and args.gbdf_grs) or (args.TS147 and args.gbdf_grs) or (args.TS59 and args.gbdf_grs) or (args.TS61 and args.gbdf_grs) or (args.TS62 and args.gbdf_grs)
     all_models = args.all
     
     if wgs_csbd_models and not args.wgs_csbd:
@@ -1819,6 +1882,7 @@ Examples:
         print("ERROR Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!")
         print("\nPlease use the --gbdf_mcr flag with GBDF MCR TS model commands:")
         print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model (Covid GBDF MCR)")
+        print("  python main_processor.py --gbdf_mcr --TS48    # Process GBDF TS48 model (Multiple E&M Same day GBDF MCR)")
         print("  python main_processor.py --gbdf_mcr --TS138   # Process GBDF TS138 model (Multiple E&M Same day GBDF MCR)")
         print("  python main_processor.py --gbdf_mcr --TS140   # Process GBDF TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)")
         print("  python main_processor.py --gbdf_mcr --TS144   # Process GBDF TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)")
@@ -1870,6 +1934,7 @@ Examples:
         print("  --wgs_csbd --TS15    Process TS15 model (revenue model)")
         print("  --wgs_csbd --TS46    Process TS46 model (Multiple E&M Same day)")
         print("  --gbdf_mcr --TS47    Process TS47 model (Covid GBDF MCR)")
+        print("  --gbdf_mcr --TS48    Process TS48 model (Multiple E&M Same day GBDF MCR)")
         print("  --gbdf_mcr --TS138   Process TS138 model (Multiple E&M Same day GBDF MCR)")
         print("  --gbdf_mcr --TS140   Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)")
         print("  --gbdf_mcr --TS144   Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)")
