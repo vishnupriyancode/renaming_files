@@ -312,7 +312,7 @@ Found 1 JSON files for collection 'TS_01_Covid_Collection'
     {
       "name": "TC#01_od#RULEEM000001#W04#LR",
       "method": "POST",
-      "url": "{{baseUrl}}/api/validate/{{tc_id}}",
+      "url": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
       "headers": [
         {"name": "Content-Type", "value": "application/json"},
         {"name": "X-Edit-ID", "value": "RULEEM000001"},

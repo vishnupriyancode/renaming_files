@@ -854,7 +854,7 @@ python postman_generator.py --stats "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payload
 
 ### URL Structure
 ```
-{{baseUrl}}/api/validate/{{tc_id}}
+https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations
 ```
 
 Where:
@@ -1052,7 +1052,7 @@ The script processes JSON files containing test case information:
       "name": "TC#01_od#rvn011#00W11#LR",
       "type": "http",
       "method": "POST",
-      "url": "{{baseUrl}}/api/validate/{{tc_id}}",
+      "url": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
       "headers": [
         {
           "uid": "2221e60f-799e-4e9d-8e8d-85e81d1434c6",

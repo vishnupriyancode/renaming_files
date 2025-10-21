@@ -151,7 +151,7 @@ class PostmanCollectionGenerator:
             "name": request_name,      # Request name (filename without extension)
             "type": "http",            # Request type
             "method": method,          # HTTP method (POST for all validation requests)
-            "url": "{{baseUrl}}/api/validate/{{tc_id}}",  # API endpoint with variables
+            "url": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",  # API endpoint
             "headers": headers,
             "body": {
                 "mode": "raw",  # Raw JSON body
@@ -270,7 +270,7 @@ class PostmanCollectionGenerator:
                         "method": method,
                         "header": headers,
                         "url": {
-                            "raw": "{{baseUrl}}/api/validate/{{tc_id}}",  # Full URL with variables
+                            "raw": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",  # Full URL
                             "host": ["{{baseUrl}}"],  # Host part
                             "path": ["api", "validate", "{{tc_id}}"]  # Path segments
                         },
