@@ -27,14 +27,20 @@
           }
         ],
         "url": {
-          "raw": "{{baseUrl}}/api/validate/{{tc_id}}",
+          "raw": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
+          "protocol": "https",
           "host": [
-            "{{baseUrl}}"
+            "pi-timber-claims-api-uat",
+            "ingress-nginx",
+            "dig-gld-shared",
+            "gcpdns",
+            "internal",
+            "das"
           ],
           "path": [
-            "api",
-            "validate",
-            "{{tc_id}}"
+            "claims",
+            "Timber",
+            "GetRecommendations"
           ]
         },
         "body": {
