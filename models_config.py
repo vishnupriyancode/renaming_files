@@ -347,7 +347,7 @@ def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf
                     return STATIC_MODELS_CONFIG.get("gbdf_grs", [])
             else:
                 # Use dynamic discovery for WGS_CSBD
-                discovered_models = discover_ts_folders("source_folder/WGS_CSBD", use_wgs_csbd_destination)
+                discovered_models = discover_ts_folders("source_folder/WGS_CSBD", True)
                 if discovered_models:
                     print(f"Dynamic discovery found {len(discovered_models)} WGS_CSBD models")
                     return discovered_models
