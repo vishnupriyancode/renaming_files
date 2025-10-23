@@ -152,6 +152,15 @@ STATIC_MODELS_CONFIG = {
         "postman_file_name": "multiple_em_wgs_csbd_RULEEMSD000002_00W09.json"
     },
     {
+        "ts_number": "20",
+        "edit_id": "RULERBWR000001",
+        "code": "00W30",
+        "source_dir": "source_folder/WGS_CSBD/TS_20_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_RULERBWR000001_00W30_sur/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/TS_20_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_RULERBWR000001_00W30_dis/regression",
+        "postman_collection_name": "TS_20_RadioservicesbilledwithoutRadiopharma_Collection",
+        "postman_file_name": "radioservices_wgs_csbd_RULERBWR000001_00W30.json"
+    },
+    {
         "ts_number": "47",
         "edit_id": "RULEMBOS000001",
         "code": "00W28",
