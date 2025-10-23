@@ -1346,6 +1346,8 @@ Examples:
                        help="Process TS61 model (Unspecified dx code prof GBDF GRS)")
     parser.add_argument("--TS62", action="store_true", 
                        help="Process TS62 model (Unspecified dx code prof GBDF GRS)")
+    parser.add_argument("--TS20", action="store_true", 
+                       help="Process TS20 model (RadioservicesbilledwithoutRadiopharma)")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
@@ -1839,6 +1841,23 @@ Examples:
             print("  python main_processor.py --gbdf_grs --TS62   # Process GBDF GRS TS62 model")
             sys.exit(1)
     
+    if args.TS20:
+        # TS20 is WGS_CSBD only
+        if args.wgs_csbd:
+            # Look for WGS_CSBD TS20 model
+            wgs_csbd_models = get_models_config(use_dynamic=True, use_wgs_csbd_destination=False)
+            ts20_model = next((model for model in wgs_csbd_models if model.get("ts_number") == "20"), None)
+            if ts20_model:
+                models_to_process.append(ts20_model)
+            else:
+                print("ERROR Error: WGS_CSBD TS20 model not found!")
+                sys.exit(1)
+        else:
+            print("ERROR Error: TS20 requires --wgs_csbd flag!")
+            print("\nPlease specify WGS_CSBD flag:")
+            print("  python main_processor.py --wgs_csbd --TS20   # Process WGS_CSBD TS20 model")
+            sys.exit(1)
+    
     if args.all:
         models_to_process = models_config
         print(f"SUCCESS Processing all {len(models_config)} discovered models")
@@ -1846,7 +1865,7 @@ Examples:
     # Check if appropriate flag is required for TS model processing
     wgs_csbd_models = any([args.TS01, args.TS02, args.TS03, args.TS04, args.TS05, 
                           args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
-                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46,
+                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46, args.TS20,
                           (args.TS47 and args.wgs_csbd)])  # TS47 is WGS_CSBD when wgs_csbd flag is used
     # TS47, TS48, TS138, TS140, TS144, TS146, TS60 can be GBDF MCR depending on flag - only consider it GBDF MCR if gbdf_mcr flag is used
     gbdf_mcr_models = (args.TS47 and args.gbdf_mcr) or (args.TS48 and args.gbdf_mcr) or (args.TS138 and args.gbdf_mcr) or (args.TS140 and args.gbdf_mcr) or (args.TS144 and args.gbdf_mcr) or (args.TS146 and args.gbdf_mcr) or (args.TS60 and args.gbdf_mcr)
