@@ -1348,6 +1348,8 @@ Examples:
                        help="Process TS62 model (Unspecified dx code prof GBDF GRS)")
     parser.add_argument("--TS20", action="store_true", 
                        help="Process TS20 model (RadioservicesbilledwithoutRadiopharma)")
+    parser.add_argument("--CSBD_TS48", action="store_true", 
+                       help="Process CSBD_TS48 model (Revenue code to HCPCS Alignment edit)")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
@@ -1858,6 +1860,26 @@ Examples:
             print("  python main_processor.py --wgs_csbd --TS20   # Process WGS_CSBD TS20 model")
             sys.exit(1)
     
+    if args.CSBD_TS48:
+        # CSBD_TS48 is WGS_CSBD only - special case for Revenue code to HCPCS Alignment edit
+        if args.wgs_csbd:
+            # Create custom model configuration for CSBD_TS48
+            csbd_ts48_model = {
+                "ts_number": "48",
+                "edit_id": "RULERCTH00001",
+                "code": "00W26",
+                "source_dir": "source_folder/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur/regression",
+                "dest_dir": "renaming_jsons/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/regression",
+                "postman_collection_name": "CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection",
+                "postman_file_name": "revenue_hcpcs_alignment_wgs_csbd_RULERCTH00001_00W26.json"
+            }
+            models_to_process.append(csbd_ts48_model)
+        else:
+            print("ERROR Error: CSBD_TS48 requires --wgs_csbd flag!")
+            print("\nPlease specify WGS_CSBD flag:")
+            print("  python main_processor.py --wgs_csbd --CSBD_TS48   # Process CSBD_TS48 model")
+            sys.exit(1)
+    
     if args.all:
         models_to_process = models_config
         print(f"SUCCESS Processing all {len(models_config)} discovered models")
@@ -1865,7 +1887,7 @@ Examples:
     # Check if appropriate flag is required for TS model processing
     wgs_csbd_models = any([args.TS01, args.TS02, args.TS03, args.TS04, args.TS05, 
                           args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
-                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46, args.TS20,
+                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46, args.TS20, args.CSBD_TS48,
                           (args.TS47 and args.wgs_csbd)])  # TS47 is WGS_CSBD when wgs_csbd flag is used
     # TS47, TS48, TS138, TS140, TS144, TS146, TS60 can be GBDF MCR depending on flag - only consider it GBDF MCR if gbdf_mcr flag is used
     gbdf_mcr_models = (args.TS47 and args.gbdf_mcr) or (args.TS48 and args.gbdf_mcr) or (args.TS138 and args.gbdf_mcr) or (args.TS140 and args.gbdf_mcr) or (args.TS144 and args.gbdf_mcr) or (args.TS146 and args.gbdf_mcr) or (args.TS60 and args.gbdf_mcr)
