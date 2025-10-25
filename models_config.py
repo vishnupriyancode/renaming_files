@@ -168,6 +168,15 @@ STATIC_MODELS_CONFIG = {
         "dest_dir": "renaming_jsons/WGS_CSBD/TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_dis/regression",
         "postman_collection_name": "TS_47_Multiple Billing of Obstetrical Services_Collection",
         "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEMBOS000001_00W28.json"
+    },
+    {
+        "ts_number": "48",
+        "edit_id": "RULERCTH00001",
+        "code": "00W26",
+        "source_dir": "source_folder/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/regression",
+        "postman_collection_name": "CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection",
+        "postman_file_name": "revenue_hcpcs_alignment_wgs_csbd_RULERCTH00001_00W26.json"
     }
     ],
     "gbdf_mcr": [

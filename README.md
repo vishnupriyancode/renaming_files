@@ -16,6 +16,18 @@ The project has been enhanced with comprehensive Excel reporting functionality:
 - **✅ Enhanced Documentation**: Added Excel Reporting Guide and File Connections Demo Guide
 - **✅ Backward Compatibility**: All existing functionality remains unchanged
 
+**✅ CSBD_TS48 Model Support (Latest Update)**
+
+The project has been enhanced with support for the CSBD_TS48 Revenue code to HCPCS Alignment edit model:
+
+- **✅ Added CSBD_TS48 Support**: Revenue code to HCPCS Alignment edit WGS_CSBD model
+- **✅ Custom Model Configuration**: Special handling for CSBD_TS48 with RULERCTH00001 edit ID
+- **✅ Updated Command Line Interface**: Added --CSBD_TS48 argument for WGS_CSBD processing
+- **✅ Enhanced Documentation**: Updated examples and help text to include CSBD_TS48 model
+- **✅ Error Handling**: Added proper validation and error messages for CSBD_TS48 flag usage
+- **✅ Postman Collection Generation**: Automatic collection generation with proper naming
+- **✅ Excel Reporting**: Integrated timing tracking and performance analytics
+
 **✅ TS140, TS141, TS146, TS147 Model Support**
 
 The project has been enhanced with support for additional GBDF models:
@@ -83,7 +95,8 @@ postman_collections/
 │   ├── TS_14_HCPCS to Revenue Code Xwalk_Collection/
 │   ├── TS_15_revenue model_Collection/
 │   ├── TS_46_Multiple E&M Same day_Collection/
-│   └── TS_47_Multiple Billing of Obstetrical Services_Collection/
+│   ├── TS_47_Multiple Billing of Obstetrical Services_Collection/
+│   └── CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection/
 └── GBDF/                                        # GBDF MCR Collections
     ├── TS_47_Covid_gbdf_mcr_Collection/
     ├── TS_138_Multiple E&M Same day_gbdf_mcr_Collection/
@@ -98,6 +111,7 @@ renaming_jsons/
 │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
 │   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
 │   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
+│   └── CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/
 │   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/
 │   ├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/
 │   ├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/
@@ -146,9 +160,10 @@ python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Rev
 python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
 python main_processor.py --wgs_csbd --TS46    # Process TS46 model (Multiple E&M Same day)
 python main_processor.py --wgs_csbd --TS47    # Process TS47 model (Multiple Billing of Obstetrical Services)
+python main_processor.py --wgs_csbd --CSBD_TS48    # Process CSBD_TS48 model (Revenue code to HCPCS Alignment edit)
 
 # Process all WGS_CSBD models at once
-python main_processor.py --wgs_csbd --all     # Process all 17 WGS_CSBD models
+python main_processor.py --wgs_csbd --all     # Process all 18 WGS_CSBD models
 ```
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
@@ -231,6 +246,7 @@ python main_processor.py --wgs_csbd --TS14    # Generates TS_14_HCPCS_Collection
 python main_processor.py --wgs_csbd --TS15    # Generates TS_15_Revenue_Collection
 python main_processor.py --wgs_csbd --TS46    # Generates TS_46_Multiple E&M Same day_Collection
 python main_processor.py --wgs_csbd --TS47    # Generates TS_47_Multiple Billing of Obstetrical Services_Collection
+python main_processor.py --wgs_csbd --CSBD_TS48    # Generates CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection
 python main_processor.py --wgs_csbd --all     # Generates collections for all WGS_CSBD models
 
 # GBDF MCR models with Postman collection generation
@@ -272,6 +288,7 @@ python main_processor.py --wgs_csbd --TS14 --no-postman
 python main_processor.py --wgs_csbd --TS15 --no-postman
 python main_processor.py --wgs_csbd --TS46 --no-postman
 python main_processor.py --wgs_csbd --TS47 --no-postman
+python main_processor.py --wgs_csbd --CSBD_TS48 --no-postman
 python main_processor.py --wgs_csbd --all --no-postman
 
 # GBDF MCR models without Postman collection generation
@@ -337,6 +354,7 @@ python main_processor.py --help
 - `python main_processor.py --wgs_csbd --TS15` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --TS46` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --TS47` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBD_TS48` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --all` - **TESTED & WORKING** ✓
 
 ### GBDF_MCR Models:
