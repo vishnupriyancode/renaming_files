@@ -177,6 +177,78 @@ STATIC_MODELS_CONFIG = {
         "dest_dir": "renaming_jsons/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/regression",
         "postman_collection_name": "CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection",
         "postman_file_name": "revenue_hcpcs_alignment_wgs_csbd_RULERCTH00001_00W26.json"
+    },
+    {
+        "ts_number": "49",
+        "edit_id": "RULERCTH00001",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULERCTH00001_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULERCTH00001_00W28_dis/regression",
+        "postman_collection_name": "CSBDTS_49_Observation_Services_Collection",
+        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00001_00W28.json"
+    },
+    {
+        "ts_number": "50",
+        "edit_id": "RULERCTH00002",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULERCTH00002_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULERCTH00002_00W28_dis/regression",
+        "postman_collection_name": "CSBDTS_50_Observation_Services_Collection",
+        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00002_00W28.json"
+    },
+    {
+        "ts_number": "51",
+        "edit_id": "RULERCTH00003",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULERCTH00003_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULERCTH00003_00W28_dis/regression",
+        "postman_collection_name": "CSBDTS_51_Observation_Services_Collection",
+        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00003_00W28.json"
+    },
+    {
+        "ts_number": "52",
+        "edit_id": "RULERCTH00004",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULERCTH00004_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULERCTH00004_00W28_dis/regression",
+        "postman_collection_name": "CSBDTS_52_Observation_Services_Collection",
+        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00004_00W28.json"
+    },
+    {
+        "ts_number": "53",
+        "edit_id": "RULERCTH00005",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULERCTH00005_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULERCTH00005_00W28_dis/regression",
+        "postman_collection_name": "CSBDTS_53_Observation_Services_Collection",
+        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00005_00W28.json"
+    },
+    {
+        "ts_number": "54",
+        "edit_id": "RULERCTH00006",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULERCTH00006_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULERCTH00006_00W28_dis/regression",
+        "postman_collection_name": "CSBDTS_54_Observation_Services_Collection",
+        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00006_00W28.json"
+    },
+    {
+        "ts_number": "55",
+        "edit_id": "RULERCTH00007",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULERCTH00007_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULERCTH00007_00W28_dis/regression",
+        "postman_collection_name": "CSBDTS_55_Observation_Services_Collection",
+        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00007_00W28.json"
+    },
+    {
+        "ts_number": "56",
+        "edit_id": "RULERCTH00008",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULERCTH00008_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULERCTH00008_00W28_dis/regression",
+        "postman_collection_name": "CSBDTS_56_Observation_Services_Collection",
+        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00008_00W28.json"
     }
     ],
     "gbdf_mcr": [
@@ -242,6 +314,15 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/GBDF/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/regression",
             "postman_collection_name": "TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection",
             "postman_file_name": "unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17.json"
+        },
+        {
+            "ts_number": "61",
+            "edit_id": "RULEUSD00100",
+            "code": "v17",
+            "source_dir": "source_folder/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_dis/regression",
+            "postman_collection_name": "TS_61_Unspecified_dx_code_prof_gbdf_mcr_Collection",
+            "postman_file_name": "unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17.json"
         }
     ],
     "gbdf_grs": [
@@ -316,6 +397,80 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/GBDF/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/regression",
             "postman_collection_name": "TS_62_Unspecified_dx_code_prof_gbdf_grs_Collection",
             "postman_file_name": "unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17.json"
+        }
+    ],
+    "wgs_nyk": [
+        {
+            "ts_number": "123",
+            "edit_id": "RULERCTH00001",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_123_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_123_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis/regression",
+            "postman_collection_name": "NYKTS_123_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00001_00W28.json"
+        },
+        {
+            "ts_number": "124",
+            "edit_id": "RULERCTH00002",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_dis/regression",
+            "postman_collection_name": "NYKTS_124_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00002_00W28.json"
+        },
+        {
+            "ts_number": "125",
+            "edit_id": "RULERCTH00003",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_dis/regression",
+            "postman_collection_name": "NYKTS_125_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00003_00W28.json"
+        },
+        {
+            "ts_number": "126",
+            "edit_id": "RULERCTH00004",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_dis/regression",
+            "postman_collection_name": "NYKTS_126_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00004_00W28.json"
+        },
+        {
+            "ts_number": "127",
+            "edit_id": "RULERCTH00005",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_dis/regression",
+            "postman_collection_name": "NYKTS_127_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00005_00W28.json"
+        },
+        {
+            "ts_number": "128",
+            "edit_id": "RULERCTH00006",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_dis/regression",
+            "postman_collection_name": "NYKTS_128_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00006_00W28.json"
+        },
+        {
+            "ts_number": "129",
+            "edit_id": "RULERCTH00007",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_dis/regression",
+            "postman_collection_name": "NYKTS_129_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00007_00W28.json"
+        },
+        {
+            "ts_number": "130",
+            "edit_id": "RULERCTH00008",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00008_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00008_00W28_dis/regression",
+            "postman_collection_name": "NYKTS_130_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00008_00W28.json"
         }
     ]
 }
