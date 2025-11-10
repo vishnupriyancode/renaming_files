@@ -184,7 +184,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "47",
             "edit_id": "RULEEM000001",
             "code": "v04",
-            "source_dir": "source_folder/GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/regression",
             "postman_collection_name": "TS_47_Covid_gbdf_mcr_Collection",
             "postman_file_name": "covid_gbdf_mcr_RULEEM000001_v04.json"
@@ -193,7 +193,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "48",
             "edit_id": "RULEEMSD000002",
             "code": "v09",
-            "source_dir": "source_folder/GBDF/TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/regression",
             "postman_collection_name": "TS_48_Multiple E&M Same day_gbdf_mcr_Collection",
             "postman_file_name": "multiple_em_gbdf_mcr_RULEEMSD000002_v09.json"
@@ -202,7 +202,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "138",
             "edit_id": "RULEEMSD000002",
             "code": "v09",
-            "source_dir": "source_folder/GBDF/TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/regression",
             "postman_collection_name": "TS_138_Multiple E&M Same day_gbdf_mcr_Collection",
             "postman_file_name": "multiple_em_gbdf_mcr_RULEEMSD000002_v09.json"
@@ -211,7 +211,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "140",
             "edit_id": "RULENDCUOM000001",
             "code": "v41",
-            "source_dir": "source_folder/GBDF/TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/regression",
             "postman_collection_name": "TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection",
             "postman_file_name": "ndc_uom_gbdf_mcr_RULENDCUOM000001_v41.json"
@@ -220,7 +220,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "144",
             "edit_id": "RULENEBU000001",
             "code": "v18",
-            "source_dir": "source_folder/GBDF/TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_RULENEBU000001_v18_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_RULENEBU000001_v18_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_RULENEBU000001_v18_dis/regression",
             "postman_collection_name": "TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection",
             "postman_file_name": "nebulizer_gbdf_mcr_RULENEBU000001_v18.json"
@@ -229,7 +229,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "146",
             "edit_id": "RULENMP000001",
             "code": "v18",
-            "source_dir": "source_folder/GBDF/TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/regression",
             "postman_collection_name": "TS_146_No match of Procedure code_gbdf_mcr_Collection",
             "postman_file_name": "no_match_procedure_gbdf_mcr_RULENMP000001_v18.json"
@@ -238,7 +238,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "60",
             "edit_id": "RULEUSD00100",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/regression",
             "postman_collection_name": "TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection",
             "postman_file_name": "unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17.json"
@@ -249,7 +249,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "49",
             "edit_id": "RULEEMSD000002",
             "code": "v09",
-            "source_dir": "source_folder/GBDF/TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/regression",
             "postman_collection_name": "TS_49_Multiple E&M Same day_gbdf_grs_Collection",
             "postman_file_name": "multiple_em_gbdf_grs_RULEEMSD000002_v09.json"
@@ -258,7 +258,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "139",
             "edit_id": "RULEEMSD000002",
             "code": "v09",
-            "source_dir": "source_folder/GBDF/TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/regression",
             "postman_collection_name": "TS_139_Multiple E&M Same day_gbdf_grs_Collection",
             "postman_file_name": "multiple_em_gbdf_grs_RULEEMSD000002_v09.json"
@@ -267,7 +267,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "141",
             "edit_id": "RULENDCUOM000001",
             "code": "v41",
-            "source_dir": "source_folder/GBDF/TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/regression",
             "postman_collection_name": "TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection",
             "postman_file_name": "ndc_uom_gbdf_grs_RULENDCUOM000001_v41.json"
@@ -276,7 +276,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "145",
             "edit_id": "RULENEBU000001",
             "code": "v18",
-            "source_dir": "source_folder/GBDF/TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_RULENEBU000001_v18_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_RULENEBU000001_v18_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_RULENEBU000001_v18_dis/regression",
             "postman_collection_name": "TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_Collection",
             "postman_file_name": "nebulizer_gbdf_grs_RULENEBU000001_v18.json"
@@ -285,7 +285,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "147",
             "edit_id": "RULENMP000001",
             "code": "v18",
-            "source_dir": "source_folder/GBDF/TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/regression",
             "postman_collection_name": "TS_147_No match of Procedure code_gbdf_grs_Collection",
             "postman_file_name": "no_match_procedure_gbdf_grs_RULENMP000001_v18.json"
@@ -294,7 +294,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "59",
             "edit_id": "RULEUSD00100",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_dis/regression",
             "postman_collection_name": "TS_59_Unspecified_dx_code_outpt_gbdf_grs_Collection",
             "postman_file_name": "unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17.json"
@@ -303,7 +303,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "61",
             "edit_id": "RULEUSD00100",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/regression",
             "postman_collection_name": "TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection",
             "postman_file_name": "unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17.json"
@@ -312,7 +312,7 @@ STATIC_MODELS_CONFIG = {
             "ts_number": "62",
             "edit_id": "RULEUSD00100",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_sur/regression",
+            "source_dir": "source_folder/GBDF/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_sur/payloads/regression",
             "dest_dir": "renaming_jsons/GBDF/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/regression",
             "postman_collection_name": "TS_62_Unspecified_dx_code_prof_gbdf_grs_Collection",
             "postman_file_name": "unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17.json"
@@ -321,22 +321,32 @@ STATIC_MODELS_CONFIG = {
 }
 
 # Dynamic model discovery
-def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf_mcr=False, use_gbdf_grs=False):
+def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf_mcr=False, use_gbdf_grs=False, use_wgs_nyk=False):
     """
     Get model configurations using dynamic discovery or static config.
-    
+
     Args:
         use_dynamic: If True, use dynamic discovery; if False, use static config
         use_wgs_csbd_destination: If True, use WGS_CSBD as destination folder instead of renaming_jsons
         use_gbdf_mcr: If True, use GBDF MCR models instead of WGS_CSBD
         use_gbdf_grs: If True, use GBDF GRS models instead of WGS_CSBD
-        
+        use_wgs_nyk: If True, use WGS_NYK models instead of WGS_CSBD
+
     Returns:
         List of model configurations
     """
     if use_dynamic:
         try:
-            if use_gbdf_mcr:
+            if use_wgs_nyk:
+                # Use dynamic discovery for WGS_NYK
+                discovered_models = discover_ts_folders("source_folder/WGS_Kernal", False)
+                if discovered_models:
+                    print(f"Dynamic discovery found {len(discovered_models)} WGS_NYK models")
+                    return discovered_models
+                else:
+                    print("No WGS_NYK models found via dynamic discovery, falling back to static config")
+                    return STATIC_MODELS_CONFIG.get("wgs_nyk", [])
+            elif use_gbdf_mcr:
                 # Use dynamic discovery for GBDF MCR
                 discovered_models = discover_ts_folders("source_folder/GBDF", False)
                 if discovered_models:
@@ -365,14 +375,18 @@ def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf
                     return STATIC_MODELS_CONFIG.get("wgs_csbd", [])
         except Exception as e:
             print(f"Dynamic discovery failed: {e}, falling back to static config")
-            if use_gbdf_mcr:
+            if use_wgs_nyk:
+                return STATIC_MODELS_CONFIG.get("wgs_nyk", [])
+            elif use_gbdf_mcr:
                 return STATIC_MODELS_CONFIG.get("gbdf_mcr", [])
             elif use_gbdf_grs:
                 return STATIC_MODELS_CONFIG.get("gbdf_grs", [])
             else:
                 return STATIC_MODELS_CONFIG.get("wgs_csbd", [])
     else:
-        if use_gbdf_mcr:
+        if use_wgs_nyk:
+            return STATIC_MODELS_CONFIG.get("wgs_nyk", [])
+        elif use_gbdf_mcr:
             return STATIC_MODELS_CONFIG.get("gbdf_mcr", [])
         elif use_gbdf_grs:
             return STATIC_MODELS_CONFIG.get("gbdf_grs", [])

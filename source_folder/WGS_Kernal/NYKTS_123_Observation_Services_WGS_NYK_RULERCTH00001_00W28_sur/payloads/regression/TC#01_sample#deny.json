@@ -1,0 +1,13 @@
+{
+  "adhoc": "true",
+  "analyticId": " ",
+  "hints": [
+    "congnitive_claims_async"
+  ],
+  "payload": {
+    "test": "data"
+  },
+  "responseRequired": "false",
+  "meta-src-envrmt": "IMST",
+  "meta-transid": "20220117181853TMBL20359Cl893580999"
+}

@@ -4,7 +4,49 @@ A Python script for automatically renaming and organizing test case JSON files b
 
 ## 🔧 Recent Updates & Fixes
 
-**✅ Excel Reporting System (Latest Update)**
+**✅ WGS_NYK Model Support (Latest Update)**
+
+The project has been enhanced with support for WGS_NYK (Working Group Standards - New York Kernal) models:
+
+- **✅ Added WGS_NYK Support**: Observation Services WGS NYK models (TS123-TS130)
+- **✅ Custom Command Format**: WGS_NYK models require `--NYKTSXX` format (e.g., `--NYKTS123`) instead of `--TSXX` format
+- **✅ Updated Command Line Interface**: Added `--wgs_nyk` flag and `--NYKTSXX` arguments for WGS_NYK processing
+- **✅ Enhanced Documentation**: Updated all examples and help text to include WGS_NYK models
+- **✅ Error Handling**: Added proper validation and error messages for WGS_NYK flag usage
+- **✅ Postman Collection Generation**: Automatic collection generation with proper naming (NYKTS_XX_Observation_Services_Collection)
+- **✅ Excel Reporting**: Integrated timing tracking and performance analytics
+- **✅ Dynamic Discovery**: Automatic detection of NYKTS folders and model parameters
+
+**Examples:**
+```bash
+# WGS_NYK models (must use --NYKTSXX format)
+python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --all     # Process all 8 WGS_NYK models
+```
+
+**✅ GBDF Model Command Format Update**
+
+The project now supports the new `--GBDTSXX` format for all GBDF MCR models (similar to `--CSBDTSXX` for WGS_CSBD models):
+
+- **✅ New --GBDTSXX Format**: All GBDF MCR models now support the required `--GBDTSXX` format (e.g., `--GBDTS47`, `--GBDTS48`, `--GBDTS138`)
+- **✅ Consistent Command Structure**: GBDF models now follow the same pattern as WGS_CSBD models for consistency
+- **✅ Legacy Format Removed**: Legacy `--TSXX` format is no longer supported for GBDF MCR models - use `--GBDTSXX` format instead
+- **✅ Dynamic Discovery Fix**: Fixed dynamic discovery to correctly handle GBDF models with `payloads/regression` folder structure
+- **✅ Static Config Update**: Updated all GBDF model source paths to include `/payloads/` in the path
+- **✅ Comprehensive Documentation**: Updated all README examples to use the new `--GBDTSXX` format
+
+**Examples:**
+```bash
+# Recommended format (new)
+python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
+
+```
+
+**✅ Excel Reporting System**
 
 The project has been enhanced with comprehensive Excel reporting functionality:
 
@@ -16,15 +58,27 @@ The project has been enhanced with comprehensive Excel reporting functionality:
 - **✅ Enhanced Documentation**: Added Excel Reporting Guide and File Connections Demo Guide
 - **✅ Backward Compatibility**: All existing functionality remains unchanged
 
-**✅ CSBD_TS48 Model Support (Latest Update)**
+**✅ TS20 Model Support (Latest Update)**
+
+The project has been enhanced with support for the TS20 RadioservicesbilledwithoutRadiopharma model:
+
+- **✅ Added TS20 Support**: RadioservicesbilledwithoutRadiopharma WGS_CSBD model
+- **✅ Custom Model Configuration**: Special handling for TS20 with RULERBWR000001 edit ID
+- **✅ Updated Command Line Interface**: Added --CSBDTS20 argument for WGS_CSBD processing
+- **✅ Enhanced Documentation**: Updated examples and help text to include TS20 model
+- **✅ Error Handling**: Added proper validation and error messages for TS20 flag usage
+- **✅ Postman Collection Generation**: Automatic collection generation with proper naming
+- **✅ Excel Reporting**: Integrated timing tracking and performance analytics
+
+**✅ CSBD_TS48 Model Support**
 
 The project has been enhanced with support for the CSBD_TS48 Revenue code to HCPCS Alignment edit model:
 
 - **✅ Added CSBD_TS48 Support**: Revenue code to HCPCS Alignment edit WGS_CSBD model
 - **✅ Custom Model Configuration**: Special handling for CSBD_TS48 with RULERCTH00001 edit ID
-- **✅ Updated Command Line Interface**: Added --CSBD_TS48 argument for WGS_CSBD processing
+- **✅ Updated Command Line Interface**: Added --CSBDTS48 argument (no underscore) for WGS_CSBD processing
 - **✅ Enhanced Documentation**: Updated examples and help text to include CSBD_TS48 model
-- **✅ Error Handling**: Added proper validation and error messages for CSBD_TS48 flag usage
+- **✅ Error Handling**: Added proper validation and error messages for CSBDTS48 flag usage
 - **✅ Postman Collection Generation**: Automatic collection generation with proper naming
 - **✅ Excel Reporting**: Integrated timing tracking and performance analytics
 
@@ -37,7 +91,7 @@ The project has been enhanced with support for additional GBDF models:
 - **✅ Added TS146 Support**: No match of Procedure code GBDF MCR model
 - **✅ Added TS147 Support**: No match of Procedure code GBDF GRS model
 - **✅ Enhanced Dynamic Discovery**: Updated patterns and regex matching for new model types
-- **✅ Updated Command Line Interface**: Added --TS140, --TS141, --TS146, --TS147 arguments
+- **✅ Updated Command Line Interface**: Added --GBDTS140, --GBDTS146 arguments for GBDF MCR and --TS141, --TS147 arguments for GBDF GRS
 - **✅ Comprehensive Documentation**: Updated all examples and help text to include new models
 - **✅ Error Handling**: Added proper validation and error messages for new model flags
 
@@ -94,6 +148,7 @@ postman_collections/
 │   ├── TS_13_Revenue model CR v3_Collection/
 │   ├── TS_14_HCPCS to Revenue Code Xwalk_Collection/
 │   ├── TS_15_revenue model_Collection/
+│   ├── TS_20_RadioservicesbilledwithoutRadiopharma_Collection/
 │   ├── TS_46_Multiple E&M Same day_Collection/
 │   ├── TS_47_Multiple Billing of Obstetrical Services_Collection/
 │   └── CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection/
@@ -111,7 +166,6 @@ renaming_jsons/
 │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
 │   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
 │   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
-│   └── CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/
 │   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/
 │   ├── TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/
 │   ├── TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/
@@ -124,8 +178,10 @@ renaming_jsons/
 │   ├── TS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_dis/
 │   ├── TS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_dis/
 │   ├── TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/
+│   ├── TS_20_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_RULERBWR000001_00W30_dis/
 │   ├── TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/
-│   └── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEEMSD000002_00W28_dis/
+│   ├── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_dis/
+│   └── CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/
 └── GBDF/                                        # GBDF MCR Processed Files
     ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
     ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
@@ -143,42 +199,44 @@ renaming_jsons/
 ### WGS_CSBD Models (Healthcare Claims Processing)
 ```bash
 # Process specific TS models (WGS_CSBD flag required)
-python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
-python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
-python main_processor.py --wgs_csbd --TS03    # Process TS03 model (Revenue Sub Edit 5)
-python main_processor.py --wgs_csbd --TS04    # Process TS04 model (Revenue Sub Edit 4)
-python main_processor.py --wgs_csbd --TS05    # Process TS05 model (Revenue Sub Edit 3)
-python main_processor.py --wgs_csbd --TS06    # Process TS06 model (Revenue Sub Edit 2)
-python main_processor.py --wgs_csbd --TS07    # Process TS07 model (Revenue Sub Edit 1)
-python main_processor.py --wgs_csbd --TS08    # Process TS08 model (Lab panel Model)
-python main_processor.py --wgs_csbd --TS09    # Process TS09 model (Device Dependent Procedures)
-python main_processor.py --wgs_csbd --TS10    # Process TS10 model (Recovery Room Reimbursement)
-python main_processor.py --wgs_csbd --TS11    # Process TS11 model (Revenue Code to HCPCS Xwalk-1B)
-python main_processor.py --wgs_csbd --TS12    # Process TS12 model (Incidentcal Services Facility)
-python main_processor.py --wgs_csbd --TS13    # Process TS13 model (Revenue model CR v3)
-python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
-python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
-python main_processor.py --wgs_csbd --TS46    # Process TS46 model (Multiple E&M Same day)
-python main_processor.py --wgs_csbd --TS47    # Process TS47 model (Multiple Billing of Obstetrical Services)
-python main_processor.py --wgs_csbd --CSBD_TS48    # Process CSBD_TS48 model (Revenue code to HCPCS Alignment edit)
+python main_processor.py --wgs_csbd --CSBDTS01    # Process TS01 model (Covid)
+python main_processor.py --wgs_csbd --CSBDTS02    # Process TS02 model (Laterality Policy)
+python main_processor.py --wgs_csbd --CSBDTS03    # Process TS03 model (Revenue Sub Edit 5)
+python main_processor.py --wgs_csbd --CSBDTS04    # Process TS04 model (Revenue Sub Edit 4)
+python main_processor.py --wgs_csbd --CSBDTS05    # Process TS05 model (Revenue Sub Edit 3)
+python main_processor.py --wgs_csbd --CSBDTS06    # Process TS06 model (Revenue Sub Edit 2)
+python main_processor.py --wgs_csbd --CSBDTS07    # Process TS07 model (Revenue Sub Edit 1)
+python main_processor.py --wgs_csbd --CSBDTS08    # Process TS08 model (Lab panel Model)
+python main_processor.py --wgs_csbd --CSBDTS09    # Process TS09 model (Device Dependent Procedures)
+python main_processor.py --wgs_csbd --CSBDTS10    # Process TS10 model (Recovery Room Reimbursement)
+python main_processor.py --wgs_csbd --CSBDTS11    # Process TS11 model (Revenue Code to HCPCS Xwalk-1B)
+python main_processor.py --wgs_csbd --CSBDTS12    # Process TS12 model (Incidentcal Services Facility)
+python main_processor.py --wgs_csbd --CSBDTS13    # Process TS13 model (Revenue model CR v3)
+python main_processor.py --wgs_csbd --CSBDTS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
+python main_processor.py --wgs_csbd --CSBDTS15    # Process TS15 model (revenue model)
+python main_processor.py --wgs_csbd --CSBDTS20    # Process TS20 model (RadioservicesbilledwithoutRadiopharma)
+python main_processor.py --wgs_csbd --CSBDTS46    # Process TS46 model (Multiple E&M Same day)
+python main_processor.py --wgs_csbd --CSBDTS47    # Process TS47 model (Multiple Billing of Obstetrical Services)
+python main_processor.py --wgs_csbd --CSBDTS48    # Process CSBD_TS48 model (Revenue code to HCPCS Alignment edit)
 
 # Process all WGS_CSBD models at once
-python main_processor.py --wgs_csbd --all     # Process all 18 WGS_CSBD models
+python main_processor.py --wgs_csbd --all     # Process all 19 WGS_CSBD models
 ```
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
 ```bash
-# Process specific GBDF MCR models (GBDF_MCR flag required)
-python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
-python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
-python main_processor.py --gbdf_mcr --TS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
-python main_processor.py --gbdf_mcr --TS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
-python main_processor.py --gbdf_mcr --TS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
-python main_processor.py --gbdf_mcr --TS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
-python main_processor.py --gbdf_mcr --TS146   # Process TS146 model (No match of Procedure code GBDF MCR)
+# Process specific GBDF MCR models (GBDF_MCR flag required - Recommended format: --GBDTSXX)
+python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS146   # Process TS146 model (No match of Procedure code GBDF MCR)
 
 # Process all GBDF MCR models at once
 python main_processor.py --gbdf_mcr --all     # Process all 7 GBDF MCR models
+
 ```
 
 ### GBDF_GRS Models (Global Burden of Disease Foundation - Global Research Services)
@@ -197,27 +255,46 @@ python main_processor.py --gbdf_grs --TS147   # Process TS147 model (No match of
 python main_processor.py --gbdf_grs --all     # Process all 8 GBDF GRS models
 ```
 
+### WGS_NYK Models (Working Group Standards - New York Kernal)
+```bash
+# Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)
+python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS126   # Process TS126 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS127   # Process TS127 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS128   # Process TS128 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS129   # Process TS129 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
+
+# Process all WGS_NYK models at once
+python main_processor.py --wgs_nyk --all     # Process all 8 WGS_NYK models
+```
+
 ## 📊 Model Summary & Quick Reference
 
 ### Available Models Overview
 | Model Type | Count | TS Numbers | Description |
 |------------|-------|------------|-------------|
-| **WGS_CSBD** | 17 | TS01-TS15, TS46-TS47 | Healthcare Claims Processing |
+| **WGS_CSBD** | 19 | TS01-TS15, TS20, TS46-TS47, CSBD_TS48 | Healthcare Claims Processing |
 | **GBDF_MCR** | 7 | TS47, TS48, TS60, TS138, TS140, TS144, TS146 | Global Burden of Disease Foundation - Medical Claims Research |
 | **GBDF_GRS** | 8 | TS49, TS59, TS61, TS62, TS139, TS141, TS145, TS147 | Global Burden of Disease Foundation - Global Research Services |
-| **TOTAL** | **32** | | **All Available Models** |
+| **WGS_NYK** | 8 | TS123-TS130 | Working Group Standards - New York Kernal (Observation Services) |
+| **TOTAL** | **42** | | **All Available Models** |
 
 ### Quick Command Reference
 ```bash
 # Process ALL models of each type
-python main_processor.py --wgs_csbd --all     # All 17 WGS_CSBD models
+python main_processor.py --wgs_csbd --all     # All 19 WGS_CSBD models
 python main_processor.py --gbdf_mcr --all     # All 7 GBDF MCR models  
 python main_processor.py --gbdf_grs --all     # All 8 GBDF GRS models
+python main_processor.py --wgs_nyk --all     # All 8 WGS_NYK models
 
 # Process ALL models of each type WITHOUT Postman generation
 python main_processor.py --wgs_csbd --all --no-postman
 python main_processor.py --gbdf_mcr --all --no-postman
 python main_processor.py --gbdf_grs --all --no-postman
+python main_processor.py --wgs_nyk --all --no-postman
 
 # List all available models
 python main_processor.py --list
@@ -229,35 +306,37 @@ python main_processor.py --help
 ### Postman Collection Generation Commands
 ```bash
 # Process models with automatic Postman collection generation (default behavior)
-python main_processor.py --wgs_csbd --TS01    # Generates TS_01_Covid_Collection
-python main_processor.py --wgs_csbd --TS02    # Generates TS_02_Laterality_Collection
-python main_processor.py --wgs_csbd --TS03    # Generates TS_03_Revenue_Collection
-python main_processor.py --wgs_csbd --TS04    # Generates TS_04_Revenue_Collection
-python main_processor.py --wgs_csbd --TS05    # Generates TS_05_Revenue_Collection
-python main_processor.py --wgs_csbd --TS06    # Generates TS_06_Revenue_Collection
-python main_processor.py --wgs_csbd --TS07    # Generates TS_07_Revenue_Collection
-python main_processor.py --wgs_csbd --TS08    # Generates TS_08_Lab_Collection
-python main_processor.py --wgs_csbd --TS09    # Generates TS_09_Device_Collection
-python main_processor.py --wgs_csbd --TS10    # Generates TS_10_Recovery_Collection
-python main_processor.py --wgs_csbd --TS11    # Generates TS_11_Revenue_Collection
-python main_processor.py --wgs_csbd --TS12    # Generates TS_12_Incidentcal_Collection
-python main_processor.py --wgs_csbd --TS13    # Generates TS_13_Revenue_Collection
-python main_processor.py --wgs_csbd --TS14    # Generates TS_14_HCPCS_Collection
-python main_processor.py --wgs_csbd --TS15    # Generates TS_15_Revenue_Collection
-python main_processor.py --wgs_csbd --TS46    # Generates TS_46_Multiple E&M Same day_Collection
-python main_processor.py --wgs_csbd --TS47    # Generates TS_47_Multiple Billing of Obstetrical Services_Collection
-python main_processor.py --wgs_csbd --CSBD_TS48    # Generates CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection
+python main_processor.py --wgs_csbd --CSBDTS01    # Generates TS_01_Covid_Collection
+python main_processor.py --wgs_csbd --CSBDTS02    # Generates TS_02_Laterality_Collection
+python main_processor.py --wgs_csbd --CSBDTS03    # Generates TS_03_Revenue_Collection
+python main_processor.py --wgs_csbd --CSBDTS04    # Generates TS_04_Revenue_Collection
+python main_processor.py --wgs_csbd --CSBDTS05    # Generates TS_05_Revenue_Collection
+python main_processor.py --wgs_csbd --CSBDTS06    # Generates TS_06_Revenue_Collection
+python main_processor.py --wgs_csbd --CSBDTS07    # Generates TS_07_Revenue_Collection
+python main_processor.py --wgs_csbd --CSBDTS08    # Generates TS_08_Lab_Collection
+python main_processor.py --wgs_csbd --CSBDTS09    # Generates TS_09_Device_Collection
+python main_processor.py --wgs_csbd --CSBDTS10    # Generates TS_10_Recovery_Collection
+python main_processor.py --wgs_csbd --CSBDTS11    # Generates TS_11_Revenue_Collection
+python main_processor.py --wgs_csbd --CSBDTS12    # Generates TS_12_Incidentcal_Collection
+python main_processor.py --wgs_csbd --CSBDTS13    # Generates TS_13_Revenue_Collection
+python main_processor.py --wgs_csbd --CSBDTS14    # Generates TS_14_HCPCS_Collection
+python main_processor.py --wgs_csbd --CSBDTS15    # Generates TS_15_Revenue_Collection
+python main_processor.py --wgs_csbd --CSBDTS20    # Generates TS_20_RadioservicesbilledwithoutRadiopharma_Collection
+python main_processor.py --wgs_csbd --CSBDTS46    # Generates TS_46_Multiple E&M Same day_Collection
+python main_processor.py --wgs_csbd --CSBDTS47    # Generates TS_47_Multiple Billing of Obstetrical Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS48    # Generates CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection
 python main_processor.py --wgs_csbd --all     # Generates collections for all WGS_CSBD models
 
-# GBDF MCR models with Postman collection generation
-python main_processor.py --gbdf_mcr --TS47    # Generates TS_47_Covid_gbdf_mcr_Collection
-python main_processor.py --gbdf_mcr --TS48    # Generates TS_48_Multiple E&M Same day_gbdf_mcr_Collection
-python main_processor.py --gbdf_mcr --TS60    # Generates TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection
-python main_processor.py --gbdf_mcr --TS138   # Generates TS_138_Multiple E&M Same day_gbdf_mcr_Collection
-python main_processor.py --gbdf_mcr --TS140   # Generates TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection
-python main_processor.py --gbdf_mcr --TS144   # Generates TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection
-python main_processor.py --gbdf_mcr --TS146   # Generates TS_146_No match of Procedure code_gbdf_mcr_Collection
+# GBDF MCR models with Postman collection generation (Recommended format: --GBDTSXX)
+python main_processor.py --gbdf_mcr --GBDTS47    # Generates TS_47_Covid_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --GBDTS48    # Generates TS_48_Multiple E&M Same day_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --GBDTS60    # Generates TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --GBDTS138   # Generates TS_138_Multiple E&M Same day_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --GBDTS140   # Generates TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --GBDTS144   # Generates TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --GBDTS146   # Generates TS_146_No match of Procedure code_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --all     # Generates collections for all GBDF MCR models
+
 
 # GBDF GRS models with Postman collection generation
 python main_processor.py --gbdf_grs --TS49    # Generates TS_49_Multiple E&M Same day_gbdf_grs_Collection
@@ -270,35 +349,47 @@ python main_processor.py --gbdf_grs --TS145   # Generates TS_145_Nebulizer A5246
 python main_processor.py --gbdf_grs --TS147   # Generates TS_147_No match of Procedure code_gbdf_grs_Collection
 python main_processor.py --gbdf_grs --all     # Generates collections for all GBDF GRS models
 
+# WGS_NYK models with Postman collection generation (Must use --NYKTSXX format)
+python main_processor.py --wgs_nyk --NYKTS123   # Generates NYKTS_123_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS124   # Generates NYKTS_124_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS125   # Generates NYKTS_125_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS126   # Generates NYKTS_126_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS127   # Generates NYKTS_127_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS128   # Generates NYKTS_128_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS129   # Generates NYKTS_129_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS130   # Generates NYKTS_130_Observation_Services_Collection
+python main_processor.py --wgs_nyk --all     # Generates collections for all WGS_NYK models
+
 # Process models without generating Postman collections
-python main_processor.py --wgs_csbd --TS01 --no-postman
-python main_processor.py --wgs_csbd --TS02 --no-postman
-python main_processor.py --wgs_csbd --TS03 --no-postman
-python main_processor.py --wgs_csbd --TS04 --no-postman
-python main_processor.py --wgs_csbd --TS05 --no-postman
-python main_processor.py --wgs_csbd --TS06 --no-postman
-python main_processor.py --wgs_csbd --TS07 --no-postman
-python main_processor.py --wgs_csbd --TS08 --no-postman
-python main_processor.py --wgs_csbd --TS09 --no-postman
-python main_processor.py --wgs_csbd --TS10 --no-postman
-python main_processor.py --wgs_csbd --TS11 --no-postman
-python main_processor.py --wgs_csbd --TS12 --no-postman
-python main_processor.py --wgs_csbd --TS13 --no-postman
-python main_processor.py --wgs_csbd --TS14 --no-postman
-python main_processor.py --wgs_csbd --TS15 --no-postman
-python main_processor.py --wgs_csbd --TS46 --no-postman
-python main_processor.py --wgs_csbd --TS47 --no-postman
-python main_processor.py --wgs_csbd --CSBD_TS48 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS01 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS02 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS03 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS04 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS05 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS06 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS07 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS08 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS09 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS10 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS11 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS12 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS13 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS14 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS15 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS20 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS46 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS47 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS48 --no-postman
 python main_processor.py --wgs_csbd --all --no-postman
 
 # GBDF MCR models without Postman collection generation
-python main_processor.py --gbdf_mcr --TS47 --no-postman
-python main_processor.py --gbdf_mcr --TS48 --no-postman
-python main_processor.py --gbdf_mcr --TS60 --no-postman
-python main_processor.py --gbdf_mcr --TS138 --no-postman
-python main_processor.py --gbdf_mcr --TS140 --no-postman
-python main_processor.py --gbdf_mcr --TS144 --no-postman
-python main_processor.py --gbdf_mcr --TS146 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS47 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS48 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS60 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS138 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS140 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS144 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS146 --no-postman
 python main_processor.py --gbdf_mcr --all --no-postman
 
 # GBDF GRS models without Postman collection generation
@@ -311,6 +402,17 @@ python main_processor.py --gbdf_grs --TS141 --no-postman
 python main_processor.py --gbdf_grs --TS145 --no-postman
 python main_processor.py --gbdf_grs --TS147 --no-postman
 python main_processor.py --gbdf_grs --all --no-postman
+
+# WGS_NYK models without Postman collection generation (Must use --NYKTSXX format)
+python main_processor.py --wgs_nyk --NYKTS123 --no-postman
+python main_processor.py --wgs_nyk --NYKTS124 --no-postman
+python main_processor.py --wgs_nyk --NYKTS125 --no-postman
+python main_processor.py --wgs_nyk --NYKTS126 --no-postman
+python main_processor.py --wgs_nyk --NYKTS127 --no-postman
+python main_processor.py --wgs_nyk --NYKTS128 --no-postman
+python main_processor.py --wgs_nyk --NYKTS129 --no-postman
+python main_processor.py --wgs_nyk --NYKTS130 --no-postman
+python main_processor.py --wgs_nyk --all --no-postman
 ```
 
 **Additional Options:**
@@ -319,9 +421,10 @@ python main_processor.py --gbdf_grs --all --no-postman
 python main_processor.py --list
 
 # Generate timing report for specific model (without processing files)
-python main_processor.py --wgs_csbd --TS47 --list    # Generate timing report for TS47 WGS_CSBD
-python main_processor.py --gbdf_mcr --TS47 --list    # Generate timing report for TS47 GBDF MCR
+python main_processor.py --wgs_csbd --CSBDTS47 --list    # Generate timing report for TS47 WGS_CSBD
+python main_processor.py --gbdf_mcr --GBDTS47 --list    # Generate timing report for TS47 GBDF MCR
 python main_processor.py --gbdf_grs --TS139 --list   # Generate timing report for TS139 GBDF GRS
+python main_processor.py --wgs_nyk --NYKTS123 --list   # Generate timing report for TS123 WGS_NYK
 
 # Show help and all available options
 python main_processor.py --help
@@ -336,35 +439,36 @@ python main_processor.py --help
 
 **✅ Verification Status:**
 
-### WGS_CSBD Models:
-- `python main_processor.py --wgs_csbd --TS01` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS02` - **TESTED & WORKING** ✓  
-- `python main_processor.py --wgs_csbd --TS03` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS04` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS05` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS06` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS07` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS08` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS09` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS10` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS11` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS12` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS13` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS14` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS15` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS46` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS47` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --CSBD_TS48` - **TESTED & WORKING** ✓
+### WGS_CSBD Models (19 total):
+- `python main_processor.py --wgs_csbd --CSBDTS01` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS02` - **TESTED & WORKING** ✓  
+- `python main_processor.py --wgs_csbd --CSBDTS03` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS04` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS05` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS06` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS07` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS08` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS09` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS10` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS11` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS12` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS13` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS14` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS15` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS20` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS46` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS47` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS48` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --all` - **TESTED & WORKING** ✓
 
 ### GBDF_MCR Models:
-- `python main_processor.py --gbdf_mcr --TS47` - **TESTED & WORKING** ✓
-- `python main_processor.py --gbdf_mcr --TS48` - **TESTED & WORKING** ✓
-- `python main_processor.py --gbdf_mcr --TS60` - **TESTED & WORKING** ✓
-- `python main_processor.py --gbdf_mcr --TS138` - **TESTED & WORKING** ✓
-- `python main_processor.py --gbdf_mcr --TS140` - **TESTED & WORKING** ✓
-- `python main_processor.py --gbdf_mcr --TS144` - **TESTED & WORKING** ✓
-- `python main_processor.py --gbdf_mcr --TS146` - **TESTED & WORKING** ✓
+- `python main_processor.py --gbdf_mcr --GBDTS47` - **TESTED & WORKING** ✓ (Recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS48` - **TESTED & WORKING** ✓ (Recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS60` - **TESTED & WORKING** ✓ (Recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS138` - **TESTED & WORKING** ✓ (Recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS140` - **TESTED & WORKING** ✓ (Recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS144` - **TESTED & WORKING** ✓ (Recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS146` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --all` - **TESTED & WORKING** ✓
 
 ### GBDF_GRS Models:
@@ -378,11 +482,23 @@ python main_processor.py --help
 - `python main_processor.py --gbdf_grs --TS147` - **TESTED & WORKING** ✓
 - `python main_processor.py --gbdf_grs --all` - **TESTED & WORKING** ✓
 
+### WGS_NYK Models:
+- `python main_processor.py --wgs_nyk --NYKTS123` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS124` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS125` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS126` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS127` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS128` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS129` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS130` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --all` - **TESTED & WORKING** ✓
+
 ### General Commands:
 - `python main_processor.py --list` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --TS47 --list` - **TESTED & WORKING** ✓ (Generates timing report)
-- `python main_processor.py --gbdf_mcr --TS47 --list` - **TESTED & WORKING** ✓ (Generates timing report)
+- `python main_processor.py --wgs_csbd --CSBDTS47 --list` - **TESTED & WORKING** ✓ (Generates timing report)
+- `python main_processor.py --gbdf_mcr --GBDTS47 --list` - **TESTED & WORKING** ✓ (Generates timing report)
 - `python main_processor.py --gbdf_grs --TS139 --list` - **TESTED & WORKING** ✓ (Generates timing report)
+- `python main_processor.py --wgs_nyk --NYKTS123 --list` - **TESTED & WORKING** ✓ (Generates timing report)
 
 All commands successfully process files and generate expected output with proper error handling.
 
@@ -418,12 +534,22 @@ This project automatically processes test case JSON files from a source director
 - Global health metrics standardization
 - Research-grade data quality assurance
 
+### WGS_NYK Models (Working Group Standards - New York Kernal)
+**WGS_NYK** stands for **W**orking **G**roup **S**tandards - **N**ew **Y**ork **K**ernal. These models are specifically designed for:
+- Observation Services processing
+- New York-specific healthcare claims validation
+- Regional compliance and standards
+- Observation Services workflow testing
+- New York Kernal protocol validation
+
 **Key Differences:**
 - **WGS_CSBD**: Focuses on operational healthcare claims processing
 - **GBDF_MCR**: Focuses on research and global health analysis
 - **GBDF_GRS**: Focuses on global research standards and international compliance
+- **WGS_NYK**: Focuses on New York-specific observation services and regional compliance
 - **File Structure**: All use similar naming conventions but different source directories
 - **Processing**: All support the same renaming and Postman collection generation features
+- **Command Format**: WGS_NYK models require `--NYKTSXX` format (e.g., `--NYKTS123`) instead of `--TSXX`
 
 ## 🏗️ System Architecture
 
@@ -673,30 +799,31 @@ The enhanced script supports direct command-line arguments for processing specif
 
 ```bash
 # Process specific WGS_CSBD TS models (WGS_CSBD flag required)
-python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
-python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
-python main_processor.py --wgs_csbd --TS03    # Process TS03 model (Revenue Sub Edit 5)
-python main_processor.py --wgs_csbd --TS04    # Process TS04 model (Revenue Sub Edit 4)
-python main_processor.py --wgs_csbd --TS05    # Process TS05 model (Revenue Sub Edit 3)
-python main_processor.py --wgs_csbd --TS06    # Process TS06 model (Revenue Sub Edit 2)
-python main_processor.py --wgs_csbd --TS07    # Process TS07 model (Revenue Sub Edit 1)
-python main_processor.py --wgs_csbd --TS08    # Process TS08 model (Lab panel Model)
-python main_processor.py --wgs_csbd --TS09    # Process TS09 model (Device Dependent Procedures)
-python main_processor.py --wgs_csbd --TS10    # Process TS10 model (Recovery Room Reimbursement)
-python main_processor.py --wgs_csbd --TS11    # Process TS11 model (Revenue Code to HCPCS Xwalk-1B)
-python main_processor.py --wgs_csbd --TS12    # Process TS12 model (Incidentcal Services Facility)
-python main_processor.py --wgs_csbd --TS13    # Process TS13 model (Revenue model CR v3)
-python main_processor.py --wgs_csbd --TS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
-python main_processor.py --wgs_csbd --TS15    # Process TS15 model (revenue model)
+python main_processor.py --wgs_csbd --CSBDTS01    # Process TS01 model (Covid)
+python main_processor.py --wgs_csbd --CSBDTS02    # Process TS02 model (Laterality Policy)
+python main_processor.py --wgs_csbd --CSBDTS03    # Process TS03 model (Revenue Sub Edit 5)
+python main_processor.py --wgs_csbd --CSBDTS04    # Process TS04 model (Revenue Sub Edit 4)
+python main_processor.py --wgs_csbd --CSBDTS05    # Process TS05 model (Revenue Sub Edit 3)
+python main_processor.py --wgs_csbd --CSBDTS06    # Process TS06 model (Revenue Sub Edit 2)
+python main_processor.py --wgs_csbd --CSBDTS07    # Process TS07 model (Revenue Sub Edit 1)
+python main_processor.py --wgs_csbd --CSBDTS08    # Process TS08 model (Lab panel Model)
+python main_processor.py --wgs_csbd --CSBDTS09    # Process TS09 model (Device Dependent Procedures)
+python main_processor.py --wgs_csbd --CSBDTS10    # Process TS10 model (Recovery Room Reimbursement)
+python main_processor.py --wgs_csbd --CSBDTS11    # Process TS11 model (Revenue Code to HCPCS Xwalk-1B)
+python main_processor.py --wgs_csbd --CSBDTS12    # Process TS12 model (Incidentcal Services Facility)
+python main_processor.py --wgs_csbd --CSBDTS13    # Process TS13 model (Revenue model CR v3)
+python main_processor.py --wgs_csbd --CSBDTS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
+python main_processor.py --wgs_csbd --CSBDTS15    # Process TS15 model (revenue model)
 
-# Process specific GBDF MCR models (GBDF_MCR flag required)
-python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
-python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
-python main_processor.py --gbdf_mcr --TS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
-python main_processor.py --gbdf_mcr --TS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
-python main_processor.py --gbdf_mcr --TS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
-python main_processor.py --gbdf_mcr --TS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
-python main_processor.py --gbdf_mcr --TS146   # Process TS146 model (No match of Procedure code GBDF MCR)
+# Process specific GBDF MCR models (GBDF_MCR flag required - Recommended format: --GBDTSXX)
+python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS146   # Process TS146 model (No match of Procedure code GBDF MCR)
+
 
 # Process specific GBDF GRS models (GBDF_GRS flag required)
 python main_processor.py --gbdf_grs --TS49    # Process TS49 model (Multiple E&M Same day GBDF GRS)
@@ -708,17 +835,28 @@ python main_processor.py --gbdf_grs --TS141   # Process TS141 model (NDC UOM Val
 python main_processor.py --gbdf_grs --TS145   # Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)
 python main_processor.py --gbdf_grs --TS147   # Process TS147 model (No match of Procedure code GBDF GRS)
 
+# Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)
+python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS126   # Process TS126 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS127   # Process TS127 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS128   # Process TS128 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS129   # Process TS129 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
+
 # Process all configured models
 python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models
 python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models
 python main_processor.py --gbdf_grs --all     # Process all GBDF GRS models
+python main_processor.py --wgs_nyk --all     # Process all WGS_NYK models
 
 # Process models without generating Postman collection
-python main_processor.py --wgs_csbd --TS07 --no-postman
-python main_processor.py --gbdf_mcr --TS47 --no-postman
-python main_processor.py --gbdf_mcr --TS138 --no-postman
-python main_processor.py --gbdf_mcr --TS140 --no-postman
-python main_processor.py --gbdf_mcr --TS146 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS07 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS47 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS138 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS140 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS146 --no-postman
 python main_processor.py --gbdf_grs --TS139 --no-postman
 python main_processor.py --gbdf_grs --TS141 --no-postman
 python main_processor.py --gbdf_grs --TS147 --no-postman
@@ -731,11 +869,13 @@ python main_processor.py --help
 - `--wgs_csbd`: **REQUIRED** flag for WGS_CSBD TS model processing
 - `--gbdf_mcr`: **REQUIRED** flag for GBDF MCR model processing
 - `--gbdf_grs`: **REQUIRED** flag for GBDF GRS model processing
-- `--TS01` through `--TS15`: Process specific WGS_CSBD TS models
-- `--TS46`, `--TS47`: Process additional WGS_CSBD TS models (Multiple E&M Same day, Multiple Billing of Obstetrical Services)
-- `--TS47`, `--TS48`, `--TS60`, `--TS138`, `--TS140`, `--TS144`, `--TS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
+- `--wgs_nyk`: **REQUIRED** flag for WGS_NYK TS model processing
+- `--CSBDTS01` through `--CSBDTS15`: Process specific WGS_CSBD TS models
+- `--CSBDTS20`, `--CSBDTS46`, `--CSBDTS47`, `--CSBDTS48`: Process additional WGS_CSBD TS models (RadioservicesbilledwithoutRadiopharma, Multiple E&M Same day, Multiple Billing of Obstetrical Services, Revenue code to HCPCS Alignment edit)
+- `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
 - `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
-- `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, or --gbdf_grs flag)
+- `--NYKTS123`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`: Process WGS_NYK models (Observation Services WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
+- `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, --gbdf_grs, or --wgs_nyk flag)
 - `--list`: List all available TS models (standalone) or generate timing report (with model flags)
 - `--no-postman`: Skip Postman collection generation
 - `--help`: Show help message with examples
@@ -885,7 +1025,7 @@ Where:
 
 #### Processing TS01 Model with WGS_CSBD Flag
 ```bash
-$ python main_processor.py --wgs_csbd --TS01
+$ python main_processor.py --wgs_csbd --CSBDTS01
 ✅ Configuration loaded with dynamic discovery
 
 🚀 Processing 1 model(s)...
@@ -950,26 +1090,26 @@ Files are now ready for API testing with Postman.
 
 #### Error Handling Example
 ```bash
-$ python main_processor.py --TS01
+$ python main_processor.py --CSBDTS01
 ✅ Configuration loaded with dynamic discovery
 ❌ Error: --wgs_csbd flag is required for TS model processing!
 
 Please use the --wgs_csbd flag with TS model commands:
-  python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
-  python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
-  python main_processor.py --wgs_csbd --TS03    # Process TS03 model
-  python main_processor.py --wgs_csbd --TS04    # Process TS04 model
-  python main_processor.py --wgs_csbd --TS05    # Process TS05 model
-  python main_processor.py --wgs_csbd --TS06    # Process TS06 model
-  python main_processor.py --wgs_csbd --TS07    # Process TS07 model
-  python main_processor.py --wgs_csbd --TS08    # Process TS08 model
-  python main_processor.py --wgs_csbd --TS09    # Process TS09 model
-  python main_processor.py --wgs_csbd --TS10    # Process TS10 model
-  python main_processor.py --wgs_csbd --TS11    # Process TS11 model
-  python main_processor.py --wgs_csbd --TS12    # Process TS12 model
-  python main_processor.py --wgs_csbd --TS13    # Process TS13 model
-  python main_processor.py --wgs_csbd --TS14    # Process TS14 model
-  python main_processor.py --wgs_csbd --TS15    # Process TS15 model
+  python main_processor.py --wgs_csbd --CSBDTS01    # Process TS01 model (Covid)
+  python main_processor.py --wgs_csbd --CSBDTS02    # Process TS02 model (Laterality Policy)
+  python main_processor.py --wgs_csbd --CSBDTS03    # Process TS03 model
+  python main_processor.py --wgs_csbd --CSBDTS04    # Process TS04 model
+  python main_processor.py --wgs_csbd --CSBDTS05    # Process TS05 model
+  python main_processor.py --wgs_csbd --CSBDTS06    # Process TS06 model
+  python main_processor.py --wgs_csbd --CSBDTS07    # Process TS07 model
+  python main_processor.py --wgs_csbd --CSBDTS08    # Process TS08 model
+  python main_processor.py --wgs_csbd --CSBDTS09    # Process TS09 model
+  python main_processor.py --wgs_csbd --CSBDTS10    # Process TS10 model
+  python main_processor.py --wgs_csbd --CSBDTS11    # Process TS11 model
+  python main_processor.py --wgs_csbd --CSBDTS12    # Process TS12 model
+  python main_processor.py --wgs_csbd --CSBDTS13    # Process TS13 model
+  python main_processor.py --wgs_csbd --CSBDTS14    # Process TS14 model
+  python main_processor.py --wgs_csbd --CSBDTS15    # Process TS15 model
   python main_processor.py --wgs_csbd --all     # Process all discovered models
 
 Use --help for more information.
@@ -978,12 +1118,12 @@ Use --help for more information.
 #### Alternative Command Format Examples
 ```bash
 # Using the main processor with different models (WGS_CSBD flag required)
-$ python main_processor.py --wgs_csbd --TS01
+$ python main_processor.py --wgs_csbd --CSBDTS01
 ✅ Configuration loaded with dynamic discovery
 🚀 Processing 1 model(s)...
 ...
 
-$ python main_processor.py --wgs_csbd --TS15
+$ python main_processor.py --wgs_csbd --CSBDTS15
 ✅ Configuration loaded with dynamic discovery
 🚀 Processing 1 model(s)...
 ...
@@ -1157,8 +1297,8 @@ python main_processor.py --list
 
 #### 2. Model-Specific --list Command
 ```bash
-python main_processor.py --wgs_csbd --TS47 --list    # Generate timing report for TS47 WGS_CSBD
-python main_processor.py --gbdf_mcr --TS47 --list    # Generate timing report for TS47 GBDF MCR
+python main_processor.py --wgs_csbd --CSBDTS47 --list    # Generate timing report for TS47 WGS_CSBD
+python main_processor.py --gbdf_mcr --GBDTS47 --list    # Generate timing report for TS47 GBDF MCR
 python main_processor.py --gbdf_grs --TS139 --list   # Generate timing report for TS139 GBDF GRS
 ```
 **Purpose**: Generates timing reports for specific models without processing files
@@ -1338,9 +1478,9 @@ The scripts include comprehensive error handling:
    ```
    ❌ Error: No model specified!
    ```
-   - **Solution**: Always specify a model using `--wgs_csbd --TS01` through `--wgs_csbd --TS15`, or `--wgs_csbd --all`
+   - **Solution**: Always specify a model using `--wgs_csbd --CSBDTS01` through `--wgs_csbd --CSBDTS15`, or `--wgs_csbd --all`
    - **Examples**: 
-     - `python main_processor.py --wgs_csbd --TS01`
+     - `python main_processor.py --wgs_csbd --CSBDTS01`
      - `python main_processor.py --wgs_csbd --all`
 
 2. **Missing WGS_CSBD Flag Error**
@@ -1349,8 +1489,8 @@ The scripts include comprehensive error handling:
    ```
    - **Solution**: Always include the `--wgs_csbd` flag when processing WGS_CSBD TS models
    - **Examples**: 
-     - `python main_processor.py --wgs_csbd --TS01`
-     - `python main_processor.py --wgs_csbd --TS15`
+     - `python main_processor.py --wgs_csbd --CSBDTS01`
+     - `python main_processor.py --wgs_csbd --CSBDTS15`
 
 3. **Missing GBDF_MCR Flag Error**
    ```
@@ -1358,12 +1498,12 @@ The scripts include comprehensive error handling:
    ```
    - **Solution**: Always include the `--gbdf_mcr` flag when processing GBDF MCR models
    - **Examples**: 
-     - `python main_processor.py --gbdf_mcr --TS47` (Covid GBDF MCR model)
-     - `python main_processor.py --gbdf_mcr --TS138` (Multiple E&M Same day GBDF MCR model)
+     - `python main_processor.py --gbdf_mcr --GBDTS47` (Covid GBDF MCR model) - Recommended format
+     - `python main_processor.py --gbdf_mcr --GBDTS138` (Multiple E&M Same day GBDF MCR model) - Recommended format
      - `python main_processor.py --gbdf_mcr --all`
    - **Note**: There are two different TS47 models:
-     - `python main_processor.py --wgs_csbd --TS47` (Multiple Billing of Obstetrical Services - WGS_CSBD)
-     - `python main_processor.py --gbdf_mcr --TS47` (Covid GBDF MCR - GBDF MCR)
+     - `python main_processor.py --wgs_csbd --CSBDTS47` (Multiple Billing of Obstetrical Services - WGS_CSBD)
+     - `python main_processor.py --gbdf_mcr --GBDTS47` (Covid GBDF MCR - GBDF MCR) - Recommended format
 
 4. **Missing GBDF_GRS Flag Error**
    ```
@@ -1374,35 +1514,46 @@ The scripts include comprehensive error handling:
      - `python main_processor.py --gbdf_grs --TS139` (Multiple E&M Same day GBDF GRS model)
      - `python main_processor.py --gbdf_grs --all`
 
-5. **Model Not Found in Configuration**
+5. **Missing WGS_NYK Flag Error**
+   ```
+   ❌ Error: --wgs_nyk flag is required for NYKTS model processing!
+   ```
+   - **Solution**: Always include the `--wgs_nyk` flag when processing WGS_NYK models
+   - **Examples**: 
+     - `python main_processor.py --wgs_nyk --NYKTS123` (Observation Services WGS NYK model) - Must use --NYKTSXX format
+     - `python main_processor.py --wgs_nyk --NYKTS130` (Observation Services WGS NYK model) - Must use --NYKTSXX format
+     - `python main_processor.py --wgs_nyk --all`
+   - **Note**: WGS_NYK models require the `--NYKTSXX` format (e.g., `--NYKTS123`) instead of `--TSXX` format
+
+6. **Model Not Found in Configuration**
    ```
    ❌ Error: TS01 model (rvn001) not found in configuration!
    ```
    - **Solution**: Check `models_config.py` to ensure the model is properly configured
    - **Verify**: The `edit_id` matches what you're trying to process
 
-6. **Configuration File Not Found**
+7. **Configuration File Not Found**
    ```
    ❌ Error: models_config.py not found!
    ```
    - **Solution**: Ensure `models_config.py` exists in the same directory as the script
    - **Check**: The file contains proper `MODELS_CONFIG` definitions
 
-7. **Source Directory Not Found**
+8. **Source Directory Not Found**
    - Ensure the source directory path is correct in `models_config.py`
    - Check if the directory exists in the expected location
    - Verify the path matches your actual file structure
 
-8. **Permission Errors**
+9. **Permission Errors**
    - Ensure you have read/write permissions for both source and destination directories
    - Run the script with appropriate privileges
 
-9. **File Format Errors**
+10. **File Format Errors**
    - Verify that input files follow the expected naming convention: `TC#XX_XXXXX#suffix.json`
    - Check that files are valid JSON format
    - Ensure files have exactly 3 parts separated by `#` characters
 
-10. **Postman Collection Generation Errors**
+11. **Postman Collection Generation Errors**
    - Check if the destination directory exists
    - Verify that renamed files are in the correct location
    - Ensure JSON files are valid and readable
@@ -1465,7 +1616,7 @@ For issues or questions:
 The project has been comprehensively updated with modern architecture and enhanced functionality:
 
 ### ✅ What's Working:
-- **15 Active Test Suites**: TS_01 through TS_15 with diverse model types
+- **19 Active Test Suites**: TS_01 through TS_15, TS20, TS46-TS47, and CSBD_TS48 with diverse model types
 - **WGS_CSBD Flag Implementation**: Mandatory flag requirement for all TS model processing
 - **KEY_CHK_CDN_NBR Generator**: Automatic random 11-digit number generation for test validation
 - **WGS_CSBD Header/Footer Transformation**: Proper structure application with field updates
@@ -1484,33 +1635,35 @@ The project has been comprehensively updated with modern architecture and enhanc
 
 ### 🚀 Quick Commands:
 ```bash
-# Process WGS_CSBD models (all TS01-TS15 supported with --wgs_csbd flag)
-python main_processor.py --wgs_csbd --TS01    # Covid Collection
-python main_processor.py --wgs_csbd --TS02    # Laterality Collection
-python main_processor.py --wgs_csbd --TS03    # Revenue Sub Edit 5 Collection
-python main_processor.py --wgs_csbd --TS04    # Revenue Sub Edit 4 Collection
-python main_processor.py --wgs_csbd --TS05    # Revenue Sub Edit 3 Collection
-python main_processor.py --wgs_csbd --TS06    # Revenue Sub Edit 2 Collection
-python main_processor.py --wgs_csbd --TS07    # Revenue Sub Edit 1 Collection
-python main_processor.py --wgs_csbd --TS08    # Lab panel Model Collection
-python main_processor.py --wgs_csbd --TS09    # Device Dependent Procedures Collection
-python main_processor.py --wgs_csbd --TS10    # Recovery Room Reimbursement Collection
-python main_processor.py --wgs_csbd --TS11    # Revenue Code to HCPCS Xwalk-1B Collection
-python main_processor.py --wgs_csbd --TS12    # Incidentcal Services Facility Collection
-python main_processor.py --wgs_csbd --TS13    # Revenue model CR v3 Collection
-python main_processor.py --wgs_csbd --TS14    # HCPCS to Revenue Code Xwalk Collection
-python main_processor.py --wgs_csbd --TS15    # revenue model Collection
-python main_processor.py --wgs_csbd --TS46    # Multiple E&M Same day Collection
-python main_processor.py --wgs_csbd --TS47    # Multiple Billing of Obstetrical Services Collection
+# Process WGS_CSBD models (TS01-TS15, TS20, TS46-TS47, CSBD_TS48 supported with --wgs_csbd flag)
+python main_processor.py --wgs_csbd --CSBDTS01    # Covid Collection
+python main_processor.py --wgs_csbd --CSBDTS02    # Laterality Collection
+python main_processor.py --wgs_csbd --CSBDTS03    # Revenue Sub Edit 5 Collection
+python main_processor.py --wgs_csbd --CSBDTS04    # Revenue Sub Edit 4 Collection
+python main_processor.py --wgs_csbd --CSBDTS05    # Revenue Sub Edit 3 Collection
+python main_processor.py --wgs_csbd --CSBDTS06    # Revenue Sub Edit 2 Collection
+python main_processor.py --wgs_csbd --CSBDTS07    # Revenue Sub Edit 1 Collection
+python main_processor.py --wgs_csbd --CSBDTS08    # Lab panel Model Collection
+python main_processor.py --wgs_csbd --CSBDTS09    # Device Dependent Procedures Collection
+python main_processor.py --wgs_csbd --CSBDTS10    # Recovery Room Reimbursement Collection
+python main_processor.py --wgs_csbd --CSBDTS11    # Revenue Code to HCPCS Xwalk-1B Collection
+python main_processor.py --wgs_csbd --CSBDTS12    # Incidentcal Services Facility Collection
+python main_processor.py --wgs_csbd --CSBDTS13    # Revenue model CR v3 Collection
+python main_processor.py --wgs_csbd --CSBDTS14    # HCPCS to Revenue Code Xwalk Collection
+python main_processor.py --wgs_csbd --CSBDTS15    # revenue model Collection
+python main_processor.py --wgs_csbd --CSBDTS20    # RadioservicesbilledwithoutRadiopharma Collection
+python main_processor.py --wgs_csbd --CSBDTS46    # Multiple E&M Same day Collection
+python main_processor.py --wgs_csbd --CSBDTS47    # Multiple Billing of Obstetrical Services Collection
+python main_processor.py --wgs_csbd --CSBDTS48    # Revenue code to HCPCS Alignment edit Collection
 
 # Process GBDF MCR models (with --gbdf_mcr flag)
-python main_processor.py --gbdf_mcr --TS47    # Covid GBDF MCR Collection
-python main_processor.py --gbdf_mcr --TS48    # Multiple E&M Same day GBDF MCR Collection
-python main_processor.py --gbdf_mcr --TS60    # Unspecified dx code outpt GBDF MCR Collection
-python main_processor.py --gbdf_mcr --TS138   # Multiple E&M Same day GBDF MCR Collection
-python main_processor.py --gbdf_mcr --TS140   # NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR Collection
-python main_processor.py --gbdf_mcr --TS144   # Nebulizer A52466 IPERP-132 GBDF MCR Collection
-python main_processor.py --gbdf_mcr --TS146   # No match of Procedure code GBDF MCR Collection
+python main_processor.py --gbdf_mcr --GBDTS47    # Covid GBDF MCR Collection
+python main_processor.py --gbdf_mcr --GBDTS48    # Multiple E&M Same day GBDF MCR Collection
+python main_processor.py --gbdf_mcr --GBDTS60    # Unspecified dx code outpt GBDF MCR Collection
+python main_processor.py --gbdf_mcr --GBDTS138   # Multiple E&M Same day GBDF MCR Collection
+python main_processor.py --gbdf_mcr --GBDTS140   # NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR Collection
+python main_processor.py --gbdf_mcr --GBDTS144   # Nebulizer A52466 IPERP-132 GBDF MCR Collection
+python main_processor.py --gbdf_mcr --GBDTS146   # No match of Procedure code GBDF MCR Collection
 
 # Process GBDF GRS models (with --gbdf_grs flag)
 python main_processor.py --gbdf_grs --TS49    # Multiple E&M Same day GBDF GRS Collection
@@ -1522,10 +1675,21 @@ python main_processor.py --gbdf_grs --TS141   # NDC UOM Validation Edit Expansio
 python main_processor.py --gbdf_grs --TS145   # Nebulizer A52466 IPERP-132 GBDF GRS Collection
 python main_processor.py --gbdf_grs --TS147   # No match of Procedure code GBDF GRS Collection
 
+# Process WGS_NYK models (with --wgs_nyk flag - Must use --NYKTSXX format)
+python main_processor.py --wgs_nyk --NYKTS123   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS124   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS125   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS126   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS127   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS128   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS129   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS130   # Observation Services WGS NYK Collection
+
 # Process all models at once
 python main_processor.py --wgs_csbd --all     # All WGS_CSBD models
 python main_processor.py --gbdf_mcr --all     # All GBDF MCR models
 python main_processor.py --gbdf_grs --all     # All GBDF GRS models
+python main_processor.py --wgs_nyk --all     # All WGS_NYK models
 
 # Standalone Postman operations
 python postman_cli.py generate-all

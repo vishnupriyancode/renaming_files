@@ -114,11 +114,16 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
     """
     models = []
     
-    # Check if this is a GBDF directory
+    # Check if this is a GBDF directory or WGS_Kernal directory
     is_gbdf = "GBDF" in base_dir
-    
+    is_wgs_kernal = "WGS_Kernal" in base_dir or "WGS_KERNAL" in base_dir
+
     # STAGE 3.1: Define search patterns based on directory type
-    if is_gbdf:
+    if is_wgs_kernal:
+        # WGS_NYK patterns - NYKTS naming convention
+        pattern1 = os.path.join(base_dir, "NYKTS_*_Observation_Services_WGS_NYK_*_sur")
+        ts_folders = glob.glob(pattern1)
+    elif is_gbdf:
         # GBDF MCR patterns - multiple patterns to catch different folder naming conventions
         pattern1 = os.path.join(base_dir, "TS_*_Covid_gbdf_mcr_*_sur")
         pattern2 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_gbdf_mcr_*_sur")
@@ -157,12 +162,25 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         pattern15 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_WGS_CSBD_*_sur")
         pattern16 = os.path.join(base_dir, "TS_*_Multiple Billing of Obstetrical Services_WGS_CSBD_*_sur")
         pattern17 = os.path.join(base_dir, "TS_*_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_*_sur")
-        ts_folders = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + 
-                     glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + 
-                     glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern8_copy) + glob.glob(pattern9) + 
-                     glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) + 
-                     glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15) + 
-                     glob.glob(pattern16) + glob.glob(pattern17))
+        # CSBD_TS patterns for special models
+        pattern18 = os.path.join(base_dir, "CSBD_TS_*_Revenue code to HCPCS Alignment edit_WGS_CSBD_*_sur")
+        # CSBDTS patterns (without underscore between CSBD and TS) for all model types
+        pattern19 = os.path.join(base_dir, "CSBDTS_*_Covid_WGS_CSBD_*_sur")
+        pattern20 = os.path.join(base_dir, "CSBDTS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur")
+        pattern21 = os.path.join(base_dir, "CSBDTS_*_Revenue code Services not payable on Facility claim Sub Edit *_WGS_CSBD_*_sur")
+        pattern22 = os.path.join(base_dir, "CSBDTS_*_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_*_sur")
+        pattern23 = os.path.join(base_dir, "CSBDTS_*_Multiple E&M Same day_WGS_CSBD_*_sur")
+        pattern24 = os.path.join(base_dir, "CSBDTS_*_Multiple Billing of Obstetrical Services_WGS_CSBD_*_sur")
+        pattern25 = os.path.join(base_dir, "CSBDTS_*_Revenue code to HCPCS Alignment edit_WGS_CSBD_*_sur")
+        pattern26 = os.path.join(base_dir, "CSBDTS_*_Observation_Services_WGS_CSBD_*_sur")
+        ts_folders = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) +
+                     glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) +
+                     glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern8_copy) + glob.glob(pattern9) +
+                     glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) +
+                     glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15) +
+                     glob.glob(pattern16) + glob.glob(pattern17) + glob.glob(pattern18) +
+                     glob.glob(pattern19) + glob.glob(pattern20) + glob.glob(pattern21) +
+                     glob.glob(pattern22) + glob.glob(pattern23) + glob.glob(pattern24) + glob.glob(pattern25) + glob.glob(pattern26))
     
     # STAGE 3.2: Display scanning progress
     print(f"Scanning for TS folders in: {base_dir}")
@@ -181,8 +199,17 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         # Examples: TS_60_REVENUE_WGS_CSBD_ASDFGJEUSK_00W29_sur, TS_07_REVENUE_WGS_CSBD_rvn011_00W11_sur
         # Examples: TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur
         
-        # Try original pattern first
-        match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        # Try CSBD_TS pattern first (for CSBD_TS_48, CSBD_TS_50, etc.)
+        match = re.match(r'CSBD_TS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+
+        # Try CSBDTS patterns (without underscore between CSBD and TS) - try these before TS patterns
+        # Use a general pattern that captures the model name between TS number and WGS_CSBD
+        if not match:
+            match = re.match(r'CSBDTS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+
+        # Try original pattern if no match
+        if not match:
+            match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
         # STAGE 4.2: Try multiple regex patterns until one matches
         # If no match, try new Revenue code pattern
@@ -245,6 +272,11 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         if not match:
             match = re.match(r'TS_(\d{1,3})_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
+        # If no match and this is WGS_Kernal, try NYKTS patterns
+        if not match and is_wgs_kernal:
+            # NYKTS pattern: NYKTS_123_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur
+            match = re.match(r'NYKTS_(\d{1,3})_Observation_Services_WGS_NYK_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+
         # If no match and this is GBDF, try GBDF MCR patterns
         if not match and is_gbdf:
             # Try Covid GBDF MCR pattern
@@ -300,21 +332,60 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         
         # STAGE 5: Process successfully matched folders
         if match:
-            # Extract the three main components from the folder name
-            ts_number_raw = match.group(1)  # TS number (e.g., "1", "01", "47")
-            edit_id = match.group(2)        # Edit ID (e.g., "RULEEM000001")
-            code = match.group(3)           # Code (e.g., "v04", "00W28")
+            # Extract the components from the folder name
+            if folder_name.startswith("NYKTS_"):
+                # NYKTS pattern: NYKTS_123_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur
+                ts_number_raw = match.group(1)  # TS number (e.g., "123")
+                edit_id = match.group(2)        # Edit ID (e.g., "RULERCTH00001")
+                code = match.group(3)           # Code (e.g., "00W28")
+            elif folder_name.startswith("CSBD_TS_") or folder_name.startswith("CSBDTS_"):
+                # CSBD_TS or CSBDTS pattern: CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur
+                # or CSBDTS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur
+                ts_number_raw = match.group(1)  # TS number (e.g., "48", "02")
+                model_name = match.group(2)     # Model name (e.g., "Revenue code to HCPCS Alignment edit", "Laterality Policy-Disgnosis to Diagnosis")
+                edit_id = match.group(3)        # Edit ID (e.g., "RULERCTH00001", "RULELATE000001")
+                code = match.group(4)           # Code (e.g., "00W26", "00W17")
+            else:
+                # Standard TS pattern: TS_01_REVENUE_WGS_CSBD_RULEEM000001_W04_sur
+                ts_number_raw = match.group(1)  # TS number (e.g., "1", "01", "47")
+                edit_id = match.group(2)        # Edit ID (e.g., "RULEEM000001")
+                code = match.group(3)           # Code (e.g., "v04", "00W28")
             
             # Normalize TS number to handle different digit patterns
             ts_number = normalize_ts_number(ts_number_raw)
             
-            # STAGE 5.1: Validate folder structure
-            # Check if regression subfolder exists
-            regression_path = os.path.join(folder_path, "regression")
-            if not os.path.exists(regression_path):
-                print(f"Warning: Regression folder not found in {folder_name}")
-                continue
-            
+            # STAGE 5.1: Validate folder structure and handle both regression and smoke folders
+            # Check if payloads directory exists (for both WGS_CSBD and GBDF models)
+            payloads_path = os.path.join(folder_path, "payloads")
+            has_payloads_structure = os.path.exists(payloads_path)
+
+            if has_payloads_structure:
+                # Both WGS_CSBD and GBDF models with payloads/regression and payloads/smoke structure
+                regression_path = os.path.join(payloads_path, "regression")
+                smoke_path = os.path.join(payloads_path, "smoke")
+
+                has_regression = os.path.exists(regression_path)
+                has_smoke = os.path.exists(smoke_path)
+
+                if not has_regression and not has_smoke:
+                    print(f"Warning: Neither regression nor smoke folders found in {folder_name}/payloads")
+                    continue
+
+                # Create model configs for each existing folder
+                folder_configs = []
+                if has_regression:
+                    folder_configs.append(("regression", regression_path))
+                if has_smoke:
+                    folder_configs.append(("smoke", smoke_path))
+
+            else:
+                # Legacy structure: direct regression folder (for older models without payloads)
+                regression_path = os.path.join(folder_path, "regression")
+                if not os.path.exists(regression_path):
+                    print(f"Warning: Regression folder not found in {folder_name}")
+                    continue
+                folder_configs = [("regression", regression_path)]
+
             # STAGE 5.2: Generate destination directory names
             # Handle "payloads_sur", "ayloads_sur" (typo), and "_sur" patterns
             if "_payloads_sur" in folder_name:
@@ -325,172 +396,215 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 dest_folder_name = folder_name.replace("_sur", "_dis")
             else:
                 dest_folder_name = folder_name  # fallback
-            
-            # Generate destination directory based on model type
-            if is_gbdf:
-                # GBDF MCR models go to GBDF subdirectory
-                dest_dir = os.path.join("renaming_jsons", "GBDF", dest_folder_name, "regression")
-            elif use_wgs_csbd_destination:
-                # WGS_CSBD models with flag go to WGS_CSBD subdirectory
-                dest_dir = os.path.join("renaming_jsons", "WGS_CSBD", dest_folder_name, "regression")
-            else:
-                # Default to renaming_jsons root
-                dest_dir = os.path.join("renaming_jsons", dest_folder_name, "regression")
-            
-            # STAGE 5.3: Generate Postman collection and file names based on model type
-            # Generate Postman collection name with flexible formatting
-            # For Revenue code Services models, use the full descriptive name
-            if "Revenue code Services not payable on Facility claim" in folder_name:
-                # Extract the Sub Edit number and create proper collection name
-                sub_edit_match = re.search(r'Sub Edit (\d+)', folder_name)
-                if sub_edit_match:
-                    sub_edit_num = sub_edit_match.group(1)
-                    postman_collection_name = f"TS_{ts_number}_Revenue code Services not payable on Facility claim Sub Edit {sub_edit_num}_Collection"
+
+            # Process each folder configuration
+            for folder_type, source_path in folder_configs:
+                # Generate destination directory based on model type and folder structure
+                if is_wgs_kernal:
+                    # WGS_NYK models go to WGS_KERNAL subdirectory
+                    if has_payloads_structure:
+                        dest_dir = os.path.join("renaming_jsons", "WGS_KERNAL", dest_folder_name, "payloads", folder_type)
+                    else:
+                        dest_dir = os.path.join("renaming_jsons", "WGS_KERNAL", dest_folder_name, folder_type)
+                elif is_gbdf:
+                    # GBDF models go to GBDF subdirectory
+                    if has_payloads_structure:
+                        dest_dir = os.path.join("renaming_jsons", "GBDF", dest_folder_name, "payloads", folder_type)
+                    else:
+                        dest_dir = os.path.join("renaming_jsons", "GBDF", dest_folder_name, folder_type)
+                elif use_wgs_csbd_destination:
+                    # WGS_CSBD models with flag go to WGS_CSBD subdirectory
+                    if has_payloads_structure and not is_gbdf:
+                        dest_dir = os.path.join("renaming_jsons", "WGS_CSBD", dest_folder_name, "payloads", folder_type)
+                    else:
+                        dest_dir = os.path.join("renaming_jsons", "WGS_CSBD", dest_folder_name, folder_type)
                 else:
-                    postman_collection_name = generate_postman_collection_name(ts_number)
-                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
-            elif "Lab panel Model" in folder_name:
-                # For Lab panel Model, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Lab panel Model_Collection"
-                postman_file_name = f"lab_wgs_csbd_{edit_id}_{code}.json"
-            elif "Recovery Room Reimbursement" in folder_name:
-                # For Recovery Room Reimbursement, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Recovery Room Reimbursement_Collection"
-                postman_file_name = f"recovery_wgs_csbd_{edit_id}_{code}.json"
-            elif "Covid" in folder_name:
-                # For Covid, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Covid_Collection"
-                postman_file_name = f"covid_wgs_csbd_{edit_id}_{code}.json"
-            elif "Laterality Policy" in folder_name:
-                # For Laterality Policy, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Laterality_Collection"
-                postman_file_name = f"laterality_wgs_csbd_{edit_id}_{code}.json"
-            elif "Device Dependent Procedures" in folder_name:
-                # For Device Dependent Procedures, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Device Dependent Procedures_Collection"
-                postman_file_name = f"device_wgs_csbd_{edit_id}_{code}.json"
-            elif "revenue model" in folder_name:
-                # For revenue model, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_revenue model_Collection"
-                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
-            elif "Revenue Code to HCPCS Xwalk-1B" in folder_name:
-                # For Revenue Code to HCPCS Xwalk-1B, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Revenue Code to HCPCS Xwalk-1B_Collection"
-                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
-            elif "Incidentcal Services Facility" in folder_name:
-                # For Incidentcal Services Facility, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Incidentcal Services Facility_Collection"
-                postman_file_name = f"incidentcal_wgs_csbd_{edit_id}_{code}.json"
-            elif "Revenue model CR v3" in folder_name:
-                # For Revenue model CR v3, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Revenue model CR v3_Collection"
-                postman_file_name = f"revenue_model_wgs_csbd_{edit_id}_{code}.json"
-            elif "HCPCS to Revenue Code Xwalk" in folder_name:
-                # For HCPCS to Revenue Code Xwalk, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_HCPCS to Revenue Code Xwalk_Collection"
-                postman_file_name = f"hcpcs_wgs_csbd_{edit_id}_{code}.json"
-            elif "Multiple E&M Same day" in folder_name and not is_gbdf:
-                # For Multiple E&M Same day (WGS_CSBD), use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_Collection"
-                postman_file_name = f"multiple_em_wgs_csbd_{edit_id}_{code}.json"
-            elif "Multiple Billing of Obstetrical Services" in folder_name:
-                # For Multiple Billing of Obstetrical Services, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Multiple Billing of Obstetrical Services_Collection"
-                postman_file_name = f"multiple_billing_obstetrical_wgs_csbd_{edit_id}_{code}.json"
-            elif "RadioservicesbilledwithoutRadiopharma" in folder_name:
-                # For RadioservicesbilledwithoutRadiopharma, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_RadioservicesbilledwithoutRadiopharma_Collection"
-                postman_file_name = f"radioservices_wgs_csbd_{edit_id}_{code}.json"
-            elif "Covid_gbdf_mcr" in folder_name:
-                # For GBDF MCR Covid, use the full descriptive name
-                postman_collection_name = f"TS_{ts_number}_Covid_gbdf_mcr_Collection"
-                postman_file_name = f"covid_gbdf_mcr_{edit_id}_{code}.json"
-            elif "Multiple E&M Same day" in folder_name and is_gbdf:
-                # For any GBDF Multiple E&M Same day model, use GBDF naming
-                if "gbdf_mcr" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_mcr_Collection"
-                    postman_file_name = f"multiple_em_gbdf_mcr_{edit_id}_{code}.json"
-                elif "gbdf_grs" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_grs_Collection"
-                    postman_file_name = f"multiple_em_gbdf_grs_{edit_id}_{code}.json"
+                    # Default to renaming_jsons root
+                    if has_payloads_structure and not is_gbdf:
+                        dest_dir = os.path.join("renaming_jsons", dest_folder_name, "payloads", folder_type)
+                    else:
+                        dest_dir = os.path.join("renaming_jsons", dest_folder_name, folder_type)
+                
+                # STAGE 5.3: Generate Postman collection and file names based on model type
+                # Generate Postman collection name with flexible formatting
+                # For CSBD_TS models, use the full descriptive name
+                # CSBDTS models will be handled by the elif checks below (e.g., "Covid", "Laterality Policy")
+                if folder_name.startswith("NYKTS_"):
+                    # NYKTS pattern: Use the model name from the folder
+                    base_collection_name = f"NYKTS_{ts_number}_Observation_Services_Collection"
+                    base_file_name = f"observation_services_wgs_nyk_{edit_id}_{code}"
+                elif folder_name.startswith("CSBD_TS_"):
+                    # CSBD_TS pattern: Use the model name from the folder
+                    base_collection_name = f"CSBD_TS_{ts_number}_{model_name}_Collection"
+                    base_file_name = f"{model_name.lower().replace(' ', '_').replace('-', '_').replace('to', 'to').replace('alignment', 'alignment')}_wgs_csbd_{edit_id}_{code}"
+                elif "Revenue code Services not payable on Facility claim" in folder_name:
+                    # Extract the Sub Edit number and create proper collection name
+                    sub_edit_match = re.search(r'Sub Edit (\d+)', folder_name)
+                    if sub_edit_match:
+                        sub_edit_num = sub_edit_match.group(1)
+                        base_collection_name = f"TS_{ts_number}_Revenue code Services not payable on Facility claim Sub Edit {sub_edit_num}_Collection"
+                    else:
+                        base_collection_name = generate_postman_collection_name(ts_number)
+                    base_file_name = f"revenue_wgs_csbd_{edit_id}_{code}"
+                elif "Lab panel Model" in folder_name:
+                    # For Lab panel Model, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Lab panel Model_Collection"
+                    base_file_name = f"lab_wgs_csbd_{edit_id}_{code}"
+                elif "Recovery Room Reimbursement" in folder_name:
+                    # For Recovery Room Reimbursement, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Recovery Room Reimbursement_Collection"
+                    base_file_name = f"recovery_wgs_csbd_{edit_id}_{code}"
+                elif "Covid" in folder_name:
+                    # For Covid, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Covid_Collection"
+                    base_file_name = f"covid_wgs_csbd_{edit_id}_{code}"
+                elif "Laterality Policy" in folder_name:
+                    # For Laterality Policy, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Laterality_Collection"
+                    base_file_name = f"laterality_wgs_csbd_{edit_id}_{code}"
+                elif "Device Dependent Procedures" in folder_name:
+                    # For Device Dependent Procedures, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Device Dependent Procedures_Collection"
+                    base_file_name = f"device_wgs_csbd_{edit_id}_{code}"
+                elif "revenue model" in folder_name:
+                    # For revenue model, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_revenue model_Collection"
+                    base_file_name = f"revenue_wgs_csbd_{edit_id}_{code}"
+                elif "Revenue Code to HCPCS Xwalk-1B" in folder_name:
+                    # For Revenue Code to HCPCS Xwalk-1B, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Revenue Code to HCPCS Xwalk-1B_Collection"
+                    base_file_name = f"revenue_wgs_csbd_{edit_id}_{code}"
+                elif "Incidentcal Services Facility" in folder_name:
+                    # For Incidentcal Services Facility, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Incidentcal Services Facility_Collection"
+                    base_file_name = f"incidentcal_wgs_csbd_{edit_id}_{code}"
+                elif "Revenue model CR v3" in folder_name:
+                    # For Revenue model CR v3, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Revenue model CR v3_Collection"
+                    base_file_name = f"revenue_model_wgs_csbd_{edit_id}_{code}"
+                elif "HCPCS to Revenue Code Xwalk" in folder_name:
+                    # For HCPCS to Revenue Code Xwalk, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_HCPCS to Revenue Code Xwalk_Collection"
+                    base_file_name = f"hcpcs_wgs_csbd_{edit_id}_{code}"
+                elif "Multiple E&M Same day" in folder_name and not is_gbdf:
+                    # For Multiple E&M Same day (WGS_CSBD), use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Multiple E&M Same day_Collection"
+                    base_file_name = f"multiple_em_wgs_csbd_{edit_id}_{code}"
+                elif "Multiple Billing of Obstetrical Services" in folder_name:
+                    # For Multiple Billing of Obstetrical Services, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Multiple Billing of Obstetrical Services_Collection"
+                    base_file_name = f"multiple_billing_obstetrical_wgs_csbd_{edit_id}_{code}"
+                elif "RadioservicesbilledwithoutRadiopharma" in folder_name:
+                    # For RadioservicesbilledwithoutRadiopharma, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_RadioservicesbilledwithoutRadiopharma_Collection"
+                    base_file_name = f"radioservices_wgs_csbd_{edit_id}_{code}"
+                elif "Revenue code to HCPCS Alignment edit" in folder_name:
+                    # For CSBD_TS48 style models, use the full descriptive name
+                    base_collection_name = f"CSBD_TS_{ts_number}_Revenue code to HCPCS Alignment edit_Collection"
+                    base_file_name = f"revenue_hcpcs_alignment_wgs_csbd_{edit_id}_{code}"
+                elif "Observation_Services" in folder_name:
+                    # For CSBDTS Observation Services models, use the full descriptive name
+                    base_collection_name = f"CSBDTS_{ts_number}_Observation_Services_Collection"
+                    base_file_name = f"observation_services_wgs_csbd_{edit_id}_{code}"
+                elif "Covid_gbdf_mcr" in folder_name:
+                    # For GBDF MCR Covid, use the full descriptive name
+                    base_collection_name = f"TS_{ts_number}_Covid_gbdf_mcr_Collection"
+                    base_file_name = f"covid_gbdf_mcr_{edit_id}_{code}"
+                elif "Multiple E&M Same day" in folder_name and is_gbdf:
+                    # For any GBDF Multiple E&M Same day model, use GBDF naming
+                    if "gbdf_mcr" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_mcr_Collection"
+                        base_file_name = f"multiple_em_gbdf_mcr_{edit_id}_{code}"
+                    elif "gbdf_grs" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_grs_Collection"
+                        base_file_name = f"multiple_em_gbdf_grs_{edit_id}_{code}"
+                    else:
+                        base_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_Collection"
+                        base_file_name = f"multiple_em_gbdf_{edit_id}_{code}"
+                elif "NDC UOM Validation Edit Expansion Iprep-138" in folder_name and is_gbdf:
+                    # For NDC UOM Validation Edit Expansion Iprep-138 models, use GBDF naming
+                    if "gbdf_mcr" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection"
+                        base_file_name = f"ndc_uom_gbdf_mcr_{edit_id}_{code}"
+                    elif "gbdf_grs" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection"
+                        base_file_name = f"ndc_uom_gbdf_grs_{edit_id}_{code}"
+                    else:
+                        base_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_Collection"
+                        base_file_name = f"ndc_uom_gbdf_{edit_id}_{code}"
+                elif "No match of Procedure code" in folder_name and is_gbdf:
+                    # For No match of Procedure code models, use GBDF naming
+                    if "gbdf_mcr" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_mcr_Collection"
+                        base_file_name = f"no_match_procedure_gbdf_mcr_{edit_id}_{code}"
+                    elif "gbdf_grs" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_grs_Collection"
+                        base_file_name = f"no_match_procedure_gbdf_grs_{edit_id}_{code}"
+                    else:
+                        base_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_Collection"
+                        base_file_name = f"no_match_procedure_gbdf_{edit_id}_{code}"
+                elif "Nebulizer A52466 IPERP-132" in folder_name and is_gbdf:
+                    # For Nebulizer A52466 IPERP-132 models, use GBDF naming
+                    if "gbdf_mcr" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection"
+                        base_file_name = f"nebulizer_gbdf_mcr_{edit_id}_{code}"
+                    elif "gbdf_grs" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_grs_Collection"
+                        base_file_name = f"nebulizer_gbdf_grs_{edit_id}_{code}"
+                    else:
+                        base_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_Collection"
+                        base_file_name = f"nebulizer_gbdf_{edit_id}_{code}"
+                elif "Unspecified_dx_code_outpt" in folder_name and is_gbdf:
+                    # For Unspecified_dx_code_outpt models, use GBDF naming
+                    if "gbdf_mcr" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_mcr_Collection"
+                        base_file_name = f"unspecified_dx_code_outpt_gbdf_mcr_{edit_id}_{code}"
+                    elif "gbdf_grs" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_grs_Collection"
+                        base_file_name = f"unspecified_dx_code_outpt_gbdf_grs_{edit_id}_{code}"
+                    else:
+                        base_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_Collection"
+                        base_file_name = f"unspecified_dx_code_outpt_gbdf_{edit_id}_{code}"
+                elif "Unspecified_dx_code_prof" in folder_name and is_gbdf:
+                    # For Unspecified_dx_code_prof models, use GBDF naming
+                    if "gbdf_mcr" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_mcr_Collection"
+                        base_file_name = f"unspecified_dx_code_prof_gbdf_mcr_{edit_id}_{code}"
+                    elif "gbdf_grs" in folder_name:
+                        base_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_grs_Collection"
+                        base_file_name = f"unspecified_dx_code_prof_gbdf_grs_{edit_id}_{code}"
+                    else:
+                        base_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_Collection"
+                        base_file_name = f"unspecified_dx_code_prof_gbdf_{edit_id}_{code}"
                 else:
-                    postman_collection_name = f"TS_{ts_number}_Multiple E&M Same day_gbdf_Collection"
-                    postman_file_name = f"multiple_em_gbdf_{edit_id}_{code}.json"
-            elif "NDC UOM Validation Edit Expansion Iprep-138" in folder_name and is_gbdf:
-                # For NDC UOM Validation Edit Expansion Iprep-138 models, use GBDF naming
-                if "gbdf_mcr" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection"
-                    postman_file_name = f"ndc_uom_gbdf_mcr_{edit_id}_{code}.json"
-                elif "gbdf_grs" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection"
-                    postman_file_name = f"ndc_uom_gbdf_grs_{edit_id}_{code}.json"
+                    base_collection_name = generate_postman_collection_name(ts_number)
+                    base_file_name = f"revenue_wgs_csbd_{edit_id}_{code}"
+
+                # Customize names based on folder type (regression/smoke)
+                if folder_type == "smoke":
+                    postman_collection_name = base_collection_name
+                    postman_file_name = f"{base_file_name}_smoke.json"
                 else:
-                    postman_collection_name = f"TS_{ts_number}_NDC UOM Validation Edit Expansion Iprep-138_gbdf_Collection"
-                    postman_file_name = f"ndc_uom_gbdf_{edit_id}_{code}.json"
-            elif "No match of Procedure code" in folder_name and is_gbdf:
-                # For No match of Procedure code models, use GBDF naming
-                if "gbdf_mcr" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_mcr_Collection"
-                    postman_file_name = f"no_match_procedure_gbdf_mcr_{edit_id}_{code}.json"
-                elif "gbdf_grs" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_grs_Collection"
-                    postman_file_name = f"no_match_procedure_gbdf_grs_{edit_id}_{code}.json"
-                else:
-                    postman_collection_name = f"TS_{ts_number}_No match of Procedure code_gbdf_Collection"
-                    postman_file_name = f"no_match_procedure_gbdf_{edit_id}_{code}.json"
-            elif "Nebulizer A52466 IPERP-132" in folder_name and is_gbdf:
-                # For Nebulizer A52466 IPERP-132 models, use GBDF naming
-                if "gbdf_mcr" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection"
-                    postman_file_name = f"nebulizer_gbdf_mcr_{edit_id}_{code}.json"
-                elif "gbdf_grs" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_grs_Collection"
-                    postman_file_name = f"nebulizer_gbdf_grs_{edit_id}_{code}.json"
-                else:
-                    postman_collection_name = f"TS_{ts_number}_Nebulizer A52466 IPERP-132_gbdf_Collection"
-                    postman_file_name = f"nebulizer_gbdf_{edit_id}_{code}.json"
-            elif "Unspecified_dx_code_outpt" in folder_name and is_gbdf:
-                # For Unspecified_dx_code_outpt models, use GBDF naming
-                if "gbdf_mcr" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_mcr_Collection"
-                    postman_file_name = f"unspecified_dx_code_outpt_gbdf_mcr_{edit_id}_{code}.json"
-                elif "gbdf_grs" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_grs_Collection"
-                    postman_file_name = f"unspecified_dx_code_outpt_gbdf_grs_{edit_id}_{code}.json"
-                else:
-                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_outpt_gbdf_Collection"
-                    postman_file_name = f"unspecified_dx_code_outpt_gbdf_{edit_id}_{code}.json"
-            elif "Unspecified_dx_code_prof" in folder_name and is_gbdf:
-                # For Unspecified_dx_code_prof models, use GBDF naming
-                if "gbdf_mcr" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_mcr_Collection"
-                    postman_file_name = f"unspecified_dx_code_prof_gbdf_mcr_{edit_id}_{code}.json"
-                elif "gbdf_grs" in folder_name:
-                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_grs_Collection"
-                    postman_file_name = f"unspecified_dx_code_prof_gbdf_grs_{edit_id}_{code}.json"
-                else:
-                    postman_collection_name = f"TS_{ts_number}_Unspecified_dx_code_prof_gbdf_Collection"
-                    postman_file_name = f"unspecified_dx_code_prof_gbdf_{edit_id}_{code}.json"
-            else:
-                postman_collection_name = generate_postman_collection_name(ts_number)
-                postman_file_name = f"revenue_wgs_csbd_{edit_id}_{code}.json"
-            
-            # STAGE 5.4: Create model configuration dictionary
-            model_config = {
-                "ts_number": ts_number,
-                "ts_number_raw": ts_number_raw,  # Keep original for reference
-                "edit_id": edit_id,
-                "code": code,
-                "source_dir": regression_path,
-                "dest_dir": dest_dir,
-                "postman_collection_name": postman_collection_name,
-                "postman_file_name": postman_file_name,
-                "folder_name": folder_name
-            }
-            
-            # Add the model to our list and display success message
-            models.append(model_config)
-            print(f"Discovered: TS_{ts_number} ({edit_id}_{code}) [Raw: {ts_number_raw}]")
+                    postman_collection_name = base_collection_name
+                    postman_file_name = f"{base_file_name}_regression.json"
+
+                # STAGE 5.4: Create model configuration dictionary
+                model_config = {
+                    "ts_number": ts_number,
+                    "ts_number_raw": ts_number_raw,  # Keep original for reference
+                    "edit_id": edit_id,
+                    "code": code,
+                    "source_dir": source_path,
+                    "dest_dir": dest_dir,
+                    "postman_collection_name": postman_collection_name,
+                    "postman_file_name": postman_file_name,
+                    "folder_name": folder_name,
+                    "folder_type": folder_type  # Add folder type for reference
+                }
+
+                # Add the model to our list and display success message
+                models.append(model_config)
+                print(f"Discovered: TS_{ts_number} ({edit_id}_{code}) [{folder_type}] [Raw: {ts_number_raw}]")
         else:
             # STAGE 5.5: Handle unmatched folders
             print(f"Warning: Could not parse folder name: {folder_name}")
@@ -646,6 +760,8 @@ def print_nested_models_display():
                 model_type = "HCPCS-Revenue Crosswalk"
             elif "Multiple E&M Same day" in collection_name:
                 model_type = "Multiple E&M Same day"
+            elif "Observation_Services" in collection_name:
+                model_type = "Observation Services"
             elif "revenue model" in collection_name:
                 model_type = "Revenue Model"
             

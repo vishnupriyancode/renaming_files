@@ -705,6 +705,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 output_dir = "postman_collections/WGS_CSBD"
             elif "GBDF" in dest_dir:
                 output_dir = "postman_collections/GBDF"
+            elif "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "WGS_NYK" in dest_dir:
+                output_dir = "postman_collections/WGS_KERNAL"
             
             generator = PostmanCollectionGenerator(
                 source_dir=dest_dir,  # Use the specific model's destination directory
@@ -1230,17 +1232,25 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Process specific TS models (WGS_CSBD flag required)
-  python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)
-  python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)
-  python main_processor.py --wgs_csbd --TS07    # Process TS07 model
-  python main_processor.py --wgs_csbd --TS10    # Process TS10 model
-  
+  # Process WGS_CSBD models (must use --CSBDTSXX format)
+  python main_processor.py --wgs_csbd --CSBDTS01    # Process TS01 model (Covid)
+  python main_processor.py --wgs_csbd --CSBDTS02    # Process TS02 model (Laterality Policy)
+  python main_processor.py --wgs_csbd --CSBDTS07    # Process TS07 model
+  python main_processor.py --wgs_csbd --CSBDTS10    # Process TS10 model
+  python main_processor.py --wgs_csbd --CSBDTS48    # Process CSBD_TS48 model (Revenue code to HCPCS Alignment)
+  python main_processor.py --wgs_csbd --CSBDTS50    # Process CSBD_TS50 model
+
+  # Process WGS_NYK models (must use --NYKTSXX format)
+  python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
+  python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
+  python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
+
   # Process GBDF MCR models (GBDF MCR flag required)
-  python main_processor.py --gbdf_mcr --TS47    # Process TS47 model (Covid GBDF MCR)
-  python main_processor.py --gbdf_mcr --TS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
-  python main_processor.py --gbdf_mcr --TS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
-  python main_processor.py --gbdf_mcr --TS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
+  python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBDF MCR)
+  python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
+  python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
+  python main_processor.py --gbdf_mcr --GBDTS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
+  
   
   # Process GBDF GRS models (GBDF GRS flag required)
   python main_processor.py --gbdf_grs --TS139   # Process TS139 model (Multiple E&M Same day GBDF GRS)
@@ -1257,13 +1267,13 @@ Examples:
   python main_processor.py --list    # List all available TS models
   
   # Generate timing reports for specific models
-  python main_processor.py --wgs_csbd --TS47 --list    # Generate JSON renaming timing report for TS47
+  python main_processor.py --wgs_csbd --CSBDTS47 --list    # Generate JSON renaming timing report for TS47
   
   # Skip Postman generation
-  python main_processor.py --wgs_csbd --TS07 --no-postman
-  python main_processor.py --gbdf_mcr --TS47 --no-postman
-  python main_processor.py --gbdf_mcr --TS138 --no-postman
-  python main_processor.py --gbdf_mcr --TS144 --no-postman
+  python main_processor.py --wgs_csbd --CSBDTS07 --no-postman
+  python main_processor.py --gbdf_mcr --GBDTS47 --no-postman
+  python main_processor.py --gbdf_mcr --GBDTS138 --no-postman
+  python main_processor.py --gbdf_mcr --GBDTS144 --no-postman
   python main_processor.py --gbdf_grs --TS139 --no-postman
   
   # Process with custom parameters
@@ -1272,84 +1282,59 @@ Examples:
     )
     
     # Add WGS_CSBD flag
-    parser.add_argument("--wgs_csbd", action="store_true", 
+    parser.add_argument("--wgs_csbd", action="store_true",
                        help="Process WGS_CSBD models (required for TS model processing)")
-    
+
+    # Add WGS_NYK flag
+    parser.add_argument("--wgs_nyk", action="store_true",
+                       help="Process WGS_NYK models (required for NYKTS model processing)")
+
     # Add GBDF MCR flag
-    parser.add_argument("--gbdf_mcr", action="store_true", 
+    parser.add_argument("--gbdf_mcr", action="store_true",
                        help="Process GBDF MCR models (required for GBDF model processing)")
-    
+
     # Add GBDF GRS flag
-    parser.add_argument("--gbdf_grs", action="store_true", 
+    parser.add_argument("--gbdf_grs", action="store_true",
                        help="Process GBDF GRS models (required for GBDF GRS model processing)")
     
     # Add model-specific arguments for available models
-    parser.add_argument("--TS01", action="store_true", 
-                       help="Process TS01 model (Covid)")
-    parser.add_argument("--TS02", action="store_true", 
-                       help="Process TS02 model (Laterality Policy)")
-    parser.add_argument("--TS10", action="store_true", 
-                       help="Process TS10 model")
-    parser.add_argument("--TS03", action="store_true", 
-                       help="Process TS03 model (Revenue code Services not payable on Facility claim Sub Edit 5)")
-    parser.add_argument("--TS04", action="store_true", 
-                       help="Process TS04 model (Revenue code Services not payable on Facility claim - Sub Edit 4)")
-    parser.add_argument("--TS05", action="store_true", 
-                       help="Process TS05 model (Revenue code Services not payable on Facility claim Sub Edit 3)")
-    parser.add_argument("--TS06", action="store_true", 
-                       help="Process TS06 model (Revenue code Services not payable on Facility claim Sub Edit 2)")
-    parser.add_argument("--TS07", action="store_true", 
-                       help="Process TS07 model (Revenue code Services not payable on Facility claim Sub Edit 1)")
-    parser.add_argument("--TS08", action="store_true", 
-                       help="Process TS08 model (Lab panel Model)")
-    parser.add_argument("--TS09", action="store_true", 
-                       help="Process TS09 model (Device Dependent Procedures)")
-    parser.add_argument("--TS11", action="store_true", 
-                       help="Process TS11 model (Revenue Code to HCPCS Xwalk-1B)")
-    parser.add_argument("--TS12", action="store_true", 
-                       help="Process TS12 model (Incidentcal Services Facility)")
-    parser.add_argument("--TS13", action="store_true", 
-                       help="Process TS13 model (Revenue model CR v3)")
-    parser.add_argument("--TS14", action="store_true", 
-                       help="Process TS14 model (HCPCS to Revenue Code Xwalk)")
-    parser.add_argument("--TS15", action="store_true", 
-                       help="Process TS15 model (revenue model)")
-    parser.add_argument("--TS46", action="store_true", 
-                       help="Process TS46 model (Multiple E&M Same day)")
+    # Note: WGS_CSBD models (TS01-TS15, TS20, TS46) now use --CSBDTSXX format only
+    # Individual TS flags are kept for GBDF MCR/GRS models (TS47, TS48, TS49, TS138-TS147, TS59-TS62)
+    # WGS_CSBD models should use --CSBDTSXX format (e.g., --CSBDTS01, --CSBDTS02)
+    # TS47 can be either WGS_CSBD (use --CSBDTS47) or GBDF MCR (use --GBDTS47 with --gbdf_mcr)
     parser.add_argument("--TS47", action="store_true", 
-                       help="Process TS47 model (Covid GBDF MCR)")
+                       help="Process TS47 model (Deprecated for GBDF MCR - use --GBDTS47 instead)")
     parser.add_argument("--TS48", action="store_true", 
-                       help="Process TS48 model (Multiple E&M Same day GBDF MCR)")
+                       help="Process TS48 model (Deprecated for GBDF MCR - use --GBDTS48 instead)")
     parser.add_argument("--TS49", action="store_true", 
                        help="Process TS49 model (Multiple E&M Same day GBDF GRS)")
     parser.add_argument("--TS138", action="store_true", 
-                       help="Process TS138 model (Multiple E&M Same day GBDF MCR)")
+                       help="Process TS138 model (Deprecated for GBDF MCR - use --GBDTS138 instead)")
     parser.add_argument("--TS139", action="store_true", 
                        help="Process TS139 model (Multiple E&M Same day GBDF GRS)")
     parser.add_argument("--TS140", action="store_true", 
-                       help="Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)")
+                       help="Process TS140 model (Deprecated for GBDF MCR - use --GBDTS140 instead)")
     parser.add_argument("--TS141", action="store_true", 
                        help="Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS)")
     parser.add_argument("--TS146", action="store_true", 
-                       help="Process TS146 model (No match of Procedure code GBDF MCR)")
+                       help="Process TS146 model (Deprecated for GBDF MCR - use --GBDTS146 instead)")
     parser.add_argument("--TS147", action="store_true", 
                        help="Process TS147 model (No match of Procedure code GBDF GRS)")
     parser.add_argument("--TS144", action="store_true", 
-                       help="Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)")
+                       help="Process TS144 model (Deprecated for GBDF MCR - use --GBDTS144 instead)")
     parser.add_argument("--TS145", action="store_true", 
                        help="Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)")
     parser.add_argument("--TS59", action="store_true", 
                        help="Process TS59 model (Unspecified dx code outpt GBDF GRS)")
     parser.add_argument("--TS60", action="store_true", 
-                       help="Process TS60 model (Unspecified dx code outpt GBDF MCR)")
+                       help="Process TS60 model (Deprecated for GBDF MCR - use --GBDTS60 instead)")
     parser.add_argument("--TS61", action="store_true", 
                        help="Process TS61 model (Unspecified dx code prof GBDF GRS)")
     parser.add_argument("--TS62", action="store_true", 
                        help="Process TS62 model (Unspecified dx code prof GBDF GRS)")
-    parser.add_argument("--TS20", action="store_true", 
-                       help="Process TS20 model (RadioservicesbilledwithoutRadiopharma)")
-    parser.add_argument("--CSBD_TS48", action="store_true", 
-                       help="Process CSBD_TS48 model (Revenue code to HCPCS Alignment edit)")
+    # TS20 is WGS_CSBD only - should use --CSBDTS20 format instead
+    # parser.add_argument("--TS20", action="store_true",
+    #                    help="Process TS20 model (RadioservicesbilledwithoutRadiopharma)")
     parser.add_argument("--all", action="store_true", 
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
@@ -1364,14 +1349,96 @@ Examples:
     parser.add_argument("--dest-dir", type=str, help="Custom destination directory path")
     parser.add_argument("--collection-name", type=str, help="Custom Postman collection name")
     
-    args = parser.parse_args()
+    # Parse arguments and handle unknown arguments for CSBDTS pattern
+    args, unknown_args = parser.parse_known_args()
+    
+    # Import normalize_ts_number for consistent TS number normalization (used for both CSBDTS and GBDTS)
+    try:
+        from dynamic_models import normalize_ts_number
+    except ImportError:
+        # Fallback normalization function if import fails
+        def normalize_ts_number(ts_number_raw: str) -> str:
+            ts_num = int(ts_number_raw)
+            if 1 <= ts_num <= 9:
+                return f"{ts_num:02d}"
+            elif 10 <= ts_num <= 99:
+                return f"{ts_num:02d}"
+            elif 100 <= ts_num <= 999:
+                return f"{ts_num:03d}"
+            return ts_number_raw
+    
+    # STAGE 4.1.1: CSBDTS PATTERN HANDLING
+    # ====================================
+    # Handle --CSBDTSXX pattern (e.g., --CSBDTS48) for WGS_CSBD models
+    # Map CSBDTSXX to TSXX when --wgs_csbd flag is used
+    # Example: --wgs_csbd --CSBDTS48 -> processes TS48 model in WGS_CSBD context
+    csbd_ts_models = []
+
+    if args.wgs_csbd:
+        # Process unknown arguments to find --CSBDTSXX patterns
+        for arg in unknown_args:
+            # Match --CSBDTS followed by digits (e.g., --CSBDTS48, --CSBDTS50)
+            if arg.startswith('--CSBDTS') and len(arg) > 8:
+                ts_number_str = arg[8:]  # Extract digits after "--CSBDTS"
+                if ts_number_str.isdigit():
+                    # Normalize TS number for consistent matching
+                    ts_number = normalize_ts_number(ts_number_str)
+                    csbd_ts_models.append(ts_number)
+                    print(f"[INFO] Detected CSBDTS{ts_number_str} for WGS_CSBD processing (maps to TS{ts_number})")
+
+    # STAGE 4.1.1A: NYKTS PATTERN HANDLING
+    # =====================================
+    # Handle --NYKTSXX pattern (e.g., --NYKTS123) for WGS_NYK models
+    # Map NYKTSXX to TSXX when --wgs_nyk flag is used
+    # Example: --wgs_nyk --NYKTS123 -> processes TS123 model in WGS_NYK context
+    nyk_ts_models = []
+
+    if args.wgs_nyk:
+        # Process unknown arguments to find --NYKTSXX patterns
+        for arg in unknown_args:
+            # Match --NYKTS followed by digits (e.g., --NYKTS123, --NYKTS124)
+            if arg.startswith('--NYKTS') and len(arg) > 7:
+                ts_number_str = arg[7:]  # Extract digits after "--NYKTS"
+                if ts_number_str.isdigit():
+                    # Normalize TS number for consistent matching
+                    ts_number = normalize_ts_number(ts_number_str)
+                    nyk_ts_models.append(ts_number)
+                    print(f"[INFO] Detected NYKTS{ts_number_str} for WGS_NYK processing (maps to TS{ts_number})")
+    
+    # Store CSBD TS models for later processing
+    args.csbd_ts_models = csbd_ts_models
+
+    # Store NYK TS models for later processing
+    args.nyk_ts_models = nyk_ts_models
+
+    # STAGE 4.1.2: GBDTS PATTERN HANDLING
+    # ====================================
+    # Handle --GBDTSXX pattern (e.g., --GBDTS47) for GBDF models
+    # Map GBDTSXX to TSXX when --gbdf_mcr flag is used
+    # Example: --gbdf_mcr --GBDTS47 -> processes TS47 model in GBDF MCR context
+    gbdf_ts_models = []
+    
+    if args.gbdf_mcr:
+        # Process unknown arguments to find --GBDTSXX patterns
+        for arg in unknown_args:
+            # Match --GBDTS followed by digits (e.g., --GBDTS47, --GBDTS48)
+            if arg.startswith('--GBDTS') and len(arg) > 7:
+                ts_number_str = arg[7:]  # Extract digits after "--GBDTS"
+                if ts_number_str.isdigit():
+                    # Normalize TS number for consistent matching
+                    ts_number = normalize_ts_number(ts_number_str)
+                    gbdf_ts_models.append(ts_number)
+                    print(f"[INFO] Detected GBDTS{ts_number_str} for GBDF MCR processing (maps to TS{ts_number})")
+    
+    # Store GBDF TS models for later processing
+    args.gbdf_ts_models = gbdf_ts_models
     
     # STAGE 4.2: MODEL CONFIGURATION LOADING
     # ======================================
     # Load model configurations with dynamic discovery
     try:
         from models_config import get_models_config, get_model_by_ts
-        models_config = get_models_config(use_dynamic=True, use_wgs_csbd_destination=args.wgs_csbd, use_gbdf_mcr=args.gbdf_mcr, use_gbdf_grs=args.gbdf_grs)
+        models_config = get_models_config(use_dynamic=True, use_wgs_csbd_destination=args.wgs_csbd, use_gbdf_mcr=args.gbdf_mcr, use_gbdf_grs=args.gbdf_grs, use_wgs_nyk=args.wgs_nyk)
         print("Configuration loaded with dynamic discovery")
     except ImportError as e:
         print(f"Error: {e}")
@@ -1449,177 +1516,61 @@ Examples:
     models_to_process = []
     
     # Handle specific TS numbers for available models
+    # WGS_CSBD models (TS01-TS15, TS20, TS46) now use --CSBDTSXX format only
+    # Check if any WGS_CSBD TS flags are used with --wgs_csbd and reject them
+    wgs_csbd_ts_flags = [
+        ("TS01", "01"), ("TS02", "02"), ("TS03", "03"), ("TS04", "04"), ("TS05", "05"),
+        ("TS06", "06"), ("TS07", "07"), ("TS08", "08"), ("TS09", "09"), ("TS10", "10"),
+        ("TS11", "11"), ("TS12", "12"), ("TS13", "13"), ("TS14", "14"), ("TS15", "15"),
+        ("TS20", "20"), ("TS46", "46")
+    ]
     
-    if args.TS01:
-        ts01_model = next((model for model in models_config if model.get("ts_number") == "01"), None)
-        if ts01_model:
-            models_to_process.append(ts01_model)
-        else:
-            print("ERROR Error: TS01 model not found!")
-            sys.exit(1)
+    used_wgs_csbd_ts_flags = []
+    for flag_name, ts_num in wgs_csbd_ts_flags:
+        if hasattr(args, flag_name) and getattr(args, flag_name):
+            if args.wgs_csbd:
+                used_wgs_csbd_ts_flags.append((flag_name, ts_num))
     
-    if args.TS02:
-        ts02_model = next((model for model in models_config if model.get("ts_number") == "02"), None)
-        if ts02_model:
-            models_to_process.append(ts02_model)
-        else:
-            print("ERROR Error: TS02 model not found!")
-            sys.exit(1)
-    
-    if args.TS10:
-        ts10_model = next((model for model in models_config if model.get("ts_number") == "10"), None)
-        if ts10_model:
-            models_to_process.append(ts10_model)
-        else:
-            print("ERROR Error: TS10 model not found!")
-            sys.exit(1)
-    
-
-    if args.TS04:
-        ts04_model = next((model for model in models_config if model.get("ts_number") == "04"), None)
-        if ts04_model:
-            models_to_process.append(ts04_model)
-        else:
-            print("ERROR Error: TS04 model not found!")
-            sys.exit(1)
-    
-    if args.TS03:
-        ts03_model = next((model for model in models_config if model.get("ts_number") == "03"), None)
-        if ts03_model:
-            models_to_process.append(ts03_model)
-        else:
-            print("ERROR Error: TS03 model not found!")
-            sys.exit(1)
-    
-    if args.TS05:
-        ts05_model = next((model for model in models_config if model.get("ts_number") == "05"), None)
-        if ts05_model:
-            models_to_process.append(ts05_model)
-        else:
-            print("ERROR Error: TS05 model not found!")
-            sys.exit(1)
-    
-    if args.TS06:
-        ts06_model = next((model for model in models_config if model.get("ts_number") == "06"), None)
-        if ts06_model:
-            models_to_process.append(ts06_model)
-        else:
-            print("ERROR Error: TS06 model not found!")
-            sys.exit(1)
-    
-    if args.TS07:
-        ts07_model = next((model for model in models_config if model.get("ts_number") == "07"), None)
-        if ts07_model:
-            models_to_process.append(ts07_model)
-        else:
-            print("ERROR Error: TS07 model not found!")
-            sys.exit(1)
-    
-    if args.TS08:
-        ts08_model = next((model for model in models_config if model.get("ts_number") == "08"), None)
-        if ts08_model:
-            models_to_process.append(ts08_model)
-        else:
-            print("ERROR Error: TS08 model not found!")
-            sys.exit(1)
-    
-    if args.TS09:
-        ts09_model = next((model for model in models_config if model.get("ts_number") == "09"), None)
-        if ts09_model:
-            models_to_process.append(ts09_model)
-        else:
-            print("ERROR Error: TS09 model not found!")
-            sys.exit(1)
-    
-    if args.TS11:
-        ts11_model = next((model for model in models_config if model.get("ts_number") == "11"), None)
-        if ts11_model:
-            models_to_process.append(ts11_model)
-        else:
-            print("ERROR Error: TS11 model not found!")
-            sys.exit(1)
-    
-    if args.TS12:
-        ts12_model = next((model for model in models_config if model.get("ts_number") == "12"), None)
-        if ts12_model:
-            models_to_process.append(ts12_model)
-        else:
-            print("ERROR Error: TS12 model not found!")
-            sys.exit(1)
-    
-    if args.TS13:
-        ts13_model = next((model for model in models_config if model.get("ts_number") == "13"), None)
-        if ts13_model:
-            models_to_process.append(ts13_model)
-        else:
-            print("ERROR Error: TS13 model not found!")
-            sys.exit(1)
-    
-    if args.TS14:
-        ts14_model = next((model for model in models_config if model.get("ts_number") == "14"), None)
-        if ts14_model:
-            models_to_process.append(ts14_model)
-        else:
-            print("ERROR Error: TS14 model not found!")
-            sys.exit(1)
-    
-    if args.TS15:
-        ts15_model = next((model for model in models_config if model.get("ts_number") == "15"), None)
-        if ts15_model:
-            models_to_process.append(ts15_model)
-        else:
-            print("ERROR Error: TS15 model not found!")
-            sys.exit(1)
-    
-    if args.TS46:
-        ts46_model = next((model for model in models_config if model.get("ts_number") == "46"), None)
-        if ts46_model:
-            models_to_process.append(ts46_model)
-        else:
-            print("ERROR Error: TS46 model not found!")
-            sys.exit(1)
+    if used_wgs_csbd_ts_flags:
+        print("ERROR Error: WGS_CSBD models must use --CSBDTSXX format instead of --TSXX!")
+        print("\nPlease use the --CSBDTSXX format for WGS_CSBD models:")
+        for flag_name, ts_num in used_wgs_csbd_ts_flags:
+            print(f"  python main_processor.py --wgs_csbd --CSBDTS{ts_num}   # Instead of --{flag_name}")
+        print("\nThe --TSXX format is no longer supported for WGS_CSBD models.")
+        sys.exit(1)
     
     if args.TS47:
-        # TS47 can be either WGS_CSBD or GBDF depending on the flag used
+        # TS47 can be either WGS_CSBD or GBDF MCR, but both require specific format
         if args.wgs_csbd:
-            # Look for WGS_CSBD TS47 model
-            ts47_model = next((model for model in models_config if model.get("ts_number") == "47"), None)
-            if ts47_model:
-                models_to_process.append(ts47_model)
-            else:
-                print("ERROR Error: WGS_CSBD TS47 model not found!")
-                sys.exit(1)
+            print("ERROR Error: WGS_CSBD TS47 model must use --CSBDTS47 format!")
+            print("\nPlease use the --CSBDTS47 format for WGS_CSBD TS47:")
+            print("  python main_processor.py --wgs_csbd --CSBDTS47   # Process WGS_CSBD TS47 model")
+            sys.exit(1)
         elif args.gbdf_mcr:
-            # Look for GBDF TS47 model
-            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts47_model = next((model for model in gbdf_models if model.get("ts_number") == "47"), None)
-            if ts47_model:
-                models_to_process.append(ts47_model)
-            else:
-                print("ERROR Error: GBDF TS47 model not found!")
-                sys.exit(1)
+            # Legacy --TS47 format is no longer supported for GBDF MCR models
+            print("ERROR Error: Legacy --TS47 format is no longer supported for GBDF MCR models!")
+            print("\nPlease use the --GBDTS47 format instead:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS47    # Process GBDF TS47 model")
+            sys.exit(1)
         else:
             print("ERROR Error: TS47 requires either --wgs_csbd or --gbdf_mcr flag!")
-            print("\nPlease specify which TS47 model to process:")
-            print("  python main_processor.py --wgs_csbd --TS47    # Process WGS_CSBD TS47 model")
-            print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model")
+            print("\nFor WGS_CSBD TS47, use:")
+            print("  python main_processor.py --wgs_csbd --CSBDTS47   # Process WGS_CSBD TS47 model")
+            print("\nFor GBDF MCR TS47, use:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS47    # Process GBDF TS47 model")
             sys.exit(1)
     
     if args.TS48:
-        # TS48 is GBDF MCR only
+        # TS48 is GBDF MCR only - legacy format no longer supported
         if args.gbdf_mcr:
-            # Look for GBDF TS48 model
-            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts48_model = next((model for model in gbdf_models if model.get("ts_number") == "48"), None)
-            if ts48_model:
-                models_to_process.append(ts48_model)
-            else:
-                print("ERROR Error: GBDF TS48 model not found!")
-                sys.exit(1)
+            print("ERROR Error: Legacy --TS48 format is no longer supported for GBDF MCR models!")
+            print("\nPlease use the --GBDTS48 format instead:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS48   # Process GBDF TS48 model")
+            sys.exit(1)
         else:
             print("ERROR Error: TS48 requires --gbdf_mcr flag!")
-            print("\nPlease specify GBDF MCR flag:")
-            print("  python main_processor.py --gbdf_mcr --TS48   # Process GBDF TS48 model")
+            print("\nPlease use:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS48   # Process GBDF TS48 model")
             sys.exit(1)
     
     if args.TS49:
@@ -1640,20 +1591,16 @@ Examples:
             sys.exit(1)
 
     if args.TS138:
-        # TS138 is GBDF MCR only
+        # TS138 is GBDF MCR only - legacy format no longer supported
         if args.gbdf_mcr:
-            # Look for GBDF TS138 model
-            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts138_model = next((model for model in gbdf_models if model.get("ts_number") == "138"), None)
-            if ts138_model:
-                models_to_process.append(ts138_model)
-            else:
-                print("ERROR Error: GBDF TS138 model not found!")
-                sys.exit(1)
+            print("ERROR Error: Legacy --TS138 format is no longer supported for GBDF MCR models!")
+            print("\nPlease use the --GBDTS138 format instead:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS138   # Process GBDF TS138 model")
+            sys.exit(1)
         else:
             print("ERROR Error: TS138 requires --gbdf_mcr flag!")
-            print("\nPlease specify GBDF MCR flag:")
-            print("  python main_processor.py --gbdf_mcr --TS138   # Process GBDF TS138 model")
+            print("\nPlease use:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS138   # Process GBDF TS138 model")
             sys.exit(1)
     
     if args.TS139:
@@ -1674,20 +1621,16 @@ Examples:
             sys.exit(1)
     
     if args.TS140:
-        # TS140 is GBDF MCR only
+        # TS140 is GBDF MCR only - legacy format no longer supported
         if args.gbdf_mcr:
-            # Look for GBDF MCR TS140 model
-            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts140_model = next((model for model in gbdf_models if model.get("ts_number") == "140"), None)
-            if ts140_model:
-                models_to_process.append(ts140_model)
-            else:
-                print("ERROR Error: GBDF MCR TS140 model not found!")
-                sys.exit(1)
+            print("ERROR Error: Legacy --TS140 format is no longer supported for GBDF MCR models!")
+            print("\nPlease use the --GBDTS140 format instead:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS140   # Process GBDF TS140 model")
+            sys.exit(1)
         else:
             print("ERROR Error: TS140 requires --gbdf_mcr flag!")
-            print("\nPlease specify GBDF MCR flag:")
-            print("  python main_processor.py --gbdf_mcr --TS140   # Process GBDF MCR TS140 model")
+            print("\nPlease use:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS140   # Process GBDF TS140 model")
             sys.exit(1)
     
     if args.TS141:
@@ -1708,20 +1651,16 @@ Examples:
             sys.exit(1)
     
     if args.TS146:
-        # TS146 is GBDF MCR only
+        # TS146 is GBDF MCR only - legacy format no longer supported
         if args.gbdf_mcr:
-            # Look for GBDF MCR TS146 model
-            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts146_model = next((model for model in gbdf_models if model.get("ts_number") == "146"), None)
-            if ts146_model:
-                models_to_process.append(ts146_model)
-            else:
-                print("ERROR Error: GBDF MCR TS146 model not found!")
-                sys.exit(1)
+            print("ERROR Error: Legacy --TS146 format is no longer supported for GBDF MCR models!")
+            print("\nPlease use the --GBDTS146 format instead:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS146   # Process GBDF TS146 model")
+            sys.exit(1)
         else:
             print("ERROR Error: TS146 requires --gbdf_mcr flag!")
-            print("\nPlease specify GBDF MCR flag:")
-            print("  python main_processor.py --gbdf_mcr --TS146   # Process GBDF MCR TS146 model")
+            print("\nPlease use:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS146   # Process GBDF TS146 model")
             sys.exit(1)
     
     if args.TS147:
@@ -1742,20 +1681,16 @@ Examples:
             sys.exit(1)
     
     if args.TS144:
-        # TS144 is GBDF MCR only
+        # TS144 is GBDF MCR only - legacy format no longer supported
         if args.gbdf_mcr:
-            # Look for GBDF MCR TS144 model
-            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts144_model = next((model for model in gbdf_models if model.get("ts_number") == "144"), None)
-            if ts144_model:
-                models_to_process.append(ts144_model)
-            else:
-                print("ERROR Error: GBDF MCR TS144 model not found!")
-                sys.exit(1)
+            print("ERROR Error: Legacy --TS144 format is no longer supported for GBDF MCR models!")
+            print("\nPlease use the --GBDTS144 format instead:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS144   # Process GBDF TS144 model")
+            sys.exit(1)
         else:
             print("ERROR Error: TS144 requires --gbdf_mcr flag!")
-            print("\nPlease specify GBDF MCR flag:")
-            print("  python main_processor.py --gbdf_mcr --TS144   # Process GBDF MCR TS144 model")
+            print("\nPlease use:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS144   # Process GBDF TS144 model")
             sys.exit(1)
     
     if args.TS145:
@@ -1793,20 +1728,16 @@ Examples:
             sys.exit(1)
     
     if args.TS60:
-        # TS60 is GBDF MCR only
+        # TS60 is GBDF MCR only - legacy format no longer supported
         if args.gbdf_mcr:
-            # Look for GBDF MCR TS60 model
-            gbdf_models = get_models_config(use_dynamic=True, use_gbdf_mcr=True)
-            ts60_model = next((model for model in gbdf_models if model.get("ts_number") == "60"), None)
-            if ts60_model:
-                models_to_process.append(ts60_model)
-            else:
-                print("ERROR Error: GBDF MCR TS60 model not found!")
-                sys.exit(1)
+            print("ERROR Error: Legacy --TS60 format is no longer supported for GBDF MCR models!")
+            print("\nPlease use the --GBDTS60 format instead:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS60    # Process GBDF TS60 model")
+            sys.exit(1)
         else:
             print("ERROR Error: TS60 requires --gbdf_mcr flag!")
-            print("\nPlease specify GBDF MCR flag:")
-            print("  python main_processor.py --gbdf_mcr --TS60   # Process GBDF MCR TS60 model")
+            print("\nPlease use:")
+            print("  python main_processor.py --gbdf_mcr --GBDTS60    # Process GBDF TS60 model")
             sys.exit(1)
     
     if args.TS61:
@@ -1843,95 +1774,102 @@ Examples:
             print("  python main_processor.py --gbdf_grs --TS62   # Process GBDF GRS TS62 model")
             sys.exit(1)
     
-    if args.TS20:
-        # TS20 is WGS_CSBD only
-        if args.wgs_csbd:
-            # Look for WGS_CSBD TS20 model
-            wgs_csbd_models = get_models_config(use_dynamic=True, use_wgs_csbd_destination=False)
-            ts20_model = next((model for model in wgs_csbd_models if model.get("ts_number") == "20"), None)
-            if ts20_model:
-                models_to_process.append(ts20_model)
-            else:
-                print("ERROR Error: WGS_CSBD TS20 model not found!")
-                sys.exit(1)
-        else:
-            print("ERROR Error: TS20 requires --wgs_csbd flag!")
-            print("\nPlease specify WGS_CSBD flag:")
-            print("  python main_processor.py --wgs_csbd --TS20   # Process WGS_CSBD TS20 model")
-            sys.exit(1)
+    # TS20 is WGS_CSBD only - should use --CSBDTS20 format (handled in CSBDTS processing block below)
     
-    if args.CSBD_TS48:
-        # CSBD_TS48 is WGS_CSBD only - special case for Revenue code to HCPCS Alignment edit
-        if args.wgs_csbd:
-            # Create custom model configuration for CSBD_TS48
-            csbd_ts48_model = {
-                "ts_number": "48",
-                "edit_id": "RULERCTH00001",
-                "code": "00W26",
-                "source_dir": "source_folder/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur/regression",
-                "dest_dir": "renaming_jsons/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/regression",
-                "postman_collection_name": "CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection",
-                "postman_file_name": "revenue_hcpcs_alignment_wgs_csbd_RULERCTH00001_00W26.json"
-            }
-            models_to_process.append(csbd_ts48_model)
-        else:
-            print("ERROR Error: CSBD_TS48 requires --wgs_csbd flag!")
-            print("\nPlease specify WGS_CSBD flag:")
-            print("  python main_processor.py --wgs_csbd --CSBD_TS48   # Process CSBD_TS48 model")
+    # STAGE 4.5.1: CSBDTS MODEL HANDLING
+    # =================================
+    # Handle --CSBDTSXX patterns (e.g., --CSBDTS48) for WGS_CSBD models
+    # When --wgs_csbd flag is used with --CSBDTSXX, process the corresponding TS model
+    if hasattr(args, 'csbd_ts_models') and args.csbd_ts_models:
+        if not args.wgs_csbd:
+            print("ERROR Error: --wgs_csbd flag is required for CSBDTS model processing!")
+            print("\nPlease use the --wgs_csbd flag with CSBDTS model commands:")
+            for ts_num in args.csbd_ts_models:
+                print(f"  python main_processor.py --wgs_csbd --CSBDTS{ts_num}   # Process CSBD_TS{ts_num} model")
             sys.exit(1)
+
+        # Process each CSBDTS model
+        for ts_number_str in args.csbd_ts_models:
+            # Find ALL models with matching TS number (both smoke and regression)
+            csbd_ts_models = [model for model in models_config if model.get("ts_number") == ts_number_str]
+            if csbd_ts_models:
+                models_to_process.extend(csbd_ts_models)
+                folder_types = [m.get("folder_type", "regression") for m in csbd_ts_models]
+                print(f"[INFO] Added {len(csbd_ts_models)} CSBD_TS{ts_number_str} model(s) to processing queue: {', '.join(folder_types)}")
+            else:
+                print(f"ERROR Error: CSBD_TS{ts_number_str} model not found!")
+                print(f"Available models: {[m.get('ts_number') for m in models_config]}")
+                # Continue processing other models instead of exiting
+
+    # STAGE 4.5.1A: NYKTS MODEL HANDLING
+    # ==================================
+    # Handle --NYKTSXX patterns (e.g., --NYKTS123) for WGS_NYK models
+    # When --wgs_nyk flag is used with --NYKTSXX, process the corresponding TS model
+    if hasattr(args, 'nyk_ts_models') and args.nyk_ts_models:
+        if not args.wgs_nyk:
+            print("ERROR Error: --wgs_nyk flag is required for NYKTS model processing!")
+            print("\nPlease use the --wgs_nyk flag with NYKTS model commands:")
+            for ts_num in args.nyk_ts_models:
+                print(f"  python main_processor.py --wgs_nyk --NYKTS{ts_num}   # Process NYK_TS{ts_num} model")
+            sys.exit(1)
+
+        # Process each NYKTS model
+        for ts_number_str in args.nyk_ts_models:
+            # Find ALL models with matching TS number (both smoke and regression)
+            nyk_ts_models = [model for model in models_config if model.get("ts_number") == ts_number_str]
+            if nyk_ts_models:
+                models_to_process.extend(nyk_ts_models)
+                folder_types = [m.get("folder_type", "regression") for m in nyk_ts_models]
+                print(f"[INFO] Added {len(nyk_ts_models)} NYK_TS{ts_number_str} model(s) to processing queue: {', '.join(folder_types)}")
+            else:
+                print(f"ERROR Error: NYK_TS{ts_number_str} model not found!")
+                print(f"Available models: {[m.get('ts_number') for m in models_config]}")
+                # Continue processing other models instead of exiting
+    
+    # STAGE 4.5.2: GBDTS MODEL HANDLING
+    # =================================
+    # Handle --GBDTSXX patterns (e.g., --GBDTS47) for GBDF models
+    # When --gbdf_mcr flag is used with --GBDTSXX, process the corresponding TS model
+    if hasattr(args, 'gbdf_ts_models') and args.gbdf_ts_models:
+        if not args.gbdf_mcr:
+            print("ERROR Error: --gbdf_mcr flag is required for GBDTS model processing!")
+            print("\nPlease use the --gbdf_mcr flag with GBDTS model commands:")
+            for ts_num in args.gbdf_ts_models:
+                print(f"  python main_processor.py --gbdf_mcr --GBDTS{ts_num}   # Process GBDF_TS{ts_num} model")
+            sys.exit(1)
+        
+        # Process each GBDTS model
+        for ts_number_str in args.gbdf_ts_models:
+            # Find ALL models with matching TS number (both smoke and regression)
+            gbdf_ts_models = [model for model in models_config if model.get("ts_number") == ts_number_str]
+            if gbdf_ts_models:
+                models_to_process.extend(gbdf_ts_models)
+                folder_types = [m.get("folder_type", "regression") for m in gbdf_ts_models]
+                print(f"[INFO] Added {len(gbdf_ts_models)} GBDF_TS{ts_number_str} model(s) to processing queue: {', '.join(folder_types)}")
+            else:
+                print(f"ERROR Error: GBDF_TS{ts_number_str} model not found!")
+                print(f"Available models: {[m.get('ts_number') for m in models_config]}")
+                # Continue processing other models instead of exiting
     
     if args.all:
         models_to_process = models_config
         print(f"SUCCESS Processing all {len(models_config)} discovered models")
     
     # Check if appropriate flag is required for TS model processing
-    wgs_csbd_models = any([args.TS01, args.TS02, args.TS03, args.TS04, args.TS05, 
-                          args.TS06, args.TS07, args.TS08, args.TS09, args.TS10, 
-                          args.TS11, args.TS12, args.TS13, args.TS14, args.TS15, args.TS46, args.TS20, args.CSBD_TS48,
-                          (args.TS47 and args.wgs_csbd)])  # TS47 is WGS_CSBD when wgs_csbd flag is used
-    # TS47, TS48, TS138, TS140, TS144, TS146, TS60 can be GBDF MCR depending on flag - only consider it GBDF MCR if gbdf_mcr flag is used
-    gbdf_mcr_models = (args.TS47 and args.gbdf_mcr) or (args.TS48 and args.gbdf_mcr) or (args.TS138 and args.gbdf_mcr) or (args.TS140 and args.gbdf_mcr) or (args.TS144 and args.gbdf_mcr) or (args.TS146 and args.gbdf_mcr) or (args.TS60 and args.gbdf_mcr)
-    # TS139, TS141, TS145, TS147, TS59 are GBDF GRS only - only consider it GBDF GRS if gbdf_grs flag is used
+    # WGS_CSBD models now use --CSBDTSXX format, so we don't check individual TS flags
+    # GBDF MCR models now use --GBDTSXX format (legacy --TSXX format is rejected above)
+    # GBDF GRS models still use --TSXX format
+    wgs_csbd_models = False  # WGS_CSBD models are handled via --CSBDTSXX pattern
+    # GBDF MCR models are handled via --GBDTSXX pattern (legacy --TSXX format rejected above)
+    gbdf_mcr_models = False  # GBDF MCR models are handled via --GBDTSXX pattern
+    # TS139, TS141, TS145, TS147, TS59, TS61, TS62 are GBDF GRS only - only consider it GBDF GRS if gbdf_grs flag is used
     gbdf_grs_models = (args.TS49 and args.gbdf_grs) or (args.TS139 and args.gbdf_grs) or (args.TS141 and args.gbdf_grs) or (args.TS145 and args.gbdf_grs) or (args.TS147 and args.gbdf_grs) or (args.TS59 and args.gbdf_grs) or (args.TS61 and args.gbdf_grs) or (args.TS62 and args.gbdf_grs)
     all_models = args.all
     
-    if wgs_csbd_models and not args.wgs_csbd:
-        print("ERROR Error: --wgs_csbd flag is required for WGS_CSBD TS model processing!")
-        print("\nPlease use the --wgs_csbd flag with WGS_CSBD TS model commands:")
-        print("  python main_processor.py --wgs_csbd --TS01    # Process TS01 model (Covid)")
-        print("  python main_processor.py --wgs_csbd --TS02    # Process TS02 model (Laterality Policy)")
-        print("  python main_processor.py --wgs_csbd --TS03    # Process TS03 model")
-        print("  python main_processor.py --wgs_csbd --TS04    # Process TS04 model")
-        print("  python main_processor.py --wgs_csbd --TS05    # Process TS05 model")
-        print("  python main_processor.py --wgs_csbd --TS06    # Process TS06 model")
-        print("  python main_processor.py --wgs_csbd --TS07    # Process TS07 model")
-        print("  python main_processor.py --wgs_csbd --TS08    # Process TS08 model")
-        print("  python main_processor.py --wgs_csbd --TS09    # Process TS09 model")
-        print("  python main_processor.py --wgs_csbd --TS10    # Process TS10 model")
-        print("  python main_processor.py --wgs_csbd --TS11    # Process TS11 model")
-        print("  python main_processor.py --wgs_csbd --TS12    # Process TS12 model")
-        print("  python main_processor.py --wgs_csbd --TS13    # Process TS13 model")
-        print("  python main_processor.py --wgs_csbd --TS14    # Process TS14 model")
-        print("  python main_processor.py --wgs_csbd --TS15    # Process TS15 model")
-        print("  python main_processor.py --wgs_csbd --TS46    # Process TS46 model")
-        print("  python main_processor.py --wgs_csbd --TS47    # Process WGS_CSBD TS47 model")
-        print("  python main_processor.py --wgs_csbd --CSBD_TS48    # Process CSBD_TS48 model")
-        print("  python main_processor.py --wgs_csbd --all     # Process all discovered models")
-        print("\nUse --help for more information.")
-        sys.exit(1)
+    # WGS_CSBD models now use --CSBDTSXX format (handled earlier)
+    # No need to check wgs_csbd_models variable since we reject --TSXX flags upfront
     
-    if gbdf_mcr_models and not args.gbdf_mcr:
-        print("ERROR Error: --gbdf_mcr flag is required for GBDF MCR TS model processing!")
-        print("\nPlease use the --gbdf_mcr flag with GBDF MCR TS model commands:")
-        print("  python main_processor.py --gbdf_mcr --TS47    # Process GBDF TS47 model (Covid GBDF MCR)")
-        print("  python main_processor.py --gbdf_mcr --TS48    # Process GBDF TS48 model (Multiple E&M Same day GBDF MCR)")
-        print("  python main_processor.py --gbdf_mcr --TS138   # Process GBDF TS138 model (Multiple E&M Same day GBDF MCR)")
-        print("  python main_processor.py --gbdf_mcr --TS140   # Process GBDF TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)")
-        print("  python main_processor.py --gbdf_mcr --TS144   # Process GBDF TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)")
-        print("  python main_processor.py --gbdf_mcr --TS146   # Process GBDF TS146 model (No match of Procedure code GBDF MCR)")
-        print("  python main_processor.py --gbdf_mcr --TS60    # Process GBDF TS60 model (Unspecified dx code outpt GBDF MCR)")
-        print("\nUse --help for more information.")
-        sys.exit(1)
+    # GBDF MCR models are handled via --GBDTSXX pattern, so gbdf_mcr_models check is no longer needed
     
     if gbdf_grs_models and not args.gbdf_grs:
         print("ERROR Error: --gbdf_grs flag is required for GBDF GRS TS model processing!")
@@ -1946,10 +1884,11 @@ Examples:
         print("\nUse --help for more information.")
         sys.exit(1)
     
-    if all_models and not args.wgs_csbd and not args.gbdf_mcr and not args.gbdf_grs:
-        print("ERROR Error: Either --wgs_csbd, --gbdf_mcr, or --gbdf_grs flag is required for --all processing!")
+    if all_models and not args.wgs_csbd and not args.wgs_nyk and not args.gbdf_mcr and not args.gbdf_grs:
+        print("ERROR Error: Either --wgs_csbd, --wgs_nyk, --gbdf_mcr, or --gbdf_grs flag is required for --all processing!")
         print("\nPlease specify which type of models to process:")
         print("  python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models")
+        print("  python main_processor.py --wgs_nyk --all     # Process all WGS_NYK models")
         print("  python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models")
         print("  python main_processor.py --gbdf_grs --all     # Process all GBDF GRS models")
         print("\nUse --help for more information.")
@@ -1959,31 +1898,34 @@ Examples:
     if not models_to_process:
         print("ERROR Error: No model specified!")
         print("\nPlease specify which model to process:")
-        print("  --wgs_csbd --TS01    Process TS01 model (Covid)")
-        print("  --wgs_csbd --TS02    Process TS02 model (Laterality Policy)")
-        print("  --wgs_csbd --TS03    Process TS03 model (Revenue code Services not payable on Facility claim Sub Edit 5)")
-        print("  --wgs_csbd --TS04    Process TS04 model (Revenue code Services not payable on Facility claim - Sub Edit 4)")
-        print("  --wgs_csbd --TS05    Process TS05 model (Revenue code Services not payable on Facility claim Sub Edit 3)")
-        print("  --wgs_csbd --TS06    Process TS06 model (Revenue code Services not payable on Facility claim Sub Edit 2)")
-        print("  --wgs_csbd --TS07    Process TS07 model (Revenue code Services not payable on Facility claim Sub Edit 1)")
-        print("  --wgs_csbd --TS08    Process TS08 model (Lab panel Model)")
-        print("  --wgs_csbd --TS09    Process TS09 model (Device Dependent Procedures)")
-        print("  --wgs_csbd --TS10    Process TS10 model")
-        print("  --wgs_csbd --TS11    Process TS11 model (Revenue Code to HCPCS Xwalk-1B)")
-        print("  --wgs_csbd --TS12    Process TS12 model (Incidentcal Services Facility)")
-        print("  --wgs_csbd --TS13    Process TS13 model (Revenue model CR v3)")
-        print("  --wgs_csbd --TS14    Process TS14 model (HCPCS to Revenue Code Xwalk)")
-        print("  --wgs_csbd --TS15    Process TS15 model (revenue model)")
-        print("  --wgs_csbd --TS46    Process TS46 model (Multiple E&M Same day)")
-        print("  --wgs_csbd --TS47    Process TS47 model (Multiple Billing of Obstetrical Services)")
-        print("  --wgs_csbd --CSBD_TS48    Process CSBD_TS48 model (Revenue code to HCPCS Alignment edit)")
-        print("  --gbdf_mcr --TS47    Process TS47 model (Covid GBDF MCR)")
-        print("  --gbdf_mcr --TS48    Process TS48 model (Multiple E&M Same day GBDF MCR)")
-        print("  --gbdf_mcr --TS138   Process TS138 model (Multiple E&M Same day GBDF MCR)")
-        print("  --gbdf_mcr --TS140   Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)")
-        print("  --gbdf_mcr --TS144   Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)")
-        print("  --gbdf_mcr --TS146   Process TS146 model (No match of Procedure code GBDF MCR)")
-        print("  --gbdf_mcr --TS60    Process TS60 model (Unspecified dx code outpt GBDF MCR)")
+        print("  --wgs_csbd --CSBDTS01    Process TS01 model (Covid)")
+        print("  --wgs_csbd --CSBDTS02    Process TS02 model (Laterality Policy)")
+        print("  --wgs_csbd --CSBDTS03    Process TS03 model (Revenue code Services not payable on Facility claim Sub Edit 5)")
+        print("  --wgs_csbd --CSBDTS04    Process TS04 model (Revenue code Services not payable on Facility claim - Sub Edit 4)")
+        print("  --wgs_csbd --CSBDTS05    Process TS05 model (Revenue code Services not payable on Facility claim Sub Edit 3)")
+        print("  --wgs_csbd --CSBDTS06    Process TS06 model (Revenue code Services not payable on Facility claim Sub Edit 2)")
+        print("  --wgs_csbd --CSBDTS07    Process TS07 model (Revenue code Services not payable on Facility claim Sub Edit 1)")
+        print("  --wgs_csbd --CSBDTS08    Process TS08 model (Lab panel Model)")
+        print("  --wgs_csbd --CSBDTS09    Process TS09 model (Device Dependent Procedures)")
+        print("  --wgs_csbd --CSBDTS10    Process TS10 model")
+        print("  --wgs_csbd --CSBDTS11    Process TS11 model (Revenue Code to HCPCS Xwalk-1B)")
+        print("  --wgs_csbd --CSBDTS12    Process TS12 model (Incidentcal Services Facility)")
+        print("  --wgs_csbd --CSBDTS13    Process TS13 model (Revenue model CR v3)")
+        print("  --wgs_csbd --CSBDTS14    Process TS14 model (HCPCS to Revenue Code Xwalk)")
+        print("  --wgs_csbd --CSBDTS15    Process TS15 model (revenue model)")
+        print("  --wgs_csbd --CSBDTS20    Process TS20 model (RadioservicesbilledwithoutRadiopharma)")
+        print("  --wgs_csbd --CSBDTS46    Process TS46 model (Multiple E&M Same day)")
+        print("  --wgs_csbd --CSBDTS47    Process TS47 model (Multiple Billing of Obstetrical Services)")
+        print("  --wgs_nyk --NYKTS123   Process TS123 model (Observation Services WGS NYK)")
+        print("  --wgs_nyk --NYKTS124   Process TS124 model (Observation Services WGS NYK)")
+        print("  --wgs_nyk --NYKTS125   Process TS125 model (Observation Services WGS NYK)")
+        print("  --gbdf_mcr --GBDTS47    Process TS47 model (Covid GBDF MCR) - Required format")
+        print("  --gbdf_mcr --GBDTS48    Process TS48 model (Multiple E&M Same day GBDF MCR) - Required format")
+        print("  --gbdf_mcr --GBDTS138   Process TS138 model (Multiple E&M Same day GBDF MCR) - Required format")
+        print("  --gbdf_mcr --GBDTS140   Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR) - Required format")
+        print("  --gbdf_mcr --GBDTS144   Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR) - Required format")
+        print("  --gbdf_mcr --GBDTS146   Process TS146 model (No match of Procedure code GBDF MCR) - Required format")
+        print("  --gbdf_mcr --GBDTS60    Process TS60 model (Unspecified dx code outpt GBDF MCR) - Required format")
         print("  --gbdf_grs --TS139   Process TS139 model (Multiple E&M Same day GBDF GRS)")
         print("  --gbdf_grs --TS141   Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS)")
         print("  --gbdf_grs --TS145   Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)")
@@ -1992,6 +1934,7 @@ Examples:
         print("  --gbdf_grs --TS61    Process TS61 model (Unspecified dx code prof GBDF GRS)")
         print("  --gbdf_grs --TS62    Process TS62 model (Unspecified dx code prof GBDF GRS)")
         print("  --wgs_csbd --all     Process all discovered WGS_CSBD models")
+        print("  --wgs_nyk --all     Process all discovered WGS_NYK models")
         print("  --gbdf_mcr --all     Process all discovered GBDF MCR models")
         print("  --list    List all available TS models")
         print("\nUse --help for more information.")
@@ -2006,6 +1949,8 @@ Examples:
     model_type = None
     if args.wgs_csbd:
         model_type = "WGS_CSBD"
+    elif args.wgs_nyk:
+        model_type = "WGS_NYK"
     elif args.gbdf_mcr:
         model_type = "GBDF_MCR"
     elif args.gbdf_grs:
