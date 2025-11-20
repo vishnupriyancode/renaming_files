@@ -173,17 +173,17 @@ STATIC_MODELS_CONFIG = {
         "ts_number": "48",
         "edit_id": "RULERCTH00001",
         "code": "00W26",
-        "source_dir": "source_folder/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/regression",
-        "postman_collection_name": "CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection",
-        "postman_file_name": "revenue_hcpcs_alignment_wgs_csbd_RULERCTH00001_00W26.json"
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/payloads/regression",
+        "postman_collection_name": "CSBDTS_48_Revenue code to HCPCS Alignment edit_Collection",
+        "postman_file_name": "revenue_code_to_hcpcs_alignment_edit_wgs_csbd_RULERCTH00001_00W26.json"
     },
     {
         "ts_number": "49",
         "edit_id": "RULERCTH00001",
         "code": "00W28",
         "source_dir": "source_folder/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULERCTH00001_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULERCTH00001_00W28_dis/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULERCTH00001_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_49_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULERCTH00001_00W28.json"
     },
@@ -192,7 +192,7 @@ STATIC_MODELS_CONFIG = {
         "edit_id": "RULERCTH00002",
         "code": "00W28",
         "source_dir": "source_folder/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULERCTH00002_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULERCTH00002_00W28_dis/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULERCTH00002_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_50_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULERCTH00002_00W28.json"
     },
@@ -201,7 +201,7 @@ STATIC_MODELS_CONFIG = {
         "edit_id": "RULERCTH00003",
         "code": "00W28",
         "source_dir": "source_folder/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULERCTH00003_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULERCTH00003_00W28_dis/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULERCTH00003_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_51_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULERCTH00003_00W28.json"
     },
@@ -210,7 +210,7 @@ STATIC_MODELS_CONFIG = {
         "edit_id": "RULERCTH00004",
         "code": "00W28",
         "source_dir": "source_folder/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULERCTH00004_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULERCTH00004_00W28_dis/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULERCTH00004_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_52_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULERCTH00004_00W28.json"
     },
@@ -219,7 +219,7 @@ STATIC_MODELS_CONFIG = {
         "edit_id": "RULERCTH00005",
         "code": "00W28",
         "source_dir": "source_folder/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULERCTH00005_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULERCTH00005_00W28_dis/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULERCTH00005_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_53_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULERCTH00005_00W28.json"
     },
@@ -228,7 +228,7 @@ STATIC_MODELS_CONFIG = {
         "edit_id": "RULERCTH00006",
         "code": "00W28",
         "source_dir": "source_folder/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULERCTH00006_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULERCTH00006_00W28_dis/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULERCTH00006_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_54_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULERCTH00006_00W28.json"
     },
@@ -237,7 +237,7 @@ STATIC_MODELS_CONFIG = {
         "edit_id": "RULERCTH00007",
         "code": "00W28",
         "source_dir": "source_folder/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULERCTH00007_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULERCTH00007_00W28_dis/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULERCTH00007_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_55_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULERCTH00007_00W28.json"
     },
@@ -246,7 +246,7 @@ STATIC_MODELS_CONFIG = {
         "edit_id": "RULERCTH00008",
         "code": "00W28",
         "source_dir": "source_folder/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULERCTH00008_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULERCTH00008_00W28_dis/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULERCTH00008_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_56_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULERCTH00008_00W28.json"
     }
@@ -257,7 +257,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEEM000001",
             "code": "v04",
             "source_dir": "source_folder/GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/payloads/regression",
             "postman_collection_name": "TS_47_Covid_gbdf_mcr_Collection",
             "postman_file_name": "covid_gbdf_mcr_RULEEM000001_v04.json"
         },
@@ -266,7 +266,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEEMSD000002",
             "code": "v09",
             "source_dir": "source_folder/GBDF/TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/payloads/regression",
             "postman_collection_name": "TS_48_Multiple E&M Same day_gbdf_mcr_Collection",
             "postman_file_name": "multiple_em_gbdf_mcr_RULEEMSD000002_v09.json"
         },
@@ -275,7 +275,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEEMSD000002",
             "code": "v09",
             "source_dir": "source_folder/GBDF/TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/payloads/regression",
             "postman_collection_name": "TS_138_Multiple E&M Same day_gbdf_mcr_Collection",
             "postman_file_name": "multiple_em_gbdf_mcr_RULEEMSD000002_v09.json"
         },
@@ -284,7 +284,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULENDCUOM000001",
             "code": "v41",
             "source_dir": "source_folder/GBDF/TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/payloads/regression",
             "postman_collection_name": "TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection",
             "postman_file_name": "ndc_uom_gbdf_mcr_RULENDCUOM000001_v41.json"
         },
@@ -293,7 +293,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULENEBU000001",
             "code": "v18",
             "source_dir": "source_folder/GBDF/TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_RULENEBU000001_v18_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_RULENEBU000001_v18_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_RULENEBU000001_v18_dis/payloads/regression",
             "postman_collection_name": "TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection",
             "postman_file_name": "nebulizer_gbdf_mcr_RULENEBU000001_v18.json"
         },
@@ -302,7 +302,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULENMP000001",
             "code": "v18",
             "source_dir": "source_folder/GBDF/TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/payloads/regression",
             "postman_collection_name": "TS_146_No match of Procedure code_gbdf_mcr_Collection",
             "postman_file_name": "no_match_procedure_gbdf_mcr_RULENMP000001_v18.json"
         },
@@ -311,7 +311,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEUSD00100",
             "code": "v17",
             "source_dir": "source_folder/GBDF/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/payloads/regression",
             "postman_collection_name": "TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection",
             "postman_file_name": "unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17.json"
         },
@@ -320,7 +320,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEUSD00100",
             "code": "v17",
             "source_dir": "source_folder/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_dis/payloads/regression",
             "postman_collection_name": "TS_61_Unspecified_dx_code_prof_gbdf_mcr_Collection",
             "postman_file_name": "unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17.json"
         }
@@ -331,7 +331,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEEMSD000002",
             "code": "v09",
             "source_dir": "source_folder/GBDF/TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/payloads/regression",
             "postman_collection_name": "TS_49_Multiple E&M Same day_gbdf_grs_Collection",
             "postman_file_name": "multiple_em_gbdf_grs_RULEEMSD000002_v09.json"
         },
@@ -340,7 +340,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEEMSD000002",
             "code": "v09",
             "source_dir": "source_folder/GBDF/TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/payloads/regression",
             "postman_collection_name": "TS_139_Multiple E&M Same day_gbdf_grs_Collection",
             "postman_file_name": "multiple_em_gbdf_grs_RULEEMSD000002_v09.json"
         },
@@ -349,7 +349,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULENDCUOM000001",
             "code": "v41",
             "source_dir": "source_folder/GBDF/TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/payloads/regression",
             "postman_collection_name": "TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection",
             "postman_file_name": "ndc_uom_gbdf_grs_RULENDCUOM000001_v41.json"
         },
@@ -358,7 +358,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULENEBU000001",
             "code": "v18",
             "source_dir": "source_folder/GBDF/TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_RULENEBU000001_v18_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_RULENEBU000001_v18_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_RULENEBU000001_v18_dis/payloads/regression",
             "postman_collection_name": "TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_Collection",
             "postman_file_name": "nebulizer_gbdf_grs_RULENEBU000001_v18.json"
         },
@@ -367,7 +367,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULENMP000001",
             "code": "v18",
             "source_dir": "source_folder/GBDF/TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/payloads/regression",
             "postman_collection_name": "TS_147_No match of Procedure code_gbdf_grs_Collection",
             "postman_file_name": "no_match_procedure_gbdf_grs_RULENMP000001_v18.json"
         },
@@ -376,7 +376,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEUSD00100",
             "code": "v17",
             "source_dir": "source_folder/GBDF/TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_dis/payloads/regression",
             "postman_collection_name": "TS_59_Unspecified_dx_code_outpt_gbdf_grs_Collection",
             "postman_file_name": "unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17.json"
         },
@@ -385,7 +385,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEUSD00100",
             "code": "v17",
             "source_dir": "source_folder/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/payloads/regression",
             "postman_collection_name": "TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection",
             "postman_file_name": "unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17.json"
         },
@@ -394,19 +394,28 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULEUSD00100",
             "code": "v17",
             "source_dir": "source_folder/GBDF/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDF/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/payloads/regression",
             "postman_collection_name": "TS_62_Unspecified_dx_code_prof_gbdf_grs_Collection",
             "postman_file_name": "unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17.json"
         }
     ],
     "wgs_nyk": [
         {
-            "ts_number": "123",
+            "ts_number": "122",
+            "edit_id": "RULERCTH00001",
+            "code": "00W26",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_dis/payloads/regression",
+            "postman_collection_name": "NYKTS_122_Revenue code to HCPCS Alignment edit_Collection",
+            "postman_file_name": "revenue_code_to_hcpcs_alignment_edit_wgs_nyk_RULERCTH00001_00W26.json"
+        },
+        {
+            "ts_number": "130",
             "edit_id": "RULERCTH00001",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_123_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_123_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis/regression",
-            "postman_collection_name": "NYKTS_123_Observation_Services_Collection",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis/payloads/regression",
+            "postman_collection_name": "NYKTS_130_Observation_Services_Collection",
             "postman_file_name": "observation_services_wgs_nyk_RULERCTH00001_00W28.json"
         },
         {
@@ -414,7 +423,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULERCTH00002",
             "code": "00W28",
             "source_dir": "source_folder/WGS_Kernal/NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_dis/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_124_Observation_Services_Collection",
             "postman_file_name": "observation_services_wgs_nyk_RULERCTH00002_00W28.json"
         },
@@ -423,7 +432,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULERCTH00003",
             "code": "00W28",
             "source_dir": "source_folder/WGS_Kernal/NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_dis/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_125_Observation_Services_Collection",
             "postman_file_name": "observation_services_wgs_nyk_RULERCTH00003_00W28.json"
         },
@@ -432,7 +441,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULERCTH00004",
             "code": "00W28",
             "source_dir": "source_folder/WGS_Kernal/NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_dis/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_126_Observation_Services_Collection",
             "postman_file_name": "observation_services_wgs_nyk_RULERCTH00004_00W28.json"
         },
@@ -441,7 +450,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULERCTH00005",
             "code": "00W28",
             "source_dir": "source_folder/WGS_Kernal/NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_dis/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_127_Observation_Services_Collection",
             "postman_file_name": "observation_services_wgs_nyk_RULERCTH00005_00W28.json"
         },
@@ -450,7 +459,7 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULERCTH00006",
             "code": "00W28",
             "source_dir": "source_folder/WGS_Kernal/NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_dis/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_128_Observation_Services_Collection",
             "postman_file_name": "observation_services_wgs_nyk_RULERCTH00006_00W28.json"
         },
@@ -459,18 +468,18 @@ STATIC_MODELS_CONFIG = {
             "edit_id": "RULERCTH00007",
             "code": "00W28",
             "source_dir": "source_folder/WGS_Kernal/NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_dis/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_129_Observation_Services_Collection",
             "postman_file_name": "observation_services_wgs_nyk_RULERCTH00007_00W28.json"
         },
         {
-            "ts_number": "130",
-            "edit_id": "RULERCTH00008",
-            "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00008_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00008_00W28_dis/regression",
-            "postman_collection_name": "NYKTS_130_Observation_Services_Collection",
-            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00008_00W28.json"
+            "ts_number": "132",
+            "edit_id": "RULERADDON00001",
+            "code": "00W60",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_132_add_on without base_WGS_NYK_RULERADDON00001_00W60_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_132_add_on without base_WGS_NYK_RULERADDON00001_00W60_dis/payloads/regression",
+            "postman_collection_name": "NYKTS_132_add_on without base_Collection",
+            "postman_file_name": "add_on_without_base_wgs_nyk_RULERADDON00001_00W60.json"
         }
     ]
 }
@@ -504,18 +513,34 @@ def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf
             elif use_gbdf_mcr:
                 # Use dynamic discovery for GBDF MCR
                 discovered_models = discover_ts_folders("source_folder/GBDF", False)
-                if discovered_models:
-                    print(f"Dynamic discovery found {len(discovered_models)} GBDF MCR models")
-                    return discovered_models
+                # Filter for MCR models only (exclude GRS)
+                # Use source_dir as primary check since it always exists and contains the folder path
+                # Also check folder_name as fallback for robustness
+                mcr_models = [
+                    m for m in discovered_models 
+                    if ("gbdf_mcr" in m.get("source_dir", "").lower() or "gbdf_mcr" in m.get("folder_name", "").lower())
+                    and "gbdf_grs" not in m.get("source_dir", "").lower() 
+                    and "gbdf_grs" not in m.get("folder_name", "").lower()
+                ]
+                if mcr_models:
+                    print(f"Dynamic discovery found {len(mcr_models)} GBDF MCR models")
+                    return mcr_models
                 else:
                     print("No GBDF MCR models found via dynamic discovery, falling back to static config")
                     return STATIC_MODELS_CONFIG.get("gbdf_mcr", [])
             elif use_gbdf_grs:
                 # Use dynamic discovery for GBDF GRS
                 discovered_models = discover_ts_folders("source_folder/GBDF", False)
-                if discovered_models:
-                    print(f"Dynamic discovery found {len(discovered_models)} GBDF GRS models")
-                    return discovered_models
+                # Filter for GRS models only
+                # Use source_dir as primary check since it always exists and contains the folder path
+                # Also check folder_name as fallback for robustness
+                grs_models = [
+                    m for m in discovered_models 
+                    if "gbdf_grs" in m.get("source_dir", "").lower() or "gbdf_grs" in m.get("folder_name", "").lower()
+                ]
+                if grs_models:
+                    print(f"Dynamic discovery found {len(grs_models)} GBDF GRS models")
+                    return grs_models
                 else:
                     print("No GBDF GRS models found via dynamic discovery, falling back to static config")
                     return STATIC_MODELS_CONFIG.get("gbdf_grs", [])

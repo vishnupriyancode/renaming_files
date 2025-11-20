@@ -121,8 +121,12 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
     # STAGE 3.1: Define search patterns based on directory type
     if is_wgs_kernal:
         # WGS_NYK patterns - NYKTS naming convention
-        pattern1 = os.path.join(base_dir, "NYKTS_*_Observation_Services_WGS_NYK_*_sur")
-        ts_folders = glob.glob(pattern1)
+        # Match any NYKTS folder with any model name (including spaces)
+        # Use a pattern that matches NYKTS_*_WGS_NYK_*_sur to catch all variations
+        pattern1 = os.path.join(base_dir, "NYKTS_*")
+        all_folders = glob.glob(pattern1)
+        # Filter to only include folders that match the NYKTS pattern and end with _sur
+        ts_folders = [f for f in all_folders if os.path.isdir(f) and "_WGS_NYK_" in os.path.basename(f) and f.endswith("_sur")]
     elif is_gbdf:
         # GBDF MCR patterns - multiple patterns to catch different folder naming conventions
         pattern1 = os.path.join(base_dir, "TS_*_Covid_gbdf_mcr_*_sur")
@@ -274,8 +278,9 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         
         # If no match and this is WGS_Kernal, try NYKTS patterns
         if not match and is_wgs_kernal:
-            # NYKTS pattern: NYKTS_123_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur
-            match = re.match(r'NYKTS_(\d{1,3})_Observation_Services_WGS_NYK_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            # NYKTS pattern: NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur
+            # Also matches: NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_sur
+            match = re.match(r'NYKTS_(\d{1,3})_(.+?)_WGS_NYK_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
 
         # If no match and this is GBDF, try GBDF MCR patterns
         if not match and is_gbdf:
@@ -334,10 +339,12 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         if match:
             # Extract the components from the folder name
             if folder_name.startswith("NYKTS_"):
-                # NYKTS pattern: NYKTS_123_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur
-                ts_number_raw = match.group(1)  # TS number (e.g., "123")
-                edit_id = match.group(2)        # Edit ID (e.g., "RULERCTH00001")
-                code = match.group(3)           # Code (e.g., "00W28")
+                # NYKTS pattern: NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur
+                # Also matches: NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_sur
+                ts_number_raw = match.group(1)  # TS number (e.g., "130", "122")
+                model_name = match.group(2)     # Model name (e.g., "Observation_Services", "Revenue code to HCPCS Alignment edit")
+                edit_id = match.group(3)        # Edit ID (e.g., "RULERCTH00001")
+                code = match.group(4)           # Code (e.g., "00W28", "00W26")
             elif folder_name.startswith("CSBD_TS_") or folder_name.startswith("CSBDTS_"):
                 # CSBD_TS or CSBDTS pattern: CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur
                 # or CSBDTS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur
@@ -430,9 +437,12 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 # For CSBD_TS models, use the full descriptive name
                 # CSBDTS models will be handled by the elif checks below (e.g., "Covid", "Laterality Policy")
                 if folder_name.startswith("NYKTS_"):
-                    # NYKTS pattern: Use the model name from the folder
-                    base_collection_name = f"NYKTS_{ts_number}_Observation_Services_Collection"
-                    base_file_name = f"observation_services_wgs_nyk_{edit_id}_{code}"
+                    # NYKTS pattern: Use the dynamic model name from the folder (extracted at line 345)
+                    # model_name was extracted from regex match and can be "Observation_Services", 
+                    # "Revenue code to HCPCS Alignment edit", "add_on without base", etc.
+                    model_name_clean = model_name.replace(' ', '_').replace('-', '_')
+                    base_collection_name = f"NYKTS_{ts_number}_{model_name_clean}_Collection"
+                    base_file_name = f"{model_name.lower().replace(' ', '_').replace('-', '_')}_wgs_nyk_{edit_id}_{code}"
                 elif folder_name.startswith("CSBD_TS_"):
                     # CSBD_TS pattern: Use the model name from the folder
                     base_collection_name = f"CSBD_TS_{ts_number}_{model_name}_Collection"

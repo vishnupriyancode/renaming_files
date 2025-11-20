@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "NYKTS_123_Observation_Services_Collection API Collection",
-    "description": "API collection for NYKTS_123_Observation_Services_Collection test cases",
+    "name": "NYKTS_130_Observation_Services_Collection API Collection",
+    "description": "API collection for NYKTS_130_Observation_Services_Collection test cases",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

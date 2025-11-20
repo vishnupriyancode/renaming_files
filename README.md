@@ -8,8 +8,8 @@ A Python script for automatically renaming and organizing test case JSON files b
 
 The project has been enhanced with support for WGS_NYK (Working Group Standards - New York Kernal) models:
 
-- **✅ Added WGS_NYK Support**: Observation Services WGS NYK models (TS123-TS130)
-- **✅ Custom Command Format**: WGS_NYK models require `--NYKTSXX` format (e.g., `--NYKTS123`) instead of `--TSXX` format
+- **✅ Added WGS_NYK Support**: Observation Services WGS NYK models (TS122-TS130, TS132)
+- **✅ Custom Command Format**: WGS_NYK models require `--NYKTSXX` format (e.g., `--NYKTS130`) instead of `--TSXX` format
 - **✅ Updated Command Line Interface**: Added `--wgs_nyk` flag and `--NYKTSXX` arguments for WGS_NYK processing
 - **✅ Enhanced Documentation**: Updated all examples and help text to include WGS_NYK models
 - **✅ Error Handling**: Added proper validation and error messages for WGS_NYK flag usage
@@ -20,10 +20,12 @@ The project has been enhanced with support for WGS_NYK (Working Group Standards 
 **Examples:**
 ```bash
 # WGS_NYK models (must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS122   # Process TS122 model (Revenue code to HCPCS Alignment edit WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
-python main_processor.py --wgs_nyk --all     # Process all 8 WGS_NYK models
+python main_processor.py --wgs_nyk --NYKTS132   # Process TS132 model (add_on without base WGS NYK)
+python main_processor.py --wgs_nyk --all     # Process all 10 WGS_NYK models
 ```
 
 **✅ GBDF Model Command Format Update**
@@ -151,15 +153,37 @@ postman_collections/
 │   ├── TS_20_RadioservicesbilledwithoutRadiopharma_Collection/
 │   ├── TS_46_Multiple E&M Same day_Collection/
 │   ├── TS_47_Multiple Billing of Obstetrical Services_Collection/
-│   └── CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection/
-└── GBDF/                                        # GBDF MCR Collections
-    ├── TS_47_Covid_gbdf_mcr_Collection/
-    ├── TS_138_Multiple E&M Same day_gbdf_mcr_Collection/
-    ├── TS_139_Multiple E&M Same day_gbdf_grs_Collection/
-    ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection/
-    ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection/
-    ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
-    └── TS_147_No match of Procedure code_gbdf_grs_Collection/
+│   ├── CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection/
+│   ├── CSBDTS_49_Observation_Services_Collection/
+│   ├── CSBDTS_50_Observation_Services_Collection/
+│   ├── CSBDTS_51_Observation_Services_Collection/
+│   ├── CSBDTS_52_Observation_Services_Collection/
+│   ├── CSBDTS_53_Observation_Services_Collection/
+│   ├── CSBDTS_54_Observation_Services_Collection/
+│   ├── CSBDTS_55_Observation_Services_Collection/
+│   └── CSBDTS_56_Observation_Services_Collection/
+├── GBDF/                                        # GBDF MCR Collections
+│   ├── TS_47_Covid_gbdf_mcr_Collection/
+│   ├── TS_48_Multiple E&M Same day_gbdf_mcr_Collection/
+│   ├── TS_138_Multiple E&M Same day_gbdf_mcr_Collection/
+│   ├── TS_139_Multiple E&M Same day_gbdf_grs_Collection/
+│   ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection/
+│   ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection/
+│   ├── TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection/
+│   ├── TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_Collection/
+│   ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
+│   └── TS_147_No match of Procedure code_gbdf_grs_Collection/
+└── WGS_KERNAL/                                  # WGS_NYK Collections (Note: folder name is WGS_KERNAL)
+    ├── NYKTS_122_Observation_Services_Collection/
+    ├── NYKTS_130_Observation_Services_Collection/
+    ├── NYKTS_124_Observation_Services_Collection/
+    ├── NYKTS_125_Observation_Services_Collection/
+    ├── NYKTS_126_Observation_Services_Collection/
+    ├── NYKTS_127_Observation_Services_Collection/
+    ├── NYKTS_128_Observation_Services_Collection/
+    ├── NYKTS_129_Observation_Services_Collection/
+    ├── NYKTS_130_Observation_Services_Collection/
+    └── NYKTS_132_Observation_Services_Collection/
 
 renaming_jsons/
 ├── WGS_CSBD/                                    # WGS_CSBD Processed Files
@@ -181,15 +205,42 @@ renaming_jsons/
 │   ├── TS_20_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_RULERBWR000001_00W30_dis/
 │   ├── TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/
 │   ├── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_dis/
-│   └── CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/
-└── GBDF/                                        # GBDF MCR Processed Files
-    ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
-    ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
-    ├── TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
-    ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/
-    ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/
-    ├── TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/
-    └── TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/
+│   ├── CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/
+│   ├── CSBDTS_49_Observation_Services_WGS_CSBD_RULERCTH00001_00W28_dis/
+│   ├── CSBDTS_50_Observation_Services_WGS_CSBD_RULERCTH00002_00W28_dis/
+│   ├── CSBDTS_51_Observation_Services_WGS_CSBD_RULERCTH00003_00W28_dis/
+│   ├── CSBDTS_52_Observation_Services_WGS_CSBD_RULERCTH00004_00W28_dis/
+│   ├── CSBDTS_53_Observation_Services_WGS_CSBD_RULERCTH00005_00W28_dis/
+│   ├── CSBDTS_54_Observation_Services_WGS_CSBD_RULERCTH00006_00W28_dis/
+│   ├── CSBDTS_55_Observation_Services_WGS_CSBD_RULERCTH00007_00W28_dis/
+│   └── CSBDTS_56_Observation_Services_WGS_CSBD_RULERCTH00008_00W28_dis/
+├── GBDF/                                        # GBDF MCR Processed Files
+│   ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
+│   ├── TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
+│   ├── TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
+│   ├── TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_dis/
+│   ├── TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/
+│   ├── TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_dis/
+│   ├── TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/
+│   ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
+│   ├── TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
+│   ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/
+│   ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/
+│   ├── TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_RULENEBU000001_v18_dis/
+│   ├── TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_RULENEBU000001_v18_dis/
+│   ├── TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/
+│   └── TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/
+└── WGS_KERNAL/                                  # WGS_NYK Processed Files (Note: folder name is WGS_KERNAL)
+    ├── NYKTS_122_Observation_Services_WGS_NYK_RULERCTH00001_00W26_dis/
+    ├── NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis/
+    ├── NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_dis/
+    ├── NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_dis/
+    ├── NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_dis/
+    ├── NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_dis/
+    ├── NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_dis/
+    ├── NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_dis/
+    ├── NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00008_00W28_dis/
+    └── NYKTS_132_Observation_Services_WGS_NYK_RULERADDON00001_00W60_dis/
 ```
 
 ## 🚀 Quick Start Commands (Verified & Ready to Use)
@@ -218,9 +269,17 @@ python main_processor.py --wgs_csbd --CSBDTS20    # Process TS20 model (Radioser
 python main_processor.py --wgs_csbd --CSBDTS46    # Process TS46 model (Multiple E&M Same day)
 python main_processor.py --wgs_csbd --CSBDTS47    # Process TS47 model (Multiple Billing of Obstetrical Services)
 python main_processor.py --wgs_csbd --CSBDTS48    # Process CSBD_TS48 model (Revenue code to HCPCS Alignment edit)
+python main_processor.py --wgs_csbd --CSBDTS49    # Process CSBDTS49 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS50    # Process CSBDTS50 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS51    # Process CSBDTS51 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS52    # Process CSBDTS52 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS53    # Process CSBDTS53 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS54    # Process CSBDTS54 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS55    # Process CSBDTS55 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS56    # Process CSBDTS56 model (Observation Services)
 
 # Process all WGS_CSBD models at once
-python main_processor.py --wgs_csbd --all     # Process all 19 WGS_CSBD models
+python main_processor.py --wgs_csbd --all     # Process all 27 WGS_CSBD models
 ```
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
@@ -229,13 +288,14 @@ python main_processor.py --wgs_csbd --all     # Process all 19 WGS_CSBD models
 python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS61    # Process TS61 model (Unspecified dx code prof GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS146   # Process TS146 model (No match of Procedure code GBDF MCR)
 
 # Process all GBDF MCR models at once
-python main_processor.py --gbdf_mcr --all     # Process all 7 GBDF MCR models
+python main_processor.py --gbdf_mcr --all     # Process all 8 GBDF MCR models
 
 ```
 
@@ -258,7 +318,8 @@ python main_processor.py --gbdf_grs --all     # Process all 8 GBDF GRS models
 ### WGS_NYK Models (Working Group Standards - New York Kernal)
 ```bash
 # Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS122   # Process TS122 model (Revenue code to HCPCS Alignment edit WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS126   # Process TS126 model (Observation Services WGS NYK)
@@ -266,9 +327,10 @@ python main_processor.py --wgs_nyk --NYKTS127   # Process TS127 model (Observati
 python main_processor.py --wgs_nyk --NYKTS128   # Process TS128 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS129   # Process TS129 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS132   # Process TS132 model (add_on without base WGS NYK)
 
 # Process all WGS_NYK models at once
-python main_processor.py --wgs_nyk --all     # Process all 8 WGS_NYK models
+python main_processor.py --wgs_nyk --all     # Process all 10 WGS_NYK models
 ```
 
 ## 📊 Model Summary & Quick Reference
@@ -276,19 +338,19 @@ python main_processor.py --wgs_nyk --all     # Process all 8 WGS_NYK models
 ### Available Models Overview
 | Model Type | Count | TS Numbers | Description |
 |------------|-------|------------|-------------|
-| **WGS_CSBD** | 19 | TS01-TS15, TS20, TS46-TS47, CSBD_TS48 | Healthcare Claims Processing |
-| **GBDF_MCR** | 7 | TS47, TS48, TS60, TS138, TS140, TS144, TS146 | Global Burden of Disease Foundation - Medical Claims Research |
+| **WGS_CSBD** | 27 | TS01-TS15, TS20, TS46-TS47, CSBD_TS48, CSBDTS50-CSBDTS56 | Healthcare Claims Processing |
+| **GBDF_MCR** | 8 | TS47, TS48, TS60, TS61, TS138, TS140, TS144, TS146 | Global Burden of Disease Foundation - Medical Claims Research |
 | **GBDF_GRS** | 8 | TS49, TS59, TS61, TS62, TS139, TS141, TS145, TS147 | Global Burden of Disease Foundation - Global Research Services |
-| **WGS_NYK** | 8 | TS123-TS130 | Working Group Standards - New York Kernal (Observation Services) |
-| **TOTAL** | **42** | | **All Available Models** |
+| **WGS_NYK** | 10 | TS122-TS130, TS132 | Working Group Standards - New York Kernal (Revenue code to HCPCS Alignment edit, Observation Services) |
+| **TOTAL** | **53** | | **All Available Models** |
 
 ### Quick Command Reference
 ```bash
 # Process ALL models of each type
-python main_processor.py --wgs_csbd --all     # All 19 WGS_CSBD models
-python main_processor.py --gbdf_mcr --all     # All 7 GBDF MCR models  
+python main_processor.py --wgs_csbd --all     # All 27 WGS_CSBD models
+python main_processor.py --gbdf_mcr --all     # All 8 GBDF MCR models  
 python main_processor.py --gbdf_grs --all     # All 8 GBDF GRS models
-python main_processor.py --wgs_nyk --all     # All 8 WGS_NYK models
+python main_processor.py --wgs_nyk --all     # All 10 WGS_NYK models
 
 # Process ALL models of each type WITHOUT Postman generation
 python main_processor.py --wgs_csbd --all --no-postman
@@ -325,12 +387,21 @@ python main_processor.py --wgs_csbd --CSBDTS20    # Generates TS_20_Radioservice
 python main_processor.py --wgs_csbd --CSBDTS46    # Generates TS_46_Multiple E&M Same day_Collection
 python main_processor.py --wgs_csbd --CSBDTS47    # Generates TS_47_Multiple Billing of Obstetrical Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS48    # Generates CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection
+python main_processor.py --wgs_csbd --CSBDTS49    # Generates CSBDTS_49_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS50    # Generates CSBDTS_50_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS51    # Generates CSBDTS_51_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS52    # Generates CSBDTS_52_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS53    # Generates CSBDTS_53_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS54    # Generates CSBDTS_54_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS55    # Generates CSBDTS_55_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS56    # Generates CSBDTS_56_Observation_Services_Collection
 python main_processor.py --wgs_csbd --all     # Generates collections for all WGS_CSBD models
 
 # GBDF MCR models with Postman collection generation (Recommended format: --GBDTSXX)
 python main_processor.py --gbdf_mcr --GBDTS47    # Generates TS_47_Covid_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS48    # Generates TS_48_Multiple E&M Same day_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS60    # Generates TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --GBDTS61    # Generates TS_61_Unspecified_dx_code_prof_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS138   # Generates TS_138_Multiple E&M Same day_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS140   # Generates TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS144   # Generates TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection
@@ -350,7 +421,8 @@ python main_processor.py --gbdf_grs --TS147   # Generates TS_147_No match of Pro
 python main_processor.py --gbdf_grs --all     # Generates collections for all GBDF GRS models
 
 # WGS_NYK models with Postman collection generation (Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS123   # Generates NYKTS_123_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS122   # Generates NYKTS_122_Revenue code to HCPCS Alignment edit_Collection
+python main_processor.py --wgs_nyk --NYKTS130   # Generates NYKTS_130_Observation_Services_Collection
 python main_processor.py --wgs_nyk --NYKTS124   # Generates NYKTS_124_Observation_Services_Collection
 python main_processor.py --wgs_nyk --NYKTS125   # Generates NYKTS_125_Observation_Services_Collection
 python main_processor.py --wgs_nyk --NYKTS126   # Generates NYKTS_126_Observation_Services_Collection
@@ -358,6 +430,7 @@ python main_processor.py --wgs_nyk --NYKTS127   # Generates NYKTS_127_Observatio
 python main_processor.py --wgs_nyk --NYKTS128   # Generates NYKTS_128_Observation_Services_Collection
 python main_processor.py --wgs_nyk --NYKTS129   # Generates NYKTS_129_Observation_Services_Collection
 python main_processor.py --wgs_nyk --NYKTS130   # Generates NYKTS_130_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS132   # Generates NYKTS_132_add_on without base_Collection
 python main_processor.py --wgs_nyk --all     # Generates collections for all WGS_NYK models
 
 # Process models without generating Postman collections
@@ -386,6 +459,7 @@ python main_processor.py --wgs_csbd --all --no-postman
 python main_processor.py --gbdf_mcr --GBDTS47 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS48 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS60 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS61 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS138 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS140 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS144 --no-postman
@@ -404,7 +478,7 @@ python main_processor.py --gbdf_grs --TS147 --no-postman
 python main_processor.py --gbdf_grs --all --no-postman
 
 # WGS_NYK models without Postman collection generation (Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS123 --no-postman
+python main_processor.py --wgs_nyk --NYKTS130 --no-postman
 python main_processor.py --wgs_nyk --NYKTS124 --no-postman
 python main_processor.py --wgs_nyk --NYKTS125 --no-postman
 python main_processor.py --wgs_nyk --NYKTS126 --no-postman
@@ -424,7 +498,7 @@ python main_processor.py --list
 python main_processor.py --wgs_csbd --CSBDTS47 --list    # Generate timing report for TS47 WGS_CSBD
 python main_processor.py --gbdf_mcr --GBDTS47 --list    # Generate timing report for TS47 GBDF MCR
 python main_processor.py --gbdf_grs --TS139 --list   # Generate timing report for TS139 GBDF GRS
-python main_processor.py --wgs_nyk --NYKTS123 --list   # Generate timing report for TS123 WGS_NYK
+python main_processor.py --wgs_nyk --NYKTS130 --list   # Generate timing report for TS130 WGS_NYK
 
 # Show help and all available options
 python main_processor.py --help
@@ -439,7 +513,7 @@ python main_processor.py --help
 
 **✅ Verification Status:**
 
-### WGS_CSBD Models (19 total):
+### WGS_CSBD Models (27 total):
 - `python main_processor.py --wgs_csbd --CSBDTS01` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS02` - **TESTED & WORKING** ✓  
 - `python main_processor.py --wgs_csbd --CSBDTS03` - **TESTED & WORKING** ✓
@@ -459,12 +533,21 @@ python main_processor.py --help
 - `python main_processor.py --wgs_csbd --CSBDTS46` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS47` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS48` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS56` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS50` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS51` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS52` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS53` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS54` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS55` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS56` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --all` - **TESTED & WORKING** ✓
 
 ### GBDF_MCR Models:
 - `python main_processor.py --gbdf_mcr --GBDTS47` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS48` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS60` - **TESTED & WORKING** ✓ (Recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS61` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS138` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS140` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS144` - **TESTED & WORKING** ✓ (Recommended format)
@@ -483,7 +566,8 @@ python main_processor.py --help
 - `python main_processor.py --gbdf_grs --all` - **TESTED & WORKING** ✓
 
 ### WGS_NYK Models:
-- `python main_processor.py --wgs_nyk --NYKTS123` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS122` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS130` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --NYKTS124` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --NYKTS125` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --NYKTS126` - **TESTED & WORKING** ✓
@@ -491,6 +575,7 @@ python main_processor.py --help
 - `python main_processor.py --wgs_nyk --NYKTS128` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --NYKTS129` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --NYKTS130` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS132` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --all` - **TESTED & WORKING** ✓
 
 ### General Commands:
@@ -498,7 +583,7 @@ python main_processor.py --help
 - `python main_processor.py --wgs_csbd --CSBDTS47 --list` - **TESTED & WORKING** ✓ (Generates timing report)
 - `python main_processor.py --gbdf_mcr --GBDTS47 --list` - **TESTED & WORKING** ✓ (Generates timing report)
 - `python main_processor.py --gbdf_grs --TS139 --list` - **TESTED & WORKING** ✓ (Generates timing report)
-- `python main_processor.py --wgs_nyk --NYKTS123 --list` - **TESTED & WORKING** ✓ (Generates timing report)
+- `python main_processor.py --wgs_nyk --NYKTS130 --list` - **TESTED & WORKING** ✓ (Generates timing report)
 
 All commands successfully process files and generate expected output with proper error handling.
 
@@ -517,6 +602,7 @@ This project automatically processes test case JSON files from a source director
 - Recovery room reimbursement
 - HCPCS (Healthcare Common Procedure Coding System) crosswalks
 - Incident services facility claims
+- Observation Services (CSBDTS50-CSBDTS56)
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
 **GBDF_MCR** stands for **G**lobal **B**urden of **D**isease **F**oundation - **M**edical **C**laims **R**esearch. These models are specifically designed for:
@@ -542,6 +628,8 @@ This project automatically processes test case JSON files from a source director
 - Observation Services workflow testing
 - New York Kernal protocol validation
 
+**Note**: While the command-line flag is `--wgs_nyk` (WGS_NYK), the output folders are named `WGS_KERNAL` for consistency with the folder structure. This is expected behavior - collections and processed files will be saved in the `WGS_KERNAL` directory.
+
 **Key Differences:**
 - **WGS_CSBD**: Focuses on operational healthcare claims processing
 - **GBDF_MCR**: Focuses on research and global health analysis
@@ -549,7 +637,7 @@ This project automatically processes test case JSON files from a source director
 - **WGS_NYK**: Focuses on New York-specific observation services and regional compliance
 - **File Structure**: All use similar naming conventions but different source directories
 - **Processing**: All support the same renaming and Postman collection generation features
-- **Command Format**: WGS_NYK models require `--NYKTSXX` format (e.g., `--NYKTS123`) instead of `--TSXX`
+- **Command Format**: WGS_NYK models require `--NYKTSXX` format (e.g., `--NYKTS130`) instead of `--TSXX`
 
 ## 🏗️ System Architecture
 
@@ -612,14 +700,33 @@ renaming_files/
 │   │   └── TS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_dis/
 │   │       └── regression/
 │   │           └── TC#01_sample#RULEMBOS000001#00W28#LR.json
-│   └── GBDF/                          # GBDF processed files
-│       ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
-│       ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
-│       ├── TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
-│       ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/
-│       ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/
-│       ├── TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/
-│       └── TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/
+│   ├── GBDF/                          # GBDF processed files
+│   │   ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
+│   │   ├── TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
+│   │   ├── TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
+│   │   ├── TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_dis/
+│   │   ├── TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/
+│   │   ├── TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_dis/
+│   │   ├── TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/
+│   │   ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
+│   │   ├── TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
+│   │   ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/
+│   │   ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_RULENDCUOM000001_v41_dis/
+│   │   ├── TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_RULENEBU000001_v18_dis/
+│   │   ├── TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_RULENEBU000001_v18_dis/
+│   │   ├── TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/
+│   │   └── TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/
+│   └── WGS_KERNAL/                    # WGS_NYK processed files (Note: folder name is WGS_KERNAL)
+│       ├── NYKTS_122_Observation_Services_WGS_NYK_RULERCTH00001_00W26_dis/
+│       ├── NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis/
+│       ├── NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_dis/
+│       ├── NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_dis/
+│       ├── NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_dis/
+│       ├── NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_dis/
+│       ├── NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_dis/
+│       ├── NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_dis/
+│       ├── NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00008_00W28_dis/
+│       └── NYKTS_132_Observation_Services_WGS_NYK_RULERADDON00001_00W60_dis/
 ├── postman_collections/               # Generated Postman collections
 │   ├── WGS_CSBD/                      # WGS_CSBD collections
 │   │   ├── TS_01_Covid_Collection/
@@ -632,14 +739,28 @@ renaming_files/
 │   │   │   └── postman_collection.json
 │   │   └── TS_47_Multiple Billing of Obstetrical Services_Collection/
 │   │       └── postman_collection.json
-│   └── GBDF/                          # GBDF collections
-│       ├── TS_47_Covid_Collection/
-│       ├── TS_138_Multiple E&M Same day_gbdf_mcr_Collection/
-│       ├── TS_139_Multiple E&M Same day_gbdf_grs_Collection/
-│       ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection/
-│       ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection/
-│       ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
-│       └── TS_147_No match of Procedure code_gbdf_grs_Collection/
+│   ├── GBDF/                          # GBDF collections
+│   │   ├── TS_47_Covid_Collection/
+│   │   ├── TS_48_Multiple E&M Same day_gbdf_mcr_Collection/
+│   │   ├── TS_138_Multiple E&M Same day_gbdf_mcr_Collection/
+│   │   ├── TS_139_Multiple E&M Same day_gbdf_grs_Collection/
+│   │   ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection/
+│   │   ├── TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection/
+│   │   ├── TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection/
+│   │   ├── TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_Collection/
+│   │   ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
+│   │   └── TS_147_No match of Procedure code_gbdf_grs_Collection/
+│   └── WGS_KERNAL/                   # WGS_NYK collections (Note: folder name is WGS_KERNAL)
+│       ├── NYKTS_122_Observation_Services_Collection/
+│       ├── NYKTS_130_Observation_Services_Collection/
+│       ├── NYKTS_124_Observation_Services_Collection/
+│       ├── NYKTS_125_Observation_Services_Collection/
+│       ├── NYKTS_126_Observation_Services_Collection/
+│       ├── NYKTS_127_Observation_Services_Collection/
+│       ├── NYKTS_128_Observation_Services_Collection/
+│       ├── NYKTS_129_Observation_Services_Collection/
+│       ├── NYKTS_130_Observation_Services_Collection/
+│       └── NYKTS_132_Observation_Services_Collection/
 ├── reports/                           # Excel timing reports
 │   ├── collection_reports/            # Excel timing reports with timestamps
 │   │   ├── JSON_Renaming_Timing_Report_WGS_CSBD_20251016_192351.xlsx
@@ -819,6 +940,7 @@ python main_processor.py --wgs_csbd --CSBDTS15    # Process TS15 model (revenue 
 python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS61    # Process TS61 model (Unspecified dx code prof GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
@@ -836,7 +958,7 @@ python main_processor.py --gbdf_grs --TS145   # Process TS145 model (Nebulizer A
 python main_processor.py --gbdf_grs --TS147   # Process TS147 model (No match of Procedure code GBDF GRS)
 
 # Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS126   # Process TS126 model (Observation Services WGS NYK)
@@ -872,9 +994,10 @@ python main_processor.py --help
 - `--wgs_nyk`: **REQUIRED** flag for WGS_NYK TS model processing
 - `--CSBDTS01` through `--CSBDTS15`: Process specific WGS_CSBD TS models
 - `--CSBDTS20`, `--CSBDTS46`, `--CSBDTS47`, `--CSBDTS48`: Process additional WGS_CSBD TS models (RadioservicesbilledwithoutRadiopharma, Multiple E&M Same day, Multiple Billing of Obstetrical Services, Revenue code to HCPCS Alignment edit)
-- `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
+- `--CSBDTS50` through `--CSBDTS56`: Process Observation Services WGS_CSBD models
+- `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS61`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, Unspecified dx code prof GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
 - `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
-- `--NYKTS123`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`: Process WGS_NYK models (Observation Services WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
+- `--NYKTS122`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`, `--NYKTS132`: Process WGS_NYK models (Revenue code to HCPCS Alignment edit WGS NYK, Observation Services WGS NYK, add_on without base WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
 - `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, --gbdf_grs, or --wgs_nyk flag)
 - `--list`: List all available TS models (standalone) or generate timing report (with model flags)
 - `--no-postman`: Skip Postman collection generation
@@ -1520,10 +1643,12 @@ The scripts include comprehensive error handling:
    ```
    - **Solution**: Always include the `--wgs_nyk` flag when processing WGS_NYK models
    - **Examples**: 
-     - `python main_processor.py --wgs_nyk --NYKTS123` (Observation Services WGS NYK model) - Must use --NYKTSXX format
+     - `python main_processor.py --wgs_nyk --NYKTS122` (Revenue code to HCPCS Alignment edit WGS NYK model) - Must use --NYKTSXX format
      - `python main_processor.py --wgs_nyk --NYKTS130` (Observation Services WGS NYK model) - Must use --NYKTSXX format
+     - `python main_processor.py --wgs_nyk --NYKTS130` (Observation Services WGS NYK model) - Must use --NYKTSXX format
+     - `python main_processor.py --wgs_nyk --NYKTS132` (add_on without base WGS NYK model) - Must use --NYKTSXX format
      - `python main_processor.py --wgs_nyk --all`
-   - **Note**: WGS_NYK models require the `--NYKTSXX` format (e.g., `--NYKTS123`) instead of `--TSXX` format
+   - **Note**: WGS_NYK models require the `--NYKTSXX` format (e.g., `--NYKTS130`) instead of `--TSXX` format
 
 6. **Model Not Found in Configuration**
    ```
@@ -1660,6 +1785,7 @@ python main_processor.py --wgs_csbd --CSBDTS48    # Revenue code to HCPCS Alignm
 python main_processor.py --gbdf_mcr --GBDTS47    # Covid GBDF MCR Collection
 python main_processor.py --gbdf_mcr --GBDTS48    # Multiple E&M Same day GBDF MCR Collection
 python main_processor.py --gbdf_mcr --GBDTS60    # Unspecified dx code outpt GBDF MCR Collection
+python main_processor.py --gbdf_mcr --GBDTS61    # Unspecified dx code prof GBDF MCR Collection
 python main_processor.py --gbdf_mcr --GBDTS138   # Multiple E&M Same day GBDF MCR Collection
 python main_processor.py --gbdf_mcr --GBDTS140   # NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR Collection
 python main_processor.py --gbdf_mcr --GBDTS144   # Nebulizer A52466 IPERP-132 GBDF MCR Collection
@@ -1676,7 +1802,7 @@ python main_processor.py --gbdf_grs --TS145   # Nebulizer A52466 IPERP-132 GBDF 
 python main_processor.py --gbdf_grs --TS147   # No match of Procedure code GBDF GRS Collection
 
 # Process WGS_NYK models (with --wgs_nyk flag - Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS123   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS130   # Observation Services WGS NYK Collection
 python main_processor.py --wgs_nyk --NYKTS124   # Observation Services WGS NYK Collection
 python main_processor.py --wgs_nyk --NYKTS125   # Observation Services WGS NYK Collection
 python main_processor.py --wgs_nyk --NYKTS126   # Observation Services WGS NYK Collection

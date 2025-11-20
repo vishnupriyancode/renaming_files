@@ -48,65 +48,166 @@ def extract_model_info_from_directory(dest_dir: str, renamed_files: list) -> dic
     }
     
     try:
-        # Extract directory name from path - get the parent directory name
-        dir_name = os.path.basename(os.path.dirname(dest_dir))
+        # Traverse up the directory tree to find the folder matching the pattern
+        # dest_dir might be: renaming_jsons/WGS_CSBD/CSBDTS_48_..._dis/payloads/regression
+        # We need to find the folder with the pattern (CSBDTS_XX or TS_XX)
+        # This handles ALL CSBD models: CSBDTS_01 through CSBDTS_56, and standard TS_XX patterns
+        current_path = dest_dir
+        dir_name = None
         
-        # Parse WGS_CSBD directory structure: TS_01_Covid_WGS_CSBD_RULEEM000001_W04_sur
-        if "WGS_CSBD" in dest_dir:
+        # Traverse up to find the folder matching the pattern
+        for _ in range(5):  # Limit traversal depth
+            current_path = os.path.dirname(current_path)
+            dir_name = os.path.basename(current_path)
+            
+            # Check if this folder matches any of our patterns
+            if "WGS_CSBD" in dest_dir:
+                model_info["model_lob"] = "WGS_CSBD"  # Set LOB early for all CSBD models
+                
+                # Pattern 1: CSBDTS_XX pattern (without underscore between CSBD and TS)
+                # Matches: CSBDTS_01, CSBDTS_48, CSBDTS_56, etc.
+                # Example: CSBDTS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis
+                match = re.match(r'CSBDTS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(sur|dis)$', dir_name)
+                if match:
+                    ts_number = match.group(1)
+                    model_name = match.group(2).replace('_', ' ').replace('-', ' ')
+                    edit_id = match.group(3)
+                    eob_code = match.group(4)
+                    
+                    model_info["tc_id"] = f"TS_{ts_number}"
+                    model_info["model_name"] = model_name
+                    model_info["edit_id"] = edit_id
+                    model_info["eob_code"] = eob_code
+                    break
+                
+                # Pattern 2: Standard TS_XX pattern (legacy format)
+                # Matches: TS_01, TS_02, TS_03, etc.
+                # Example: TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis
+                match = re.match(r'TS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(sur|dis)$', dir_name)
+                if match:
+                    ts_number = match.group(1)
+                    model_name = match.group(2).replace('_', ' ').replace('-', ' ')
+                    edit_id = match.group(3)
+                    eob_code = match.group(4)
+                    
+                    model_info["tc_id"] = f"TS_{ts_number}"
+                    model_info["model_name"] = model_name
+                    model_info["edit_id"] = edit_id
+                    model_info["eob_code"] = eob_code
+                    break
+            
+            elif "GBDF" in dest_dir:
+                if "mcr" in dest_dir.lower():
+                    model_info["model_lob"] = "GBDF_MCR"
+                elif "grs" in dest_dir.lower():
+                    model_info["model_lob"] = "GBDF_GRS"
+                else:
+                    model_info["model_lob"] = "GBDF"
+                
+                # Try GBDF pattern
+                match = re.match(r'TS_(\d{1,3})_(.+?)_gbdf_(mcr|grs)_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(sur|dis)$', dir_name)
+                if match:
+                    ts_number = match.group(1)
+                    model_name = match.group(2).replace('_', ' ').replace('-', ' ')
+                    edit_id = match.group(4)
+                    eob_code = match.group(5)
+                    
+                    model_info["tc_id"] = f"TS_{ts_number}"
+                    model_info["model_name"] = model_name
+                    model_info["edit_id"] = edit_id
+                    model_info["eob_code"] = eob_code
+                    break
+            
+            elif "WGS_KERNAL" in dest_dir or "WGS_NYK" in dest_dir or "NYKTS" in dir_name:
+                model_info["model_lob"] = "WGS_NYK"
+                
+                # Pattern: NYKTS_XX_Model_Name_WGS_NYK_EditID_Code_dis
+                # Example: NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_dis
+                # Example: NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis
+                match = re.match(r'NYKTS_(\d{1,3})_(.+?)_WGS_NYK_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(sur|dis)$', dir_name)
+                if match:
+                    ts_number = match.group(1)
+                    model_name = match.group(2).replace('_', ' ').replace('-', ' ')
+                    edit_id = match.group(3)
+                    eob_code = match.group(4)
+                    
+                    model_info["tc_id"] = f"TS_{ts_number}"
+                    model_info["model_name"] = model_name
+                    model_info["edit_id"] = edit_id
+                    model_info["eob_code"] = eob_code
+                    break
+            
+            # Stop if we've reached the root or a known parent directory
+            if dir_name in ["WGS_CSBD", "GBDF", "WGS_KERNAL", "WGS_NYK", "renaming_jsons", "source_folder", ""]:
+                break
+        
+        # Fallback: If we still don't have model info, try to extract from full path
+        # This handles cases where directory traversal didn't find the pattern
+        # Applies to ALL CSBD models (CSBDTS_XX and TS_XX patterns)
+        if model_info["model_name"] == "Unknown" and "WGS_CSBD" in dest_dir:
             model_info["model_lob"] = "WGS_CSBD"
-            
-            # Extract TS number and model name - handle spaces and underscores
-            wgs_match = re.match(r'TS_(\d+)_(.+?)_WGS_CSBD_(.+?)_(.+?)_(sur|dis)', dir_name)
-            if wgs_match:
-                ts_number = wgs_match.group(1)
-                model_name = wgs_match.group(2).replace('_', ' ').replace('-', ' ')
-                edit_id = wgs_match.group(3)
-                eob_code = wgs_match.group(4)
+            # Try to extract from the full path
+            path_parts = dest_dir.split(os.sep)
+            for part in path_parts:
+                # Try CSBDTS_XX pattern (handles CSBDTS_01 through CSBDTS_56)
+                match = re.search(r'CSBDTS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)', part)
+                if match:
+                    ts_number = match.group(1)
+                    model_name = match.group(2).replace('_', ' ').replace('-', ' ')
+                    edit_id = match.group(3)
+                    eob_code = match.group(4)
+                    
+                    model_info["tc_id"] = f"TS_{ts_number}"
+                    model_info["model_name"] = model_name
+                    model_info["edit_id"] = edit_id
+                    model_info["eob_code"] = eob_code
+                    break
                 
-                model_info["tc_id"] = f"TS_{ts_number}"
-                model_info["model_name"] = model_name
-                model_info["edit_id"] = edit_id
-                model_info["eob_code"] = eob_code
-            else:
-                # Fallback: try to extract just TS number
-                ts_match = re.search(r'TS_(\d+)_', dir_name)
-                if ts_match:
-                    model_info["tc_id"] = f"TS_{ts_match.group(1)}"
+                # Try standard TS_XX pattern (handles legacy TS_01, TS_02, etc.)
+                match = re.search(r'TS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)', part)
+                if match:
+                    ts_number = match.group(1)
+                    model_name = match.group(2).replace('_', ' ').replace('-', ' ')
+                    edit_id = match.group(3)
+                    eob_code = match.group(4)
+                    
+                    model_info["tc_id"] = f"TS_{ts_number}"
+                    model_info["model_name"] = model_name
+                    model_info["edit_id"] = edit_id
+                    model_info["eob_code"] = eob_code
+                    break
         
-        # Parse GBDF directory structure: TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis
-        elif "GBDF" in dest_dir:
-            if "mcr" in dest_dir.lower():
-                model_info["model_lob"] = "GBDF_MCR"
-            elif "grs" in dest_dir.lower():
-                model_info["model_lob"] = "GBDF_GRS"
-            else:
-                model_info["model_lob"] = "GBDF"
-            
-            # Extract TS number and model name - handle spaces and underscores
-            gbdf_match = re.match(r'TS_(\d+)_(.+?)_gbdf_(mcr|grs)_(.+?)_(.+?)_(sur|dis)', dir_name)
-            if gbdf_match:
-                ts_number = gbdf_match.group(1)
-                model_name = gbdf_match.group(2).replace('_', ' ').replace('-', ' ')
-                edit_id = gbdf_match.group(4)
-                eob_code = gbdf_match.group(5)
-                
-                model_info["tc_id"] = f"TS_{ts_number}"
-                model_info["model_name"] = model_name
-                model_info["edit_id"] = edit_id
-                model_info["eob_code"] = eob_code
-            else:
-                # Fallback: try to extract just TS number
-                ts_match = re.search(r'TS_(\d+)_', dir_name)
-                if ts_match:
-                    model_info["tc_id"] = f"TS_{ts_match.group(1)}"
+        # Fallback for WGS_NYK models: If we still don't have model info, try to extract from full path
+        if model_info["model_name"] == "Unknown" and ("WGS_KERNAL" in dest_dir or "WGS_NYK" in dest_dir):
+            model_info["model_lob"] = "WGS_NYK"
+            # Try to extract from the full path
+            path_parts = dest_dir.split(os.sep)
+            for part in path_parts:
+                # Try NYKTS_XX pattern (handles NYKTS_122, NYKTS_130, etc.)
+                match = re.search(r'NYKTS_(\d{1,3})_(.+?)_WGS_NYK_([A-Za-z0-9]+)_([A-Za-z0-9]+)', part)
+                if match:
+                    ts_number = match.group(1)
+                    model_name = match.group(2).replace('_', ' ').replace('-', ' ')
+                    edit_id = match.group(3)
+                    eob_code = match.group(4)
+                    
+                    model_info["tc_id"] = f"TS_{ts_number}"
+                    model_info["model_name"] = model_name
+                    model_info["edit_id"] = edit_id
+                    model_info["eob_code"] = eob_code
+                    break
         
-        # If we have renamed files, try to extract TC ID from the first file
+        # If we still don't have model info, try to extract from renamed files
         if renamed_files and model_info["tc_id"] == "Unknown":
             first_file = renamed_files[0]
             if '#' in first_file:
                 parts = first_file.split('#')
-                if len(parts) >= 2:
-                    # Extract TC ID from filename like TC#01_99202#...
+                if len(parts) >= 4:  # TC#ID#edit_id#eob_code#suffix
+                    # Extract edit_id and eob_code from filename
+                    model_info["edit_id"] = parts[2]
+                    model_info["eob_code"] = parts[3]
+                    
+                    # Extract TC ID
                     tc_part = parts[1]
                     if '_' in tc_part:
                         tc_id_parts = tc_part.split('_')
@@ -981,8 +1082,16 @@ def extract_model_name_from_source_dir(source_dir):
         return "Device Dependent Procedures"
     elif "Recovery Room" in source_dir:
         return "Recovery Room Reimbursement"
-    elif "Revenue Code to HCPCS" in source_dir:
+    elif "Revenue code to HCPCS Alignment edit" in source_dir:
+        return "Revenue code to HCPCS Alignment edit"
+    elif "Revenue Code to HCPCS" in source_dir or "Revenue code to HCPCS" in source_dir:
         return "Revenue Code to HCPCS Xwalk-1B"
+    elif "Observation Services" in source_dir:
+        return "Observation Services"
+    elif "add_on without base" in source_dir:
+        return "add_on without base"
+    elif "RadioservicesbilledwithoutRadiopharma" in source_dir:
+        return "RadioservicesbilledwithoutRadiopharma"
     elif "Incidentcal Services" in source_dir:
         return "Incidentcal Services Facility"
     elif "Revenue model CR" in source_dir:
@@ -1241,7 +1350,7 @@ Examples:
   python main_processor.py --wgs_csbd --CSBDTS50    # Process CSBD_TS50 model
 
   # Process WGS_NYK models (must use --NYKTSXX format)
-  python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
+  python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
   python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
   python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
 
@@ -1388,15 +1497,15 @@ Examples:
 
     # STAGE 4.1.1A: NYKTS PATTERN HANDLING
     # =====================================
-    # Handle --NYKTSXX pattern (e.g., --NYKTS123) for WGS_NYK models
+    # Handle --NYKTSXX pattern (e.g., --NYKTS130) for WGS_NYK models
     # Map NYKTSXX to TSXX when --wgs_nyk flag is used
-    # Example: --wgs_nyk --NYKTS123 -> processes TS123 model in WGS_NYK context
+    # Example: --wgs_nyk --NYKTS130 -> processes TS130 model in WGS_NYK context
     nyk_ts_models = []
 
     if args.wgs_nyk:
         # Process unknown arguments to find --NYKTSXX patterns
         for arg in unknown_args:
-            # Match --NYKTS followed by digits (e.g., --NYKTS123, --NYKTS124)
+            # Match --NYKTS followed by digits (e.g., --NYKTS130, --NYKTS124)
             if arg.startswith('--NYKTS') and len(arg) > 7:
                 ts_number_str = arg[7:]  # Extract digits after "--NYKTS"
                 if ts_number_str.isdigit():
@@ -1803,7 +1912,7 @@ Examples:
 
     # STAGE 4.5.1A: NYKTS MODEL HANDLING
     # ==================================
-    # Handle --NYKTSXX patterns (e.g., --NYKTS123) for WGS_NYK models
+    # Handle --NYKTSXX patterns (e.g., --NYKTS130) for WGS_NYK models
     # When --wgs_nyk flag is used with --NYKTSXX, process the corresponding TS model
     if hasattr(args, 'nyk_ts_models') and args.nyk_ts_models:
         if not args.wgs_nyk:
@@ -1916,7 +2025,7 @@ Examples:
         print("  --wgs_csbd --CSBDTS20    Process TS20 model (RadioservicesbilledwithoutRadiopharma)")
         print("  --wgs_csbd --CSBDTS46    Process TS46 model (Multiple E&M Same day)")
         print("  --wgs_csbd --CSBDTS47    Process TS47 model (Multiple Billing of Obstetrical Services)")
-        print("  --wgs_nyk --NYKTS123   Process TS123 model (Observation Services WGS NYK)")
+        print("  --wgs_nyk --NYKTS130   Process TS130 model (Observation Services WGS NYK)")
         print("  --wgs_nyk --NYKTS124   Process TS124 model (Observation Services WGS NYK)")
         print("  --wgs_nyk --NYKTS125   Process TS125 model (Observation Services WGS NYK)")
         print("  --gbdf_mcr --GBDTS47    Process TS47 model (Covid GBDF MCR) - Required format")
