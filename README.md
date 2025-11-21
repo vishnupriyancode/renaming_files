@@ -317,8 +317,7 @@ python main_processor.py --gbdf_grs --all     # Process all 8 GBDF GRS models
 
 ### WGS_NYK Models (Working Group Standards - New York Kernal)
 ```bash
-# Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS122   # Process TS122 model (Revenue code to HCPCS Alignment edit WGS NYK)
+# Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)   # Process TS122 model (Revenue code to HCPCS Alignment edit WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)

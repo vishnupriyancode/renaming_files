@@ -288,10 +288,13 @@ def clean_duplicate_fields_csbd(file_path):
 
 def apply_wgs_csbd_header_footer(file_path):
     """
-    Apply header and footer structure to WGS_CSBD JSON files.
+    Apply header and footer structure to WGS_CSBD and WGS_KERNAL JSON files.
     This function transforms the JSON content by wrapping the existing data
     with the required header and footer metadata, avoiding duplicate fields.
     Additionally, generates random 11-digit numbers for KEY_CHK_CDN_NBR field.
+    
+    This function ALWAYS ensures the header/footer structure is present,
+    even if the file already has it (to ensure consistency).
     
     Args:
         file_path: Path to the JSON file to transform
@@ -310,10 +313,19 @@ def apply_wgs_csbd_header_footer(file_path):
         has_correct_structure = (isinstance(existing_data, dict) and 
                                 "adhoc" in existing_data and 
                                 "payload" in existing_data and 
-                                "responseRequired" in existing_data)
+                                "responseRequired" in existing_data and
+                                "meta-src-envrmt" in existing_data and
+                                "meta-transid" in existing_data)
         
-        if has_correct_structure:
-            print(f"[INFO] File {file_path} already has correct structure, will only update KEY_CHK_DCN_NBR if needed")
+        # Header and footer structure (always use these values)
+        header_footer = {
+            "adhoc": "true",
+            "analyticId": " ",
+            "hints": ["congnitive_claims_async"],
+            "responseRequired": "false",
+            "meta-src-envrmt": "IMST",
+            "meta-transid": "20220117181853TMBL20359Cl893580999"
+        }
         
         # Generate random 11-digit number for KEY_CHK_DCN_NBR field
         # Check both root level and payload level for KEY_CHK_DCN_NBR
@@ -331,20 +343,29 @@ def apply_wgs_csbd_header_footer(file_path):
                     existing_data["payload"]["KEY_CHK_DCN_NBR"] = random_11_digit
                     print(f"[INFO] Generated random 11-digit number for KEY_CHK_DCN_NBR (payload level): {random_11_digit}")
         
-        # Only apply header/footer transformation if the file doesn't already have correct structure
-        if not has_correct_structure:
-            # Header and footer structure
-            header_footer = {
-                "adhoc": "true",
-                "analyticId": " ",
-                "hints": ["congnitive_claims_async"],
-                "responseRequired": "false",
-                "meta-src-envrmt": "IMST",
-                "meta-transid": "20220117181853TMBL20359Cl893580999"
+        # Always ensure header/footer structure is correct
+        if has_correct_structure:
+            # File has structure, but ensure all header/footer fields are correct
+            new_structure = {
+                "adhoc": header_footer["adhoc"],
+                "analyticId": header_footer["analyticId"],
+                "hints": header_footer["hints"],
+                "payload": existing_data.get("payload", existing_data),  # Use existing payload or entire data
+                "responseRequired": header_footer["responseRequired"],
+                "meta-src-envrmt": header_footer["meta-src-envrmt"],
+                "meta-transid": header_footer["meta-transid"]
             }
             
-            # Create the new structure with header, payload, and footer
-            # Only include the existing data as payload, not as duplicate fields
+            # Preserve KEY_CHK_DCN_NBR if it exists at root level
+            if "KEY_CHK_DCN_NBR" in existing_data:
+                new_structure["KEY_CHK_DCN_NBR"] = existing_data["KEY_CHK_DCN_NBR"]
+            
+            # Write the updated structure back to the file
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(new_structure, f, indent=2, ensure_ascii=False)
+            print(f"[INFO] Updated header/footer structure in: {file_path}")
+        else:
+            # File doesn't have correct structure, wrap existing data in payload
             new_structure = {
                 "adhoc": header_footer["adhoc"],
                 "analyticId": header_footer["analyticId"],
@@ -358,10 +379,7 @@ def apply_wgs_csbd_header_footer(file_path):
             # Write the transformed JSON back to the file
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(new_structure, f, indent=2, ensure_ascii=False)
-        else:
-            # File already has correct structure, just write the updated data back
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(existing_data, f, indent=2, ensure_ascii=False)
+            print(f"[SUCCESS] Applied header/footer structure to: {file_path}")
         
         return True
         
@@ -608,9 +626,10 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 shutil.copy2(source_path, dest_path)
                 print(f"Successfully copied and renamed: {filename} -> {new_filename}")
                 
-                # Apply header/footer transformation for WGS_CSBD files
-                if "WGS_CSBD" in dest_dir:
-                    print(f"Applying WGS_CSBD header/footer transformation to: {new_filename}")
+                # Apply header/footer transformation for WGS_CSBD and WGS_KERNAL files
+                if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir:
+                    model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else "WGS_KERNAL"
+                    print(f"Applying {model_type} header/footer transformation to: {new_filename}")
                     if apply_wgs_csbd_header_footer(dest_path):
                         print(f"[SUCCESS] Header/footer applied to: {new_filename}")
                     else:
@@ -671,9 +690,10 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 shutil.copy2(source_path, dest_path)
                 print(f"Successfully copied and renamed: {filename} -> {new_filename}")
                 
-                # Apply header/footer transformation for WGS_CSBD files
-                if "WGS_CSBD" in dest_dir:
-                    print(f"Applying WGS_CSBD header/footer transformation to: {new_filename}")
+                # Apply header/footer transformation for WGS_CSBD and WGS_KERNAL files
+                if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir:
+                    model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else "WGS_KERNAL"
+                    print(f"Applying {model_type} header/footer transformation to: {new_filename}")
                     if apply_wgs_csbd_header_footer(dest_path):
                         print(f"[SUCCESS] Header/footer applied to: {new_filename}")
                     else:
@@ -747,9 +767,10 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                     shutil.copy2(source_path, dest_path)
                     print(f"Successfully moved: {filename}")
                     
-                    # Apply header/footer transformation for WGS_CSBD files
-                    if "WGS_CSBD" in dest_dir:
-                        print(f"Applying WGS_CSBD header/footer transformation to: {new_filename}")
+                    # Apply header/footer transformation for WGS_CSBD and WGS_KERNAL files
+                    if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir:
+                        model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else "WGS_KERNAL"
+                        print(f"Applying {model_type} header/footer transformation to: {new_filename}")
                         if apply_wgs_csbd_header_footer(dest_path):
                             print(f"[SUCCESS] Header/footer applied to: {new_filename}")
                         else:

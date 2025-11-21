@@ -2,6 +2,7 @@
 # This file now supports both static configurations and dynamic discovery
 
 import os
+import json
 from dynamic_models import discover_ts_folders, get_model_by_ts_number, get_all_models
 
 # Static model configurations (for backward compatibility)
@@ -180,75 +181,75 @@ STATIC_MODELS_CONFIG = {
     },
     {
         "ts_number": "49",
-        "edit_id": "RULERCTH00001",
+        "edit_id": "RULEOBSER00001",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULERCTH00001_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULERCTH00001_00W28_dis/payloads/regression",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULEOBSER00001_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULEOBSER00001_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_49_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00001_00W28.json"
+        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00001_00W28.json"
     },
     {
         "ts_number": "50",
-        "edit_id": "RULERCTH00002",
+        "edit_id": "RULEOBSER00002",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULERCTH00002_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULERCTH00002_00W28_dis/payloads/regression",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULEOBSER00002_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULEOBSER00002_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_50_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00002_00W28.json"
+        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00002_00W28.json"
     },
     {
         "ts_number": "51",
-        "edit_id": "RULERCTH00003",
+        "edit_id": "RULEOBSER00003",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULERCTH00003_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULERCTH00003_00W28_dis/payloads/regression",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULEOBSER00003_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULEOBSER00003_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_51_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00003_00W28.json"
+        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00003_00W28.json"
     },
     {
         "ts_number": "52",
-        "edit_id": "RULERCTH00004",
+        "edit_id": "RULEOBSER00004",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULERCTH00004_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULERCTH00004_00W28_dis/payloads/regression",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULEOBSER00004_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULEOBSER00004_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_52_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00004_00W28.json"
+        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00004_00W28.json"
     },
     {
         "ts_number": "53",
-        "edit_id": "RULERCTH00005",
+        "edit_id": "RULEOBSER00005",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULERCTH00005_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULERCTH00005_00W28_dis/payloads/regression",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULEOBSER00005_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULEOBSER00005_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_53_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00005_00W28.json"
+        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00005_00W28.json"
     },
     {
         "ts_number": "54",
-        "edit_id": "RULERCTH00006",
+        "edit_id": "RULEOBSER00006",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULERCTH00006_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULERCTH00006_00W28_dis/payloads/regression",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULEOBSER00006_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULEOBSER00006_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_54_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00006_00W28.json"
+        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00006_00W28.json"
     },
     {
         "ts_number": "55",
-        "edit_id": "RULERCTH00007",
+        "edit_id": "RULEOBSER00007",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULERCTH00007_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULERCTH00007_00W28_dis/payloads/regression",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULEOBSER00007_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULEOBSER00007_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_55_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00007_00W28.json"
+        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00007_00W28.json"
     },
     {
         "ts_number": "56",
-        "edit_id": "RULERCTH00008",
+        "edit_id": "RULEOBSER00008",
         "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULERCTH00008_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULERCTH00008_00W28_dis/payloads/regression",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULEOBSER00008_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULEOBSER00008_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_56_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULERCTH00008_00W28.json"
+        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00008_00W28.json"
     }
     ],
     "gbdf_mcr": [
@@ -399,7 +400,7 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17.json"
         }
     ],
-    "wgs_nyk": [
+    "WGS_KERNAL": [
         {
             "ts_number": "122",
             "edit_id": "RULERCTH00001",
@@ -410,67 +411,76 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "revenue_code_to_hcpcs_alignment_edit_wgs_nyk_RULERCTH00001_00W26.json"
         },
         {
-            "ts_number": "130",
-            "edit_id": "RULERCTH00001",
+            "ts_number": "123",
+            "edit_id": "RULEOBSER00001",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis/payloads/regression",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_123_Observation_Services_WGS_NYK_RULEOBSER00001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_123_Observation_Services_WGS_NYK_RULEOBSER00001_00W28_dis/payloads/regression",
+            "postman_collection_name": "NYKTS_123_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00001_00W28.json"
+        },
+        {
+            "ts_number": "130",
+            "edit_id": "RULEOBSER00008",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_130_Observation_Services_WGS_NYK_RULEOBSER00008_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_130_Observation_Services_WGS_NYK_RULEOBSER00008_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_130_Observation_Services_Collection",
-            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00001_00W28.json"
+            "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00008_00W28.json"
         },
         {
             "ts_number": "124",
-            "edit_id": "RULERCTH00002",
+            "edit_id": "RULEOBSER00002",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_dis/payloads/regression",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_124_Observation_Services_WGS_NYK_RULEOBSER00002_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_124_Observation_Services_WGS_NYK_RULEOBSER00002_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_124_Observation_Services_Collection",
-            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00002_00W28.json"
+            "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00002_00W28.json"
         },
         {
             "ts_number": "125",
-            "edit_id": "RULERCTH00003",
+            "edit_id": "RULEOBSER00003",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_dis/payloads/regression",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_125_Observation_Services_WGS_NYK_RULEOBSER00003_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_125_Observation_Services_WGS_NYK_RULEOBSER00003_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_125_Observation_Services_Collection",
-            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00003_00W28.json"
+            "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00003_00W28.json"
         },
         {
             "ts_number": "126",
-            "edit_id": "RULERCTH00004",
+            "edit_id": "RULEOBSER00004",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_dis/payloads/regression",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_126_Observation_Services_WGS_NYK_RULEOBSER00004_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_126_Observation_Services_WGS_NYK_RULEOBSER00004_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_126_Observation_Services_Collection",
-            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00004_00W28.json"
+            "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00004_00W28.json"
         },
         {
             "ts_number": "127",
-            "edit_id": "RULERCTH00005",
+            "edit_id": "RULEOBSER00005",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_dis/payloads/regression",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_127_Observation_Services_WGS_NYK_RULEOBSER00005_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_127_Observation_Services_WGS_NYK_RULEOBSER00005_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_127_Observation_Services_Collection",
-            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00005_00W28.json"
+            "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00005_00W28.json"
         },
         {
             "ts_number": "128",
-            "edit_id": "RULERCTH00006",
+            "edit_id": "RULEOBSER00006",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_dis/payloads/regression",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_128_Observation_Services_WGS_NYK_RULEOBSER00006_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_128_Observation_Services_WGS_NYK_RULEOBSER00006_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_128_Observation_Services_Collection",
-            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00006_00W28.json"
+            "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00006_00W28.json"
         },
         {
             "ts_number": "129",
-            "edit_id": "RULERCTH00007",
+            "edit_id": "RULEOBSER00007",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_dis/payloads/regression",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_129_Observation_Services_WGS_NYK_RULEOBSER00007_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/WGS_KERNAL/NYKTS_129_Observation_Services_WGS_NYK_RULEOBSER00007_00W28_dis/payloads/regression",
             "postman_collection_name": "NYKTS_129_Observation_Services_Collection",
-            "postman_file_name": "observation_services_wgs_nyk_RULERCTH00007_00W28.json"
+            "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00007_00W28.json"
         },
         {
             "ts_number": "132",
@@ -595,3 +605,181 @@ MODELS_CONFIG = get_models_config(use_dynamic=True)
 # Global settings
 GENERATE_POSTMAN_COLLECTIONS = True
 VERBOSE_OUTPUT = True
+
+
+def apply_header_footer_to_json(file_path):
+    """
+    Apply header and footer structure to JSON files.
+    Wraps the existing JSON content with header and footer metadata.
+    
+    This function ALWAYS ensures the header/footer structure is present,
+    even if the file already has it (to ensure consistency).
+    
+    Header structure:
+    - adhoc: "true"
+    - analyticId: " "
+    - hints: ["congnitive_claims_async"]
+    - payload: {existing JSON content}
+    
+    Footer structure:
+    - responseRequired: "false"
+    - meta-src-envrmt: "IMST"
+    - meta-transid: "20220117181853TMBL20359Cl893580999"
+    
+    Args:
+        file_path: Path to the JSON file to transform
+        
+    Returns:
+        bool: True if transformation was successful, False otherwise
+    """
+    try:
+        # Read the existing JSON content
+        with open(file_path, 'r', encoding='utf-8') as f:
+            existing_data = json.load(f)
+        
+        # Check if the file already has the correct structure
+        has_correct_structure = (isinstance(existing_data, dict) and 
+                                "adhoc" in existing_data and 
+                                "payload" in existing_data and 
+                                "responseRequired" in existing_data and
+                                "meta-src-envrmt" in existing_data and
+                                "meta-transid" in existing_data)
+        
+        # Header and footer structure (always use these values)
+        header_footer = {
+            "adhoc": "true",
+            "analyticId": " ",
+            "hints": ["congnitive_claims_async"],
+            "responseRequired": "false",
+            "meta-src-envrmt": "IMST",
+            "meta-transid": "20220117181853TMBL20359Cl893580999"
+        }
+        
+        # Always ensure header/footer structure is correct
+        if has_correct_structure:
+            # File has structure, but ensure all header/footer fields are correct
+            new_structure = {
+                "adhoc": header_footer["adhoc"],
+                "analyticId": header_footer["analyticId"],
+                "hints": header_footer["hints"],
+                "payload": existing_data.get("payload", existing_data),  # Use existing payload or entire data
+                "responseRequired": header_footer["responseRequired"],
+                "meta-src-envrmt": header_footer["meta-src-envrmt"],
+                "meta-transid": header_footer["meta-transid"]
+            }
+            
+            # Preserve any additional fields that might exist
+            for key, value in existing_data.items():
+                if key not in ["adhoc", "analyticId", "hints", "payload", "responseRequired", "meta-src-envrmt", "meta-transid"]:
+                    new_structure[key] = value
+            
+            # Write the updated structure back to the file
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(new_structure, f, indent=2, ensure_ascii=False)
+            print(f"[INFO] Updated header/footer structure in: {file_path}")
+        else:
+            # File doesn't have correct structure, wrap existing data in payload
+            new_structure = {
+                "adhoc": header_footer["adhoc"],
+                "analyticId": header_footer["analyticId"],
+                "hints": header_footer["hints"],
+                "payload": existing_data,  # The existing JSON becomes the payload
+                "responseRequired": header_footer["responseRequired"],
+                "meta-src-envrmt": header_footer["meta-src-envrmt"],
+                "meta-transid": header_footer["meta-transid"]
+            }
+            
+            # Write the transformed JSON back to the file
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(new_structure, f, indent=2, ensure_ascii=False)
+            print(f"[SUCCESS] Applied header/footer to: {file_path}")
+        
+        return True
+        
+    except json.JSONDecodeError as e:
+        print(f"[ERROR] Error parsing JSON in {file_path}: {e}")
+        return False
+    except Exception as e:
+        print(f"[ERROR] Error applying header/footer to {file_path}: {e}")
+        return False
+
+
+def apply_header_footer_to_renaming_jsons():
+    """
+    Apply header and footer to all JSON files in renaming_jsons folder
+    for WGS_CSBD and WGS_Kernal models.
+    
+    This function recursively finds all JSON files in:
+    - renaming_jsons/WGS_CSBD/**
+    - renaming_jsons/WGS_KERNAL/**
+    
+    and applies the header/footer structure to each file.
+    
+    Returns:
+        dict: Statistics about processed files
+    """
+    base_dir = "renaming_jsons"
+    processed_count = 0
+    skipped_count = 0
+    error_count = 0
+    
+    # Directories to process
+    target_dirs = [
+        os.path.join(base_dir, "WGS_CSBD"),
+        os.path.join(base_dir, "WGS_KERNAL")
+    ]
+    
+    print("=" * 60)
+    print("Applying header/footer to JSON files")
+    print("=" * 60)
+    
+    for target_dir in target_dirs:
+        if not os.path.exists(target_dir):
+            print(f"[WARNING] Directory not found: {target_dir}")
+            continue
+        
+        print(f"\nProcessing directory: {target_dir}")
+        print("-" * 60)
+        
+        # Recursively find all JSON files
+        for root, dirs, files in os.walk(target_dir):
+            for filename in files:
+                if filename.endswith('.json'):
+                    file_path = os.path.join(root, filename)
+                    
+                    # Apply header/footer (function will handle both new and existing structures)
+                    if apply_header_footer_to_json(file_path):
+                        processed_count += 1
+                    else:
+                        error_count += 1
+    
+    print("\n" + "=" * 60)
+    print("Header/Footer Application Summary")
+    print("=" * 60)
+    print(f"Processed: {processed_count} files")
+    print(f"Skipped (already correct): {skipped_count} files")
+    print(f"Errors: {error_count} files")
+    print("=" * 60)
+    
+    return {
+        "processed": processed_count,
+        "skipped": skipped_count,
+        "errors": error_count
+    }
+
+
+# Main section - allows running this script directly to apply header/footer
+if __name__ == "__main__":
+    print("\n" + "=" * 60)
+    print("Header/Footer Application for WGS_CSBD and WGS_Kernal Models")
+    print("=" * 60)
+    print("\nThis script will apply header and footer structure to all JSON files")
+    print("in renaming_jsons/WGS_CSBD and renaming_jsons/WGS_KERNAL directories.\n")
+    
+    # Apply header/footer to all JSON files
+    stats = apply_header_footer_to_renaming_jsons()
+    
+    print(f"\n✓ Process completed successfully!")
+    print(f"  - Processed: {stats['processed']} files")
+    print(f"  - Skipped: {stats['skipped']} files")
+    print(f"  - Errors: {stats['errors']} files")
