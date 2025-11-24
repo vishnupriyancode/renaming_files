@@ -174,7 +174,8 @@ postman_collections/
 │   ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
 │   └── TS_147_No match of Procedure code_gbdf_grs_Collection/
 └── WGS_KERNAL/                                  # WGS_NYK Collections (Note: folder name is WGS_KERNAL)
-    ├── NYKTS_122_Observation_Services_Collection/
+    ├── NYKTS_122_Revenue code to HCPCS Alignment edit_Collection/
+    ├── NYKTS_123_Observation_Services_Collection/
     ├── NYKTS_130_Observation_Services_Collection/
     ├── NYKTS_124_Observation_Services_Collection/
     ├── NYKTS_125_Observation_Services_Collection/
@@ -231,16 +232,16 @@ renaming_jsons/
 │   ├── TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/
 │   └── TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/
 └── WGS_KERNAL/                                  # WGS_NYK Processed Files (Note: folder name is WGS_KERNAL)
-    ├── NYKTS_122_Observation_Services_WGS_NYK_RULERCTH00001_00W26_dis/
-    ├── NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis/
-    ├── NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_dis/
-    ├── NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_dis/
-    ├── NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_dis/
-    ├── NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_dis/
-    ├── NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_dis/
-    ├── NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_dis/
-    ├── NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00008_00W28_dis/
-    └── NYKTS_132_Observation_Services_WGS_NYK_RULERADDON00001_00W60_dis/
+    ├── NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_dis/
+    ├── NYKTS_123_Observation_Services_WGS_NYK_RULEOBSER00001_00W28_dis/
+    ├── NYKTS_124_Observation_Services_WGS_NYK_RULEOBSER00002_00W28_dis/
+    ├── NYKTS_125_Observation_Services_WGS_NYK_RULEOBSER00003_00W28_dis/
+    ├── NYKTS_126_Observation_Services_WGS_NYK_RULEOBSER00004_00W28_dis/
+    ├── NYKTS_127_Observation_Services_WGS_NYK_RULEOBSER00005_00W28_dis/
+    ├── NYKTS_128_Observation_Services_WGS_NYK_RULEOBSER00006_00W28_dis/
+    ├── NYKTS_129_Observation_Services_WGS_NYK_RULEOBSER00007_00W28_dis/
+    ├── NYKTS_130_Observation_Services_WGS_NYK_RULEOBSER00008_00W28_dis/
+    └── NYKTS_132_add_on without base_WGS_NYK_RULERADDON00001_00W60_dis/
 ```
 
 ## 🚀 Quick Start Commands (Verified & Ready to Use)
@@ -716,15 +717,15 @@ renaming_files/
 │   │   ├── TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/
 │   │   └── TS_147_No match of Procedure code_gbdf_grs_RULENMP000001_v18_dis/
 │   └── WGS_KERNAL/                    # WGS_NYK processed files (Note: folder name is WGS_KERNAL)
-│       ├── NYKTS_122_Observation_Services_WGS_NYK_RULERCTH00001_00W26_dis/
-│       ├── NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_dis/
-│       ├── NYKTS_124_Observation_Services_WGS_NYK_RULERCTH00002_00W28_dis/
-│       ├── NYKTS_125_Observation_Services_WGS_NYK_RULERCTH00003_00W28_dis/
-│       ├── NYKTS_126_Observation_Services_WGS_NYK_RULERCTH00004_00W28_dis/
-│       ├── NYKTS_127_Observation_Services_WGS_NYK_RULERCTH00005_00W28_dis/
-│       ├── NYKTS_128_Observation_Services_WGS_NYK_RULERCTH00006_00W28_dis/
-│       ├── NYKTS_129_Observation_Services_WGS_NYK_RULERCTH00007_00W28_dis/
-│       ├── NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00008_00W28_dis/
+│       ├── NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_dis/
+│       ├── NYKTS_123_Observation_Services_WGS_NYK_RULEOBSER00001_00W28_dis/
+│       ├── NYKTS_124_Observation_Services_WGS_NYK_RULEOBSER00002_00W28_dis/
+│       ├── NYKTS_125_Observation_Services_WGS_NYK_RULEOBSER00003_00W28_dis/
+│       ├── NYKTS_126_Observation_Services_WGS_NYK_RULEOBSER00004_00W28_dis/
+│       ├── NYKTS_127_Observation_Services_WGS_NYK_RULEOBSER00005_00W28_dis/
+│       ├── NYKTS_128_Observation_Services_WGS_NYK_RULEOBSER00006_00W28_dis/
+│       ├── NYKTS_129_Observation_Services_WGS_NYK_RULEOBSER00007_00W28_dis/
+│       ├── NYKTS_130_Observation_Services_WGS_NYK_RULEOBSER00008_00W28_dis/
 │       └── NYKTS_132_Observation_Services_WGS_NYK_RULERADDON00001_00W60_dis/
 ├── postman_collections/               # Generated Postman collections
 │   ├── WGS_CSBD/                      # WGS_CSBD collections
@@ -750,8 +751,8 @@ renaming_files/
 │   │   ├── TS_146_No match of Procedure code_gbdf_mcr_Collection/
 │   │   └── TS_147_No match of Procedure code_gbdf_grs_Collection/
 │   └── WGS_KERNAL/                   # WGS_NYK collections (Note: folder name is WGS_KERNAL)
-│       ├── NYKTS_122_Observation_Services_Collection/
-│       ├── NYKTS_130_Observation_Services_Collection/
+│       ├── NYKTS_122_Revenue code to HCPCS Alignment edit_Collection/
+│       ├── NYKTS_123_Observation_Services_Collection/
 │       ├── NYKTS_124_Observation_Services_Collection/
 │       ├── NYKTS_125_Observation_Services_Collection/
 │       ├── NYKTS_126_Observation_Services_Collection/
@@ -759,7 +760,7 @@ renaming_files/
 │       ├── NYKTS_128_Observation_Services_Collection/
 │       ├── NYKTS_129_Observation_Services_Collection/
 │       ├── NYKTS_130_Observation_Services_Collection/
-│       └── NYKTS_132_Observation_Services_Collection/
+│       └── NYKTS_132_add_on without base_Collection/
 ├── reports/                           # Excel timing reports
 │   ├── collection_reports/            # Excel timing reports with timestamps
 │   │   ├── JSON_Renaming_Timing_Report_WGS_CSBD_20251016_192351.xlsx

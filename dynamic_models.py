@@ -177,14 +177,27 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         pattern24 = os.path.join(base_dir, "CSBDTS_*_Multiple Billing of Obstetrical Services_WGS_CSBD_*_sur")
         pattern25 = os.path.join(base_dir, "CSBDTS_*_Revenue code to HCPCS Alignment edit_WGS_CSBD_*_sur")
         pattern26 = os.path.join(base_dir, "CSBDTS_*_Observation_Services_WGS_CSBD_*_sur")
-        ts_folders = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) +
+        pattern27 = os.path.join(base_dir, "CSBDTS_*_add_on without base_WGS_CSBD_*_sur")
+        # General catch-all pattern for any CSBDTS folder (catches any model name)
+        pattern28 = os.path.join(base_dir, "CSBDTS_*")
+        # Filter pattern28 to only include folders matching CSBDTS pattern and ending with _sur
+        all_csbdts_folders = glob.glob(pattern28)
+        csbdts_catchall = [f for f in all_csbdts_folders if os.path.isdir(f) and "_WGS_CSBD_" in os.path.basename(f) and f.endswith("_sur")]
+        ts_folders_list = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) +
                      glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) +
                      glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern8_copy) + glob.glob(pattern9) +
                      glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) +
                      glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15) +
                      glob.glob(pattern16) + glob.glob(pattern17) + glob.glob(pattern18) +
                      glob.glob(pattern19) + glob.glob(pattern20) + glob.glob(pattern21) +
-                     glob.glob(pattern22) + glob.glob(pattern23) + glob.glob(pattern24) + glob.glob(pattern25) + glob.glob(pattern26))
+                     glob.glob(pattern22) + glob.glob(pattern23) + glob.glob(pattern24) + glob.glob(pattern25) + glob.glob(pattern26) + glob.glob(pattern27) + csbdts_catchall)
+        # Remove duplicates while preserving order
+        ts_folders = []
+        seen = set()
+        for folder in ts_folders_list:
+            if folder not in seen:
+                seen.add(folder)
+                ts_folders.append(folder)
     
     # STAGE 3.2: Display scanning progress
     print(f"Scanning for TS folders in: {base_dir}")
