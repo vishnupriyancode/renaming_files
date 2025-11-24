@@ -250,6 +250,15 @@ STATIC_MODELS_CONFIG = {
         "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULEOBSER00008_00W28_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_56_Observation_Services_Collection",
         "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00008_00W28.json"
+    },
+    {
+        "ts_number": "57",
+        "edit_id": "RULERADDON00001",
+        "code": "00W60",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_57_add_on without base_WGS_CSBD_RULERADDON00001_00W60_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/WGS_CSBD/CSBDTS_57_add_on without base_WGS_CSBD_RULERADDON00001_00W60_dis/payloads/regression",
+        "postman_collection_name": "CSBDTS_57_add_on without base_Collection",
+        "postman_file_name": "add_on_without_base_wgs_csbd_RULERADDON00001_00W60.json"
     }
     ],
     "gbdf_mcr": [
