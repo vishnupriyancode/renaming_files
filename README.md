@@ -21,8 +21,13 @@ The project has been enhanced with support for WGS_NYK (Working Group Standards 
 ```bash
 # WGS_NYK models (must use --NYKTSXX format)
 python main_processor.py --wgs_nyk --NYKTS122   # Process TS122 model (Revenue code to HCPCS Alignment edit WGS NYK)
-python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS126   # Process TS126 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS127   # Process TS127 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS128   # Process TS128 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS129   # Process TS129 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS132   # Process TS132 model (add_on without base WGS NYK)
 python main_processor.py --wgs_nyk --all     # Process all 10 WGS_NYK models
@@ -318,8 +323,9 @@ python main_processor.py --gbdf_grs --all     # Process all 8 GBDF GRS models
 
 ### WGS_NYK Models (Working Group Standards - New York Kernal)
 ```bash
-# Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)   # Process TS122 model (Revenue code to HCPCS Alignment edit WGS NYK)
-python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
+# Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)
+python main_processor.py --wgs_nyk --NYKTS122   # Process TS122 model (Revenue code to HCPCS Alignment edit WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS126   # Process TS126 model (Observation Services WGS NYK)
@@ -422,7 +428,7 @@ python main_processor.py --gbdf_grs --all     # Generates collections for all GB
 
 # WGS_NYK models with Postman collection generation (Must use --NYKTSXX format)
 python main_processor.py --wgs_nyk --NYKTS122   # Generates NYKTS_122_Revenue code to HCPCS Alignment edit_Collection
-python main_processor.py --wgs_nyk --NYKTS130   # Generates NYKTS_130_Observation_Services_Collection
+python main_processor.py --wgs_nyk --NYKTS123   # Generates NYKTS_123_Observation_Services_Collection
 python main_processor.py --wgs_nyk --NYKTS124   # Generates NYKTS_124_Observation_Services_Collection
 python main_processor.py --wgs_nyk --NYKTS125   # Generates NYKTS_125_Observation_Services_Collection
 python main_processor.py --wgs_nyk --NYKTS126   # Generates NYKTS_126_Observation_Services_Collection
@@ -478,7 +484,8 @@ python main_processor.py --gbdf_grs --TS147 --no-postman
 python main_processor.py --gbdf_grs --all --no-postman
 
 # WGS_NYK models without Postman collection generation (Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS130 --no-postman
+python main_processor.py --wgs_nyk --NYKTS122 --no-postman
+python main_processor.py --wgs_nyk --NYKTS123 --no-postman
 python main_processor.py --wgs_nyk --NYKTS124 --no-postman
 python main_processor.py --wgs_nyk --NYKTS125 --no-postman
 python main_processor.py --wgs_nyk --NYKTS126 --no-postman
@@ -486,6 +493,7 @@ python main_processor.py --wgs_nyk --NYKTS127 --no-postman
 python main_processor.py --wgs_nyk --NYKTS128 --no-postman
 python main_processor.py --wgs_nyk --NYKTS129 --no-postman
 python main_processor.py --wgs_nyk --NYKTS130 --no-postman
+python main_processor.py --wgs_nyk --NYKTS132 --no-postman
 python main_processor.py --wgs_nyk --all --no-postman
 ```
 
@@ -567,7 +575,7 @@ python main_processor.py --help
 
 ### WGS_NYK Models:
 - `python main_processor.py --wgs_nyk --NYKTS122` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_nyk --NYKTS130` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_nyk --NYKTS123` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --NYKTS124` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --NYKTS125` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_nyk --NYKTS126` - **TESTED & WORKING** ✓
@@ -958,7 +966,8 @@ python main_processor.py --gbdf_grs --TS145   # Process TS145 model (Nebulizer A
 python main_processor.py --gbdf_grs --TS147   # Process TS147 model (No match of Procedure code GBDF GRS)
 
 # Process specific WGS_NYK models (WGS_NYK flag required - Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS122   # Process TS122 model (Revenue code to HCPCS Alignment edit WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS123   # Process TS123 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS124   # Process TS124 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS125   # Process TS125 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS126   # Process TS126 model (Observation Services WGS NYK)
@@ -966,6 +975,7 @@ python main_processor.py --wgs_nyk --NYKTS127   # Process TS127 model (Observati
 python main_processor.py --wgs_nyk --NYKTS128   # Process TS128 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS129   # Process TS129 model (Observation Services WGS NYK)
 python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK)
+python main_processor.py --wgs_nyk --NYKTS132   # Process TS132 model (add_on without base WGS NYK)
 
 # Process all configured models
 python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models
@@ -997,7 +1007,7 @@ python main_processor.py --help
 - `--CSBDTS50` through `--CSBDTS56`: Process Observation Services WGS_CSBD models
 - `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS61`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, Unspecified dx code prof GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
 - `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
-- `--NYKTS122`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`, `--NYKTS132`: Process WGS_NYK models (Revenue code to HCPCS Alignment edit WGS NYK, Observation Services WGS NYK, add_on without base WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
+- `--NYKTS122`, `--NYKTS123`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`, `--NYKTS132`: Process WGS_NYK models (Revenue code to HCPCS Alignment edit WGS NYK, Observation Services WGS NYK, add_on without base WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
 - `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, --gbdf_grs, or --wgs_nyk flag)
 - `--list`: List all available TS models (standalone) or generate timing report (with model flags)
 - `--no-postman`: Skip Postman collection generation
@@ -1641,12 +1651,13 @@ The scripts include comprehensive error handling:
    ```
    ❌ Error: --wgs_nyk flag is required for NYKTS model processing!
    ```
-   - **Solution**: Always include the `--wgs_nyk` flag when processing WGS_NYK models
-   - **Examples**: 
-     - `python main_processor.py --wgs_nyk --NYKTS122` (Revenue code to HCPCS Alignment edit WGS NYK model) - Must use --NYKTSXX format
-     - `python main_processor.py --wgs_nyk --NYKTS130` (Observation Services WGS NYK model) - Must use --NYKTSXX format
-     - `python main_processor.py --wgs_nyk --NYKTS130` (Observation Services WGS NYK model) - Must use --NYKTSXX format
-     - `python main_processor.py --wgs_nyk --NYKTS132` (add_on without base WGS NYK model) - Must use --NYKTSXX format
+  - **Solution**: Always include the `--wgs_nyk` flag when processing WGS_NYK models
+  - **Examples**: 
+    - `python main_processor.py --wgs_nyk --NYKTS122` (Revenue code to HCPCS Alignment edit WGS NYK model) - Must use --NYKTSXX format
+    - `python main_processor.py --wgs_nyk --NYKTS123` (Observation Services WGS NYK model) - Must use --NYKTSXX format
+    - `python main_processor.py --wgs_nyk --NYKTS124` (Observation Services WGS NYK model) - Must use --NYKTSXX format
+    - `python main_processor.py --wgs_nyk --NYKTS130` (Observation Services WGS NYK model) - Must use --NYKTSXX format
+    - `python main_processor.py --wgs_nyk --NYKTS132` (add_on without base WGS NYK model) - Must use --NYKTSXX format
      - `python main_processor.py --wgs_nyk --all`
    - **Note**: WGS_NYK models require the `--NYKTSXX` format (e.g., `--NYKTS130`) instead of `--TSXX` format
 
@@ -1802,7 +1813,8 @@ python main_processor.py --gbdf_grs --TS145   # Nebulizer A52466 IPERP-132 GBDF 
 python main_processor.py --gbdf_grs --TS147   # No match of Procedure code GBDF GRS Collection
 
 # Process WGS_NYK models (with --wgs_nyk flag - Must use --NYKTSXX format)
-python main_processor.py --wgs_nyk --NYKTS130   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS122   # Revenue code to HCPCS Alignment edit WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS123   # Observation Services WGS NYK Collection
 python main_processor.py --wgs_nyk --NYKTS124   # Observation Services WGS NYK Collection
 python main_processor.py --wgs_nyk --NYKTS125   # Observation Services WGS NYK Collection
 python main_processor.py --wgs_nyk --NYKTS126   # Observation Services WGS NYK Collection
@@ -1810,6 +1822,7 @@ python main_processor.py --wgs_nyk --NYKTS127   # Observation Services WGS NYK C
 python main_processor.py --wgs_nyk --NYKTS128   # Observation Services WGS NYK Collection
 python main_processor.py --wgs_nyk --NYKTS129   # Observation Services WGS NYK Collection
 python main_processor.py --wgs_nyk --NYKTS130   # Observation Services WGS NYK Collection
+python main_processor.py --wgs_nyk --NYKTS132   # add_on without base WGS NYK Collection
 
 # Process all models at once
 python main_processor.py --wgs_csbd --all     # All WGS_CSBD models
