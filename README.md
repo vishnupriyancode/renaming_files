@@ -53,6 +53,27 @@ python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple
 
 ```
 
+**✅ GBDF Dynamic Discovery & Catch-All Pattern Support (Latest Update)**
+
+The project has been enhanced with flexible folder discovery and pattern matching for GBDF models:
+
+- **✅ Catch-All Pattern Support**: The system now automatically discovers GBDF models using catch-all patterns, supporting any model name without requiring hardcoded patterns
+- **✅ GBDTS_* Folder Naming**: Added support for `GBDTS_XX_*` folder naming convention (e.g., `GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_*_sur`)
+- **✅ Flexible Model Discovery**: Dynamic discovery now handles both `TS_XX_*` and `GBDTS_XX_*` folder naming patterns
+- **✅ TS70 Model Support**: Added support for TS70 model (InappropriatePrimaryDiagnosis GBDF MCR) with `GBDTS_70_*` folder structure
+- **✅ Automatic Pattern Matching**: The system automatically extracts model information from folder names using flexible regex patterns
+- **✅ Backward Compatibility**: All existing models continue to work with the enhanced discovery system
+
+**Examples:**
+```bash
+# TS70 model with GBDTS_* folder naming
+python main_processor.py --gbdf_mcr --GBDTS70    # Process TS70 model (InappropriatePrimaryDiagnosis GBDF MCR)
+
+# Any new GBDF model will be automatically discovered if it follows the naming convention:
+# TS_XX_ModelName_gbdf_mcr_EDIT_ID_CODE_sur or GBDTS_XX_ModelName_gbdf_mcr_EDIT_ID_CODE_sur
+python main_processor.py --gbdf_mcr --GBDTS170   # Process TS170 model (if folder exists)
+```
+
 **✅ Excel Reporting System**
 
 The project has been enhanced with comprehensive Excel reporting functionality:
@@ -295,13 +316,14 @@ python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBD
 python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS61    # Process TS61 model (Unspecified dx code prof GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS70    # Process TS70 model (InappropriatePrimaryDiagnosis GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS146   # Process TS146 model (No match of Procedure code GBDF MCR)
 
 # Process all GBDF MCR models at once
-python main_processor.py --gbdf_mcr --all     # Process all 8 GBDF MCR models
+python main_processor.py --gbdf_mcr --all     # Process all 9 GBDF MCR models
 
 ```
 
@@ -345,10 +367,10 @@ python main_processor.py --wgs_nyk --all     # Process all 10 WGS_NYK models
 | Model Type | Count | TS Numbers | Description |
 |------------|-------|------------|-------------|
 | **WGS_CSBD** | 27 | TS01-TS15, TS20, TS46-TS47, CSBD_TS48, CSBDTS50-CSBDTS56 | Healthcare Claims Processing |
-| **GBDF_MCR** | 8 | TS47, TS48, TS60, TS61, TS138, TS140, TS144, TS146 | Global Burden of Disease Foundation - Medical Claims Research |
+| **GBDF_MCR** | 9 | TS47, TS48, TS60, TS61, TS70, TS138, TS140, TS144, TS146 | Global Burden of Disease Foundation - Medical Claims Research |
 | **GBDF_GRS** | 8 | TS49, TS59, TS61, TS62, TS139, TS141, TS145, TS147 | Global Burden of Disease Foundation - Global Research Services |
 | **WGS_NYK** | 10 | TS122-TS130, TS132 | Working Group Standards - New York Kernal (Revenue code to HCPCS Alignment edit, Observation Services) |
-| **TOTAL** | **53** | | **All Available Models** |
+| **TOTAL** | **54** | | **All Available Models** |
 
 ### Quick Command Reference
 ```bash
@@ -408,6 +430,7 @@ python main_processor.py --gbdf_mcr --GBDTS47    # Generates TS_47_Covid_gbdf_mc
 python main_processor.py --gbdf_mcr --GBDTS48    # Generates TS_48_Multiple E&M Same day_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS60    # Generates TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS61    # Generates TS_61_Unspecified_dx_code_prof_gbdf_mcr_Collection
+python main_processor.py --gbdf_mcr --GBDTS70    # Generates TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS138   # Generates TS_138_Multiple E&M Same day_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS140   # Generates TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection
 python main_processor.py --gbdf_mcr --GBDTS144   # Generates TS_144_Nebulizer A52466 IPERP-132_gbdf_mcr_Collection
@@ -466,6 +489,7 @@ python main_processor.py --gbdf_mcr --GBDTS47 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS48 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS60 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS61 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS70 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS138 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS140 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS144 --no-postman
@@ -556,6 +580,7 @@ python main_processor.py --help
 - `python main_processor.py --gbdf_mcr --GBDTS48` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS60` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS61` - **TESTED & WORKING** ✓ (Recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS70` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS138` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS140` - **TESTED & WORKING** ✓ (Recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS144` - **TESTED & WORKING** ✓ (Recommended format)
@@ -949,6 +974,7 @@ python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBD
 python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS61    # Process TS61 model (Unspecified dx code prof GBDF MCR)
+python main_processor.py --gbdf_mcr --GBDTS70    # Process TS70 model (InappropriatePrimaryDiagnosis GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR)
 python main_processor.py --gbdf_mcr --GBDTS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
@@ -1005,7 +1031,7 @@ python main_processor.py --help
 - `--CSBDTS01` through `--CSBDTS15`: Process specific WGS_CSBD TS models
 - `--CSBDTS20`, `--CSBDTS46`, `--CSBDTS47`, `--CSBDTS48`: Process additional WGS_CSBD TS models (RadioservicesbilledwithoutRadiopharma, Multiple E&M Same day, Multiple Billing of Obstetrical Services, Revenue code to HCPCS Alignment edit)
 - `--CSBDTS50` through `--CSBDTS56`: Process Observation Services WGS_CSBD models
-- `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS61`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, Unspecified dx code prof GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
+- `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS61`, `--GBDTS70`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, Unspecified dx code prof GBDF MCR, InappropriatePrimaryDiagnosis GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
 - `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
 - `--NYKTS122`, `--NYKTS123`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`, `--NYKTS132`: Process WGS_NYK models (Revenue code to HCPCS Alignment edit WGS NYK, Observation Services WGS NYK, add_on without base WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
 - `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, --gbdf_grs, or --wgs_nyk flag)

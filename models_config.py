@@ -333,6 +333,15 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/GBDF/TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/payloads/regression",
             "postman_collection_name": "TS_146_No match of Procedure code_gbdf_mcr_Collection",
             "postman_file_name": "no_match_procedure_gbdf_mcr_RULENMP000001_v18.json"
+        },
+        {
+            "ts_number": "70",
+            "edit_id": "RULE00000376",
+            "code": "v16",
+            "source_dir": "source_folder/GBDF/GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDF/TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_dis/payloads/regression",
+            "postman_collection_name": "TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_Collection",
+            "postman_file_name": "inappropriate_primary_diagnosis_gbdf_mcr_RULE00000376_v16.json"
         }
     ],
     "gbdf_grs": [
