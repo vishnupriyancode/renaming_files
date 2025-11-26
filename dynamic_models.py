@@ -142,7 +142,19 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         pattern11 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_outpt_gbdf_grs_*_sur")
         pattern12 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_prof_gbdf_mcr_*_sur")
         pattern13 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_prof_gbdf_grs_*_sur")
-        ts_folders = glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9) + glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) + glob.glob(pattern13)
+        # Catch-all patterns for any GBDF model (TS_* and GBDTS_* patterns)
+        pattern14 = os.path.join(base_dir, "TS_*_*_gbdf_mcr_*_sur")
+        pattern15 = os.path.join(base_dir, "TS_*_*_gbdf_grs_*_sur")
+        pattern16 = os.path.join(base_dir, "GBDTS_*_*_gbdf_mcr_*_sur")
+        pattern17 = os.path.join(base_dir, "GBDTS_*_*_gbdf_grs_*_sur")
+        ts_folders_list = glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9) + glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) + glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15) + glob.glob(pattern16) + glob.glob(pattern17)
+        # Remove duplicates while preserving order
+        ts_folders = []
+        seen = set()
+        for folder in ts_folders_list:
+            if folder not in seen:
+                seen.add(folder)
+                ts_folders.append(folder)
     else:
         # WGS_CSBD patterns - multiple patterns to catch different folder naming conventions
         # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
@@ -347,6 +359,22 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
             # Try Unspecified_dx_code_prof GBDF GRS pattern
             if not match:
                 match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_prof_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try catch-all pattern for TS_*_*_gbdf_mcr_*_sur (any model name)
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_(.+?)_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try catch-all pattern for TS_*_*_gbdf_grs_*_sur (any model name)
+            if not match:
+                match = re.match(r'TS_(\d{1,3})_(.+?)_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try GBDTS_* pattern for GBDF MCR (e.g., GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_sur)
+            if not match:
+                match = re.match(r'GBDTS_(\d{1,3})_(.+?)_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+            
+            # Try GBDTS_* pattern for GBDF GRS
+            if not match:
+                match = re.match(r'GBDTS_(\d{1,3})_(.+?)_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
         
         # STAGE 5: Process successfully matched folders
         if match:
@@ -365,8 +393,21 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 model_name = match.group(2)     # Model name (e.g., "Revenue code to HCPCS Alignment edit", "Laterality Policy-Disgnosis to Diagnosis")
                 edit_id = match.group(3)        # Edit ID (e.g., "RULERCTH00001", "RULELATE000001")
                 code = match.group(4)           # Code (e.g., "00W26", "00W17")
+            elif folder_name.startswith("GBDTS_"):
+                # GBDTS pattern: GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_sur
+                ts_number_raw = match.group(1)  # TS number (e.g., "70", "170")
+                model_name = match.group(2)     # Model name (e.g., "InappropriatePrimaryDiagnosis")
+                edit_id = match.group(3)        # Edit ID (e.g., "RULE00000376")
+                code = match.group(4)           # Code (e.g., "v16")
+            elif is_gbdf and len(match.groups()) == 4:
+                # GBDF catch-all pattern with 4 groups: TS_XX_ModelName_gbdf_mcr_EDIT_ID_CODE_sur
+                ts_number_raw = match.group(1)  # TS number (e.g., "170")
+                model_name = match.group(2)     # Model name
+                edit_id = match.group(3)        # Edit ID
+                code = match.group(4)           # Code
             else:
                 # Standard TS pattern: TS_01_REVENUE_WGS_CSBD_RULEEM000001_W04_sur
+                # or GBDF specific patterns with 3 groups: TS_47_Covid_gbdf_mcr_RULEEM000001_v04_sur
                 ts_number_raw = match.group(1)  # TS number (e.g., "1", "01", "47")
                 edit_id = match.group(2)        # Edit ID (e.g., "RULEEM000001")
                 code = match.group(3)           # Code (e.g., "v04", "00W28")
