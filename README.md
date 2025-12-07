@@ -2,6 +2,36 @@
 
 A Python script for automatically renaming and organizing test case JSON files based on predefined naming conventions and suffix mappings, with integrated Postman collection generation for API testing.
 
+## 📑 Table of Contents
+
+- [Recent Updates & Fixes](#-recent-updates--fixes)
+- [Quick Start Commands](#-quick-start-commands-verified--ready-to-use)
+- [Model Summary & Quick Reference](#-model-summary--quick-reference)
+- [Overview](#overview)
+- [Model Types Supported](#-model-types-supported)
+- [System Architecture](#️-system-architecture)
+- [Project Structure](#project-structure)
+- [Features](#features)
+- [Recent Fixes & Improvements](#-recent-fixes--improvements)
+- [Naming Convention](#naming-convention)
+- [Parameters](#parameters)
+- [Usage](#usage)
+- [Postman Collection Features](#postman-collection-features)
+- [Example Output](#example-output)
+- [File Structure](#file-structure)
+- [Excel Reporting System](#excel-reporting-system)
+- [KEY_CHK_DCN_NBR Generator](#key_chk_dcn_nbr-generator)
+- [How the Mapping Works](#how-the-mapping-works)
+- [Customization](#customization)
+- [Error Handling](#error-handling)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [License](#license)
+- [Presentation Tools](#-presentation-tools)
+- [Support](#support)
+- [Project Status Summary](#-project-status-summary)
+- [Folder Management Commands](#️-folder-management-commands)
+
 ## 🔧 Recent Updates & Fixes
 
 **✅ WGS_NYK Model Support (Latest Update)**
@@ -679,10 +709,13 @@ The project follows a modular architecture with clear separation of concerns:
 ### **Core Components:**
 
 1. **`main_processor.py`** - Central orchestrator that handles file renaming and Postman collection generation
-2. **`postman_generator.py`** - Core engine for creating Postman collections from JSON files
-3. **`postman_cli.py`** - Standalone CLI interface for Postman operations
-4. **`models_config.py`** - Configuration manager supporting both static and dynamic configurations
-5. **`dynamic_models.py`** - Auto-discovery engine that detects TS folders and extracts parameters
+2. **`rename_files.py`** - File renaming module that handles JSON file renaming, header/footer transformations, and model information extraction
+3. **`postman_generator.py`** - Core engine for creating Postman collections from JSON files
+4. **`postman_cli.py`** - Standalone CLI interface for Postman operations
+5. **`models_config.py`** - Configuration manager supporting both static and dynamic configurations
+6. **`dynamic_models.py`** - Auto-discovery engine that detects TS folders and extracts parameters
+7. **`excel_report_generator.py`** - Excel report generation with timing data and performance analytics
+8. **`report_generate.py`** - Timing report generation and analytics
 
 ### **Data Flow:**
 ```
@@ -696,26 +729,29 @@ Source Folders → Dynamic Discovery → Configuration → File Processing → P
 - **Professional Collections**: Generates properly structured Postman collections
 - **Comprehensive Documentation**: Includes visual architecture diagrams
 
-For detailed architecture information, see `project_architecture_diagram.md`.
+For detailed architecture information, see `Docs/project_architecture_diagram.md`.
 
-For comprehensive file connections and demo guide, see `FILE_CONNECTIONS_DEMO_GUIDE.md`.
+For comprehensive file connections and demo guide, see `Docs/FILE_CONNECTIONS_DEMO_GUIDE.md`.
 
-For Excel reporting functionality, see `EXCEL_REPORTING_GUIDE.md`.
+For Excel reporting functionality, see `Docs/EXCEL_REPORTING_GUIDE.md`.
 
 ## Project Structure
 
 ```
 renaming_files/
 ├── main_processor.py                  # Main consolidated processor (combines file renaming + Postman generation)
+├── rename_files.py                    # File renaming module (handles JSON renaming, header/footer transformations)
 ├── postman_generator.py               # Postman collection generator
 ├── postman_cli.py                     # CLI for Postman operations
 ├── models_config.py                   # Configuration for different test models
 ├── dynamic_models.py                  # Dynamic model discovery and management
 ├── excel_report_generator.py          # Excel report generation with timing data
+├── report_generate.py                 # Timing report generation and analytics
 ├── requirements.txt                   # Python dependencies
-├── project_architecture_diagram.md    # Visual architecture documentation
-├── EXCEL_REPORTING_GUIDE.md          # Excel reporting functionality guide
-├── FILE_CONNECTIONS_DEMO_GUIDE.md    # File architecture and connections demo guide
+├── Docs/                              # Documentation directory
+│   ├── project_architecture_diagram.md    # Visual architecture documentation
+│   ├── EXCEL_REPORTING_GUIDE.md          # Excel reporting functionality guide
+│   └── FILE_CONNECTIONS_DEMO_GUIDE.md    # File architecture and connections demo guide
 ├── renaming_jsons/                    # Output directory for renamed files
 │   ├── WGS_CSBD/                      # WGS_CSBD processed files
 │   │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
@@ -828,7 +864,7 @@ renaming_files/
 - **KEY_CHK_CDN_NBR Generator**: Automatically generates random 11-digit numbers for KEY_CHK_CDN_NBR fields
 - **WGS_CSBD Header/Footer Transformation**: Applies proper header/footer structure to WGS_CSBD files
 - **Dynamic Model Discovery**: Automatically detects TS folders and extracts model parameters
-- **Modular Architecture**: Clean separation of concerns with dedicated modules
+- **Modular Architecture**: Clean separation of concerns with dedicated modules (`rename_files.py`, `postman_generator.py`, `excel_report_generator.py`, etc.)
 - **Multiple Entry Points**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) interfaces
 - **Error Handling**: Provides detailed logging and error reporting
 - **Batch Processing**: Processes multiple JSON files simultaneously
@@ -1131,15 +1167,19 @@ python postman_generator.py --stats "TS_07_REVENUE_WGS_CSBD_rvn011_00W11_payload
 
 ### What the Scripts Do
 
-#### File Renaming Process
+The file renaming functionality is handled by the `rename_files.py` module, which is called by `main_processor.py`. This modular design allows for better code organization and maintainability.
+
+#### File Renaming Process (via `rename_files.py`)
 1. **Source Validation**: Checks if the source directory exists
 2. **Directory Creation**: Creates the destination directory if it doesn't exist
 3. **File Discovery**: Finds all JSON files in the source directory
 4. **Parsing**: Extracts components from each filename
 5. **Mapping**: Applies suffix mapping rules to determine correct suffix
-6. **Renaming**: Generates new filenames according to the 5-part template
-7. **File Operations**: Copies files to destination with new names and removes originals
-8. **Logging**: Provides detailed output of all operations
+6. **Header/Footer Transformation**: For WGS_CSBD files, applies header/footer structure with KEY_CHK_CDN_NBR generation
+7. **Renaming**: Generates new filenames according to the 5-part template
+8. **File Operations**: Copies files to destination with new names and removes originals
+9. **Model Information Extraction**: Extracts model details from directory structure
+10. **Logging**: Provides detailed output of all operations
 
 #### Postman Collection Generation
 1. **File Analysis**: Scans renamed JSON files for test case information

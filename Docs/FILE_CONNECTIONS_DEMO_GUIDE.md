@@ -1,7 +1,7 @@
 # 🏗️ **File Architecture & Connections - Complete Demo Guide**
 
 ## **📋 Overview**
-This project consists of 5 interconnected Python files that work together to create an automated file processing and API testing system. This guide explains how they connect and work together for your demo presentation.
+This project consists of 8 interconnected Python files that work together to create an automated file processing and API testing system. This guide explains how they connect and work together for your demo presentation.
 
 ---
 
@@ -46,12 +46,25 @@ This project consists of 5 interconnected Python files that work together to cre
                       ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    📁 FILE PROCESSING                           │
-│                    main_processor.py (continued)                │
+│                    rename_files.py                              │
 │              (Renames files & applies transformations)          │
 │                                                                 │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
 │  │  File Renaming  │  │   Transformations│  │   File Moving   │ │
 │  │ (New Format)    │  │ (Headers/Footers)│  │ (Source→Dest)   │ │
+│  │                 │  │ KEY_CHK_CDN_NBR  │  │ Model Info     │ │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
+└─────────────────────┬───────────────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    📊 EXCEL REPORTING                          │
+│                    excel_report_generator.py                    │
+│              (Timing tracking & performance analytics)          │
+│                                                                 │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
+│  │  Timing Track  │  │  Excel Reports  │  │  Performance    │ │
+│  │ (Operations)   │  │ (XLSX Format)   │  │  Analytics      │ │
 │  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
 └─────────────────────┬───────────────────────────────────────────┘
                       │
@@ -89,26 +102,34 @@ This project consists of 5 interconnected Python files that work together to cre
 **Role**: Main entry point and workflow orchestrator
 
 **Key Functions**:
-- **File Renaming**: Converts JSON files from old format to new naming convention
+- **Workflow Orchestration**: Coordinates all processing steps
 - **Model Processing**: Handles both single and batch processing
 - **CLI Interface**: Provides user-friendly command-line interface
 - **Integration Hub**: Connects all other modules together
+- **Timing Management**: Coordinates timing tracking and reporting
 
 **Connections**:
+- **Imports**: `rename_files.py` for file renaming operations
 - **Imports**: `postman_generator.py` for collection creation
 - **Uses**: `models_config.py` for model configurations
 - **Calls**: `dynamic_models.py` functions for model discovery
+- **Uses**: `excel_report_generator.py` for timing reports
+- **Uses**: `report_generate.py` for report generation
 
 **Key Code Sections**:
 ```python
 # Imports from other modules
+from rename_files import rename_files, extract_model_info_from_directory
 from postman_generator import PostmanCollectionGenerator
 from models_config import get_models_config, get_model_by_ts
+from excel_report_generator import ExcelReportGenerator, TimingTracker
+from report_generate import generate_timing_report_for_model
 
 # Main processing function
-def rename_files(edit_id, code, source_dir, dest_dir, generate_postman=True):
-    # File processing logic
-    # Calls postman_generator for collection creation
+def process_model(model_config, generate_postman=True):
+    # Orchestrates file renaming via rename_files.py
+    # Coordinates Postman generation
+    # Tracks timing and generates reports
 ```
 
 ---
@@ -174,7 +195,39 @@ def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf
 
 ---
 
-### **4. 🚀 `postman_generator.py` - The API Collection Creator**
+### **4. 📁 `rename_files.py` - The File Renaming Module**
+
+**Role**: Handles all file renaming and transformation operations
+
+**Key Functions**:
+- **File Renaming**: Converts JSON files from old format to new naming convention
+- **Header/Footer Transformation**: Applies header/footer structure for WGS_CSBD files
+- **KEY_CHK_CDN_NBR Generation**: Generates random 11-digit numbers for WGS_CSBD files
+- **Model Information Extraction**: Extracts model details from directory structure
+- **File Operations**: Moves and organizes files to destination directories
+
+**Connections**:
+- **Used by**: `main_processor.py` for all file renaming operations
+- **Imports**: `postman_generator.py` for collection generation integration
+- **Imports**: `excel_report_generator.py` for timing tracking
+
+**Key Code Sections**:
+```python
+# Main renaming function
+def rename_files(edit_id, code, source_dir, dest_dir, generate_postman=True):
+    # File renaming logic
+    # Header/footer transformation for WGS_CSBD
+    # KEY_CHK_CDN_NBR generation
+    # File moving operations
+
+# Model information extraction
+def extract_model_info_from_directory(dest_dir, renamed_files):
+    # Extracts model details from directory structure
+```
+
+---
+
+### **5. 🚀 `postman_generator.py` - The API Collection Creator**
 
 **Role**: Converts JSON files into Postman API test collections
 
@@ -201,7 +254,51 @@ class PostmanCollectionGenerator:
 
 ---
 
-### **5. 🎛️ `postman_cli.py` - The Command Line Interface**
+### **6. 📊 `excel_report_generator.py` - The Excel Reporting Engine**
+
+**Role**: Generates Excel reports with timing data and performance analytics
+
+**Key Functions**:
+- **Timing Tracking**: Tracks timing for file renaming and Postman collection generation
+- **Excel Report Generation**: Creates professional Excel reports with formatting
+- **Performance Analytics**: Calculates totals, averages, and statistics
+- **Report Management**: Handles report creation with timestamps
+
+**Connections**:
+- **Used by**: `main_processor.py` for timing tracking and report generation
+- **Used by**: `report_generate.py` for report creation functions
+- **Imports**: `rename_files.py` for model information
+
+**Key Code Sections**:
+```python
+class TimingTracker:
+    # Tracks timing for operations
+    
+class ExcelReportGenerator:
+    # Generates Excel reports with timing data
+    
+def get_excel_reporter(model_type):
+    # Returns Excel reporter instance
+```
+
+---
+
+### **7. 📈 `report_generate.py` - The Report Generation Module**
+
+**Role**: Generates timing reports and analytics
+
+**Key Functions**:
+- **Timing Report Generation**: Creates timing reports for models
+- **Batch Report Generation**: Generates reports for batch processing
+- **Analytics**: Provides performance metrics and breakdowns
+
+**Connections**:
+- **Used by**: `main_processor.py` for report generation
+- **Imports**: `excel_report_generator.py` for Excel functionality
+
+---
+
+### **8. 🎛️ `postman_cli.py` - The Command Line Interface**
 
 **Role**: Provides standalone CLI for Postman collection operations
 
@@ -232,7 +329,7 @@ def handle_generate(args):
 
 ### **Example 1: Complete Workflow (Most Common)**
 ```bash
-python main_processor.py --wgs_csbd --TS01
+python main_processor.py --wgs_csbd --CSBDTS01
 ```
 
 **Flow Diagram**:
@@ -256,9 +353,11 @@ User Command
 1. **`main_processor.py`** starts and parses CLI arguments
 2. **`models_config.py`** loads configuration using dynamic discovery
 3. **`dynamic_models.py`** scans `source_folder/WGS_CSBD/` for TS01 folders
-4. **`main_processor.py`** processes files (renames, moves, transforms)
-5. **`postman_generator.py`** creates Postman collection
-6. **Result**: Renamed files + Postman collection ready for API testing
+4. **`rename_files.py`** processes files (renames, moves, transforms headers/footers)
+5. **`excel_report_generator.py`** tracks timing for operations
+6. **`postman_generator.py`** creates Postman collection
+7. **`report_generate.py`** generates timing reports
+8. **Result**: Renamed files + Postman collection + Excel timing report ready
 
 ---
 
@@ -323,11 +422,18 @@ User Command
 ### **Import Relationships**:
 ```python
 # main_processor.py imports:
+from rename_files import rename_files, extract_model_info_from_directory
 from postman_generator import PostmanCollectionGenerator
 from models_config import get_models_config, get_model_by_ts
+from excel_report_generator import ExcelReportGenerator, TimingTracker, get_excel_reporter
+from report_generate import generate_timing_report_for_model
 
 # models_config.py imports:
 from dynamic_models import discover_ts_folders, get_model_by_ts_number
+
+# rename_files.py imports:
+from postman_generator import PostmanCollectionGenerator
+from excel_report_generator import ExcelReportGenerator, TimingTracker
 
 # postman_cli.py imports:
 from postman_generator import PostmanCollectionGenerator
@@ -336,17 +442,17 @@ from postman_generator import PostmanCollectionGenerator
 ### **Data Flow Diagram**:
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ Source      │───▶│ dynamic_    │───▶│ models_     │───▶│ main_       │───▶│ postman_    │
-│ Folders     │    │ models.py   │    │ config.py   │    │ processor.py│    │ generator.py│
-│ (TS_XX_*)   │    │ (Discovery) │    │ (Config)    │    │ (Process)   │    │ (Collection)│
+│ Source      │───▶│ dynamic_    │───▶│ models_     │───▶│ main_       │───▶│ rename_     │
+│ Folders     │    │ models.py   │    │ config.py   │    │ processor.py│    │ files.py   │
+│ (TS_XX_*)   │    │ (Discovery) │    │ (Config)    │    │ (Orchestr.) │    │ (Rename)    │
 └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
                                                                                     │
                                                                                     ▼
-                                                                            ┌─────────────┐
-                                                                            │ Postman     │
-                                                                            │ Collections │
-                                                                            │ (Ready)     │
-                                                                            └─────────────┘
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ excel_      │◀───│ main_       │───▶│ postman_    │───▶│ Postman     │    │ report_     │
+│ report_     │    │ processor   │    │ generator   │    │ Collections │    │ generate.py │
+│ generator   │    │ (Timing)    │    │ (Collection)│    │ (Ready)     │    │ (Reports)   │
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
 ```
 
 ### **Configuration Flow**:
@@ -400,10 +506,13 @@ python postman_cli.py generate --collection-name "DemoCollection"
 
 | File | Imports From | Used By | Primary Function |
 |------|-------------|---------|------------------|
-| `main_processor.py` | `postman_generator.py`, `models_config.py` | User (CLI) | Workflow orchestration |
+| `main_processor.py` | `rename_files.py`, `postman_generator.py`, `models_config.py`, `excel_report_generator.py`, `report_generate.py` | User (CLI) | Workflow orchestration |
+| `rename_files.py` | `postman_generator.py`, `excel_report_generator.py` | `main_processor.py` | File renaming & transformations |
 | `dynamic_models.py` | None | `models_config.py`, `main_processor.py` | Model discovery |
 | `models_config.py` | `dynamic_models.py` | `main_processor.py` | Configuration management |
-| `postman_generator.py` | None | `main_processor.py`, `postman_cli.py` | Collection generation |
+| `postman_generator.py` | None | `main_processor.py`, `postman_cli.py`, `rename_files.py` | Collection generation |
+| `excel_report_generator.py` | None | `main_processor.py`, `rename_files.py`, `report_generate.py` | Excel report generation |
+| `report_generate.py` | `excel_report_generator.py` | `main_processor.py` | Timing report generation |
 | `postman_cli.py` | `postman_generator.py` | User (CLI) | Standalone Postman operations |
 
 ---
@@ -411,15 +520,15 @@ python postman_cli.py generate --collection-name "DemoCollection"
 ## **🎯 Demo Script Suggestions**
 
 ### **Opening (2 minutes)**:
-"Today I'll show you an automated file processing and API testing system. This system consists of 5 interconnected Python files that work together to discover, process, and create API test collections from JSON files."
+"Today I'll show you an automated file processing and API testing system. This system consists of 8 interconnected Python files that work together to discover, process, create API test collections, and generate comprehensive timing reports from JSON files."
 
 ### **Architecture Overview (3 minutes)**:
-"Let me show you how these files connect. The main_processor.py is our orchestrator, dynamic_models.py discovers models automatically, models_config.py manages configurations, postman_generator.py creates API collections, and postman_cli.py provides standalone operations."
+"Let me show you how these files connect. The main_processor.py is our orchestrator, dynamic_models.py discovers models automatically, models_config.py manages configurations, rename_files.py handles file renaming and transformations, postman_generator.py creates API collections, excel_report_generator.py tracks timing and generates reports, report_generate.py creates timing reports, and postman_cli.py provides standalone operations."
 
 ### **Live Demo (5 minutes)**:
 1. Show model discovery: `python main_processor.py --list`
-2. Process a model: `python main_processor.py --wgs_csbd --TS01`
-3. Show generated files and Postman collection
+2. Process a model: `python main_processor.py --wgs_csbd --CSBDTS01`
+3. Show generated files, Postman collection, and Excel timing report
 4. Demonstrate standalone Postman operations
 
 ### **Closing (2 minutes)**:

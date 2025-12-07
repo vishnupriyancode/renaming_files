@@ -39,14 +39,16 @@ Excel reports are automatically generated when using the main processor:
 
 ```bash
 # Single model processing
-python main_processor.py --wgs_csbd --TS01
-python main_processor.py --gbdf_mcr --TS47
+python main_processor.py --wgs_csbd --CSBDTS01
+python main_processor.py --gbdf_mcr --GBDTS47
 python main_processor.py --gbdf_grs --TS139
+python main_processor.py --wgs_nyk --NYKTS130
 
 # Batch processing
 python main_processor.py --wgs_csbd --all
 python main_processor.py --gbdf_mcr --all
 python main_processor.py --gbdf_grs --all
+python main_processor.py --wgs_nyk --all
 ```
 
 ### Manual Testing
@@ -63,8 +65,9 @@ python test_timing_integration.py
 ## Report Output
 
 ### File Locations
-- **Excel Reports**: `reports/JSON_Renaming_Timing_Report_YYYYMMDD_HHMMSS.xlsx`
-- **CSV Reports**: `reports/JSON_Renaming_Timing_Report_YYYYMMDD_HHMMSS.csv`
+- **Excel Reports**: `reports/collection_reports/JSON_Renaming_Timing_Report_[MODEL_TYPE]_YYYYMMDD_HHMMSS.xlsx`
+- **List Reports**: `reports/list_reports/` (for future use)
+- Reports are automatically organized by model type (WGS_CSBD, GBDF_MCR, GBDF_GRS, WGS_NYK)
 
 ### Report Structure
 
@@ -100,9 +103,10 @@ The timing tracking is integrated into the main processing flow:
 5. **Report Generation**: Excel reports are generated at the end of processing
 
 ### Code Integration Points
-- `main_processor.py`: Main timing integration
-- `excel_report_generator.py`: Core reporting functionality
-- `test_timing_integration.py`: Testing and demonstration
+- `main_processor.py`: Main timing integration and orchestration
+- `rename_files.py`: File renaming operations with timing tracking
+- `excel_report_generator.py`: Core reporting functionality (TimingTracker, ExcelReportGenerator)
+- `report_generate.py`: Timing report generation and analytics
 
 ## Dependencies
 
@@ -128,7 +132,7 @@ pip install -r requirements.txt
 ============================================================
 GENERATING EXCEL TIMING REPORT
 ============================================================
-Excel timing report generated: reports\JSON_Renaming_Timing_Report_20251016_082415.xlsx
+Excel timing report generated: reports\collection_reports\JSON_Renaming_Timing_Report_WGS_CSBD_20251016_082415.xlsx
 
 TIMING SUMMARY:
   Total Records: 3

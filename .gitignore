@@ -54,6 +54,9 @@ logs/
 *.temp
 *.bak
 
+# IDE temporary assets
+assets/
+
 
 
 
