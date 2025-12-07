@@ -292,7 +292,7 @@ python main_processor.py --wgs_csbd --CSBDTS12    # Process TS12 model (Incident
 python main_processor.py --wgs_csbd --CSBDTS13    # Process TS13 model (Revenue model CR v3)
 python main_processor.py --wgs_csbd --CSBDTS14    # Process TS14 model (HCPCS to Revenue Code Xwalk)
 python main_processor.py --wgs_csbd --CSBDTS15    # Process TS15 model (revenue model)
-python main_processor.py --wgs_csbd --CSBDTS20    # Process TS20 model (RadioservicesbilledwithoutRadiopharma)
+python main_processor.py --wgs_csbd --CSBDTS20    # Process TS20 model(RadioservicesbilledwithoutRadiopharma)
 python main_processor.py --wgs_csbd --CSBDTS46    # Process TS46 model (Multiple E&M Same day)
 python main_processor.py --wgs_csbd --CSBDTS47    # Process TS47 model (Multiple Billing of Obstetrical Services)
 python main_processor.py --wgs_csbd --CSBDTS48    # Process CSBD_TS48 model (Revenue code to HCPCS Alignment edit)

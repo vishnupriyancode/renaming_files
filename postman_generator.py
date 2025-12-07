@@ -80,6 +80,36 @@ class PostmanCollectionGenerator:
         
         return None
     
+    def _get_headers(self, is_gbdf_model: bool, format_type: str = "v2.1.0") -> List[Dict]:
+        """
+        Get headers for Postman request based on model type.
+        
+        Args:
+            is_gbdf_model: Whether this is a GBDF model
+            format_type: Postman format type ("v2.1.0" or "minimal")
+            
+        Returns:
+            List of header dictionaries
+        """
+        if is_gbdf_model:
+            if format_type == "v2.1.0":
+                return [{"key": "Client_Transaction_ID", "value": "20115660390020220225161114893", "type": "text"}]
+            else:
+                return [{"uid": str(uuid.uuid4()), "name": "Client_Transaction_ID", "value": "20115660390020220225161114893", "enabled": True}]
+        else:
+            if format_type == "v2.1.0":
+                return [
+                    {"key": "Content-Type", "value": "application/json", "type": "text"},
+                    {"key": "meta-transid", "value": "20220117181853TMBL20359Cl893580999", "type": "text"},
+                    {"key": "meta-src-envrmt", "value": "IMSH", "type": "text"}
+                ]
+            else:
+                return [
+                    {"uid": str(uuid.uuid4()), "name": "Content-Type", "value": "application/json", "enabled": True},
+                    {"uid": str(uuid.uuid4()), "name": "meta-transid", "value": "20220117181853TMBL20359Cl893580999", "enabled": True},
+                    {"uid": str(uuid.uuid4()), "name": "meta-src-envrmt", "value": "IMSH", "enabled": True}
+                ]
+    
     def _create_postman_request(self, json_file_path: Path, parsed_info: Dict[str, str], is_gbdf_model: bool = False) -> Dict[str, Any]:
         """
         STAGE 4: POSTMAN REQUEST CREATION
@@ -93,7 +123,6 @@ class PostmanCollectionGenerator:
         Returns:
             Postman request structure
         """
-        # Step 4.1: Read JSON content from file
         try:
             with open(json_file_path, 'r', encoding='utf-8') as f:
                 json_content = json.load(f)
@@ -101,65 +130,17 @@ class PostmanCollectionGenerator:
             print(f"Warning: Could not read {json_file_path}: {e}")
             json_content = {}
         
-        # Step 4.2: Create request name based on actual filename (without .json extension)
-        request_name = json_file_path.stem  # This gets the filename without extension
+        method = {'LR': 'POST', 'NR': 'POST', 'EX': 'POST'}.get(parsed_info['suffix'], 'POST')
         
-        # Step 4.3: Determine HTTP method based on suffix
-        # Mapping for suffixes based on the expected output format
-        method_map = {
-            'LR': 'POST',  # Limited Response - POST for validation
-            'NR': 'POST',  # No Response - POST for validation
-            'EX': 'POST'   # Exception - POST for validation
+        return {
+            "uid": str(uuid.uuid4()),
+            "name": json_file_path.stem,
+            "type": "http",
+            "method": method,
+            "url": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
+            "headers": self._get_headers(is_gbdf_model, "minimal"),
+            "body": {"mode": "raw", "raw": json.dumps(json_content, indent=2)}
         }
-        method = method_map.get(parsed_info['suffix'], 'POST')
-        
-        # Step 4.4: Create Postman request structure - ultra-minimal format
-        # Determine headers based on model type
-        if is_gbdf_model:
-            headers = [
-                {
-                    "uid": str(uuid.uuid4()),
-                    "name": "Client_Transaction_ID",
-                    "value": "20115660390020220225161114893",
-                    "enabled": True
-                }
-            ]
-        else:
-            headers = [
-                {
-                    "uid": str(uuid.uuid4()),
-                    "name": "Content-Type",
-                    "value": "application/json",
-                    "enabled": True
-                },
-                {
-                    "uid": str(uuid.uuid4()),
-                    "name": "meta-transid",
-                    "value": "20220117181853TMBL20359Cl893580999",  # Transaction ID
-                    "enabled": True
-                },
-                {
-                    "uid": str(uuid.uuid4()),
-                    "name": "meta-src-envrmt",
-                    "value": "IMSH",  # Source environment
-                    "enabled": True
-                }
-            ]
-        
-        request = {
-            "uid": str(uuid.uuid4()),  # Unique identifier for the request
-            "name": request_name,      # Request name (filename without extension)
-            "type": "http",            # Request type
-            "method": method,          # HTTP method (POST for all validation requests)
-            "url": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",  # API endpoint
-            "headers": headers,
-            "body": {
-                "mode": "raw",  # Raw JSON body
-                "raw": json.dumps(json_content, indent=2)  # Pretty-printed JSON content
-            }
-        }
-        
-        return request
     
     
     def generate_postman_collection(self, collection_name: str = "TestCollection", custom_filename: str = None, is_gbdf_model: bool = False) -> Optional[Path]:
@@ -233,55 +214,21 @@ class PostmanCollectionGenerator:
                 method = method_map.get(parsed_info['suffix'], 'POST')
                 
                 # Step 5.4.3: Create Postman request - use the actual filename (without .json extension)
-                request_name = json_file.stem  # This gets the filename without extension
-                
                 # Step 5.4.4: Build Postman request structure (v2.1.0 format)
-                # Determine headers based on model type
-                if is_gbdf_model:
-                    headers = [
-                        {
-                            "key": "Client_Transaction_ID",
-                            "value": "20115660390020220225161114893",
-                            "type": "text"
-                        }
-                    ]
-                else:
-                    headers = [
-                        {
-                            "key": "Content-Type",
-                            "value": "application/json",
-                            "type": "text"
-                        },
-                        {
-                            "key": "meta-transid",
-                            "value": "20220117181853TMBL20359Cl893580999",  # Transaction ID
-                            "type": "text"
-                        },
-                        {
-                            "key": "meta-src-envrmt",
-                            "value": "IMSH",  # Source environment
-                            "type": "text"
-                        }
-                    ]
-                
                 postman_request = {
-                    "name": request_name,
+                    "name": json_file.stem,
                     "request": {
                         "method": method,
-                        "header": headers,
+                        "header": self._get_headers(is_gbdf_model, "v2.1.0"),
                         "url": {
-                            "raw": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",  # Full URL
-                            "host": ["{{baseUrl}}"],  # Host part
-                            "path": ["api", "validate", "{{tc_id}}"]  # Path segments
+                            "raw": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
+                            "host": ["{{baseUrl}}"],
+                            "path": ["api", "validate", "{{tc_id}}"]
                         },
                         "body": {
-                            "mode": "raw",  # Raw JSON body mode
-                            "raw": json.dumps(json_content, indent=2),  # Pretty-printed JSON
-                            "options": {
-                                "raw": {
-                                    "language": "json"  # Specify JSON language for syntax highlighting
-                                }
-                            }
+                            "mode": "raw",
+                            "raw": json.dumps(json_content, indent=2),
+                            "options": {"raw": {"language": "json"}}
                         }
                     }
                 }

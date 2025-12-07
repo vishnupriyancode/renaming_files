@@ -119,97 +119,36 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
     is_wgs_kernal = "WGS_Kernal" in base_dir or "WGS_KERNAL" in base_dir
 
     # STAGE 3.1: Define search patterns based on directory type
+    def get_folders_from_patterns(patterns):
+        """Helper to get folders from multiple patterns and remove duplicates."""
+        all_folders = []
+        for pattern in patterns:
+            all_folders.extend(glob.glob(pattern))
+        return list(dict.fromkeys(all_folders))  # Remove duplicates while preserving order
+    
     if is_wgs_kernal:
         # WGS_NYK patterns - NYKTS naming convention
-        # Match any NYKTS folder with any model name (including spaces)
-        # Use a pattern that matches NYKTS_*_WGS_NYK_*_sur to catch all variations
-        pattern1 = os.path.join(base_dir, "NYKTS_*")
-        all_folders = glob.glob(pattern1)
-        # Filter to only include folders that match the NYKTS pattern and end with _sur
+        all_folders = glob.glob(os.path.join(base_dir, "NYKTS_*"))
         ts_folders = [f for f in all_folders if os.path.isdir(f) and "_WGS_NYK_" in os.path.basename(f) and f.endswith("_sur")]
     elif is_gbdf:
-        # GBDF MCR patterns - multiple patterns to catch different folder naming conventions
-        pattern1 = os.path.join(base_dir, "TS_*_Covid_gbdf_mcr_*_sur")
-        pattern2 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_gbdf_mcr_*_sur")
-        pattern3 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_gbdf_grs_*_sur")
-        pattern4 = os.path.join(base_dir, "TS_*_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_*_sur")
-        pattern5 = os.path.join(base_dir, "TS_*_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_*_sur")
-        pattern6 = os.path.join(base_dir, "TS_*_No match of Procedure code_gbdf_mcr_*_sur")
-        pattern7 = os.path.join(base_dir, "TS_*_No match of Procedure code_gbdf_grs_*_sur")
-        pattern8 = os.path.join(base_dir, "TS_*_Nebulizer A52466 IPERP-132_gbdf_mcr_*_sur")
-        pattern9 = os.path.join(base_dir, "TS_*_Nebulizer A52466 IPERP-132_gbdf_grs_*_sur")
-        pattern10 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_outpt_gbdf_mcr_*_sur")
-        pattern11 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_outpt_gbdf_grs_*_sur")
-        pattern12 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_prof_gbdf_mcr_*_sur")
-        pattern13 = os.path.join(base_dir, "TS_*_Unspecified_dx_code_prof_gbdf_grs_*_sur")
-        # Catch-all patterns for any GBDF model (TS_* and GBDTS_* patterns)
-        pattern14 = os.path.join(base_dir, "TS_*_*_gbdf_mcr_*_sur")
-        pattern15 = os.path.join(base_dir, "TS_*_*_gbdf_grs_*_sur")
-        pattern16 = os.path.join(base_dir, "GBDTS_*_*_gbdf_mcr_*_sur")
-        pattern17 = os.path.join(base_dir, "GBDTS_*_*_gbdf_grs_*_sur")
-        ts_folders_list = glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) + glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) + glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern9) + glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) + glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15) + glob.glob(pattern16) + glob.glob(pattern17)
-        # Remove duplicates while preserving order
-        ts_folders = []
-        seen = set()
-        for folder in ts_folders_list:
-            if folder not in seen:
-                seen.add(folder)
-                ts_folders.append(folder)
+        # GBDF patterns - use catch-all patterns instead of listing every model
+        patterns = [
+            os.path.join(base_dir, "GBDTS_*_*_gbdf_mcr_*_sur"),
+            os.path.join(base_dir, "GBDTS_*_*_gbdf_grs_*_sur")
+        ]
+        ts_folders_list = get_folders_from_patterns(patterns)
+        # Filter to only include directories (consistent with other branches)
+        ts_folders = [f for f in ts_folders_list if os.path.isdir(f)]
     else:
-        # WGS_CSBD patterns - multiple patterns to catch different folder naming conventions
-        # Pattern to match TS_XX_REVENUE_WGS_CSBD_* folders
-        # Handle both "payloads_sur" and "_sur" patterns
-        # Also handle new Revenue code pattern and Lab panel Model pattern
-        pattern1 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_payloads_sur")
-        pattern2 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_ayloads_sur")
-        pattern3 = os.path.join(base_dir, "TS_*_REVENUE_WGS_CSBD_*_sur")
-        pattern4 = os.path.join(base_dir, "TS_*_Revenue code Services not payable on Facility claim Sub Edit *_WGS_CSBD_*_sur")
-        pattern5 = os.path.join(base_dir, "TS_*_Lab panel Model_WGS_CSBD_*_sur")
-        pattern6 = os.path.join(base_dir, "TS_*_Recovery Room Reimbursement_WGS_CSBD_*_sur")
-        pattern7 = os.path.join(base_dir, "TS_*_Covid_WGS_CSBD_*_sur")
-        pattern8 = os.path.join(base_dir, "TS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur")
-        pattern8_copy = os.path.join(base_dir, "TS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur copy")
-        pattern9 = os.path.join(base_dir, "TS_*_Device Dependent Procedures(R1)-1B_WGS_CSBD_*_sur")
-        pattern10 = os.path.join(base_dir, "TS_*_revenue model_WGS_CSBD_*_sur")
-        pattern11 = os.path.join(base_dir, "TS_*_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_*_sur")
-        pattern12 = os.path.join(base_dir, "TS_*_Incidentcal Services Facility_WGS_CSBD_*_sur")
-        pattern13 = os.path.join(base_dir, "TS_*_Revenue model CR v3_WGS_CSBD_*_sur")
-        pattern14 = os.path.join(base_dir, "TS_*_HCPCS to Revenue Code Xwalk_WGS_CSBD_*_sur")
-        pattern15 = os.path.join(base_dir, "TS_*_Multiple E&M Same day_WGS_CSBD_*_sur")
-        pattern16 = os.path.join(base_dir, "TS_*_Multiple Billing of Obstetrical Services_WGS_CSBD_*_sur")
-        pattern17 = os.path.join(base_dir, "TS_*_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_*_sur")
-        # CSBD_TS patterns for special models
-        pattern18 = os.path.join(base_dir, "CSBD_TS_*_Revenue code to HCPCS Alignment edit_WGS_CSBD_*_sur")
-        # CSBDTS patterns (without underscore between CSBD and TS) for all model types
-        pattern19 = os.path.join(base_dir, "CSBDTS_*_Covid_WGS_CSBD_*_sur")
-        pattern20 = os.path.join(base_dir, "CSBDTS_*_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_*_sur")
-        pattern21 = os.path.join(base_dir, "CSBDTS_*_Revenue code Services not payable on Facility claim Sub Edit *_WGS_CSBD_*_sur")
-        pattern22 = os.path.join(base_dir, "CSBDTS_*_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_*_sur")
-        pattern23 = os.path.join(base_dir, "CSBDTS_*_Multiple E&M Same day_WGS_CSBD_*_sur")
-        pattern24 = os.path.join(base_dir, "CSBDTS_*_Multiple Billing of Obstetrical Services_WGS_CSBD_*_sur")
-        pattern25 = os.path.join(base_dir, "CSBDTS_*_Revenue code to HCPCS Alignment edit_WGS_CSBD_*_sur")
-        pattern26 = os.path.join(base_dir, "CSBDTS_*_Observation_Services_WGS_CSBD_*_sur")
-        pattern27 = os.path.join(base_dir, "CSBDTS_*_add_on without base_WGS_CSBD_*_sur")
-        # General catch-all pattern for any CSBDTS folder (catches any model name)
-        pattern28 = os.path.join(base_dir, "CSBDTS_*")
-        # Filter pattern28 to only include folders matching CSBDTS pattern and ending with _sur
-        all_csbdts_folders = glob.glob(pattern28)
-        csbdts_catchall = [f for f in all_csbdts_folders if os.path.isdir(f) and "_WGS_CSBD_" in os.path.basename(f) and f.endswith("_sur")]
-        ts_folders_list = (glob.glob(pattern1) + glob.glob(pattern2) + glob.glob(pattern3) +
-                     glob.glob(pattern4) + glob.glob(pattern5) + glob.glob(pattern6) +
-                     glob.glob(pattern7) + glob.glob(pattern8) + glob.glob(pattern8_copy) + glob.glob(pattern9) +
-                     glob.glob(pattern10) + glob.glob(pattern11) + glob.glob(pattern12) +
-                     glob.glob(pattern13) + glob.glob(pattern14) + glob.glob(pattern15) +
-                     glob.glob(pattern16) + glob.glob(pattern17) + glob.glob(pattern18) +
-                     glob.glob(pattern19) + glob.glob(pattern20) + glob.glob(pattern21) +
-                     glob.glob(pattern22) + glob.glob(pattern23) + glob.glob(pattern24) + glob.glob(pattern25) + glob.glob(pattern26) + glob.glob(pattern27) + csbdts_catchall)
-        # Remove duplicates while preserving order
-        ts_folders = []
-        seen = set()
-        for folder in ts_folders_list:
-            if folder not in seen:
-                seen.add(folder)
-                ts_folders.append(folder)
+        # WGS_CSBD patterns - use catch-all pattern for CSBDTS
+        patterns = [
+            os.path.join(base_dir, "CSBDTS_*")
+        ]
+        ts_folders_list = get_folders_from_patterns(patterns)
+        # Filter to only include folders matching pattern and ending with valid suffixes
+        # Include _ayloads_sur (typo variant) for backward compatibility with older datasets
+        valid_suffixes = ("_sur", "_payloads_sur", "_ayloads_sur")
+        ts_folders = [f for f in ts_folders_list if os.path.isdir(f) and f.endswith(valid_suffixes) and "_WGS_CSBD_" in os.path.basename(f)]
     
     # STAGE 3.2: Display scanning progress
     print(f"Scanning for TS folders in: {base_dir}")
@@ -220,197 +159,54 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         folder_name = os.path.basename(folder_path)
         
         # STAGE 4.1: Pattern matching - try different regex patterns to extract folder information
-        # Extract parameters using flexible regex pattern
-        # Pattern 1: TS_XX_REVENUE_WGS_CSBD_EDIT_ID_EOB_CODE_sur (original pattern)
-        # Pattern 2: TS_XX_Revenue code Services not payable on Facility claim Sub Edit X_WGS_CSBD_RULEREVE00000X_00W28_sur (new pattern)
-        # Supports 1-3 digit TS numbers: TS_1, TS_01, TS_001, TS_10, TS_100, etc.
-        # Supports any alphanumeric edit_id and EOB code formats
-        # Examples: TS_60_REVENUE_WGS_CSBD_ASDFGJEUSK_00W29_sur, TS_07_REVENUE_WGS_CSBD_rvn011_00W11_sur
-        # Examples: TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur
+        def try_patterns(patterns):
+            """Try multiple regex patterns and return first match."""
+            for pattern in patterns:
+                match = re.match(pattern, folder_name)
+                if match:
+                    return match
+            return None
         
-        # Try CSBD_TS pattern first (for CSBD_TS_48, CSBD_TS_50, etc.)
-        match = re.match(r'CSBD_TS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-
-        # Try CSBDTS patterns (without underscore between CSBD and TS) - try these before TS patterns
-        # Use a general pattern that captures the model name between TS number and WGS_CSBD
-        if not match:
-            match = re.match(r'CSBDTS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-
-        # Try original pattern if no match
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_REVENUE_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        # Define patterns based on directory type
+        if is_wgs_kernal:
+            patterns = [r'NYKTS_(\d{1,3})_(.+?)_WGS_NYK_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$']
+        elif is_gbdf:
+            # GBDF patterns - check GBDTS_* first, then TS_* (both naming conventions exist in source folders)
+            patterns = [
+                r'GBDTS_(\d{1,3})_(.+?)_gbdf_(mcr|grs)_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$',
+                r'TS_(\d{1,3})_(.+?)_gbdf_(mcr|grs)_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$'
+            ]
+        else:
+            # WGS_CSBD patterns - try CSBDTS/CSBD_TS first, then TS patterns (including legacy REVENUE)
+            # Handle suffix variations: _sur, _payloads_sur, _ayloads_sur (typo variant for backward compatibility)
+            patterns = [
+                r'CSBD_TS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(sur|payloads_sur|ayloads_sur)$',
+                r'CSBDTS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(sur|payloads_sur|ayloads_sur)$',
+                r'TS_(\d{1,3})_(.+?)_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(sur|payloads_sur|ayloads_sur)$',
+                r'TS_(\d{1,3})_REVENUE_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_(sur|payloads_sur|ayloads_sur)$'  # Legacy pattern
+            ]
         
-        # STAGE 4.2: Try multiple regex patterns until one matches
-        # If no match, try new Revenue code pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Revenue code Services not payable on Facility claim Sub Edit \d+_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Lab panel Model pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Lab panel Model_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Recovery Room Reimbursement pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Recovery Room Reimbursement_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Covid pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Covid_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Laterality Policy pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Laterality Policy pattern with "_sur copy" suffix
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur copy$', folder_name)
-        
-        # If no match, try Device Dependent Procedures pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Device Dependent Procedures\(R1\)-1B_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try revenue model pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_revenue model_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Revenue Code to HCPCS Xwalk-1B pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Incidentcal Services Facility pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Incidentcal Services Facility_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Revenue model CR v3 pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Revenue model CR v3_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try HCPCS to Revenue Code Xwalk pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_HCPCS to Revenue Code Xwalk_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Multiple E&M Same day pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Multiple E&M Same day_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try Multiple Billing of Obstetrical Services pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_Multiple Billing of Obstetrical Services_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match, try RadioservicesbilledwithoutRadiopharma pattern
-        if not match:
-            match = re.match(r'TS_(\d{1,3})_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-        
-        # If no match and this is WGS_Kernal, try NYKTS patterns
-        if not match and is_wgs_kernal:
-            # NYKTS pattern: NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur
-            # Also matches: NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_sur
-            match = re.match(r'NYKTS_(\d{1,3})_(.+?)_WGS_NYK_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-
-        # If no match and this is GBDF, try GBDF MCR patterns
-        if not match and is_gbdf:
-            # Try Covid GBDF MCR pattern
-            match = re.match(r'TS_(\d{1,3})_Covid_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try Multiple E&M Same day GBDF MCR pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_Multiple E&M Same day_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try Multiple E&M Same day GBDF GRS pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_Multiple E&M Same day_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try No match of Procedure code GBDF MCR pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_No match of Procedure code_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try No match of Procedure code GBDF GRS pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_No match of Procedure code_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try Nebulizer A52466 IPERP-132 GBDF MCR pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_Nebulizer A52466 IPERP-132_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try Nebulizer A52466 IPERP-132 GBDF GRS pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_Nebulizer A52466 IPERP-132_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try Unspecified_dx_code_outpt GBDF MCR pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_outpt_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try Unspecified_dx_code_outpt GBDF GRS pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_outpt_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try Unspecified_dx_code_prof GBDF MCR pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_prof_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try Unspecified_dx_code_prof GBDF GRS pattern
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_Unspecified_dx_code_prof_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try catch-all pattern for TS_*_*_gbdf_mcr_*_sur (any model name)
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_(.+?)_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try catch-all pattern for TS_*_*_gbdf_grs_*_sur (any model name)
-            if not match:
-                match = re.match(r'TS_(\d{1,3})_(.+?)_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try GBDTS_* pattern for GBDF MCR (e.g., GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_sur)
-            if not match:
-                match = re.match(r'GBDTS_(\d{1,3})_(.+?)_gbdf_mcr_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
-            
-            # Try GBDTS_* pattern for GBDF GRS
-            if not match:
-                match = re.match(r'GBDTS_(\d{1,3})_(.+?)_gbdf_grs_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$', folder_name)
+        match = try_patterns(patterns)
         
         # STAGE 5: Process successfully matched folders
         if match:
-            # Extract the components from the folder name
-            if folder_name.startswith("NYKTS_"):
-                # NYKTS pattern: NYKTS_130_Observation_Services_WGS_NYK_RULERCTH00001_00W28_sur
-                # Also matches: NYKTS_122_Revenue code to HCPCS Alignment edit_WGS_NYK_RULERCTH00001_00W26_sur
-                ts_number_raw = match.group(1)  # TS number (e.g., "130", "122")
-                model_name = match.group(2)     # Model name (e.g., "Observation_Services", "Revenue code to HCPCS Alignment edit")
-                edit_id = match.group(3)        # Edit ID (e.g., "RULERCTH00001")
-                code = match.group(4)           # Code (e.g., "00W28", "00W26")
-            elif folder_name.startswith("CSBD_TS_") or folder_name.startswith("CSBDTS_"):
-                # CSBD_TS or CSBDTS pattern: CSBD_TS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur
-                # or CSBDTS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur
-                ts_number_raw = match.group(1)  # TS number (e.g., "48", "02")
-                model_name = match.group(2)     # Model name (e.g., "Revenue code to HCPCS Alignment edit", "Laterality Policy-Disgnosis to Diagnosis")
-                edit_id = match.group(3)        # Edit ID (e.g., "RULERCTH00001", "RULELATE000001")
-                code = match.group(4)           # Code (e.g., "00W26", "00W17")
-            elif folder_name.startswith("GBDTS_"):
-                # GBDTS pattern: GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_sur
-                ts_number_raw = match.group(1)  # TS number (e.g., "70", "170")
-                model_name = match.group(2)     # Model name (e.g., "InappropriatePrimaryDiagnosis")
-                edit_id = match.group(3)        # Edit ID (e.g., "RULE00000376")
-                code = match.group(4)           # Code (e.g., "v16")
-            elif is_gbdf and len(match.groups()) == 4:
-                # GBDF catch-all pattern with 4 groups: TS_XX_ModelName_gbdf_mcr_EDIT_ID_CODE_sur
-                ts_number_raw = match.group(1)  # TS number (e.g., "170")
-                model_name = match.group(2)     # Model name
-                edit_id = match.group(3)        # Edit ID
-                code = match.group(4)           # Code
+            # Extract components based on pattern type
+            groups = match.groups()
+            if is_wgs_kernal:
+                # NYKTS pattern: 4 groups (ts, model_name, edit_id, code)
+                ts_number_raw, model_name, edit_id, code = groups[0], groups[1], groups[2], groups[3]
+            elif is_gbdf:
+                # GBDF patterns: 5 groups (ts, model_name, mcr/grs, edit_id, code)
+                ts_number_raw, model_name, _, edit_id, code = groups[0], groups[1], groups[2], groups[3], groups[4]
             else:
-                # Standard TS pattern: TS_01_REVENUE_WGS_CSBD_RULEEM000001_W04_sur
-                # or GBDF specific patterns with 3 groups: TS_47_Covid_gbdf_mcr_RULEEM000001_v04_sur
-                ts_number_raw = match.group(1)  # TS number (e.g., "1", "01", "47")
-                edit_id = match.group(2)        # Edit ID (e.g., "RULEEM000001")
-                code = match.group(3)           # Code (e.g., "v04", "00W28")
+                # WGS_CSBD patterns: Check if legacy REVENUE pattern (4 groups) or new pattern (5 groups)
+                if len(groups) == 4:
+                    # Legacy TS_XX_REVENUE pattern: 4 groups (ts, edit_id, code, suffix)
+                    ts_number_raw, edit_id, code = groups[0], groups[1], groups[2]
+                    model_name = "REVENUE"
+                else:
+                    # New patterns: 5 groups (ts, model_name, edit_id, code, suffix)
+                    ts_number_raw, model_name, edit_id, code = groups[0], groups[1], groups[2], groups[3]
             
             # Normalize TS number to handle different digit patterns
             ts_number = normalize_ts_number(ts_number_raw)
@@ -448,7 +244,7 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                 folder_configs = [("regression", regression_path)]
 
             # STAGE 5.2: Generate destination directory names
-            # Handle "payloads_sur", "ayloads_sur" (typo), and "_sur" patterns
+            # Handle "payloads_sur", "ayloads_sur" (typo variant), and "_sur" patterns
             if "_payloads_sur" in folder_name:
                 dest_folder_name = folder_name.replace("_payloads_sur", "_payloads_dis")
             elif "_ayloads_sur" in folder_name:
@@ -462,23 +258,23 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
             for folder_type, source_path in folder_configs:
                 # Generate destination directory based on model type and folder structure
                 if is_wgs_kernal:
-                    # WGS_NYK models go to WGS_KERNAL subdirectory
+                    # WGS_NYK models go to NYKTS subdirectory
                     if has_payloads_structure:
-                        dest_dir = os.path.join("renaming_jsons", "WGS_KERNAL", dest_folder_name, "payloads", folder_type)
+                        dest_dir = os.path.join("renaming_jsons", "NYKTS", dest_folder_name, "payloads", folder_type)
                     else:
-                        dest_dir = os.path.join("renaming_jsons", "WGS_KERNAL", dest_folder_name, folder_type)
+                        dest_dir = os.path.join("renaming_jsons", "NYKTS", dest_folder_name, folder_type)
                 elif is_gbdf:
-                    # GBDF models go to GBDF subdirectory
+                    # GBDF models go to GBDTS subdirectory
                     if has_payloads_structure:
-                        dest_dir = os.path.join("renaming_jsons", "GBDF", dest_folder_name, "payloads", folder_type)
+                        dest_dir = os.path.join("renaming_jsons", "GBDTS", dest_folder_name, "payloads", folder_type)
                     else:
-                        dest_dir = os.path.join("renaming_jsons", "GBDF", dest_folder_name, folder_type)
+                        dest_dir = os.path.join("renaming_jsons", "GBDTS", dest_folder_name, folder_type)
                 elif use_wgs_csbd_destination:
-                    # WGS_CSBD models with flag go to WGS_CSBD subdirectory
+                    # WGS_CSBD models with flag go to CSBDTS subdirectory
                     if has_payloads_structure and not is_gbdf:
-                        dest_dir = os.path.join("renaming_jsons", "WGS_CSBD", dest_folder_name, "payloads", folder_type)
+                        dest_dir = os.path.join("renaming_jsons", "CSBDTS", dest_folder_name, "payloads", folder_type)
                     else:
-                        dest_dir = os.path.join("renaming_jsons", "WGS_CSBD", dest_folder_name, folder_type)
+                        dest_dir = os.path.join("renaming_jsons", "CSBDTS", dest_folder_name, folder_type)
                 else:
                     # Default to renaming_jsons root
                     if has_payloads_structure and not is_gbdf:
