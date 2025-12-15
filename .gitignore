@@ -57,9 +57,10 @@ logs/
 # IDE temporary assets
 assets/
 
-
-
-
+# Environment variables
+.env
+.env.local
+.env.*.local
 
 
 

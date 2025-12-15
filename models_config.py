@@ -418,7 +418,7 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "no_match_procedure_gbdf_grs_RULENMP000001_v18.json"
         }
     ],
-    "WGS_KERNAL": [
+    "wgs_kernal": [
         {
             "ts_number": "122",
             "edit_id": "RULERCTH00001",
@@ -537,7 +537,7 @@ def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf
                     return discovered_models
                 else:
                     print("No WGS_NYK models found via dynamic discovery, falling back to static config")
-                    return STATIC_MODELS_CONFIG.get("wgs_nyk", [])
+                    return STATIC_MODELS_CONFIG.get("wgs_kernal", [])
             elif use_gbdf_mcr:
                 # Use dynamic discovery for GBDF MCR
                 discovered_models = discover_ts_folders("source_folder/GBDF", False)
@@ -584,7 +584,7 @@ def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf
         except Exception as e:
             print(f"Dynamic discovery failed: {e}, falling back to static config")
             if use_wgs_nyk:
-                return STATIC_MODELS_CONFIG.get("wgs_nyk", [])
+                return STATIC_MODELS_CONFIG.get("wgs_kernal", [])
             elif use_gbdf_mcr:
                 return STATIC_MODELS_CONFIG.get("gbdf_mcr", [])
             elif use_gbdf_grs:
@@ -593,7 +593,7 @@ def get_models_config(use_dynamic=True, use_wgs_csbd_destination=False, use_gbdf
                 return STATIC_MODELS_CONFIG.get("wgs_csbd", [])
     else:
         if use_wgs_nyk:
-            return STATIC_MODELS_CONFIG.get("wgs_nyk", [])
+            return STATIC_MODELS_CONFIG.get("wgs_kernal", [])
         elif use_gbdf_mcr:
             return STATIC_MODELS_CONFIG.get("gbdf_mcr", [])
         elif use_gbdf_grs:

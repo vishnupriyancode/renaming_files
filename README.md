@@ -566,6 +566,47 @@ python main_processor.py --wgs_nyk --NYKTS130 --list   # Generate timing report 
 python main_processor.py --help
 ```
 
+### RefDB Value Replacement Commands
+
+**RefDB** (Reference Database) functionality allows you to replace specific values in JSON files with predefined values from `refdb_values.json`. This is useful for standardizing test data across refdb-specific models.
+
+**Currently Supported RefDB Models:**
+- **WGS_CSBD**: CSBDTS_46 (Multiple E&M Same day), CSBDTS_47 (Multiple Billing of Obstetrical Services)
+- **WGS_KERNAL**: NYKTS_123 (Observation Services)
+
+**RefDB Value Replacement:**
+The `--refdb` flag automatically replaces the following variables in JSON files:
+- `HCID` - Healthcare ID
+- `PAT_BRTH_DT` - Patient Birth Date
+- `PAT_FRST_NME` - Patient First Name
+- `PAT_LAST_NM` - Patient Last Name
+- `PROV_TAX_ID` - Provider Tax ID
+- `BILLG_NPI` - Billing NPI
+- `NAT_EA2_RNDR_NPI` - National EA2 Renderer NPI
+
+**RefDB Commands:**
+```bash
+# Process WGS_CSBD refdb models with value replacement
+python main_processor.py --wgs_csbd --CSBDTS46 --refdb    # Process TS46 with refdb value replacement
+python main_processor.py --wgs_csbd --CSBDTS47 --refdb    # Process TS47 with refdb value replacement
+
+# Process WGS_NYK refdb models with value replacement
+python main_processor.py --wgs_nyk --NYKTS123 --refdb    # Process NYKTS123 with refdb value replacement
+
+# Process refdb models without Postman collection generation
+python main_processor.py --wgs_csbd --CSBDTS46 --refdb --no-postman
+python main_processor.py --wgs_csbd --CSBDTS47 --refdb --no-postman
+python main_processor.py --wgs_nyk --NYKTS123 --refdb --no-postman
+```
+
+**RefDB Configuration:**
+- Values are loaded from `refdb_values.json` based on the specified model type
+- The configuration file contains model-specific default values
+- Only refdb-specific models (CSBDTS_46, CSBDTS_47, NYKTS_123) will be processed when using `--refdb` flag
+- Files from non-refdb models will be skipped with a warning message
+
+**Note:** The `--refdb` flag must be used with a refdb-supported model. Attempting to use `--refdb` with non-refdb models will result in the refdb processing being skipped.
+
 **What these commands do:**
 - ✅ Rename files from 3-part format (`TC#XX_XXXXX#suffix.json`) to 5-part format (`TC#XX_XXXXX#edit_id#code#mapped_suffix.json`)
 - ✅ Move files to organized directory structure
@@ -714,8 +755,7 @@ The project follows a modular architecture with clear separation of concerns:
 4. **`postman_cli.py`** - Standalone CLI interface for Postman operations
 5. **`models_config.py`** - Configuration manager supporting both static and dynamic configurations
 6. **`dynamic_models.py`** - Auto-discovery engine that detects TS folders and extracts parameters
-7. **`excel_report_generator.py`** - Excel report generation with timing data and performance analytics
-8. **`report_generate.py`** - Timing report generation and analytics
+7. **`report_generate.py`** - Master report generation module (consolidated from excel_report_generator.py) - Excel report generation with timing data, performance analytics, and comprehensive reporting functionality
 
 ### **Data Flow:**
 ```
@@ -745,8 +785,7 @@ renaming_files/
 ├── postman_cli.py                     # CLI for Postman operations
 ├── models_config.py                   # Configuration for different test models
 ├── dynamic_models.py                  # Dynamic model discovery and management
-├── excel_report_generator.py          # Excel report generation with timing data
-├── report_generate.py                 # Timing report generation and analytics
+├── report_generate.py                 # Master report generation module (Excel reports, timing data, performance analytics)
 ├── requirements.txt                   # Python dependencies
 ├── Docs/                              # Documentation directory
 │   ├── project_architecture_diagram.md    # Visual architecture documentation
@@ -863,8 +902,9 @@ renaming_files/
 - **Professional Excel Reports**: Detailed reports with formatting, statistics, and model breakdowns
 - **KEY_CHK_CDN_NBR Generator**: Automatically generates random 11-digit numbers for KEY_CHK_CDN_NBR fields
 - **WGS_CSBD Header/Footer Transformation**: Applies proper header/footer structure to WGS_CSBD files
+- **RefDB Value Replacement**: Automatically replaces specific values (HCID, PAT_BRTH_DT, PAT_FRST_NME, PAT_LAST_NM, PROV_TAX_ID, BILLG_NPI, NAT_EA2_RNDR_NPI) in refdb-specific models using values from `refdb_values.json`
 - **Dynamic Model Discovery**: Automatically detects TS folders and extracts model parameters
-- **Modular Architecture**: Clean separation of concerns with dedicated modules (`rename_files.py`, `postman_generator.py`, `excel_report_generator.py`, etc.)
+- **Modular Architecture**: Clean separation of concerns with dedicated modules (`rename_files.py`, `postman_generator.py`, `report_generate.py`, etc.)
 - **Multiple Entry Points**: Both integrated (`main_processor.py`) and standalone (`postman_cli.py`) interfaces
 - **Error Handling**: Provides detailed logging and error reporting
 - **Batch Processing**: Processes multiple JSON files simultaneously
@@ -1045,6 +1085,11 @@ python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models
 python main_processor.py --gbdf_grs --all     # Process all GBDF GRS models
 python main_processor.py --wgs_nyk --all     # Process all WGS_NYK models
 
+# Process refdb models with value replacement (refdb-specific models only)
+python main_processor.py --wgs_csbd --CSBDTS46 --refdb    # Process TS46 with refdb value replacement
+python main_processor.py --wgs_csbd --CSBDTS47 --refdb    # Process TS47 with refdb value replacement
+python main_processor.py --wgs_nyk --NYKTS123 --refdb    # Process NYKTS123 with refdb value replacement
+
 # Process models without generating Postman collection
 python main_processor.py --wgs_csbd --CSBDTS07 --no-postman
 python main_processor.py --gbdf_mcr --GBDTS47 --no-postman
@@ -1071,6 +1116,7 @@ python main_processor.py --help
 - `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
 - `--NYKTS122`, `--NYKTS123`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`, `--NYKTS132`: Process WGS_NYK models (Revenue code to HCPCS Alignment edit WGS NYK, Observation Services WGS NYK, add_on without base WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
 - `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, --gbdf_grs, or --wgs_nyk flag)
+- `--refdb`: Apply refdb value replacement for refdb-specific models (CSBDTS_46, CSBDTS_47, NYKTS_123) - replaces HCID, PAT_BRTH_DT, PAT_FRST_NME, PAT_LAST_NM, PROV_TAX_ID, BILLG_NPI, NAT_EA2_RNDR_NPI with values from `refdb_values.json`
 - `--list`: List all available TS models (standalone) or generate timing report (with model flags)
 - `--no-postman`: Skip Postman collection generation
 - `--help`: Show help message with examples

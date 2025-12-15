@@ -26,17 +26,47 @@ import sys
 import subprocess
 import argparse
 import json
+from pathlib import Path
+from dotenv import load_dotenv
 from postman_generator import PostmanCollectionGenerator
-from excel_report_generator import ExcelReportGenerator, TimingTracker, get_excel_reporter, create_excel_reporter_for_model_type
+from report_generate import ExcelReportGenerator, TimingTracker, get_excel_reporter, create_excel_reporter_for_model_type
 from rename_files import rename_files, extract_model_info_from_directory
-from report_generate import (
-    extract_model_name_from_source_dir,
-    generate_timing_report_for_model,
-    generate_json_renaming_timing_report,
-    generate_excel_timing_report,
-    create_excel_reporter_for_processing,
-    create_excel_reporter_for_batch_processing
-)
+
+# Load environment variables from .env file
+env_path = Path(__file__).parent / '.env'
+load_dotenv(dotenv_path=env_path)
+
+# Optional report generation - gracefully handle if report_generate.py is missing or disabled
+# Check .env file for ENABLE_REPORT_GENERATION setting (default: True)
+# Set to 'false', 'False', '0', or comment out the line to disable
+REPORT_GENERATION_ENABLED = os.getenv('ENABLE_REPORT_GENERATION', 'true').lower() in ('true', '1', 'yes', 'on')
+try:
+    from report_generate import (
+        extract_model_name_from_source_dir,
+        generate_timing_report_for_model,
+        generate_json_renaming_timing_report,
+        generate_excel_timing_report,
+        create_excel_reporter_for_processing,
+        create_excel_reporter_for_batch_processing
+    )
+except ImportError:
+    # Report generation module not available - create dummy functions
+    REPORT_GENERATION_ENABLED = False
+    def extract_model_name_from_source_dir(source_dir):
+        return "Unknown"
+    def generate_timing_report_for_model(model_config, model_type):
+        pass
+    def generate_json_renaming_timing_report(timing_data, model_config, model_type, total_time):
+        pass
+    def generate_excel_timing_report(excel_reporter, model_type=None):
+        return None
+    def create_excel_reporter_for_processing(model_type=None):
+        return get_excel_reporter()
+    def create_excel_reporter_for_batch_processing(model_type=None):
+        return get_excel_reporter()
+
+from refdb_change import load_default_values, process_directory
+from pathlib import Path
 import re
 
 
@@ -86,8 +116,10 @@ def process_multiple_models(models_config, generate_postman=True, model_type=Non
     print("Starting Multi-Model Processing")
     print("=" * 80)
     
-    # Initialize Excel reporter session
-    excel_reporter = create_excel_reporter_for_batch_processing(model_type)
+    # Initialize Excel reporter session (only if report generation is enabled)
+    excel_reporter = None
+    if REPORT_GENERATION_ENABLED:
+        excel_reporter = create_excel_reporter_for_batch_processing(model_type)
     
     total_processed = 0
     successful_models = []
@@ -169,8 +201,9 @@ def process_multiple_models(models_config, generate_postman=True, model_type=Non
     
     print("\nTARGET All models processed!")
     
-    # Generate Excel timing report
-    generate_excel_timing_report(excel_reporter, model_type=model_type)
+    # Generate Excel timing report (only if report generation is enabled and reporter exists)
+    if REPORT_GENERATION_ENABLED and excel_reporter:
+        generate_excel_timing_report(excel_reporter, model_type=model_type)
     
     return successful_models, failed_models
 
@@ -293,6 +326,10 @@ Examples:
                        help="List all available TS models")
     parser.add_argument("--no-postman", action="store_true", 
                        help="Skip Postman collection generation")
+    parser.add_argument("--no-report", action="store_true",
+                       help="Disable Excel report generation (skip timing reports)")
+    parser.add_argument("--refdb", action="store_true",
+                       help="Apply refdb value replacement for refdb-specific models (CSBDTS_46, CSBDTS_47, NYKTS_123)")
     
     # Add custom parameter arguments
     parser.add_argument("--edit-id", type=str, help="Custom edit ID (e.g., rvn001)")
@@ -678,8 +715,24 @@ Examples:
     elif args.gbdf_grs:
         model_type = "GBDF_GRS"
     
-    # Create separate Excel reporter for this model type
-    excel_reporter = create_excel_reporter_for_processing(model_type)
+    # Check if report generation is disabled via command line or .env file
+    enable_reporting = REPORT_GENERATION_ENABLED and not args.no_report
+    
+    # Create separate Excel reporter for this model type (only if reporting is enabled)
+    excel_reporter = None
+    if enable_reporting:
+        excel_reporter = create_excel_reporter_for_processing(model_type)
+        env_setting = os.getenv('ENABLE_REPORT_GENERATION', 'true')
+        print(f"[INFO] Report generation is ENABLED (from .env: ENABLE_REPORT_GENERATION={env_setting})")
+    else:
+        if args.no_report:
+            print("[INFO] Report generation is DISABLED (--no-report flag)")
+        elif not REPORT_GENERATION_ENABLED:
+            env_setting = os.getenv('ENABLE_REPORT_GENERATION', 'not set')
+            if env_setting.lower() in ('false', '0', 'no', 'off'):
+                print(f"[INFO] Report generation is DISABLED (from .env: ENABLE_REPORT_GENERATION={env_setting})")
+            else:
+                print("[INFO] Report generation is DISABLED (report_generate.py not available)")
     
     print(f"\nSTARTING Processing {len(models_to_process)} model(s)...")
     print("=" * 60)
@@ -709,6 +762,44 @@ Examples:
                 postman_file_name=model_config.get('postman_file_name'),
                 excel_reporter=excel_reporter
             )
+            
+            # Apply refdb value replacement if --refdb flag is set
+            if args.refdb and renamed_files:
+                print(f"\nINFO Applying refdb value replacement for TS_{ts_number}...")
+                try:
+                    # Determine refdb model type based on model_type
+                    refdb_model = None
+                    if model_type == "WGS_CSBD":
+                        refdb_model = "wgs_csbd"
+                    elif model_type == "WGS_NYK":
+                        refdb_model = "wgs_kernal"
+                    
+                    if refdb_model:
+                        # Load refdb values from refdb_values.json
+                        refdb_replacements = load_default_values(refdb_model)
+                        
+                        # Process the destination directory with refdb values
+                        dest_path = Path(dest_dir)
+                        if dest_path.exists():
+                            successful_refdb, failed_refdb = process_directory(
+                                directory=dest_path,
+                                replacements=refdb_replacements,
+                                recursive=True,
+                                backup=False,  # Don't create backups during main processing
+                                model=refdb_model
+                            )
+                            if successful_refdb > 0:
+                                print(f"SUCCESS Refdb: Successfully processed {successful_refdb} file(s) with refdb values")
+                            if failed_refdb > 0:
+                                print(f"WARNING Refdb: {failed_refdb} file(s) failed refdb processing")
+                        else:
+                            print(f"WARNING Refdb: Destination directory not found: {dest_dir}")
+                    else:
+                        print(f"WARNING Refdb: Model type '{model_type}' is not a refdb-supported model")
+                        print(f"   Supported refdb models: WGS_CSBD (CSBDTS_46, CSBDTS_47), WGS_NYK (NYKTS_123)")
+                except Exception as refdb_error:
+                    print(f"WARNING Refdb processing failed: {refdb_error}")
+                    # Continue with normal processing even if refdb fails
             
             if renamed_files:
                 print(f"SUCCESS Model TS_{ts_number} ({edit_id}_{code}): Successfully processed {len(renamed_files)} files")
@@ -752,8 +843,9 @@ Examples:
         print(f"\nCELEBRATION Successfully processed {total_processed} files!")
         print("Files are now ready for API testing with Postman.")
         
-        # Generate Excel timing report for single model processing
-        generate_excel_timing_report(excel_reporter, model_type=model_type)
+        # Generate Excel timing report for single model processing (only if enabled)
+        if enable_reporting and excel_reporter:
+            generate_excel_timing_report(excel_reporter, model_type=model_type)
     else:
         print("\nERROR No files were processed.")
 

@@ -18,7 +18,7 @@ import re
 import shutil
 import json
 from postman_generator import PostmanCollectionGenerator
-from excel_report_generator import ExcelReportGenerator, TimingTracker, get_excel_reporter
+from report_generate import ExcelReportGenerator, TimingTracker, get_excel_reporter
 
 
 def extract_model_info_from_directory(dest_dir: str, renamed_files: list) -> dict:
