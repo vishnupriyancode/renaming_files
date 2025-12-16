@@ -54,6 +54,9 @@ logs/
 *.temp
 *.bak
 
+# Windows reserved device names (cannot be tracked by Git)
+nul
+
 # IDE temporary assets
 assets/
 

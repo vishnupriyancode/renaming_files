@@ -316,12 +316,26 @@ class PostmanCollectionGenerator:
         
         # Step 6.5: Create Postman collection directory structure with flexible naming
         # Extract TS number from directory name for consistent naming
-        ts_match = re.match(r'TS_(\d{1,3})_', dir_name)
-        if ts_match:
-            ts_number = ts_match.group(1)
-            collection_dir_name = f"TS_{ts_number}_collection"
+        # Handle CSBDTS_ prefix first, then TS_ prefix
+        csbdts_match = re.match(r'CSBDTS_(\d{1,3})_(.+?)_WGS_CSBD_', dir_name)
+        if csbdts_match:
+            ts_number = csbdts_match.group(1)
+            model_name = csbdts_match.group(2)
+            # Use the model name to create proper collection name
+            if "AntepartumServices" in model_name:
+                collection_dir_name = f"CSBDTS_{ts_number}_AntepartumServices_Collection"
+            elif "Observation_Services" in model_name:
+                collection_dir_name = f"CSBDTS_{ts_number}_Observation_Services_Collection"
+            else:
+                # Fallback: use directory name pattern
+                collection_dir_name = f"CSBDTS_{ts_number}_{model_name}_Collection"
         else:
-            collection_dir_name = f"{dir_name.replace(' ', '_')}_collection"
+            ts_match = re.match(r'TS_(\d{1,3})_', dir_name)
+            if ts_match:
+                ts_number = ts_match.group(1)
+                collection_dir_name = f"TS_{ts_number}_collection"
+            else:
+                collection_dir_name = f"{dir_name.replace(' ', '_')}_collection"
         
         collection_dir = self.output_dir / collection_dir_name
         collection_dir.mkdir(exist_ok=True)

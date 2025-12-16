@@ -362,6 +362,11 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
                     # For CSBD_TS48 style models, use the full descriptive name
                     base_collection_name = f"CSBD_TS_{ts_number}_Revenue code to HCPCS Alignment edit_Collection"
                     base_file_name = f"revenue_hcpcs_alignment_wgs_csbd_{edit_id}_{code}"
+                elif "AntepartumServices" in folder_name or edit_id.startswith("RULEANTP") or ts_number == "59":
+                    # For CSBDTS Antepartum Services models (TS_59), use the full descriptive name
+                    # Handle by folder name, edit_id (RULEANTP), or TS number (59)
+                    base_collection_name = f"CSBDTS_{ts_number}_AntepartumServices_Collection"
+                    base_file_name = f"AntepartumServices_wgs_csbd_{edit_id}_{code}"
                 elif "Observation_Services" in folder_name:
                     # For CSBDTS Observation Services models, use the full descriptive name
                     base_collection_name = f"CSBDTS_{ts_number}_Observation_Services_Collection"

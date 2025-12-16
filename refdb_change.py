@@ -34,12 +34,26 @@ import re
 from pathlib import Path
 from typing import Dict, Optional, List
 
+# Fix Windows encoding issues for Unicode characters in print statements
+if sys.platform == 'win32':
+    try:
+        # Set UTF-8 encoding for stdout and stderr on Windows
+        if hasattr(sys.stdout, 'reconfigure'):
+            sys.stdout.reconfigure(encoding='utf-8')
+        if hasattr(sys.stderr, 'reconfigure'):
+            sys.stderr.reconfigure(encoding='utf-8')
+    except (AttributeError, ValueError):
+        # Fallback: if reconfigure is not available, try to set encoding via environment
+        import io
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 # List of refdb-specific TS numbers that support refdb value replacement
 # Only files from these TS numbers will be processed by this script
 # Example refdb models: TS_46 (Multiple E&M Same day), TS_47 (Multiple Billing of Obstetrical Services)
 # To add more refdb models, add their TS numbers to the appropriate list below
 REFDB_TS_NUMBERS = {
-    "wgs_csbd": ["46", "47"],  # TS_46: Multiple E&M Same day, TS_47: Multiple Billing of Obstetrical Services
+    "wgs_csbd": ["46", "47","59"],  # TS_46: Multiple E&M Same day, TS_47: Multiple Billing of Obstetrical Services, TS_59: Antepartum Services
     "wgs_kernal": ["123"]  # NYKTS_123: Observation Services
 }
 

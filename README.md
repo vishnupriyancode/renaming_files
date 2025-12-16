@@ -34,6 +34,27 @@ A Python script for automatically renaming and organizing test case JSON files b
 
 ## 🔧 Recent Updates & Fixes
 
+**✅ CSBDTS59 RefDB Support & Windows Encoding Fix (Latest Update)**
+
+The project has been enhanced with refdb support for CSBDTS59 and Windows encoding improvements:
+
+- **✅ Added CSBDTS59 RefDB Support**: CSBDTS59 (Antepartum Services) is now supported for refdb value replacement
+- **✅ Windows Encoding Fix**: Fixed Unicode character encoding issues on Windows systems for refdb processing
+- **✅ Enhanced Error Handling**: Improved error messages and handling for refdb processing on Windows
+- **✅ UTF-8 Encoding**: Automatic UTF-8 encoding configuration for stdout/stderr on Windows
+- **✅ Comprehensive Documentation**: Updated all refdb examples and documentation to include CSBDTS59
+
+**Examples:**
+```bash
+# Process CSBDTS59 with refdb value replacement
+python main_processor.py --wgs_csbd --CSBDTS59 --refdb    # Process TS59 (Antepartum Services) with refdb value replacement
+
+# Process all refdb-supported WGS_CSBD models
+python main_processor.py --wgs_csbd --CSBDTS46 --refdb    # Process TS46 with refdb value replacement
+python main_processor.py --wgs_csbd --CSBDTS47 --refdb    # Process TS47 with refdb value replacement
+python main_processor.py --wgs_csbd --CSBDTS59 --refdb    # Process TS59 with refdb value replacement
+```
+
 **✅ WGS_NYK Model Support (Latest Update)**
 
 The project has been enhanced with support for WGS_NYK (Working Group Standards - New York Kernal) models:
@@ -334,9 +355,10 @@ python main_processor.py --wgs_csbd --CSBDTS53    # Process CSBDTS53 model (Obse
 python main_processor.py --wgs_csbd --CSBDTS54    # Process CSBDTS54 model (Observation Services)
 python main_processor.py --wgs_csbd --CSBDTS55    # Process CSBDTS55 model (Observation Services)
 python main_processor.py --wgs_csbd --CSBDTS56    # Process CSBDTS56 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS59    # Process CSBDTS59 model (Antepartum Services)
 
 # Process all WGS_CSBD models at once
-python main_processor.py --wgs_csbd --all     # Process all 27 WGS_CSBD models
+python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models
 ```
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
@@ -446,6 +468,7 @@ python main_processor.py --wgs_csbd --CSBDTS46    # Generates TS_46_Multiple E&M
 python main_processor.py --wgs_csbd --CSBDTS47    # Generates TS_47_Multiple Billing of Obstetrical Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS48    # Generates CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection
 python main_processor.py --wgs_csbd --CSBDTS49    # Generates CSBDTS_49_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS59    # Generates CSBDTS_59_AntepartumServices_Collection
 python main_processor.py --wgs_csbd --CSBDTS50    # Generates CSBDTS_50_Observation_Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS51    # Generates CSBDTS_51_Observation_Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS52    # Generates CSBDTS_52_Observation_Services_Collection
@@ -512,6 +535,7 @@ python main_processor.py --wgs_csbd --CSBDTS20 --no-postman
 python main_processor.py --wgs_csbd --CSBDTS46 --no-postman
 python main_processor.py --wgs_csbd --CSBDTS47 --no-postman
 python main_processor.py --wgs_csbd --CSBDTS48 --no-postman
+python main_processor.py --wgs_csbd --CSBDTS59 --no-postman
 python main_processor.py --wgs_csbd --all --no-postman
 
 # GBDF MCR models without Postman collection generation
@@ -571,7 +595,7 @@ python main_processor.py --help
 **RefDB** (Reference Database) functionality allows you to replace specific values in JSON files with predefined values from `refdb_values.json`. This is useful for standardizing test data across refdb-specific models.
 
 **Currently Supported RefDB Models:**
-- **WGS_CSBD**: CSBDTS_46 (Multiple E&M Same day), CSBDTS_47 (Multiple Billing of Obstetrical Services)
+- **WGS_CSBD**: CSBDTS_46 (Multiple E&M Same day), CSBDTS_47 (Multiple Billing of Obstetrical Services), CSBDTS_59 (Antepartum Services)
 - **WGS_KERNAL**: NYKTS_123 (Observation Services)
 
 **RefDB Value Replacement:**
@@ -589,6 +613,7 @@ The `--refdb` flag automatically replaces the following variables in JSON files:
 # Process WGS_CSBD refdb models with value replacement
 python main_processor.py --wgs_csbd --CSBDTS46 --refdb    # Process TS46 with refdb value replacement
 python main_processor.py --wgs_csbd --CSBDTS47 --refdb    # Process TS47 with refdb value replacement
+python main_processor.py --wgs_csbd --CSBDTS59 --refdb    # Process TS59 (Antepartum Services) with refdb value replacement
 
 # Process WGS_NYK refdb models with value replacement
 python main_processor.py --wgs_nyk --NYKTS123 --refdb    # Process NYKTS123 with refdb value replacement
@@ -596,14 +621,16 @@ python main_processor.py --wgs_nyk --NYKTS123 --refdb    # Process NYKTS123 with
 # Process refdb models without Postman collection generation
 python main_processor.py --wgs_csbd --CSBDTS46 --refdb --no-postman
 python main_processor.py --wgs_csbd --CSBDTS47 --refdb --no-postman
+python main_processor.py --wgs_csbd --CSBDTS59 --refdb --no-postman
 python main_processor.py --wgs_nyk --NYKTS123 --refdb --no-postman
 ```
 
 **RefDB Configuration:**
 - Values are loaded from `refdb_values.json` based on the specified model type
 - The configuration file contains model-specific default values
-- Only refdb-specific models (CSBDTS_46, CSBDTS_47, NYKTS_123) will be processed when using `--refdb` flag
+- Only refdb-specific models (CSBDTS_46, CSBDTS_47, CSBDTS_59, NYKTS_123) will be processed when using `--refdb` flag
 - Files from non-refdb models will be skipped with a warning message
+- Windows encoding issues have been resolved with automatic UTF-8 encoding configuration
 
 **Note:** The `--refdb` flag must be used with a refdb-supported model. Attempting to use `--refdb` with non-refdb models will result in the refdb processing being skipped.
 
@@ -1088,6 +1115,7 @@ python main_processor.py --wgs_nyk --all     # Process all WGS_NYK models
 # Process refdb models with value replacement (refdb-specific models only)
 python main_processor.py --wgs_csbd --CSBDTS46 --refdb    # Process TS46 with refdb value replacement
 python main_processor.py --wgs_csbd --CSBDTS47 --refdb    # Process TS47 with refdb value replacement
+python main_processor.py --wgs_csbd --CSBDTS59 --refdb    # Process TS59 (Antepartum Services) with refdb value replacement
 python main_processor.py --wgs_nyk --NYKTS123 --refdb    # Process NYKTS123 with refdb value replacement
 
 # Process models without generating Postman collection
@@ -1110,13 +1138,13 @@ python main_processor.py --help
 - `--gbdf_grs`: **REQUIRED** flag for GBDF GRS model processing
 - `--wgs_nyk`: **REQUIRED** flag for WGS_NYK TS model processing
 - `--CSBDTS01` through `--CSBDTS15`: Process specific WGS_CSBD TS models
-- `--CSBDTS20`, `--CSBDTS46`, `--CSBDTS47`, `--CSBDTS48`: Process additional WGS_CSBD TS models (RadioservicesbilledwithoutRadiopharma, Multiple E&M Same day, Multiple Billing of Obstetrical Services, Revenue code to HCPCS Alignment edit)
+- `--CSBDTS20`, `--CSBDTS46`, `--CSBDTS47`, `--CSBDTS48`, `--CSBDTS59`: Process additional WGS_CSBD TS models (RadioservicesbilledwithoutRadiopharma, Multiple E&M Same day, Multiple Billing of Obstetrical Services, Revenue code to HCPCS Alignment edit, Antepartum Services)
 - `--CSBDTS50` through `--CSBDTS56`: Process Observation Services WGS_CSBD models
 - `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS61`, `--GBDTS70`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, Unspecified dx code prof GBDF MCR, InappropriatePrimaryDiagnosis GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
 - `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
 - `--NYKTS122`, `--NYKTS123`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`, `--NYKTS132`: Process WGS_NYK models (Revenue code to HCPCS Alignment edit WGS NYK, Observation Services WGS NYK, add_on without base WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
 - `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, --gbdf_grs, or --wgs_nyk flag)
-- `--refdb`: Apply refdb value replacement for refdb-specific models (CSBDTS_46, CSBDTS_47, NYKTS_123) - replaces HCID, PAT_BRTH_DT, PAT_FRST_NME, PAT_LAST_NM, PROV_TAX_ID, BILLG_NPI, NAT_EA2_RNDR_NPI with values from `refdb_values.json`
+- `--refdb`: Apply refdb value replacement for refdb-specific models (CSBDTS_46, CSBDTS_47, CSBDTS_59, NYKTS_123) - replaces HCID, PAT_BRTH_DT, PAT_FRST_NME, PAT_LAST_NM, PROV_TAX_ID, BILLG_NPI, NAT_EA2_RNDR_NPI with values from `refdb_values.json`
 - `--list`: List all available TS models (standalone) or generate timing report (with model flags)
 - `--no-postman`: Skip Postman collection generation
 - `--help`: Show help message with examples
@@ -1806,6 +1834,15 @@ The scripts include comprehensive error handling:
    - Verify that renamed files are in the correct location
    - Ensure JSON files are valid and readable
 
+12. **Windows Encoding Errors (RefDB Processing)**
+   ```
+   WARNING Refdb processing failed: 'charmap' codec can't encode character '\u26a0' in position 2
+   ```
+   - **Status**: ✅ **FIXED** - This issue has been resolved in the latest version
+   - **Solution**: The script now automatically configures UTF-8 encoding for stdout/stderr on Windows
+   - **Note**: If you still encounter encoding issues, ensure you're using the latest version of `refdb_change.py`
+   - **Workaround**: The refdb processing will continue even if there are encoding warnings, but Unicode characters in output may not display correctly on older Windows systems
+
 ### Debug Mode
 To add more detailed logging, you can modify the scripts to include debug information:
 
@@ -1883,7 +1920,7 @@ The project has been comprehensively updated with modern architecture and enhanc
 
 ### 🚀 Quick Commands:
 ```bash
-# Process WGS_CSBD models (TS01-TS15, TS20, TS46-TS47, CSBD_TS48 supported with --wgs_csbd flag)
+# Process WGS_CSBD models (TS01-TS15, TS20, TS46-TS47, CSBD_TS48, TS59 supported with --wgs_csbd flag)
 python main_processor.py --wgs_csbd --CSBDTS01    # Covid Collection
 python main_processor.py --wgs_csbd --CSBDTS02    # Laterality Collection
 python main_processor.py --wgs_csbd --CSBDTS03    # Revenue Sub Edit 5 Collection
@@ -1903,6 +1940,7 @@ python main_processor.py --wgs_csbd --CSBDTS20    # RadioservicesbilledwithoutRa
 python main_processor.py --wgs_csbd --CSBDTS46    # Multiple E&M Same day Collection
 python main_processor.py --wgs_csbd --CSBDTS47    # Multiple Billing of Obstetrical Services Collection
 python main_processor.py --wgs_csbd --CSBDTS48    # Revenue code to HCPCS Alignment edit Collection
+python main_processor.py --wgs_csbd --CSBDTS59    # Antepartum Services Collection
 
 # Process GBDF MCR models (with --gbdf_mcr flag)
 python main_processor.py --gbdf_mcr --GBDTS47    # Covid GBDF MCR Collection
