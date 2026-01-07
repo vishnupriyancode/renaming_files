@@ -99,6 +99,7 @@ class ExcelReportGenerator:
             "Model Name",
             "Edit ID",
             "EOB Code",
+            "Type",
             "Naming Convention Time (ms)",
             "Postman Collection Time (ms)",
             "Total Time (ms)",
@@ -123,7 +124,8 @@ class ExcelReportGenerator:
                          eob_code: str,
                          naming_convention_time_ms: float,
                          postman_collection_time_ms: float = 0.0,
-                         status: str = "Success"):
+                         status: str = "Success",
+                         type: str = "regression"):
         """
         Add a timing record to the current session.
         
@@ -136,6 +138,7 @@ class ExcelReportGenerator:
             naming_convention_time_ms: Time taken for naming convention (ms)
             postman_collection_time_ms: Time taken for Postman collection (ms)
             status: Operation status (Success, Failed, etc.)
+            type: Type of test (regression or smoke)
         """
         total_time = naming_convention_time_ms + postman_collection_time_ms
         average_time = total_time / 2 if total_time > 0 else 0.0
@@ -146,6 +149,7 @@ class ExcelReportGenerator:
             "Model Name": model_name,
             "Edit ID": edit_id,
             "EOB Code": eob_code,
+            "Type": type,
             "Naming Convention Time (ms)": round(naming_convention_time_ms, 2),
             "Postman Collection Time (ms)": round(postman_collection_time_ms, 2),
             "Total Time (ms)": round(total_time, 2),
@@ -248,7 +252,7 @@ class ExcelReportGenerator:
             for col in range(1, len(self.column_headers) + 1):
                 cell = ws.cell(row=row, column=col)
                 cell.border = border
-                if col in [5, 6, 7, 8]:  # Time columns
+                if col in [7, 8, 9, 10]:  # Time columns (adjusted for new Type column)
                     cell.alignment = center_alignment
                     cell.number_format = '0.00'
         
@@ -558,6 +562,15 @@ def generate_timing_report_for_model(model_config, model_type):
             # Extract model name from directory structure
             model_name = extract_model_name_from_source_dir(model_config.get('source_dir', ''))
             
+            # Extract type (regression or smoke) from source_dir
+            test_type = "regression"  # default
+            source_dir = model_config.get('source_dir', '')
+            if source_dir:
+                if "smoke" in source_dir.lower():
+                    test_type = "smoke"
+                elif "regression" in source_dir.lower():
+                    test_type = "regression"
+            
             # Simulate Postman collection generation time (since we're not actually generating it in timing reports)
             # This gives a more realistic estimate based on typical Postman collection generation times
             postman_collection_time = max(0.5, file_processing_time * 0.15)  # At least 0.5ms, or 15% of processing time
@@ -569,6 +582,7 @@ def generate_timing_report_for_model(model_config, model_type):
                 "Model Name": model_name,
                 "Edit ID": model_config['edit_id'],
                 "EOB Code": model_config['code'],
+                "Type": test_type,
                 "Naming Convention Time (ms)": file_processing_time,
                 "Postman Collection Time (ms)": round(postman_collection_time, 2),
                 "Total Time (ms)": file_processing_time + postman_collection_time,
@@ -586,12 +600,22 @@ def generate_timing_report_for_model(model_config, model_type):
             # Extract model name from directory structure (same logic as success case)
             model_name = extract_model_name_from_source_dir(model_config.get('source_dir', ''))
             
+            # Extract type (regression or smoke) from source_dir
+            test_type = "regression"  # default
+            source_dir = model_config.get('source_dir', '')
+            if source_dir:
+                if "smoke" in source_dir.lower():
+                    test_type = "smoke"
+                elif "regression" in source_dir.lower():
+                    test_type = "regression"
+            
             timing_data.append({
                 "TC#ID": f"TC#{filename}",
                 "Model LOB": model_type,
                 "Model Name": model_name,
                 "Edit ID": model_config['edit_id'],
                 "EOB Code": model_config['code'],
+                "Type": test_type,
                 "Naming Convention Time (ms)": 0.0,
                 "Postman Collection Time (ms)": 0.0,
                 "Total Time (ms)": 0.0,

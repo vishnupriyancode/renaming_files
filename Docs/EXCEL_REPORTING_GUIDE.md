@@ -147,7 +147,7 @@ TIMING SUMMARY:
 ### Excel Report Sample
 | TC#ID | Model LOB | Model Name | Edit ID | EOB Code | Naming Convention Time (ms) | Postman Collection Time (ms) | Total Time (ms) | Average Time (ms) | Timestamp | Status |
 |-------|-----------|------------|---------|----------|----------------------------|------------------------------|-----------------|-------------------|-----------|--------|
-| TS_01 | WGS_CSBD | Covid | RULEEM000001 | W04 | 150.50 | 75.20 | 225.70 | 112.85 | 2025-10-16 08:24:15 | Success |
+| TS_01 | WGS_CSBD | Covid | RULEEM000001 | 00W04 | 150.50 | 75.20 | 225.70 | 112.85 | 2025-10-16 08:24:15 | Success |
 | TS_47 | GBDF_MCR | Covid | RULEEM000001 | v04 | 200.30 | 100.10 | 300.40 | 150.20 | 2025-10-16 08:24:16 | Success |
 | TS_139 | GBDF_GRS | Multiple E&M Same day | RULEEMSD000002 | v09 | 180.70 | 90.50 | 271.20 | 135.60 | 2025-10-16 08:24:17 | Success |
 

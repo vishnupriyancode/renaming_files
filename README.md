@@ -265,7 +265,7 @@ postman_collections/
 
 renaming_jsons/
 ├── WGS_CSBD/                                    # WGS_CSBD Processed Files
-│   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
+│   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_00W04_dis/
 │   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
 │   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/
 │   ├── TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/
@@ -820,9 +820,9 @@ renaming_files/
 │   └── FILE_CONNECTIONS_DEMO_GUIDE.md    # File architecture and connections demo guide
 ├── renaming_jsons/                    # Output directory for renamed files
 │   ├── WGS_CSBD/                      # WGS_CSBD processed files
-│   │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis/
+│   │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_00W04_dis/
 │   │   │   └── regression/
-│   │   │       └── TC#01_sample#RULEEM000001#W04#LR.json
+│   │   │       └── TC#01_sample#RULEEM000001#00W04#LR.json
 │   │   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/
 │   │   │   └── regression/
 │   │   │       └── TC#01_sample#RULELATE000001#00W17#NR.json
@@ -904,7 +904,7 @@ renaming_files/
 │   └── list_reports/                  # List-based reports and analytics
 ├── source_folder/                     # Source directory (original files)
 │   ├── WGS_CSBD/                      # WGS_CSBD source files
-│   │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_W04_sur/
+│   │   ├── TS_01_Covid_WGS_CSBD_RULEEM000001_00W04_sur/
 │   │   ├── TS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur/
 │   │   ├── TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur/
 │   │   ├── TS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_sur/
@@ -1304,22 +1304,22 @@ $ python main_processor.py --wgs_csbd --CSBDTS01
 🚀 Processing 1 model(s)...
 ============================================================
 
-📋 Processing Model 1/1: TS_01 (RULEEM000001_W04)
+📋 Processing Model 1/1: TS_01 (RULEEM000001_00W04)
 ----------------------------------------
 Files to be renamed and moved:
 ============================================================
 Current: TC#01_od#deny.json
 Converting to new template...
-New:     TC#01_od#RULEEM000001#W04#LR.json
-Moving to: renaming_jsons\TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis\regression
+New:     TC#01_od#RULEEM000001#00W04#LR.json
+Moving to: renaming_jsons\TS_01_Covid_WGS_CSBD_RULEEM000001_00W04_dis\regression
 ----------------------------------------
 [INFO] Generated random 11-digit number for KEY_CHK_CDN_NBR (payload level): 62620451899
-✓ Successfully copied and renamed: TC#01_od#deny.json → TC#01_od#RULEEM000001#W04#LR.json
+✓ Successfully copied and renamed: TC#01_od#deny.json → TC#01_od#RULEEM000001#00W04#LR.json
 ✓ Removed original file: TC#01_od#deny.json
 
 ============================================================
 Renaming and moving completed!
-Files moved to: renaming_jsons\TS_01_Covid_WGS_CSBD_RULEEM000001_W04_dis\regression
+Files moved to: renaming_jsons\TS_01_Covid_WGS_CSBD_RULEEM000001_00W04_dis\regression
 
 ============================================================
 Generating Postman collection...
@@ -1338,7 +1338,7 @@ To use this collection:
 3. Select the file: postman_collections\TS_01_Covid_Collection\postman_collection.json
 4. Start testing your APIs!
 
-✅ Model TS_01 (RULEEM000001_W04): Successfully processed 1 files
+✅ Model TS_01 (RULEEM000001_00W04): Successfully processed 1 files
 
 ============================================================
 📊 PROCESSING SUMMARY
@@ -1348,7 +1348,7 @@ Successful models: 1
 Total files processed: 1
 
 ✅ SUCCESSFUL MODELS:
-   • TS_01 (RULEEM000001_W04): 1 files
+   • TS_01 (RULEEM000001_00W04): 1 files
 
 📦 POSTMAN COLLECTIONS GENERATED:
 To use these collections:

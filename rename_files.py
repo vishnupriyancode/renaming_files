@@ -767,6 +767,14 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
         # Extract model information from directory structure
         model_info = extract_model_info_from_directory(dest_dir, renamed_files)
         
+        # Extract type (regression or smoke) from source_dir
+        test_type = "regression"  # default
+        if source_dir:
+            if "smoke" in source_dir.lower():
+                test_type = "smoke"
+            elif "regression" in source_dir.lower():
+                test_type = "regression"
+        
         # Add timing record with extracted information
         excel_reporter.add_timing_record(
             tc_id=model_info["tc_id"],
@@ -776,7 +784,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             eob_code=model_info["eob_code"],
             naming_convention_time_ms=naming_convention_time,
             postman_collection_time_ms=postman_collection_time,
-            status="Success" if renamed_files else "Failed"
+            status="Success" if renamed_files else "Failed",
+            type=test_type
         )
         
         print(f"[TIMING] Added timing record: {model_info['tc_id']} - {model_info['model_lob']} - {model_info['model_name']} - Total: {naming_convention_time + postman_collection_time:.2f}ms")
