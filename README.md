@@ -16,6 +16,7 @@ A Python script for automatically renaming and organizing test case JSON files b
 - [Naming Convention](#naming-convention)
 - [Parameters](#parameters)
 - [Usage](#usage)
+- [Auto Edit Processor](#-auto-edit-processor)
 - [Postman Collection Features](#postman-collection-features)
 - [Example Output](#example-output)
 - [File Structure](#file-structure)
@@ -355,6 +356,7 @@ python main_processor.py --wgs_csbd --CSBDTS53    # Process CSBDTS53 model (Obse
 python main_processor.py --wgs_csbd --CSBDTS54    # Process CSBDTS54 model (Observation Services)
 python main_processor.py --wgs_csbd --CSBDTS55    # Process CSBDTS55 model (Observation Services)
 python main_processor.py --wgs_csbd --CSBDTS56    # Process CSBDTS56 model (Observation Services)
+python main_processor.py --wgs_csbd --CSBDTS57    # Process CSBDTS57 model (add_on without base)
 python main_processor.py --wgs_csbd --CSBDTS59    # Process CSBDTS59 model (Antepartum Services)
 
 # Process all WGS_CSBD models at once
@@ -418,17 +420,17 @@ python main_processor.py --wgs_nyk --all     # Process all 10 WGS_NYK models
 ### Available Models Overview
 | Model Type | Count | TS Numbers | Description |
 |------------|-------|------------|-------------|
-| **WGS_CSBD** | 27 | TS01-TS15, TS20, TS46-TS47, CSBD_TS48, CSBDTS50-CSBDTS56 | Healthcare Claims Processing |
+| **WGS_CSBD** | 29 | TS01-TS15, TS20, TS46-TS49, CSBDTS50-CSBDTS57, TS59 | Healthcare Claims Processing |
 | **GBDF_MCR** | 9 | TS47, TS48, TS60, TS61, TS70, TS138, TS140, TS144, TS146 | Global Burden of Disease Foundation - Medical Claims Research |
 | **GBDF_GRS** | 8 | TS49, TS59, TS61, TS62, TS139, TS141, TS145, TS147 | Global Burden of Disease Foundation - Global Research Services |
 | **WGS_NYK** | 10 | TS122-TS130, TS132 | Working Group Standards - New York Kernal (Revenue code to HCPCS Alignment edit, Observation Services) |
-| **TOTAL** | **54** | | **All Available Models** |
+| **TOTAL** | **56** | | **All Available Models** |
 
 ### Quick Command Reference
 ```bash
 # Process ALL models of each type
-python main_processor.py --wgs_csbd --all     # All 27 WGS_CSBD models
-python main_processor.py --gbdf_mcr --all     # All 8 GBDF MCR models  
+python main_processor.py --wgs_csbd --all     # All 29 WGS_CSBD models
+python main_processor.py --gbdf_mcr --all     # All 9 GBDF MCR models  
 python main_processor.py --gbdf_grs --all     # All 8 GBDF GRS models
 python main_processor.py --wgs_nyk --all     # All 10 WGS_NYK models
 
@@ -468,7 +470,6 @@ python main_processor.py --wgs_csbd --CSBDTS46    # Generates TS_46_Multiple E&M
 python main_processor.py --wgs_csbd --CSBDTS47    # Generates TS_47_Multiple Billing of Obstetrical Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS48    # Generates CSBD_TS_48_Revenue code to HCPCS Alignment edit_Collection
 python main_processor.py --wgs_csbd --CSBDTS49    # Generates CSBDTS_49_Observation_Services_Collection
-python main_processor.py --wgs_csbd --CSBDTS59    # Generates CSBDTS_59_AntepartumServices_Collection
 python main_processor.py --wgs_csbd --CSBDTS50    # Generates CSBDTS_50_Observation_Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS51    # Generates CSBDTS_51_Observation_Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS52    # Generates CSBDTS_52_Observation_Services_Collection
@@ -476,6 +477,8 @@ python main_processor.py --wgs_csbd --CSBDTS53    # Generates CSBDTS_53_Observat
 python main_processor.py --wgs_csbd --CSBDTS54    # Generates CSBDTS_54_Observation_Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS55    # Generates CSBDTS_55_Observation_Services_Collection
 python main_processor.py --wgs_csbd --CSBDTS56    # Generates CSBDTS_56_Observation_Services_Collection
+python main_processor.py --wgs_csbd --CSBDTS57    # Generates CSBDTS_57_add_on without base_Collection
+python main_processor.py --wgs_csbd --CSBDTS59    # Generates CSBDTS_59_AntepartumServices_Collection
 python main_processor.py --wgs_csbd --all     # Generates collections for all WGS_CSBD models
 
 # GBDF MCR models with Postman collection generation (Recommended format: --GBDTSXX)
@@ -643,7 +646,7 @@ python main_processor.py --wgs_nyk --NYKTS123 --refdb --no-postman
 
 **✅ Verification Status:**
 
-### WGS_CSBD Models (27 total):
+### WGS_CSBD Models (29 total):
 - `python main_processor.py --wgs_csbd --CSBDTS01` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS02` - **TESTED & WORKING** ✓  
 - `python main_processor.py --wgs_csbd --CSBDTS03` - **TESTED & WORKING** ✓
@@ -663,7 +666,7 @@ python main_processor.py --wgs_nyk --NYKTS123 --refdb --no-postman
 - `python main_processor.py --wgs_csbd --CSBDTS46` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS47` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS48` - **TESTED & WORKING** ✓
-- `python main_processor.py --wgs_csbd --CSBDTS56` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS49` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS50` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS51` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS52` - **TESTED & WORKING** ✓
@@ -671,6 +674,8 @@ python main_processor.py --wgs_nyk --NYKTS123 --refdb --no-postman
 - `python main_processor.py --wgs_csbd --CSBDTS54` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS55` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --CSBDTS56` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS57` - **TESTED & WORKING** ✓
+- `python main_processor.py --wgs_csbd --CSBDTS59` - **TESTED & WORKING** ✓
 - `python main_processor.py --wgs_csbd --all` - **TESTED & WORKING** ✓
 
 ### GBDF_MCR Models:
@@ -733,7 +738,7 @@ This project automatically processes test case JSON files from a source director
 - Recovery room reimbursement
 - HCPCS (Healthcare Common Procedure Coding System) crosswalks
 - Incident services facility claims
-- Observation Services (CSBDTS50-CSBDTS56)
+- Observation Services (CSBDTS49, CSBDTS50-CSBDTS56)
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
 **GBDF_MCR** stands for **G**lobal **B**urden of **D**isease **F**oundation - **M**edical **C**laims **R**esearch. These models are specifically designed for:
@@ -1138,8 +1143,8 @@ python main_processor.py --help
 - `--gbdf_grs`: **REQUIRED** flag for GBDF GRS model processing
 - `--wgs_nyk`: **REQUIRED** flag for WGS_NYK TS model processing
 - `--CSBDTS01` through `--CSBDTS15`: Process specific WGS_CSBD TS models
-- `--CSBDTS20`, `--CSBDTS46`, `--CSBDTS47`, `--CSBDTS48`, `--CSBDTS59`: Process additional WGS_CSBD TS models (RadioservicesbilledwithoutRadiopharma, Multiple E&M Same day, Multiple Billing of Obstetrical Services, Revenue code to HCPCS Alignment edit, Antepartum Services)
-- `--CSBDTS50` through `--CSBDTS56`: Process Observation Services WGS_CSBD models
+- `--CSBDTS20`, `--CSBDTS46`, `--CSBDTS47`, `--CSBDTS48`, `--CSBDTS57`, `--CSBDTS59`: Process additional WGS_CSBD TS models (RadioservicesbilledwithoutRadiopharma, Multiple E&M Same day, Multiple Billing of Obstetrical Services, Revenue code to HCPCS Alignment edit, add_on without base, Antepartum Services)
+- `--CSBDTS49` through `--CSBDTS56`: Process Observation Services WGS_CSBD models
 - `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS61`, `--GBDTS70`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, Unspecified dx code prof GBDF MCR, InappropriatePrimaryDiagnosis GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
 - `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
 - `--NYKTS122`, `--NYKTS123`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`, `--NYKTS132`: Process WGS_NYK models (Revenue code to HCPCS Alignment edit WGS NYK, Observation Services WGS NYK, add_on without base WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
@@ -1261,6 +1266,166 @@ The file renaming functionality is handled by the `rename_files.py` module, whic
 3. **Collection Structure**: Builds Postman collection with metadata
 4. **File Generation**: Saves collection in Postman-compatible JSON format
 5. **Validation**: Ensures collection structure is correct
+
+## 🤖 Auto Edit Processor
+
+The `auto_edit_processor.py` script automates the process of adding new model configurations to the project. It reads edit information from `edits_list.xlsx` and automatically generates entries in `models_config.py`, eliminating the need for manual configuration.
+
+### Overview
+
+The Auto Edit Processor:
+1. Reads edits from `edits_list.xlsx` Excel file
+2. Parses edit information from the "List of Edits that need to be Automated" column
+3. Extracts EDIT ID, model name with LOB, and EOB code
+4. Generates config entries in `STATIC_MODELS_CONFIG` format
+5. Checks if command already exists to avoid duplicates
+6. Updates `models_config.py` with new entries
+7. Updates Excel file with command status
+
+### Prerequisites
+
+- Python 3.6 or higher
+- `pandas` library (for Excel file processing)
+- `openpyxl` library (for Excel file writing)
+- `edits_list.xlsx` file with proper structure
+
+### Excel File Structure
+
+The `edits_list.xlsx` file should contain sheets for different model types:
+- **WGS_CSBD**: For WGS_CSBD models
+- **GBDF**: For GBDF MCR models
+- **KERNAL**: For WGS_NYK (Kernal) models
+
+Each sheet should have the following columns:
+- **List of Edits that need to be Automated**: Contains edit strings in format like `RULEEM000001~covid~wgs~csbd~00W17--live`
+- **Test Sutie ID**: (Optional) Will be populated with generated TS number
+- **Cmd status**: (Optional) Will be set to "Created" after processing
+
+### Edit String Format
+
+The script supports flexible edit string formats:
+- **Standard format**: `RULEEM000001~covid~wgs~csbd~00W17--live` (5 parts)
+- **Short format**: `RULESUB4000001~Expansion on sub-edit4--live` (2 parts)
+- **Any format**: `RULEXXX~part1~part2~...~partN--live` (any N parts)
+
+The parser automatically:
+- Extracts EDIT ID (first part before `~`)
+- Finds EOB code (patterns like `00W04`, `v04`, `00W17`, etc.)
+- Builds model name from remaining parts
+- Handles `--live` suffix
+
+### Usage
+
+#### Basic Usage
+
+```bash
+# Process WGS_CSBD sheet (default)
+python auto_edit_processor.py
+
+# Process specific sheet
+python auto_edit_processor.py --sheet WGS_CSBD
+python auto_edit_processor.py --sheet GBDF
+python auto_edit_processor.py --sheet KERNAL
+
+# Use custom Excel file
+python auto_edit_processor.py --excel my_edits.xlsx
+
+# Dry run (preview changes without updating files)
+python auto_edit_processor.py --dry-run
+```
+
+#### Command Options
+
+- `--sheet SHEET_NAME`: Excel sheet name to process (default: `WGS_CSBD`)
+  - Options: `WGS_CSBD`, `GBDF`, `KERNAL`
+- `--excel EXCEL_PATH`: Path to Excel file (default: `edits_list.xlsx`)
+- `--dry-run`: Preview changes without updating files
+
+### How It Works
+
+1. **Read Excel File**: Loads the specified sheet from `edits_list.xlsx`
+2. **Parse Edit Strings**: Extracts EDIT ID, model name, and EOB code from each row
+3. **Check Existing Configs**: Verifies if edit already exists in `models_config.py`
+4. **Generate TS Number**: Automatically assigns next available TS number
+5. **Generate Config Entry**: Creates complete configuration dictionary
+6. **Update Files**: 
+   - Adds new entries to `models_config.py`
+   - Updates Excel file with Test Suite ID and command status
+
+### Example Output
+
+```
+============================================================
+Processing edits from WGS_CSBD sheet
+============================================================
+
+[INFO] Processing edit: RULEEM000001
+  Model: covid_wgs_csbd
+  EOB Code: 00W04
+  [SUCCESS] Generated config for TS58
+  Command: python main_processor.py --wgs_csbd --CSBDTS58
+
+============================================================
+SUMMARY: Generated 1 new config entries
+============================================================
+
+TS58: RULEEM000001 - python main_processor.py --wgs_csbd --CSBDTS58
+
+============================================================
+Updating files...
+============================================================
+
+[SUCCESS] Updated models_config.py with 1 new entries
+[SUCCESS] Updated edits_list.xlsx with command information
+
+============================================================
+Processing complete!
+============================================================
+```
+
+### Features
+
+- **Automatic TS Number Assignment**: Finds next available TS number automatically
+- **Duplicate Detection**: Checks for existing edit IDs and EOB codes
+- **Flexible Parsing**: Handles various edit string formats
+- **EOB Code Detection**: Automatically finds EOB codes in multiple formats
+- **Excel Integration**: Updates Excel file with generated commands
+- **Dry Run Mode**: Preview changes before applying
+- **Error Handling**: Skips invalid entries with clear error messages
+
+### Generated Configuration
+
+The script generates configuration entries in this format:
+
+```python
+{
+    "ts_number": "58",
+    "edit_id": "RULEEM000001",
+    "code": "00W04",
+    "source_dir": "source_folder/WGS_CSBD/CSBDTS_58_Covid_WGS_CSBD_RULEEM000001_00W04_sur/payloads/regression",
+    "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_58_Covid_WGS_CSBD_RULEEM000001_00W04_dis/payloads/regression",
+    "postman_collection_name": "CSBDTS_58_Covid_Collection",
+    "postman_file_name": "covid_wgs_csbd_RULEEM000001_00W04.json"
+}
+```
+
+### Warnings and Notes
+
+- **EOB Code Placeholder**: If EOB code is not found, uses `00W00` as placeholder - verify and update manually if needed
+- **Existing Commands**: Script warns if command already exists in Excel but continues processing
+- **Duplicate Edit IDs**: Script skips entries that already exist with same EDIT ID and EOB code
+- **Test Suite ID**: If Test Suite ID is already set in Excel, script uses that TS number instead of generating new one
+
+### Troubleshooting
+
+**Issue**: "Column 'List of Edits that need to be Automated' not found"
+- **Solution**: Ensure the Excel sheet has the correct column name
+
+**Issue**: "EOB code not found - using placeholder"
+- **Solution**: Verify edit string contains EOB code (e.g., `00W04`, `v17`) or manually update in `models_config.py` after processing
+
+**Issue**: "Command already exists"
+- **Solution**: Script will skip duplicate entries. Check Excel file for existing commands
 
 ## Postman Collection Features
 
@@ -1920,7 +2085,7 @@ The project has been comprehensively updated with modern architecture and enhanc
 
 ### 🚀 Quick Commands:
 ```bash
-# Process WGS_CSBD models (TS01-TS15, TS20, TS46-TS47, CSBD_TS48, TS59 supported with --wgs_csbd flag)
+# Process WGS_CSBD models (TS01-TS15, TS20, TS46-TS49, CSBDTS50-CSBDTS57, TS59 supported with --wgs_csbd flag)
 python main_processor.py --wgs_csbd --CSBDTS01    # Covid Collection
 python main_processor.py --wgs_csbd --CSBDTS02    # Laterality Collection
 python main_processor.py --wgs_csbd --CSBDTS03    # Revenue Sub Edit 5 Collection

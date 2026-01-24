@@ -252,15 +252,6 @@ STATIC_MODELS_CONFIG = {
         "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00008_00W28.json"
     },
     {
-        "ts_number": "59",
-        "edit_id": "RULESUB4000001",
-        "code": "00W00",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_59_Wgs_WGS_CSBD_RULESUB4000001_00W00_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_59_Wgs_WGS_CSBD_RULESUB4000001_00W00_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_59_Wgs_Collection",
-        "postman_file_name": "wgs_csbd_expansion_on_sub_edit4_RULESUB4000001_00W00.json"
-    },
-    {
         "ts_number": "57",
         "edit_id": "RULERADDON00001",
         "code": "00W60",
@@ -268,6 +259,15 @@ STATIC_MODELS_CONFIG = {
         "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_57_add_on without base_WGS_CSBD_RULERADDON00001_00W60_dis/payloads/regression",
         "postman_collection_name": "CSBDTS_57_add_on without base_Collection",
         "postman_file_name": "add_on_without_base_wgs_csbd_RULERADDON00001_00W60.json"
+    },
+    {
+        "ts_number": "58",
+        "edit_id": "RULESUB4000001",
+        "code": "00W28",
+        "source_dir": "source_folder/WGS_CSBD/CSBDTS_58_Expansion_WGS_CSBD_RULESUB4000001_00W28_sur/payloads/regression",
+        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_58_Expansion_WGS_CSBD_RULESUB4000001_00W28_dis/payloads/regression",
+        "postman_collection_name": "CSBDTS_58_Expansion_Collection",
+        "postman_file_name": "expansion_on_sub_edit4_wgs_csbd_RULESUB4000001_00W28.json"
     }
     ],
     "gbdf_mcr": [
@@ -308,6 +308,15 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17.json"
         },
         {
+            "ts_number": "70",
+            "edit_id": "RULE00000376",
+            "code": "v16",
+            "source_dir": "source_folder/GBDF/GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_dis/payloads/regression",
+            "postman_collection_name": "TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_Collection",
+            "postman_file_name": "inappropriate_primary_diagnosis_gbdf_mcr_RULE00000376_v16.json"
+        },
+        {
             "ts_number": "138",
             "edit_id": "RULEEMSD000002",
             "code": "v09",
@@ -342,15 +351,6 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/GBDTS/TS_146_No match of Procedure code_gbdf_mcr_RULENMP000001_v18_dis/payloads/regression",
             "postman_collection_name": "TS_146_No match of Procedure code_gbdf_mcr_Collection",
             "postman_file_name": "no_match_procedure_gbdf_mcr_RULENMP000001_v18.json"
-        },
-        {
-            "ts_number": "70",
-            "edit_id": "RULE00000376",
-            "code": "v16",
-            "source_dir": "source_folder/GBDF/GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_dis/payloads/regression",
-            "postman_collection_name": "TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_Collection",
-            "postman_file_name": "inappropriate_primary_diagnosis_gbdf_mcr_RULE00000376_v16.json"
         }
     ],
     "gbdf_grs": [

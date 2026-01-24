@@ -23,7 +23,9 @@ from pathlib import Path
 # Model mapping from Excel sheet names to config keys
 MODEL_SHEET_MAPPING = {
     "WGS_CSBD": "wgs_csbd",
-    "GBDF": "gbdf_mcr",  # Default to MCR, can be extended
+    "GBDF_MCR": "gbdf_mcr",  # GBDF MCR models
+    "GBDF_GRS": "gbdf_grs",  # GBDF GRS models
+    "GBDF": "gbdf_mcr",  # Default to MCR for backward compatibility
     "KERNAL": "wgs_kernal"
 }
 
@@ -154,9 +156,18 @@ def parse_edit_string(edit_string: str, sheet_name: str = "WGS_CSBD") -> Optiona
     if sheet_name == "WGS_CSBD":
         if not any(prefix in model_name_with_lob.lower() for prefix in ['wgs', 'csbd']):
             model_name_with_lob = f"wgs_csbd_{model_name_with_lob}"
-    elif sheet_name == "GBDF":
-        if not any(prefix in model_name_with_lob.lower() for prefix in ['gbdf', 'mcr', 'grs']):
-            model_name_with_lob = f"gbdf_mcr_{model_name_with_lob}"
+    elif sheet_name in ["GBDF", "GBDF_MCR"]:
+        # Check if edit string contains 'grs' to determine GRS vs MCR
+        if 'grs' in edit_string.lower() and 'mcr' not in edit_string.lower():
+            if not any(prefix in model_name_with_lob.lower() for prefix in ['gbdf', 'grs']):
+                model_name_with_lob = f"gbdf_grs_{model_name_with_lob}"
+        else:
+            # Default to MCR
+            if not any(prefix in model_name_with_lob.lower() for prefix in ['gbdf', 'mcr']):
+                model_name_with_lob = f"gbdf_mcr_{model_name_with_lob}"
+    elif sheet_name == "GBDF_GRS":
+        if not any(prefix in model_name_with_lob.lower() for prefix in ['gbdf', 'grs']):
+            model_name_with_lob = f"gbdf_grs_{model_name_with_lob}"
     elif sheet_name == "KERNAL":
         if not any(prefix in model_name_with_lob.lower() for prefix in ['wgs', 'nyk', 'kernal']):
             model_name_with_lob = f"wgs_nyk_{model_name_with_lob}"
