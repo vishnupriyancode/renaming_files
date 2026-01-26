@@ -13,6 +13,7 @@ This script:
 7. Updates Excel file with command status
 """
 
+import ast
 import os
 import re
 import pandas as pd
@@ -28,6 +29,22 @@ MODEL_SHEET_MAPPING = {
     "GBDF": "gbdf_mcr",  # Default to MCR for backward compatibility
     "KERNAL": "wgs_kernal"
 }
+
+
+def is_grs_edit(edit_string: str, sheet_name: str) -> bool:
+    """
+    Detect if an edit string indicates a GBDF GRS model.
+    """
+    if not edit_string or pd.isna(edit_string):
+        return False
+    if sheet_name == "GBDF_GRS":
+        return True
+    if sheet_name not in ["GBDF", "GBDF_MCR", "GBDF_GRS"]:
+        return False
+    edit_lower = str(edit_string).lower()
+    has_grs = bool(re.search(r'\bgrs\b', edit_lower)) or "gbdf_grs" in edit_lower
+    has_mcr = bool(re.search(r'\bmcr\b', edit_lower)) or "gbdf_mcr" in edit_lower
+    return has_grs and not has_mcr
 
 
 def parse_edit_string(edit_string: str, sheet_name: str = "WGS_CSBD") -> Optional[Dict[str, str]]:
@@ -46,6 +63,8 @@ def parse_edit_string(edit_string: str, sheet_name: str = "WGS_CSBD") -> Optiona
         return None
     
     edit_string = str(edit_string).strip()
+    # Remove invisible Unicode characters that can break console output
+    edit_string = re.sub(r'[\u200b-\u200f\u2060\ufeff]', '', edit_string)
     
     # Remove common prefixes like "Note:" or other metadata
     if edit_string.startswith("Note:"):
@@ -183,6 +202,27 @@ def parse_edit_string(edit_string: str, sheet_name: str = "WGS_CSBD") -> Optiona
     }
 
 
+def validate_models_config_syntax(config_path: Path) -> bool:
+    """
+    Validate models_config.py syntax to avoid hard crashes later.
+    """
+    try:
+        config_source = config_path.read_text(encoding="utf-8")
+        ast.parse(config_source, filename=str(config_path))
+        return True
+    except SyntaxError as exc:
+        line = exc.lineno or "?"
+        column = exc.offset or "?"
+        snippet = (exc.text or "").rstrip()
+        print("\n[ERROR] models_config.py has a syntax error.")
+        print(f"        File: {config_path}")
+        print(f"        Line: {line}, Column: {column}")
+        if snippet:
+            print(f"        Code: {snippet}")
+        print("        Fix the error (often a missing comma) and re-run.")
+        return False
+
+
 def get_next_ts_number(model_config: List[Dict]) -> str:
     """
     Get the next available TS number for a model.
@@ -260,6 +300,12 @@ def generate_config_entry(
         dest_base = "renaming_jsons/GBDTS"
         model_name = generate_model_name(edit_id, model_name_with_lob)
         folder_name = f"{ts_prefix}_{ts_number}_{model_name}_gbdf_mcr_{edit_id}_{eob_code}"
+    elif model_type == "gbdf_grs":
+        ts_prefix = "TS"
+        source_base = "source_folder/GBDF"
+        dest_base = "renaming_jsons/GBDTS"
+        model_name = generate_model_name(edit_id, model_name_with_lob)
+        folder_name = f"{ts_prefix}_{ts_number}_{model_name}_gbdf_grs_{edit_id}_{eob_code}"
     elif model_type == "wgs_kernal":
         ts_prefix = "NYKTS"
         source_base = "source_folder/WGS_Kernal"
@@ -316,6 +362,8 @@ def check_command_exists(
         cmd_pattern = f"CSBDTS{ts_number}"
     elif model_type == "gbdf_mcr":
         cmd_pattern = f"GBDTS{ts_number}"
+    elif model_type == "gbdf_grs":
+        cmd_pattern = f"TS{ts_number}"
     elif model_type == "wgs_kernal":
         cmd_pattern = f"NYKTS{ts_number}"
     else:
@@ -344,6 +392,8 @@ def generate_command(ts_number: str, model_type: str = "wgs_csbd") -> str:
         return f"python main_processor.py --wgs_csbd --CSBDTS{ts_number}"
     elif model_type == "gbdf_mcr":
         return f"python main_processor.py --gbdf_mcr --GBDTS{ts_number}"
+    elif model_type == "gbdf_grs":
+        return f"python main_processor.py --gbdf_grs --TS{ts_number}"
     elif model_type == "wgs_kernal":
         return f"python main_processor.py --wgs_nyk --NYKTS{ts_number}"
     else:
@@ -369,7 +419,7 @@ def process_edits_from_excel(
     excel_path: str = "edits_list.xlsx",
     sheet_name: str = "WGS_CSBD",
     dry_run: bool = False
-) -> List[Dict]:
+) -> Tuple[List[Dict], List[Dict]]:
     """
     Process edits from Excel file and generate config entries.
     
@@ -379,7 +429,7 @@ def process_edits_from_excel(
         dry_run: If True, don't update files, just return results
         
     Returns:
-        List of generated config entries
+        Tuple of (generated config entries, excel update entries)
     """
     print(f"\n{'='*60}")
     print(f"Processing edits from {sheet_name} sheet")
@@ -390,24 +440,22 @@ def process_edits_from_excel(
     
     if sheet_name not in excel_data:
         print(f"[ERROR] Sheet '{sheet_name}' not found in Excel file")
-        return []
+        return [], []
     
     df = excel_data[sheet_name]
     
-    # Get model type
-    model_type = MODEL_SHEET_MAPPING.get(sheet_name, "wgs_csbd")
-    
     # Read current config
     from models_config import STATIC_MODELS_CONFIG
-    current_config = STATIC_MODELS_CONFIG.get(model_type, [])
+    config_by_type = STATIC_MODELS_CONFIG
     
     # Process each row
     generated_configs = []
+    excel_updates = []
     edit_column = "List of Edits that need to be Automated"
     
     if edit_column not in df.columns:
         print(f"[ERROR] Column '{edit_column}' not found in sheet")
-        return []
+        return [], []
     
     for idx, row in df.iterrows():
         edit_string = row.get(edit_column)
@@ -428,6 +476,15 @@ def process_edits_from_excel(
             command_exists = True
             print(f"\n[WARNING] Row {idx + 1}: Command already created in Excel")
             print(f"  [INFO] Argument is already in use @edits_list.xlsx")
+        
+        # Determine model type for this row (handle GRS in GBDF sheets)
+        base_model_type = MODEL_SHEET_MAPPING.get(sheet_name, "wgs_csbd")
+        row_model_type = base_model_type
+        if base_model_type == "gbdf_mcr" and is_grs_edit(edit_string, sheet_name):
+            row_model_type = "gbdf_grs"
+            print("  [INFO] GRS detected in details; using gbdf_grs config")
+        
+        current_config = config_by_type.get(row_model_type, [])
         
         # Parse edit string
         parsed = parse_edit_string(edit_string, sheet_name=sheet_name)
@@ -456,7 +513,15 @@ def process_edits_from_excel(
                 break
         
         if existing_entry:
-            print(f"  [SKIP] Entry already exists with TS number: {existing_entry.get('ts_number')}")
+            existing_ts = existing_entry.get("ts_number")
+            print(f"  [SKIP] Entry already exists with TS number: {existing_ts}")
+            if existing_ts:
+                excel_updates.append({
+                    "config": {"ts_number": existing_ts},
+                    "row_index": idx,
+                    "command": generate_command(existing_ts, row_model_type),
+                    "model_type": row_model_type
+                })
             continue
         
         # Check if edit_id exists with different EOB code (warn but allow)
@@ -496,7 +561,7 @@ def process_edits_from_excel(
                     ts_number = existing_ts.zfill(2)  # Ensure 2-digit format
         
         # Check if command already exists
-        if command_exists or check_command_exists(df, ts_number, model_type):
+        if command_exists or check_command_exists(df, ts_number, row_model_type):
             print(f"  [WARNING] Command for TS{ts_number} already exists in Excel")
             print(f"  [INFO] Argument is already in use @edits_list.xlsx")
             # Don't generate new config if command already exists and entry exists
@@ -510,31 +575,34 @@ def process_edits_from_excel(
             edit_id=edit_id,
             eob_code=eob_code,
             model_name_with_lob=model_name_with_lob,
-            model_type=model_type
+            model_type=row_model_type
         )
         
-        generated_configs.append({
+        item_payload = {
             "config": config_entry,
             "row_index": idx,
-            "command": generate_command(ts_number, model_type)
-        })
+            "command": generate_command(ts_number, row_model_type),
+            "model_type": row_model_type
+        }
+        generated_configs.append(item_payload)
+        excel_updates.append(item_payload)
         
         print(f"  [SUCCESS] Generated config for TS{ts_number}")
-        print(f"  Command: {generate_command(ts_number, model_type)}")
+        print(f"  Command: {generate_command(ts_number, row_model_type)}")
     
-    return generated_configs
+    return generated_configs, excel_updates
 
 
 def update_models_config(
     new_configs: List[Dict],
-    model_type: str = "wgs_csbd"
+    model_type: Optional[str] = None
 ) -> bool:
     """
     Update models_config.py with new config entries.
     
     Args:
         new_configs: List of config dictionaries
-        model_type: Model type key
+        model_type: Model type key (optional if per-item model_type is present)
         
     Returns:
         True if successful, False otherwise
@@ -542,7 +610,30 @@ def update_models_config(
     if not new_configs:
         print("[INFO] No new configs to add")
         return True
-    
+
+    # Group by model_type if provided per item
+    has_item_model_type = any("model_type" in item for item in new_configs)
+    if has_item_model_type:
+        grouped_configs = {}
+        for item in new_configs:
+            item_model_type = item.get("model_type") or model_type or "wgs_csbd"
+            grouped_configs.setdefault(item_model_type, []).append(item)
+        
+        for grouped_model_type, grouped_items in grouped_configs.items():
+            if not _update_models_config_for_type(grouped_items, grouped_model_type):
+                return False
+        return True
+
+    return _update_models_config_for_type(new_configs, model_type or "wgs_csbd")
+
+
+def _update_models_config_for_type(
+    new_configs: List[Dict],
+    model_type: str
+) -> bool:
+    """
+    Update models_config.py with new config entries for a single model type.
+    """
     try:
         # Read current models_config.py
         config_path = "models_config.py"
@@ -665,10 +756,14 @@ def update_excel_file(
             row_idx = item["row_index"]
             command = item["command"]
             ts_number = item["config"]["ts_number"]
+            item_model_type = item.get("model_type")
             
             # Update Test Suite ID column
             if "Test Sutie ID" in df.columns:
-                df.at[row_idx, "Test Sutie ID"] = f"CSBDTS{ts_number}" if "CSBDTS" in command else f"GBDTS{ts_number}" if "GBDTS" in command else f"NYKTS{ts_number}"
+                if item_model_type == "gbdf_grs":
+                    df.at[row_idx, "Test Sutie ID"] = f"TS{ts_number}"
+                else:
+                    df.at[row_idx, "Test Sutie ID"] = f"CSBDTS{ts_number}" if "CSBDTS" in command else f"GBDTS{ts_number}" if "GBDTS" in command else f"NYKTS{ts_number}"
             
             # Update Cmd status column
             if "Cmd status" in df.columns:
@@ -719,15 +814,20 @@ def main():
     )
     
     args = parser.parse_args()
+
+    # Preflight: validate models_config.py syntax for clearer errors
+    config_path = Path(__file__).resolve().parent / "models_config.py"
+    if not validate_models_config_syntax(config_path):
+        return
     
     # Process edits
-    generated_configs = process_edits_from_excel(
+    generated_configs, excel_updates = process_edits_from_excel(
         excel_path=args.excel,
         sheet_name=args.sheet,
         dry_run=args.dry_run
     )
     
-    if not generated_configs:
+    if not generated_configs and not excel_updates:
         print("\n[INFO] No new edits to process")
         return
     
@@ -754,7 +854,7 @@ def main():
     update_models_config(generated_configs, model_type)
     
     # Update Excel file
-    update_excel_file(args.excel, args.sheet, generated_configs)
+    update_excel_file(args.excel, args.sheet, excel_updates)
     
     print(f"\n{'='*60}")
     print("Processing complete!")
