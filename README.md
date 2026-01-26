@@ -420,18 +420,18 @@ python main_processor.py --wgs_nyk --all     # Process all 10 WGS_NYK models
 ### Available Models Overview
 | Model Type | Count | TS Numbers | Description |
 |------------|-------|------------|-------------|
-| **WGS_CSBD** | 29 | TS01-TS15, TS20, TS46-TS49, CSBDTS50-CSBDTS57, TS59 | Healthcare Claims Processing |
-| **GBDF_MCR** | 9 | TS47, TS48, TS60, TS61, TS70, TS138, TS140, TS144, TS146 | Global Burden of Disease Foundation - Medical Claims Research |
-| **GBDF_GRS** | 8 | TS49, TS59, TS61, TS62, TS139, TS141, TS145, TS147 | Global Burden of Disease Foundation - Global Research Services |
+| **WGS_CSBD** | 42 | TS01-TS15, TS20, TS46-TS49, CSBDTS50-CSBDTS57, TS59 (plus additional CSBDTS entries in config) | Healthcare Claims Processing |
+| **GBDF_MCR** | 62 | Full GBDF MCR static config set (TS47-TS148 range, see `models_config.py`) | Global Burden of Disease Foundation - Medical Claims Research |
+| **GBDF_GRS** | 55 | Full GBDF GRS static config set (TS49-TS147 range, see `models_config.py`) | Global Burden of Disease Foundation - Global Research Services |
 | **WGS_NYK** | 10 | TS122-TS130, TS132 | Working Group Standards - New York Kernal (Revenue code to HCPCS Alignment edit, Observation Services) |
-| **TOTAL** | **56** | | **All Available Models** |
+| **TOTAL** | **169** | | **All Available Models** |
 
 ### Quick Command Reference
 ```bash
 # Process ALL models of each type
-python main_processor.py --wgs_csbd --all     # All 29 WGS_CSBD models
-python main_processor.py --gbdf_mcr --all     # All 9 GBDF MCR models  
-python main_processor.py --gbdf_grs --all     # All 8 GBDF GRS models
+python main_processor.py --wgs_csbd --all     # All 42 WGS_CSBD models
+python main_processor.py --gbdf_mcr --all     # All 62 GBDF MCR models  
+python main_processor.py --gbdf_grs --all     # All 55 GBDF GRS models
 python main_processor.py --wgs_nyk --all     # All 10 WGS_NYK models
 
 # Process ALL models of each type WITHOUT Postman generation
