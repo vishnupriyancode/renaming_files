@@ -16,9 +16,11 @@ This script:
 import ast
 import os
 import re
-import pandas as pd
-from typing import Dict, List, Optional, Tuple
+from collections import Counter
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
+import pandas as pd
 
 
 # Model mapping from Excel sheet names to config keys
@@ -223,34 +225,94 @@ def validate_models_config_syntax(config_path: Path) -> bool:
         return False
 
 
-def get_next_ts_number(model_config: List[Dict]) -> str:
+def _normalize_ts_number(ts_number: str) -> Optional[str]:
     """
-    Get the next available TS number for a model.
+    Normalize a TS number to 2-digit numeric string if possible.
+    """
+    if ts_number is None:
+        return None
+    ts_str = str(ts_number).strip()
+    if not ts_str:
+        return None
+    try:
+        return f"{int(ts_str):02d}"
+    except ValueError:
+        return None
+
+
+def _get_used_ts_numbers(model_config: List[Dict]) -> set:
+    """
+    Collect used TS numbers from existing config entries.
+    """
+    used = set()
+    for config in model_config:
+        normalized = _normalize_ts_number(config.get("ts_number"))
+        if normalized:
+            used.add(normalized)
+    return used
+
+
+def _get_model_ts_prefix(model_type: str) -> str:
+    """
+    Get the TS prefix used in Excel/Test Suite IDs for a model type.
+    """
+    if model_type == "wgs_csbd":
+        return "CSBDTS"
+    if model_type == "gbdf_mcr":
+        return "GBDTS"
+    if model_type == "gbdf_grs":
+        return "TS"
+    if model_type == "wgs_kernal":
+        return "NYKTS"
+    return "CSBDTS"
+
+
+def _get_excel_ts_counts(df: pd.DataFrame, model_type: str) -> Counter:
+    """
+    Count TS numbers in the Excel "Test Sutie ID" column for a model type.
+    """
+    counts: Counter = Counter()
+    if "Test Sutie ID" not in df.columns:
+        return counts
+    prefix = _get_model_ts_prefix(model_type)
+    pattern = re.compile(rf"{re.escape(prefix)}\s*(\d+)", re.IGNORECASE)
+    for value in df["Test Sutie ID"]:
+        if pd.isna(value):
+            continue
+        match = pattern.search(str(value))
+        if match:
+            normalized = _normalize_ts_number(match.group(1))
+            if normalized:
+                counts[normalized] += 1
+    return counts
+
+
+def get_next_ts_number(model_config: List[Dict], reserved_ts: Optional[set] = None) -> str:
+    """
+    Get the next available TS number for a model, avoiding duplicates.
     
     Args:
         model_config: List of model configurations
+        reserved_ts: Additional TS numbers to avoid (e.g., in-flight entries)
         
     Returns:
-        Next TS number as string (e.g., "58")
+        Next available TS number as string (e.g., "58")
     """
-    if not model_config:
+    used = _get_used_ts_numbers(model_config)
+    if reserved_ts:
+        used = used.union(reserved_ts)
+    
+    if not used:
         return "01"
     
-    # Extract all TS numbers and convert to integers
-    ts_numbers = []
-    for config in model_config:
-        ts_num = config.get("ts_number", "0")
-        try:
-            ts_numbers.append(int(ts_num))
-        except ValueError:
-            continue
-    
-    if not ts_numbers:
-        return "01"
-    
-    # Find the maximum and add 1
-    next_num = max(ts_numbers) + 1
-    return f"{next_num:02d}"  # Format as 2-digit string
+    # Start from max and move upward until a free TS is found
+    max_used = max(int(ts) for ts in used)
+    next_num = max_used + 1
+    next_ts = f"{next_num:02d}"
+    while next_ts in used:
+        next_num += 1
+        next_ts = f"{next_num:02d}"
+    return next_ts
 
 
 def generate_model_name(edit_id: str, model_name_with_lob: str) -> str:
@@ -393,7 +455,7 @@ def generate_command(ts_number: str, model_type: str = "wgs_csbd") -> str:
     elif model_type == "gbdf_mcr":
         return f"python main_processor.py --gbdf_mcr --GBDTS{ts_number}"
     elif model_type == "gbdf_grs":
-        return f"python main_processor.py --gbdf_grs --TS{ts_number}"
+        return f"python main_processor.py --gbdf_grs --GBDTS{ts_number}"
     elif model_type == "wgs_kernal":
         return f"python main_processor.py --wgs_nyk --NYKTS{ts_number}"
     else:
@@ -448,6 +510,11 @@ def process_edits_from_excel(
     from models_config import STATIC_MODELS_CONFIG
     config_by_type = STATIC_MODELS_CONFIG
     
+    # Track TS numbers per model to avoid duplicates during this run
+    used_ts_by_model = {}
+    in_run_reserved_ts_by_model = {}
+    excel_ts_counts_by_model = {}
+
     # Process each row
     generated_configs = []
     excel_updates = []
@@ -485,6 +552,10 @@ def process_edits_from_excel(
             print("  [INFO] GRS detected in details; using gbdf_grs config")
         
         current_config = config_by_type.get(row_model_type, [])
+        used_ts_by_model.setdefault(row_model_type, _get_used_ts_numbers(current_config))
+        in_run_reserved_ts_by_model.setdefault(row_model_type, set())
+        if row_model_type not in excel_ts_counts_by_model:
+            excel_ts_counts_by_model[row_model_type] = _get_excel_ts_counts(df, row_model_type)
         
         # Parse edit string
         parsed = parse_edit_string(edit_string, sheet_name=sheet_name)
@@ -532,8 +603,11 @@ def process_edits_from_excel(
                 print(f"  [WARNING] Edit ID {edit_id} already exists with different EOB code: {config.get('code')} (TS{config.get('ts_number')})")
                 break
         
-        # Get next TS number
-        ts_number = get_next_ts_number(current_config)
+        # Get next available TS number (avoids duplicates in config/excel/run)
+        reserved_ts = used_ts_by_model[row_model_type].union(
+            excel_ts_counts_by_model[row_model_type].keys()
+        ).union(in_run_reserved_ts_by_model[row_model_type])
+        ts_number = get_next_ts_number(current_config, reserved_ts)
         
         # Check if Test Suite ID is already set in Excel
         test_suite_id = row.get("Test Sutie ID", "")
@@ -556,9 +630,23 @@ def process_edits_from_excel(
                     print(f"  [SKIP] Entry already exists with TS{existing_ts} for this edit_id and eob_code combination")
                     continue
                 else:
-                    # Use existing TS number if edit_id+eob_code combination is different
-                    print(f"  [INFO] Using existing TS number: {existing_ts} (different eob_code)")
-                    ts_number = existing_ts.zfill(2)  # Ensure 2-digit format
+                    normalized_existing_ts = _normalize_ts_number(existing_ts)
+                    excel_count = excel_ts_counts_by_model[row_model_type].get(normalized_existing_ts, 0) if normalized_existing_ts else 0
+                    if not normalized_existing_ts:
+                        print("  [WARNING] Could not parse existing Test Suite ID; assigning next available TS number")
+                        ts_number = get_next_ts_number(current_config, reserved_ts)
+                    elif normalized_existing_ts in used_ts_by_model[row_model_type]:
+                        print(f"  [WARNING] TS{normalized_existing_ts} already exists in config; assigning next available TS number")
+                        ts_number = get_next_ts_number(current_config, reserved_ts)
+                    elif normalized_existing_ts in in_run_reserved_ts_by_model[row_model_type]:
+                        print(f"  [WARNING] TS{normalized_existing_ts} already reserved in this run; assigning next available TS number")
+                        ts_number = get_next_ts_number(current_config, reserved_ts)
+                    elif excel_count > 1:
+                        print(f"  [WARNING] TS{normalized_existing_ts} appears multiple times in Excel; assigning next available TS number")
+                        ts_number = get_next_ts_number(current_config, reserved_ts)
+                    else:
+                        print(f"  [INFO] Using existing TS number: {normalized_existing_ts} (different eob_code)")
+                        ts_number = normalized_existing_ts
         
         # Check if command already exists
         if command_exists or check_command_exists(df, ts_number, row_model_type):
@@ -569,6 +657,9 @@ def process_edits_from_excel(
                 continue
             # Still generate config if entry doesn't exist, but note the warning
         
+        # Reserve TS number to prevent duplicates in this run
+        in_run_reserved_ts_by_model[row_model_type].add(ts_number)
+
         # Generate config entry
         config_entry = generate_config_entry(
             ts_number=ts_number,
