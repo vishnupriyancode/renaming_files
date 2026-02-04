@@ -261,10 +261,28 @@ def _get_model_ts_prefix(model_type: str) -> str:
     if model_type == "gbdf_mcr":
         return "GBDTS"
     if model_type == "gbdf_grs":
-        return "TS"
+        return "GBDTS"
     if model_type == "wgs_kernal":
         return "NYKTS"
     return "CSBDTS"
+
+
+def _resolve_edit_column(df: pd.DataFrame) -> Optional[str]:
+    """
+    Resolve the edit details column name for a sheet.
+    """
+    candidates = [
+        "List of Edits that need to be Automated",
+        "List of EdiGBDTS that need to be Automated",  # Known typo in GBDF sheet
+    ]
+    for candidate in candidates:
+        if candidate in df.columns:
+            return candidate
+    for column in df.columns:
+        normalized = str(column).strip().lower()
+        if "need to be automated" in normalized:
+            return column
+    return None
 
 
 def _get_excel_ts_counts(df: pd.DataFrame, model_type: str) -> Counter:
@@ -518,10 +536,9 @@ def process_edits_from_excel(
     # Process each row
     generated_configs = []
     excel_updates = []
-    edit_column = "List of Edits that need to be Automated"
-    
-    if edit_column not in df.columns:
-        print(f"[ERROR] Column '{edit_column}' not found in sheet")
+    edit_column = _resolve_edit_column(df)
+    if not edit_column:
+        print("[ERROR] Could not find the edit details column in sheet")
         return [], []
     
     for idx, row in df.iterrows():
@@ -852,13 +869,20 @@ def update_excel_file(
             # Update Test Suite ID column
             if "Test Sutie ID" in df.columns:
                 if item_model_type == "gbdf_grs":
-                    df.at[row_idx, "Test Sutie ID"] = f"TS{ts_number}"
+                    df.at[row_idx, "Test Sutie ID"] = f"GBDTS{ts_number}"
                 else:
                     df.at[row_idx, "Test Sutie ID"] = f"CSBDTS{ts_number}" if "CSBDTS" in command else f"GBDTS{ts_number}" if "GBDTS" in command else f"NYKTS{ts_number}"
             
             # Update Cmd status column
             if "Cmd status" in df.columns:
                 df.at[row_idx, "Cmd status"] = "Created"
+
+            # Update generate_command column (create if missing)
+            if "generate_command" not in df.columns:
+                df["generate_command"] = ""
+            else:
+                df["generate_command"] = df["generate_command"].fillna("").astype(str)
+            df.at[row_idx, "generate_command"] = command
         
         # Write back to Excel
         with pd.ExcelWriter(excel_path, engine='openpyxl') as writer:
