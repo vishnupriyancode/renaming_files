@@ -1,0 +1,69 @@
+{
+  "version": "1",
+  "name": "NYKTS/NYKTS_130_Observation_Services_WGS_NYK_RULEOBSER00008_00W28_dis API Collection",
+  "type": "collection",
+  "items": [
+    {
+      "uid": "789c7292-a20c-4b56-8eaf-eaf519e86f9d",
+      "name": "TC#01_sample#RULEOBSER00008#00W28#LR",
+      "type": "http",
+      "method": "POST",
+      "url": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
+      "headers": [
+        {
+          "uid": "2ce854ff-62b3-4e9c-a2c6-77754ab097c2",
+          "name": "Content-Type",
+          "value": "application/json",
+          "enabled": true
+        },
+        {
+          "uid": "060e9989-eac4-4b4f-b918-0c44ba886c6f",
+          "name": "meta-transid",
+          "value": "20220117181853TMBL20359Cl893580999",
+          "enabled": true
+        },
+        {
+          "uid": "ed8d2394-45fd-4c13-bbb7-83a7a12f7f76",
+          "name": "meta-src-envrmt",
+          "value": "IMSH",
+          "enabled": true
+        }
+      ],
+      "body": {
+        "mode": "raw",
+        "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test\": \"data\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\"\n}"
+      }
+    },
+    {
+      "uid": "737c94fb-079a-4961-81f8-c464389e4456",
+      "name": "TC#01_sample#RULEOBSER00008#00W28#LR",
+      "type": "http",
+      "method": "POST",
+      "url": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
+      "headers": [
+        {
+          "uid": "16896006-cfbf-4692-9d5c-41c2618b049d",
+          "name": "Content-Type",
+          "value": "application/json",
+          "enabled": true
+        },
+        {
+          "uid": "8461a3f0-2e97-410a-bc79-91fbc5edb99e",
+          "name": "meta-transid",
+          "value": "20220117181853TMBL20359Cl893580999",
+          "enabled": true
+        },
+        {
+          "uid": "bc039d3b-b27c-482a-a20f-2dc150b1cc3f",
+          "name": "meta-src-envrmt",
+          "value": "IMSH",
+          "enabled": true
+        }
+      ],
+      "body": {
+        "mode": "raw",
+        "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test\": \"data\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\"\n}"
+      }
+    }
+  ]
+}

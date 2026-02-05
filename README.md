@@ -2,8 +2,17 @@
 
 A Python script for automatically renaming and organizing test case JSON files based on predefined naming conventions and suffix mappings, with integrated Postman collection generation for API testing.
 
+## 🚀 Getting Started (New Users)
+
+1. **Install dependencies:** `pip install -r requirements.txt`
+2. **Configure environment (optional):** Copy `.env.example` to `.env` and adjust settings (e.g., `ENABLE_REPORT_GENERATION`)
+3. **Run a model:** `python main_processor.py --wgs_csbd --CSBDTS01` or `python main_processor.py --wgs_nyk --NYKTS124`
+
+For full command reference, see [Quick Start Commands](#-quick-start-commands-verified--ready-to-use).
+
 ## 📑 Table of Contents
 
+- [Getting Started (New Users)](#-getting-started-new-users)
 - [Recent Updates & Fixes](#-recent-updates--fixes)
 - [Quick Start Commands](#-quick-start-commands-verified--ready-to-use)
 - [Model Summary & Quick Reference](#-model-summary--quick-reference)
@@ -82,7 +91,7 @@ python main_processor.py --wgs_nyk --NYKTS128   # Process TS128 model (Observati
 python main_processor.py --wgs_nyk --NYKTS129   # Process TS129 model (Observation Services WGS NYK) - edit ID: RULEOBSER00007
 python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK) - edit ID: RULEOBSER00008
 python main_processor.py --wgs_nyk --NYKTS132   # Process TS132 model (add_on without base WGS NYK) - edit ID: RULERADDON00001
-python main_processor.py --wgs_nyk --all     # Process all 10 WGS_NYK models
+python main_processor.py --wgs_nyk --all     # Process all 12 WGS_NYK models
 ```
 
 **✅ GBDF Model Command Format Update**
@@ -295,10 +304,8 @@ renaming_jsons/
 │   ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
 │   ├── TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
 │   ├── TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
-│   ├── TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_dis/
-│   ├── TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/
-│   ├── TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_dis/
-│   ├── TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/
+│   ├── TS_63_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_Outpt_GRS_v17_dis/
+│   ├── TS_62_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_outpt_MCR_v17_dis/
 │   ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
 │   ├── TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
 │   ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/
@@ -369,6 +376,8 @@ python main_processor.py --wgs_csbd --CSBDTS68    # Process TS68 model (Ndc) - e
 python main_processor.py --wgs_csbd --CSBDTS70    # Process TS70 model (Correct) - edit ID: RULERCRO000001
 python main_processor.py --wgs_csbd --CSBDTS71    # Process TS71 model (Revenue) - edit ID: RULERCTH000001
 python main_processor.py --wgs_csbd --CSBDTS73    # Process TS73 model (Unacceptable) - edit ID: RULEUNAC000001
+python main_processor.py --wgs_csbd --CSBDTS74    # Process TS74 model - edit ID: RULEEM0000012 MNP Model
+python main_processor.py --wgs_csbd --CSBDTS75    # Process TS75 model (Preventive) - edit ID: RULEPREV000001
 
 # Process all WGS_CSBD models at once
 python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models
@@ -378,8 +387,7 @@ python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models
 ```bash
 # Process specific GBDF MCR models (GBDF_MCR flag required - Recommended format: --GBDTSXX)
 python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid) - edit ID: RULEEM000001
-python main_processor.py --gbdf_mcr --GBDTS60    # Process TS60 model (Unspecified_dx_code_outpt) - edit ID: RULEUSD00100
-python main_processor.py --gbdf_mcr --GBDTS61    # Process TS61 model (Unspecified_dx_code_prof) - edit ID: RULEUSD00100
+python main_processor.py --gbdf_mcr --GBDTS62    # Process TS62 model (Unspecified_dx_code_outpt_MCR) - edit ID: RULEUSD00100_outpt_MCR
 python main_processor.py --gbdf_mcr --GBDTS70    # Process TS70 model (InappropriatePrimaryDiagnosis) - edit ID: RULE00000376
 python main_processor.py --gbdf_mcr --GBDTS138    # Process TS138 model (Multiple E&M Same day) - edit ID: RULEEMSD000002
 python main_processor.py --gbdf_mcr --GBDTS140    # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138) - edit ID: RULENDCUOM000001
@@ -390,8 +398,8 @@ python main_processor.py --gbdf_mcr --GBDTS52    # Process TS52 model (Psm) - ed
 python main_processor.py --gbdf_mcr --GBDTS54    # Process TS54 model (Psm) - edit ID: PSMEM000003
 python main_processor.py --gbdf_mcr --GBDTS56    # Process TS56 model (Psm) - edit ID: PSMEM000004
 python main_processor.py --gbdf_mcr --GBDTS58    # Process TS58 model (Manifestation) - edit ID: RULEMAN000004
-python main_processor.py --gbdf_mcr --GBDTS62    # Process TS62 model (Unspecified) - edit ID: RULEUSD00100_Prof_MCR
 python main_processor.py --gbdf_mcr --GBDTS63    # Process TS63 model (Shadow) - edit ID: RULEAMBU000001
+python main_processor.py --gbdf_mcr --GBDTS64    # Process TS64 model (Unspecified Prof_MCR) - edit ID: RULEUSD00100_Prof_MCR
 python main_processor.py --gbdf_mcr --GBDTS65    # Process TS65 model (Gbdf) - edit ID: RULEAMBU000001
 python main_processor.py --gbdf_mcr --GBDTS66    # Process TS66 model (Gbdf) - edit ID: RULE00000022
 python main_processor.py --gbdf_mcr --GBDTS67    # Process TS67 model (Inaccurate) - edit ID: RULE00000022
@@ -427,43 +435,42 @@ python main_processor.py --gbdf_mcr --all     # Process all GBDF MCR models
 
 ### GBDF_GRS Models (Global Burden of Disease Foundation - Global Research Services)
 ```bash
-# Process specific GBDF GRS models (GBDF_GRS flag required)
-python main_processor.py --gbdf_grs --TS59    # Process TS59 model (Unspecified_dx_code_outpt) - edit ID: RULEUSD00100
-python main_processor.py --gbdf_grs --TS62    # Process TS62 model (Unspecified_dx_code_prof) - edit ID: RULEUSD00100
-python main_processor.py --gbdf_grs --TS139    # Process TS139 model (Multiple E&M Same day) - edit ID: RULEEMSD000002
-python main_processor.py --gbdf_grs --TS141    # Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138) - edit ID: RULENDCUOM000001
-python main_processor.py --gbdf_grs --TS145    # Process TS145 model (Nebulizer A52466 IPERP-132) - edit ID: RULENEBU000001
-python main_processor.py --gbdf_grs --TS47    # Process TS47 model (Covid) - edit ID: RULEEM000001
-python main_processor.py --gbdf_grs --TS48    # Process TS48 model (Laterality) - edit ID: RULELATE000001
-python main_processor.py --gbdf_grs --TS51    # Process TS51 model (Psm) - edit ID: PSMEM000001
-python main_processor.py --gbdf_grs --TS53    # Process TS53 model (Psm) - edit ID: PSMEM000002
-python main_processor.py --gbdf_grs --TS55    # Process TS55 model (Psm) - edit ID: PSMEM000003
-python main_processor.py --gbdf_grs --TS57    # Process TS57 model (Psm) - edit ID: PSMEM000004
-python main_processor.py --gbdf_grs --TS61    # Process TS61 model (Unspecified) - edit ID: RULEUSD00100_Prof_GRS
-python main_processor.py --gbdf_grs --TS64    # Process TS64 model (Shadow) - edit ID: RULEAMBU000001
-python main_processor.py --gbdf_grs --TS68    # Process TS68 model (Inaccurate) - edit ID: RULE00000022
-python main_processor.py --gbdf_grs --TS69    # Process TS69 model (Inappropriate) - edit ID: RULE00000376
-python main_processor.py --gbdf_grs --TS71    # Process TS71 model (Always) - edit ID: RULEALWA000001
-python main_processor.py --gbdf_grs --TS74    # Process TS74 model (Excludes) - edit ID: RULEEXCL000001
-python main_processor.py --gbdf_grs --TS122    # Process TS122 model (Geneticstesting) - edit ID: RULEGENE000001
-python main_processor.py --gbdf_grs --TS124    # Process TS124 model (Anesthesia) - edit ID: RULEANES000001
-python main_processor.py --gbdf_grs --TS128    # Process TS128 model (Toxoid GBD-Facets-GRS_v38_sur) - edit ID: RULEIPVT000001
-python main_processor.py --gbdf_grs --TS130    # Process TS130 model (Gbdf) - edit ID: RULEIMMU000001
-python main_processor.py --gbdf_grs --TS132    # Process TS132 model (Gbdf) - edit ID: RULEKNEE000001
-python main_processor.py --gbdf_grs --TS133    # Process TS133 model (Manifestation) - edit ID: RULEMAN000004
-python main_processor.py --gbdf_grs --TS135    # Process TS135 model (Gbdf) - edit ID: RULEJWME000001
-python main_processor.py --gbdf_grs --TS137    # Process TS137 model (Gbdf) - edit ID: RULEEM0000012
-python main_processor.py --gbdf_grs --TS143    # Process TS143 model (Gbdf) - edit ID: RULENDC000001
-python main_processor.py --gbdf_grs --TS147    # Process TS147 model (Gbdf) - edit ID: RULENMP000001
-python main_processor.py --gbdf_grs --TS149    # Process TS149 model (Gbdf) - edit ID: RULEOSTO000001
-python main_processor.py --gbdf_grs --TS151    # Process TS151 model (Gbdf) - edit ID: RULETRAC000001
-python main_processor.py --gbdf_grs --TS153    # Process TS153 model (Gbdf) - edit ID: RULERCRO000001
-python main_processor.py --gbdf_grs --TS157    # Process TS157 model (Gbdf) - edit ID: RULEIPDXH00001
-python main_processor.py --gbdf_grs --TS158    # Process TS158 model (Grs) - edit ID: RULERCWP000001
-python main_processor.py --gbdf_grs --TS160    # Process TS160 model (Grs) - edit ID: RULEPMAM000001
-python main_processor.py --gbdf_grs --TS163    # Process TS163 model (Gbdf) - edit ID: PSMEM000003_algo
-python main_processor.py --gbdf_grs --TS165    # Process TS165 model (Psm) - edit ID: PSMEM000004_algo
-python main_processor.py --gbdf_grs --TS167    # Process TS167 model (Sick) - edit ID: RULEEM000002_refdb
+# Process specific GBDF GRS models (GBDF_GRS flag required - use --GBDTSXX format)
+python main_processor.py --gbdf_grs --GBDTS47    # Process TS47 model (Covid) - edit ID: RULEEM000001
+python main_processor.py --gbdf_grs --GBDTS48    # Process TS48 model (Laterality) - edit ID: RULELATE000001
+python main_processor.py --gbdf_grs --GBDTS51    # Process TS51 model (Psm) - edit ID: PSMEM000001
+python main_processor.py --gbdf_grs --GBDTS53    # Process TS53 model (Psm) - edit ID: PSMEM000002
+python main_processor.py --gbdf_grs --GBDTS55    # Process TS55 model (Psm) - edit ID: PSMEM000003
+python main_processor.py --gbdf_grs --GBDTS57    # Process TS57 model (Psm) - edit ID: PSMEM000004
+python main_processor.py --gbdf_grs --GBDTS61    # Process TS61 model (Unspecified) - edit ID: RULEUSD00100_Prof_GRS
+python main_processor.py --gbdf_grs --GBDTS63    # Process TS63 model (Unspecified Outpt_GRS) - edit ID: RULEUSD00100_Outpt_GRS
+python main_processor.py --gbdf_grs --GBDTS64    # Process TS64 model (Shadow) - edit ID: RULEAMBU000001
+python main_processor.py --gbdf_grs --GBDTS68    # Process TS68 model (Inaccurate) - edit ID: RULE00000022
+python main_processor.py --gbdf_grs --GBDTS69    # Process TS69 model (Inappropriate) - edit ID: RULE00000376
+python main_processor.py --gbdf_grs --GBDTS71    # Process TS71 model (Always) - edit ID: RULEALWA000001
+python main_processor.py --gbdf_grs --GBDTS74    # Process TS74 model (Excludes) - edit ID: RULEEXCL000001
+python main_processor.py --gbdf_grs --GBDTS122    # Process TS122 model (Geneticstesting) - edit ID: RULEGENE000001
+python main_processor.py --gbdf_grs --GBDTS124    # Process TS124 model (Anesthesia) - edit ID: RULEANES000001
+python main_processor.py --gbdf_grs --GBDTS128    # Process TS128 model (Toxoid GBD-Facets-GRS_v38_sur) - edit ID: RULEIPVT000001
+python main_processor.py --gbdf_grs --GBDTS130    # Process TS130 model (Gbdf) - edit ID: RULEIMMU000001
+python main_processor.py --gbdf_grs --GBDTS132    # Process TS132 model (Gbdf) - edit ID: RULEKNEE000001
+python main_processor.py --gbdf_grs --GBDTS133    # Process TS133 model (Manifestation) - edit ID: RULEMAN000004
+python main_processor.py --gbdf_grs --GBDTS135    # Process TS135 model (Gbdf) - edit ID: RULEJWME000001
+python main_processor.py --gbdf_grs --GBDTS137    # Process TS137 model (Gbdf) - edit ID: RULEEM0000012
+python main_processor.py --gbdf_grs --GBDTS139    # Process TS139 model (Multiple E&M Same day) - edit ID: RULEEMSD000002
+python main_processor.py --gbdf_grs --GBDTS141    # Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138) - edit ID: RULENDCUOM000001
+python main_processor.py --gbdf_grs --GBDTS143    # Process TS143 model (Gbdf) - edit ID: RULENDC000001
+python main_processor.py --gbdf_grs --GBDTS145    # Process TS145 model (Nebulizer A52466 IPERP-132) - edit ID: RULENEBU000001
+python main_processor.py --gbdf_grs --GBDTS147    # Process TS147 model (Gbdf) - edit ID: RULENMP000001
+python main_processor.py --gbdf_grs --GBDTS149    # Process TS149 model (Gbdf) - edit ID: RULEOSTO000001
+python main_processor.py --gbdf_grs --GBDTS151    # Process TS151 model (Gbdf) - edit ID: RULETRAC000001
+python main_processor.py --gbdf_grs --GBDTS153    # Process TS153 model (Gbdf) - edit ID: RULERCRO000001
+python main_processor.py --gbdf_grs --GBDTS157    # Process TS157 model (Gbdf) - edit ID: RULEIPDXH00001
+python main_processor.py --gbdf_grs --GBDTS158    # Process TS158 model (Grs) - edit ID: RULERCWP000001
+python main_processor.py --gbdf_grs --GBDTS160    # Process TS160 model (Grs) - edit ID: RULEPMAM000001
+python main_processor.py --gbdf_grs --GBDTS163    # Process TS163 model (Gbdf) - edit ID: PSMEM000003_algo
+python main_processor.py --gbdf_grs --GBDTS165    # Process TS165 model (Psm) - edit ID: PSMEM000004_algo
+python main_processor.py --gbdf_grs --GBDTS167    # Process TS167 model (Sick) - edit ID: RULEEM000002_refdb
 
 # Process all GBDF GRS models at once
 python main_processor.py --gbdf_grs --all     # Process all GBDF GRS models
@@ -482,9 +489,33 @@ python main_processor.py --wgs_nyk --NYKTS128   # Process TS128 model (Observati
 python main_processor.py --wgs_nyk --NYKTS129   # Process TS129 model (Observation_Services) - edit ID: RULEOBSER00007
 python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation_Services) - edit ID: RULEOBSER00008
 python main_processor.py --wgs_nyk --NYKTS132   # Process TS132 model (add_on without base) - edit ID: RULERADDON00001
+python main_processor.py --wgs_nyk --NYKTS149   # Process TS149 model (Preventative Medicine and Screening) - edit ID: RULEPREV00001
+python main_processor.py --wgs_nyk --NYKTS150   # Process TS150 model (Inpatient) - edit ID: RULEINPCC00001
 
 # Process all WGS_NYK models at once
 python main_processor.py --wgs_nyk --all     # Process all WGS_NYK models
+```
+
+### Auto Edit Processor (Config from Excel)
+```bash
+# Process edits from Excel sheet (default: WGS_CSBD)
+python auto_edit_processor.py
+python auto_edit_processor.py --sheet WGS_CSBD
+python auto_edit_processor.py --sheet GBDF
+python auto_edit_processor.py --sheet GBDF_MCR
+python auto_edit_processor.py --sheet GBDF_GRS
+python auto_edit_processor.py --sheet KERNAL
+
+# Sync Test Suite IDs from Excel to models_config.py
+python auto_edit_processor.py --sync-from-excel --sheet WGS_CSBD
+python auto_edit_processor.py --sync-from-excel --sheet GBDF
+python auto_edit_processor.py --sync-from-excel --sheet KERNAL
+
+# Sort STATIC_MODELS_CONFIG by ts_number (ascending)
+python auto_edit_processor.py --sort-config
+
+# Dry run (preview without updating)
+python auto_edit_processor.py --dry-run
 ```
 
 ## 📊 Model Summary & Quick Reference
@@ -492,25 +523,29 @@ python main_processor.py --wgs_nyk --all     # Process all WGS_NYK models
 ### Available Models Overview
 | Model Type | Count | TS Numbers | Description |
 |------------|-------|------------|-------------|
-| **WGS_CSBD** | 42 | TS01-TS15, TS20, TS46-TS49, CSBDTS50-CSBDTS57, TS59 (plus additional CSBDTS entries in config) | Healthcare Claims Processing |
-| **GBDF_MCR** | 62 | Full GBDF MCR static config set (TS47-TS148 range, see `models_config.py`) | Global Burden of Disease Foundation - Medical Claims Research |
-| **GBDF_GRS** | 55 | Full GBDF GRS static config set (TS49-TS147 range, see `models_config.py`) | Global Burden of Disease Foundation - Global Research Services |
-| **WGS_NYK** | 10 | TS122-TS130, TS132 | Working Group Standards - New York Kernal (Revenue code to HCPCS Alignment edit, Observation Services) |
-| **TOTAL** | **169** | | **All Available Models** |
+| **WGS_CSBD** | 46 | TS01-TS15, TS20, TS46-TS75 (see `models_config.py`) | Healthcare Claims Processing |
+| **GBDF_MCR** | 62 | Full GBDF MCR static config set (TS47-TS166 range, see `models_config.py`) | Global Burden of Disease Foundation - Medical Claims Research |
+| **GBDF_GRS** | 54 | Full GBDF GRS static config set (TS47-TS167 range, see `models_config.py`) | Global Burden of Disease Foundation - Global Research Services |
+| **WGS_NYK** | 14 | TS122-TS130, TS132, TS149, TS150 (see `models_config.py`) | Working Group Standards - New York Kernal (Revenue code to HCPCS Alignment edit, Observation Services) |
+| **TOTAL** | **174** | | **All Available Models** |
 
 ### Quick Command Reference
 ```bash
 # Process ALL models of each type
-python main_processor.py --wgs_csbd --all     # All 42 WGS_CSBD models
+python main_processor.py --wgs_csbd --all     # All 46 WGS_CSBD models
 python main_processor.py --gbdf_mcr --all     # All 62 GBDF MCR models  
-python main_processor.py --gbdf_grs --all     # All 55 GBDF GRS models
-python main_processor.py --wgs_nyk --all     # All 10 WGS_NYK models
+python main_processor.py --gbdf_grs --all     # All 54 GBDF GRS models
+python main_processor.py --wgs_nyk --all      # All 14 WGS_NYK models
 
 # Process ALL models of each type WITHOUT Postman generation
 python main_processor.py --wgs_csbd --all --no-postman
 python main_processor.py --gbdf_mcr --all --no-postman
 python main_processor.py --gbdf_grs --all --no-postman
 python main_processor.py --wgs_nyk --all --no-postman
+
+# Process ALL refdb-supported models with value replacement (WGS_CSBD: CSBDTS46, CSBDTS47, CSBDTS59; WGS_NYK: NYKTS123)
+python main_processor.py --wgs_csbd --all --refdb
+python main_processor.py --wgs_nyk --all --refdb
 
 # List all available models
 python main_processor.py --list
@@ -555,8 +590,7 @@ python main_processor.py --wgs_csbd --all     # Generates collections for all WG
 
 # GBDF MCR models with Postman collection generation (Recommended format: --GBDTSXX)
 python main_processor.py --gbdf_mcr --GBDTS47    # Generates TS_47_Covid_gbdf_mcr_Collection - edit ID: RULEEM000001
-python main_processor.py --gbdf_mcr --GBDTS60    # Generates TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection - edit ID: RULEUSD00100
-python main_processor.py --gbdf_mcr --GBDTS61    # Generates TS_61_Unspecified_dx_code_prof_gbdf_mcr_Collection - edit ID: RULEUSD00100
+python main_processor.py --gbdf_mcr --GBDTS62    # Generates TS_62_Unspecified_dx_code_outpt_gbdf_mcr_Collection - edit ID: RULEUSD00100_outpt_MCR
 python main_processor.py --gbdf_mcr --GBDTS70    # Generates TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_Collection - edit ID: RULE00000376
 python main_processor.py --gbdf_mcr --GBDTS138   # Generates TS_138_Multiple E&M Same day_gbdf_mcr_Collection - edit ID: RULEEMSD000002
 python main_processor.py --gbdf_mcr --GBDTS140   # Generates TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection - edit ID: RULENDCUOM000001
@@ -566,9 +600,8 @@ python main_processor.py --gbdf_mcr --all     # Generates collections for all GB
 
 
 # GBDF GRS models with Postman collection generation
-python main_processor.py --gbdf_grs --TS59    # Generates TS_59_Unspecified_dx_code_outpt_gbdf_grs_Collection - edit ID: RULEUSD00100
-python main_processor.py --gbdf_grs --TS61    # Generates TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection - edit ID: RULEUSD00100_Prof_GRS
-python main_processor.py --gbdf_grs --TS62    # Generates TS_62_Unspecified_dx_code_prof_gbdf_grs_Collection - edit ID: RULEUSD00100
+python main_processor.py --gbdf_grs --GBDTS63    # Generates TS_63_Unspecified_dx_code_outpt_gbdf_grs_Collection - edit ID: RULEUSD00100_Outpt_GRS
+python main_processor.py --gbdf_grs --GBDTS61    # Generates TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection - edit ID: RULEUSD00100_Prof_GRS
 python main_processor.py --gbdf_grs --TS139   # Generates TS_139_Multiple E&M Same day_gbdf_grs_Collection - edit ID: RULEEMSD000002
 python main_processor.py --gbdf_grs --TS141   # Generates TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection - edit ID: RULENDCUOM000001
 python main_processor.py --gbdf_grs --TS145   # Generates TS_145_Nebulizer A52466 IPERP-132_gbdf_grs_Collection - edit ID: RULENEBU000001
@@ -613,8 +646,7 @@ python main_processor.py --wgs_csbd --all --no-postman
 
 # GBDF MCR models without Postman collection generation
 python main_processor.py --gbdf_mcr --GBDTS47 --no-postman    # edit ID: RULEEM000001
-python main_processor.py --gbdf_mcr --GBDTS60 --no-postman    # edit ID: RULEUSD00100
-python main_processor.py --gbdf_mcr --GBDTS61 --no-postman    # edit ID: RULEUSD00100
+python main_processor.py --gbdf_mcr --GBDTS62 --no-postman    # edit ID: RULEUSD00100_outpt_MCR
 python main_processor.py --gbdf_mcr --GBDTS70 --no-postman    # edit ID: RULE00000376
 python main_processor.py --gbdf_mcr --GBDTS138 --no-postman    # edit ID: RULEEMSD000002
 python main_processor.py --gbdf_mcr --GBDTS140 --no-postman    # edit ID: RULENDCUOM000001
@@ -623,9 +655,8 @@ python main_processor.py --gbdf_mcr --GBDTS146 --no-postman    # edit ID: RULENM
 python main_processor.py --gbdf_mcr --all --no-postman
 
 # GBDF GRS models without Postman collection generation
-python main_processor.py --gbdf_grs --TS59 --no-postman    # edit ID: RULEUSD00100
-python main_processor.py --gbdf_grs --TS61 --no-postman    # edit ID: RULEUSD00100_Prof_GRS
-python main_processor.py --gbdf_grs --TS62 --no-postman    # edit ID: RULEUSD00100
+python main_processor.py --gbdf_grs --GBDTS63 --no-postman    # edit ID: RULEUSD00100_Outpt_GRS
+python main_processor.py --gbdf_grs --GBDTS61 --no-postman    # edit ID: RULEUSD00100_Prof_GRS
 python main_processor.py --gbdf_grs --TS139 --no-postman    # edit ID: RULEEMSD000002
 python main_processor.py --gbdf_grs --TS141 --no-postman    # edit ID: RULENDCUOM000001
 python main_processor.py --gbdf_grs --TS145 --no-postman    # edit ID: RULENEBU000001
@@ -689,6 +720,10 @@ python main_processor.py --wgs_csbd --CSBDTS59 --refdb    # Process TS59 (Antepa
 # Process WGS_NYK refdb models with value replacement
 python main_processor.py --wgs_nyk --NYKTS123 --refdb    # Process NYKTS123 with refdb value replacement - edit ID: RULEOBSER00001
 
+# Process ALL refdb-supported models with value replacement
+python main_processor.py --wgs_csbd --all --refdb        # Process all WGS_CSBD refdb models (CSBDTS46, CSBDTS47, CSBDTS59)
+python main_processor.py --wgs_nyk --all --refdb       # Process all WGS_NYK refdb models (NYKTS123)
+
 # Process refdb models without Postman collection generation
 python main_processor.py --wgs_csbd --CSBDTS46 --refdb --no-postman    # edit ID: RULEEMSD000002
 python main_processor.py --wgs_csbd --CSBDTS47 --refdb --no-postman    # edit ID: RULEMBOS000001
@@ -748,8 +783,7 @@ python main_processor.py --wgs_nyk --NYKTS123 --refdb --no-postman    # edit ID:
 
 ### GBDF_MCR Models:
 - `python main_processor.py --gbdf_mcr --GBDTS47` - **TESTED & WORKING** ✓ (edit ID: RULEEM000001, recommended format)
-- `python main_processor.py --gbdf_mcr --GBDTS60` - **TESTED & WORKING** ✓ (edit ID: RULEUSD00100, recommended format)
-- `python main_processor.py --gbdf_mcr --GBDTS61` - **TESTED & WORKING** ✓ (edit ID: RULEUSD00100, recommended format)
+- `python main_processor.py --gbdf_mcr --GBDTS62` - **TESTED & WORKING** ✓ (edit ID: RULEUSD00100_outpt_MCR, recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS70` - **TESTED & WORKING** ✓ (edit ID: RULE00000376, recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS138` - **TESTED & WORKING** ✓ (edit ID: RULEEMSD000002, recommended format)
 - `python main_processor.py --gbdf_mcr --GBDTS140` - **TESTED & WORKING** ✓ (edit ID: RULENDCUOM000001, recommended format)
@@ -758,9 +792,8 @@ python main_processor.py --wgs_nyk --NYKTS123 --refdb --no-postman    # edit ID:
 - `python main_processor.py --gbdf_mcr --all` - **TESTED & WORKING** ✓
 
 ### GBDF_GRS Models:
-- `python main_processor.py --gbdf_grs --TS59` - **TESTED & WORKING** ✓ (edit ID: RULEUSD00100)
-- `python main_processor.py --gbdf_grs --TS61` - **TESTED & WORKING** ✓ (edit ID: RULEUSD00100_Prof_GRS)
-- `python main_processor.py --gbdf_grs --TS62` - **TESTED & WORKING** ✓ (edit ID: RULEUSD00100)
+- `python main_processor.py --gbdf_grs --GBDTS63` - **TESTED & WORKING** ✓ (edit ID: RULEUSD00100_Outpt_GRS)
+- `python main_processor.py --gbdf_grs --GBDTS61` - **TESTED & WORKING** ✓ (edit ID: RULEUSD00100_Prof_GRS)
 - `python main_processor.py --gbdf_grs --TS139` - **TESTED & WORKING** ✓ (edit ID: RULEEMSD000002)
 - `python main_processor.py --gbdf_grs --TS141` - **TESTED & WORKING** ✓ (edit ID: RULENDCUOM000001)
 - `python main_processor.py --gbdf_grs --TS145` - **TESTED & WORKING** ✓ (edit ID: RULENEBU000001)
@@ -884,7 +917,10 @@ renaming_files/
 ├── models_config.py                   # Configuration for different test models
 ├── dynamic_models.py                  # Dynamic model discovery and management
 ├── report_generate.py                 # Master report generation module (Excel reports, timing data, performance analytics)
+├── refdb_change.py                    # RefDB value replacement for refdb-specific models
+├── auto_edit_processor.py             # Auto-generates model config from edits_list.xlsx
 ├── requirements.txt                   # Python dependencies
+├── .env.example                       # Example environment configuration (copy to .env)
 ├── Docs/                              # Documentation directory
 │   ├── project_architecture_diagram.md    # Visual architecture documentation
 │   ├── EXCEL_REPORTING_GUIDE.md          # Excel reporting functionality guide
@@ -910,10 +946,8 @@ renaming_files/
 │   │   ├── TS_47_Covid_gbdf_mcr_RULEEM000001_v04_dis/
 │   │   ├── TS_48_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
 │   │   ├── TS_49_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
-│   │   ├── TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_dis/
-│   │   ├── TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/
-│   │   ├── TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_dis/
-│   │   ├── TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/
+│   │   ├── TS_63_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_Outpt_GRS_v17_dis/
+│   │   ├── TS_62_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_outpt_MCR_v17_dis/
 │   │   ├── TS_138_Multiple E&M Same day_gbdf_mcr_RULEEMSD000002_v09_dis/
 │   │   ├── TS_139_Multiple E&M Same day_gbdf_grs_RULEEMSD000002_v09_dis/
 │   │   ├── TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_RULENDCUOM000001_v41_dis/
@@ -1105,14 +1139,26 @@ suffix_mapping = {
 ## Usage
 
 ### Prerequisites
-- Python 3.6 or higher
+- Python 3.8 or higher
 - Required Python modules: `os`, `re`, `shutil`, `json`, `uuid`, `pathlib` (all are standard library modules)
-- Additional dependencies: `pandas`, `openpyxl` (for Excel reporting functionality)
+- Additional dependencies: `pandas`, `openpyxl`, `python-dotenv` (installed via `requirements.txt`)
 
 ### Installation
 ```bash
 # Install required dependencies
 pip install -r requirements.txt
+```
+
+**Environment configuration (optional):**
+```bash
+# Copy the example env file and edit as needed
+# Git Bash / Linux / macOS:
+cp .env.example .env
+# Windows CMD:
+copy .env.example .env
+
+# In .env you can configure:
+# ENABLE_REPORT_GENERATION=true   # Set to false to disable Excel report generation
 ```
 
 **Note**: The `requirements.txt` file contains all necessary dependencies for the project including Excel reporting functionality.
@@ -1145,8 +1191,7 @@ python main_processor.py --wgs_csbd --CSBDTS15    # Process TS15 model (revenue 
 
 # Process specific GBDF MCR models (GBDF_MCR flag required - Recommended format: --GBDTSXX)
 python main_processor.py --gbdf_mcr --GBDTS47    # Process TS47 model (Covid GBDF MCR) - edit ID: RULEEM000001
-python main_processor.py --gbdf_mcr --GBDTS60    # Process TS60 model (Unspecified dx code outpt GBDF MCR) - edit ID: RULEUSD00100
-python main_processor.py --gbdf_mcr --GBDTS61    # Process TS61 model (Unspecified dx code prof GBDF MCR) - edit ID: RULEUSD00100
+python main_processor.py --gbdf_mcr --GBDTS62    # Process TS62 model (Unspecified dx code outpt GBDF MCR) - edit ID: RULEUSD00100_outpt_MCR
 python main_processor.py --gbdf_mcr --GBDTS70    # Process TS70 model (InappropriatePrimaryDiagnosis GBDF MCR) - edit ID: RULE00000376
 python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR) - edit ID: RULEEMSD000002
 python main_processor.py --gbdf_mcr --GBDTS140   # Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR) - edit ID: RULENDCUOM000001
@@ -1155,9 +1200,8 @@ python main_processor.py --gbdf_mcr --GBDTS146   # Process TS146 model (No match
 
 
 # Process specific GBDF GRS models (GBDF_GRS flag required)
-python main_processor.py --gbdf_grs --TS59    # Process TS59 model (Unspecified dx code outpt GBDF GRS) - edit ID: RULEUSD00100
-python main_processor.py --gbdf_grs --TS61    # Process TS61 model (Unspecified dx code prof GBDF GRS) - edit ID: RULEUSD00100_Prof_GRS
-python main_processor.py --gbdf_grs --TS62    # Process TS62 model (Unspecified dx code prof GBDF GRS) - edit ID: RULEUSD00100
+python main_processor.py --gbdf_grs --GBDTS63    # Process TS63 model (Unspecified dx code outpt GBDF GRS) - edit ID: RULEUSD00100_Outpt_GRS
+python main_processor.py --gbdf_grs --GBDTS61    # Process TS61 model (Unspecified dx code prof GBDF GRS) - edit ID: RULEUSD00100_Prof_GRS
 python main_processor.py --gbdf_grs --TS139   # Process TS139 model (Multiple E&M Same day GBDF GRS) - edit ID: RULEEMSD000002
 python main_processor.py --gbdf_grs --TS141   # Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS) - edit ID: RULENDCUOM000001
 python main_processor.py --gbdf_grs --TS145   # Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS) - edit ID: RULENEBU000001
@@ -1209,8 +1253,8 @@ python main_processor.py --help
 - `--CSBDTS01` through `--CSBDTS15`: Process specific WGS_CSBD TS models
 - `--CSBDTS20`, `--CSBDTS46`, `--CSBDTS47`, `--CSBDTS48`, `--CSBDTS57`, `--CSBDTS59`: Process additional WGS_CSBD TS models (RadioservicesbilledwithoutRadiopharma, Multiple E&M Same day, Multiple Billing of Obstetrical Services, Revenue code to HCPCS Alignment edit, add_on without base, Antepartum Services)
 - `--CSBDTS49` through `--CSBDTS56`: Process Observation Services WGS_CSBD models
-- `--GBDTS47`, `--GBDTS48`, `--GBDTS60`, `--GBDTS61`, `--GBDTS70`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt GBDF MCR, Unspecified dx code prof GBDF MCR, InappropriatePrimaryDiagnosis GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
-- `--TS49`, `--TS59`, `--TS61`, `--TS62`, `--TS139`, `--TS141`, `--TS145`, `--TS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code outpt GBDF GRS, Unspecified dx code prof GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
+- `--GBDTS47`, `--GBDTS48`, `--GBDTS62`, `--GBDTS64`, `--GBDTS70`, `--GBDTS138`, `--GBDTS140`, `--GBDTS144`, `--GBDTS146`: Process GBDF MCR models (Covid GBDF MCR, Multiple E&M Same day GBDF MCR, Unspecified dx code outpt_MCR GBDF MCR, Unspecified Prof_MCR GBDF MCR, InappropriatePrimaryDiagnosis GBDF MCR, NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR, Nebulizer A52466 IPERP-132 GBDF MCR, No match of Procedure code GBDF MCR) - requires `--gbdf_mcr` flag
+- `--GBDTS49`, `--GBDTS61`, `--GBDTS63`, `--GBDTS139`, `--GBDTS141`, `--GBDTS145`, `--GBDTS147`: Process GBDF GRS models (Multiple E&M Same day GBDF GRS, Unspecified dx code prof GBDF GRS, Unspecified Outpt_GRS GBDF GRS, NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS, Nebulizer A52466 IPERP-132 GBDF GRS, No match of Procedure code GBDF GRS) - requires `--gbdf_grs` flag
 - `--NYKTS122`, `--NYKTS123`, `--NYKTS124`, `--NYKTS125`, `--NYKTS126`, `--NYKTS127`, `--NYKTS128`, `--NYKTS129`, `--NYKTS130`, `--NYKTS132`: Process WGS_NYK models (Revenue code to HCPCS Alignment edit WGS NYK, Observation Services WGS NYK, add_on without base WGS NYK) - requires `--wgs_nyk` flag (Must use --NYKTSXX format)
 - `--all`: Process all configured models (requires either --wgs_csbd, --gbdf_mcr, --gbdf_grs, or --wgs_nyk flag)
 - `--refdb`: Apply refdb value replacement for refdb-specific models (CSBDTS_46, CSBDTS_47, CSBDTS_59, NYKTS_123) - replaces HCID, PAT_BRTH_DT, PAT_FRST_NME, PAT_LAST_NM, PROV_TAX_ID, BILLG_NPI, NAT_EA2_RNDR_NPI with values from `refdb_values.json`
@@ -1389,7 +1433,17 @@ python auto_edit_processor.py
 # Process specific sheet
 python auto_edit_processor.py --sheet WGS_CSBD
 python auto_edit_processor.py --sheet GBDF
+python auto_edit_processor.py --sheet GBDF_MCR
+python auto_edit_processor.py --sheet GBDF_GRS
 python auto_edit_processor.py --sheet KERNAL
+
+# Sync Test Suite IDs from Excel to models_config.py (sync-only mode)
+python auto_edit_processor.py --sync-from-excel --sheet WGS_CSBD
+python auto_edit_processor.py --sync-from-excel --sheet GBDF
+python auto_edit_processor.py --sync-from-excel --sheet KERNAL
+
+# Sort STATIC_MODELS_CONFIG by ts_number (ascending) for all models
+python auto_edit_processor.py --sort-config
 
 # Use custom Excel file
 python auto_edit_processor.py --excel my_edits.xlsx
@@ -1401,9 +1455,11 @@ python auto_edit_processor.py --dry-run
 #### Command Options
 
 - `--sheet SHEET_NAME`: Excel sheet name to process (default: `WGS_CSBD`)
-  - Options: `WGS_CSBD`, `GBDF`, `KERNAL`
+  - Options: `WGS_CSBD`, `GBDF`, `GBDF_MCR`, `GBDF_GRS`, `KERNAL`
 - `--excel EXCEL_PATH`: Path to Excel file (default: `edits_list.xlsx`)
 - `--dry-run`: Preview changes without updating files
+- `--sync-from-excel`: Sync STATIC_MODELS_CONFIG from Excel Test Suite IDs (updates models_config.py only)
+- `--sort-config`: Sort STATIC_MODELS_CONFIG by ts_number in ascending order for all models
 
 ### How It Works
 
@@ -1456,6 +1512,8 @@ Processing complete!
 - **Excel Integration**: Updates Excel file with generated commands
 - **Dry Run Mode**: Preview changes before applying
 - **Error Handling**: Skips invalid entries with clear error messages
+- **Sync from Excel**: `--sync-from-excel` syncs Test Suite IDs from Excel to models_config.py
+- **Ascending Order**: Config is kept sorted by ts_number (ascending) for all models; use `--sort-config` to sort manually
 
 ### Generated Configuration
 
@@ -2171,23 +2229,118 @@ python main_processor.py --wgs_csbd --CSBDTS47    # Multiple Billing of Obstetri
 python main_processor.py --wgs_csbd --CSBDTS48    # Revenue code to HCPCS Alignment edit Collection - edit ID: RULERCTH00001
 python main_processor.py --wgs_csbd --CSBDTS59    # Antepartum Services Collection - edit ID: RULESUB4000001
 
-# Process GBDF MCR models (with --gbdf_mcr flag)
-python main_processor.py --gbdf_mcr --GBDTS47    # Covid GBDF MCR Collection - edit ID: RULEEM000001
-python main_processor.py --gbdf_mcr --GBDTS60    # Unspecified dx code outpt GBDF MCR Collection - edit ID: RULEUSD00100
-python main_processor.py --gbdf_mcr --GBDTS61    # Unspecified dx code prof GBDF MCR Collection - edit ID: RULEUSD00100
-python main_processor.py --gbdf_mcr --GBDTS138   # Multiple E&M Same day GBDF MCR Collection - edit ID: RULEEMSD000002
-python main_processor.py --gbdf_mcr --GBDTS140   # NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR Collection - edit ID: RULENDCUOM000001
-python main_processor.py --gbdf_mcr --GBDTS144   # Nebulizer A52466 IPERP-132 GBDF MCR Collection - edit ID: RULENEBU000001
-python main_processor.py --gbdf_mcr --GBDTS146   # No match of Procedure code GBDF MCR Collection - edit ID: RULENMP000001
+# Process GBDF MCR models (with --gbdf_mcr flag) - use --GBDTS{number} format
+python main_processor.py --gbdf_mcr --GBDTS47    # Covid - RULEEM000001
+python main_processor.py --gbdf_mcr --GBDTS50    # Laterality - RULELATE000001
+python main_processor.py --gbdf_mcr --GBDTS51    # Psm - PSMEM000001
+python main_processor.py --gbdf_mcr --GBDTS53    # Psm - PSMEM000002
+python main_processor.py --gbdf_mcr --GBDTS55    # Psm - PSMEM000003
+python main_processor.py --gbdf_mcr --GBDTS57    # Psm - PSMEM000004
+python main_processor.py --gbdf_mcr --GBDTS59    # Manifestation - RULEMAN000004
+python main_processor.py --gbdf_mcr --GBDTS62    # Unspecified dx code outpt - RULEUSD00100_outpt_MCR
+python main_processor.py --gbdf_mcr --GBDTS63    # Unspecified/Shadow - RULEUSD00100_Prof_MCR, RULEAMBU000001
+python main_processor.py --gbdf_mcr --GBDTS65    # Gbdf/Inaccurate - RULEAMBU000001, RULE00000022
+python main_processor.py --gbdf_mcr --GBDTS67    # Inaccurate - RULE00000022
+python main_processor.py --gbdf_mcr --GBDTS68    # Inappropriate - RULE00000376
+python main_processor.py --gbdf_mcr --GBDTS70    # Always - RULEALWA000001
+python main_processor.py --gbdf_mcr --GBDTS71    # Gbdf - RULEEXCL000001
+python main_processor.py --gbdf_mcr --GBDTS75    # Excludes/Anesthesia - RULEEXCL000001, RULEANES000001
+python main_processor.py --gbdf_mcr --GBDTS78    # Clia - RULECLIA00001
+python main_processor.py --gbdf_mcr --GBDTS81    # Gbdf - Ambulance Mileage
+python main_processor.py --gbdf_mcr --GBDTS82    # Immunization - RULEIPVT000001
+python main_processor.py --gbdf_mcr --GBDTS84    # Immuno Drugs - RULEIMMU000001
+python main_processor.py --gbdf_mcr --GBDTS86    # Knee Orthosis - RULEKNEE000001
+python main_processor.py --gbdf_mcr --GBDTS89    # JW Modifier - RULEJWME000001
+python main_processor.py --gbdf_mcr --GBDTS91    # MNP Model - RULEEM0000012
+python main_processor.py --gbdf_mcr --GBDTS93    # Multiple E&M Same Day - RULEEMSD000002
+python main_processor.py --gbdf_mcr --GBDTS95    # NDC UOM - RULENDCUOM000001
+python main_processor.py --gbdf_mcr --GBDTS97    # NDC Validation - RULENDC000001
+python main_processor.py --gbdf_mcr --GBDTS99    # Nebulizer - RULENEBU000001
+python main_processor.py --gbdf_mcr --GBDTS101   # No match Procedure - RULENMP000001
+python main_processor.py --gbdf_mcr --GBDTS103   # Ostomy Supplies - RULEOSTO000001
+python main_processor.py --gbdf_mcr --GBDTS105   # Trach Supply - RULETRAC000001
+python main_processor.py --gbdf_mcr --GBDTS107   # Recovery room - RULERCRO000001
+python main_processor.py --gbdf_mcr --GBDTS109   # Inappropriate Primary Dxs - RULEIPDXE00001
+python main_processor.py --gbdf_mcr --GBDTS110   # Inappropriate Primary Dxs GRS - RULEIPDXE00001
+python main_processor.py --gbdf_mcr --GBDTS111   # Geneticstesting - RULEGENE000001
+python main_processor.py --gbdf_mcr --GBDTS114   # Revenue Code - RULERCWP000001
+python main_processor.py --gbdf_mcr --GBDTS116   # Anatomical Modifier - RULEPMAM000001
+python main_processor.py --gbdf_mcr --GBDTS117   # PSM algo - PSMEM000003_algo
+python main_processor.py --gbdf_mcr --GBDTS119   # PSM algo - PSMEM000004_algo
+python main_processor.py --gbdf_mcr --GBDTS121   # Sick - RULEEM000002_refdb
+python main_processor.py --gbdf_mcr --GBDTS126   # Clia - RULECLIA00001
+python main_processor.py --gbdf_mcr --GBDTS127   # Immunization - RULEIPVT000001
+python main_processor.py --gbdf_mcr --GBDTS129   # Immuno Drugs - RULEIMMU000001
+python main_processor.py --gbdf_mcr --GBDTS131   # Knee Orthosis - RULEKNEE000001
+python main_processor.py --gbdf_mcr --GBDTS134   # JW Modifier - RULEJWME000001
+python main_processor.py --gbdf_mcr --GBDTS136   # MNP Model - RULEEM0000012
+python main_processor.py --gbdf_mcr --GBDTS138   # Multiple E&M Same day - RULEEMSD000002
+python main_processor.py --gbdf_mcr --GBDTS140   # NDC UOM Iprep-138 - RULENDCUOM000001
+python main_processor.py --gbdf_mcr --GBDTS142   # NDC Validation - RULENDC000001
+python main_processor.py --gbdf_mcr --GBDTS144   # Nebulizer IPERP-132 - RULENEBU000001
+python main_processor.py --gbdf_mcr --GBDTS146   # No match Procedure - RULENMP000001
+python main_processor.py --gbdf_mcr --GBDTS148   # Ostomy Supplies - RULEOSTO000001
+python main_processor.py --gbdf_mcr --GBDTS150   # Trach Supply - RULETRAC000001
+python main_processor.py --gbdf_mcr --GBDTS152   # Recovery room - RULERCRO000001
+python main_processor.py --gbdf_mcr --GBDTS154   # Inappropriate Primary Dxs - RULEIPDXE00001
+python main_processor.py --gbdf_mcr --GBDTS155   # Inappropriate Primary Dxs GRS - RULEIPDXE00001
+python main_processor.py --gbdf_mcr --GBDTS159   # Revenue Code - RULERCWP000001
+python main_processor.py --gbdf_mcr --GBDTS161   # Anatomical Modifier - RULEPMAM000001
+python main_processor.py --gbdf_mcr --GBDTS170   # Ambulance Mileage - RULEAMBU000001
 
-# Process GBDF GRS models (with --gbdf_grs flag)
-python main_processor.py --gbdf_grs --TS59    # Unspecified dx code outpt GBDF GRS Collection - edit ID: RULEUSD00100
-python main_processor.py --gbdf_grs --TS61    # Unspecified dx code prof GBDF GRS Collection - edit ID: RULEUSD00100_Prof_GRS
-python main_processor.py --gbdf_grs --TS62    # Unspecified dx code prof GBDF GRS Collection - edit ID: RULEUSD00100
-python main_processor.py --gbdf_grs --TS139   # Multiple E&M Same day GBDF GRS Collection - edit ID: RULEEMSD000002
-python main_processor.py --gbdf_grs --TS141   # NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS Collection - edit ID: RULENDCUOM000001
-python main_processor.py --gbdf_grs --TS145   # Nebulizer A52466 IPERP-132 GBDF GRS Collection - edit ID: RULENEBU000001
-python main_processor.py --gbdf_grs --TS147   # No match of Procedure code GBDF GRS Collection - edit ID: RULENMP000001
+# Process GBDF GRS models (with --gbdf_grs flag) - use --GBDTS{number} format
+python main_processor.py --gbdf_grs --GBDTS48    # Covid - RULEEM000001
+python main_processor.py --gbdf_grs --GBDTS49    # Laterality - RULELATE000001
+python main_processor.py --gbdf_grs --GBDTS52    # Psm - PSMEM000001
+python main_processor.py --gbdf_grs --GBDTS54    # Psm - PSMEM000002
+python main_processor.py --gbdf_grs --GBDTS56    # Psm - PSMEM000003
+python main_processor.py --gbdf_grs --GBDTS58    # Psm - PSMEM000004
+python main_processor.py --gbdf_grs --GBDTS60    # Unspecified Outpt - RULEUSD00100_Outpt_GRS
+python main_processor.py --gbdf_grs --GBDTS62    # Unspecified Prof - RULEUSD00100_Prof_GRS
+python main_processor.py --gbdf_grs --GBDTS64    # Shadow - RULEAMBU000001
+python main_processor.py --gbdf_grs --GBDTS66    # Inaccurate - RULE00000022
+python main_processor.py --gbdf_grs --GBDTS67    # Inappropriate - RULE00000376
+python main_processor.py --gbdf_grs --GBDTS69    # Always - RULEALWA000001
+python main_processor.py --gbdf_grs --GBDTS72    # Excludes - RULEEXCL000001
+python main_processor.py --gbdf_grs --GBDTS74    # Geneticstesting - RULEGENE000001
+python main_processor.py --gbdf_grs --GBDTS76    # Anesthesia - RULEANES000001
+python main_processor.py --gbdf_grs --GBDTS80    # Shadow Ambulance - RULEAMBU000001
+python main_processor.py --gbdf_grs --GBDTS83    # Immunization - RULEIPVT000001
+python main_processor.py --gbdf_grs --GBDTS85    # Immuno Drugs - RULEIMMU000001
+python main_processor.py --gbdf_grs --GBDTS87    # Knee Orthosis - RULEKNEE000001
+python main_processor.py --gbdf_grs --GBDTS88    # Manifestation - RULEMAN000004
+python main_processor.py --gbdf_grs --GBDTS90    # JW Modifier - RULEJWME000001
+python main_processor.py --gbdf_grs --GBDTS92    # MNP Model - RULEEM0000012
+python main_processor.py --gbdf_grs --GBDTS94    # Multiple E&M Same Day - RULEEMSD000002
+python main_processor.py --gbdf_grs --GBDTS96    # NDC UOM - RULENDCUOM000001
+python main_processor.py --gbdf_grs --GBDTS98    # NDC Validation - RULENDC000001
+python main_processor.py --gbdf_grs --GBDTS100   # Nebulizer - RULENEBU000001
+python main_processor.py --gbdf_grs --GBDTS102   # No match Procedure - RULENMP000001
+python main_processor.py --gbdf_grs --GBDTS104   # Ostomy Supplies - RULEOSTO000001
+python main_processor.py --gbdf_grs --GBDTS106   # Trach Supply - RULETRAC000001
+python main_processor.py --gbdf_grs --GBDTS108   # Recovery room - RULERCRO000001
+python main_processor.py --gbdf_grs --GBDTS112   # Inappropriate Primary DX - RULEIPDXH00001
+python main_processor.py --gbdf_grs --GBDTS113   # Revenue Code - RULERCWP000001
+python main_processor.py --gbdf_grs --GBDTS115   # Anatomical Modifier - RULEPMAM000001
+python main_processor.py --gbdf_grs --GBDTS118   # PSM algo - PSMEM000003_algo
+python main_processor.py --gbdf_grs --GBDTS120   # PSM algo - PSMEM000004_algo
+python main_processor.py --gbdf_grs --GBDTS122   # Sick - RULEEM000002_refdb
+python main_processor.py --gbdf_grs --GBDTS128   # Immunization - RULEIPVT000001
+python main_processor.py --gbdf_grs --GBDTS130   # Immuno Drugs - RULEIMMU000001
+python main_processor.py --gbdf_grs --GBDTS132   # Knee Orthosis - RULEKNEE000001
+python main_processor.py --gbdf_grs --GBDTS135   # JW Modifier - RULEJWME000001
+python main_processor.py --gbdf_grs --GBDTS137   # MNP Model - RULEEM0000012
+python main_processor.py --gbdf_grs --GBDTS139   # Multiple E&M Same day - RULEEMSD000002
+python main_processor.py --gbdf_grs --GBDTS141   # NDC UOM Iprep-138 - RULENDCUOM000001
+python main_processor.py --gbdf_grs --GBDTS143   # NDC Validation - RULENDC000001
+python main_processor.py --gbdf_grs --GBDTS145   # Nebulizer IPERP-132 - RULENEBU000001
+python main_processor.py --gbdf_grs --GBDTS147   # No match Procedure - RULENMP000001
+python main_processor.py --gbdf_grs --GBDTS149   # Ostomy Supplies - RULEOSTO000001
+python main_processor.py --gbdf_grs --GBDTS151   # Trach Supply - RULETRAC000001
+python main_processor.py --gbdf_grs --GBDTS153   # Recovery room - RULERCRO000001
+python main_processor.py --gbdf_grs --GBDTS157   # Inappropriate Primary DX - RULEIPDXH00001
+python main_processor.py --gbdf_grs --GBDTS158   # Revenue Code - RULERCWP000001
+python main_processor.py --gbdf_grs --GBDTS160   # Anatomical Modifier - RULEPMAM000001
 
 # Process WGS_NYK models (with --wgs_nyk flag - Must use --NYKTSXX format)
 python main_processor.py --wgs_nyk --NYKTS122   # Revenue code to HCPCS Alignment edit WGS NYK Collection - edit ID: RULERCTH00001
@@ -2201,11 +2354,21 @@ python main_processor.py --wgs_nyk --NYKTS129   # Observation Services WGS NYK C
 python main_processor.py --wgs_nyk --NYKTS130   # Observation Services WGS NYK Collection - edit ID: RULEOBSER00008
 python main_processor.py --wgs_nyk --NYKTS132   # add_on without base WGS NYK Collection - edit ID: RULERADDON00001
 
-# Process all models at once
+# Process all models at once (44 WGS_CSBD, 60 GBDF MCR, 52 GBDF GRS, 12 WGS_NYK)
 python main_processor.py --wgs_csbd --all     # All WGS_CSBD models
 python main_processor.py --gbdf_mcr --all     # All GBDF MCR models
 python main_processor.py --gbdf_grs --all     # All GBDF GRS models
 python main_processor.py --wgs_nyk --all     # All WGS_NYK models
+
+# Process all models without Postman generation
+python main_processor.py --wgs_csbd --all --no-postman
+python main_processor.py --gbdf_mcr --all --no-postman
+python main_processor.py --gbdf_grs --all --no-postman
+python main_processor.py --wgs_nyk --all --no-postman
+
+# Process all refdb-supported models (WGS_CSBD: CSBDTS46, CSBDTS47, CSBDTS59; WGS_NYK: NYKTS123)
+python main_processor.py --wgs_csbd --all --refdb
+python main_processor.py --wgs_nyk --all --refdb
 
 # Standalone Postman operations
 python postman_cli.py generate-all
@@ -2255,26 +2418,25 @@ mkdir postman_collections
 ### Current Folder Contents:
 
 **`renaming_jsons` folder contains:**
-- 5 WGS_CSBD subdirectories (TS_01, TS_02, TS_03, TS_46, TS_47)
-- 13 GBDF subdirectories (TS_47, TS_48, TS_49, TS_59, TS_60, TS_61, TS_62, TS_138, TS_139, TS_140, TS_141, TS_146, TS_147)
-- Each with a `regression` subfolder containing JSON test case files
-- Diverse model types: Covid, Laterality, Revenue, Lab, Device, Recovery, HCPCS, Incidentcal Services, Multiple E&M Same day, NDC UOM Validation Edit Expansion Iprep-138, No match of Procedure code
+- **CSBDTS/** – WGS_CSBD processed files (e.g., CSBDTS_01_Covid, CSBDTS_46, CSBDTS_51–56)
+- **NYKTS/** – WGS_NYK processed files (e.g., NYKTS_122–130)
+- Each model folder has `payloads/regression/` and `payloads/smoke/` subfolders with JSON test case files
+- Diverse model types: Covid, Multiple E&M Same day, Observation Services, Revenue code to HCPCS Alignment
 
 **`postman_collections` folder contains:**
-- 5 WGS_CSBD subdirectories (TS_01_Covid_Collection, TS_02_Laterality_Collection, TS_03_Revenue_Collection, TS_46_Multiple E&M Same day_Collection, TS_47_Multiple Billing of Obstetrical Services_Collection)
-- 13 GBDF subdirectories (TS_47_Covid_gbdf_mcr_Collection, TS_48_Multiple E&M Same day_gbdf_mcr_Collection, TS_49_Multiple E&M Same day_gbdf_grs_Collection, TS_59_Unspecified_dx_code_outpt_gbdf_grs_Collection, TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection, TS_61_Unspecified_dx_code_prof_gbdf_grs_Collection, TS_62_Unspecified_dx_code_prof_gbdf_grs_Collection, TS_138_Multiple E&M Same day_gbdf_mcr_Collection, TS_139_Multiple E&M Same day_gbdf_grs_Collection, TS_140_NDC UOM Validation Edit Expansion Iprep-138_gbdf_mcr_Collection, TS_141_NDC UOM Validation Edit Expansion Iprep-138_gbdf_grs_Collection, TS_146_No match of Procedure code_gbdf_mcr_Collection, TS_147_No match of Procedure code_gbdf_grs_Collection)
-- Each contains properly structured Postman collection files
+- **WGS_CSBD/** – Collections for CSBDTS models (e.g., TS_01_Covid_Collection, CSBDTS_51–56_Observation_Services_Collection)
+- **WGS_KERNAL/** – Collections for NYKTS models (e.g., NYKTS_124–130_Observation_Services_Collection)
+- Each collection folder contains regression and smoke JSON files for Postman import
 - Professional naming and organization
 
 **`reports` folder contains:**
-- `collection_reports/` - Excel timing reports with timestamps and performance analytics
-- `list_reports/` - List-based reports and analytics (currently available for future use)
+- `collection_reports/` – Excel timing reports with timestamps and performance analytics
+- `list_reports/` – List-based reports and analytics (currently available for future use)
 - Professional formatting with headers and color coding
 - Model breakdown and status tracking across all processed models
 
 **`source_folder` folder contains:**
 - Original source files before processing
-- WGS_CSBD and GBDF source directories
 - Maintains original file structure for reference
 
 ⚠️ **Warning**: The `rm -rf` command will permanently delete all contents. Make sure you want to remove these files before running the commands.

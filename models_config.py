@@ -8,402 +8,402 @@ from dynamic_models import discover_ts_folders, get_model_by_ts_number, get_all_
 # Static model configurations (for backward compatibility)
 STATIC_MODELS_CONFIG = {
     "wgs_csbd": [
-    {
-        "ts_number": "01",
-        "edit_id": "RULEEM000001",
-        "code": "00W04",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_01_Covid_WGS_CSBD_RULEEM000001_00W04_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_01_Covid_WGS_CSBD_RULEEM000001_00W04_dis/payloads/regression",
-        "postman_collection_name": "TS_01_Covid_Collection",
-        "postman_file_name": "covid_wgs_csbd_RULEEM000001_00W04.json"
-    },
-    {
-        "ts_number": "02",
-        "edit_id": "RULELATE000001",
-        "code": "00W17",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/payloads/regression",
-        "postman_collection_name": "TS_02_Laterality_Collection",
-        "postman_file_name": "laterality_wgs_csbd_RULELATE000001_00W17.json"
-    },
-    {
-        "ts_number": "03",
-        "edit_id": "RULEREVE000005",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/payloads/regression",
-        "postman_collection_name": "TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000005_00W28.json"
-    },
-    {
-        "ts_number": "04",
-        "edit_id": "RULEREVE000004",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/payloads/regression",
-        "postman_collection_name": "TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000004_00W28.json"
-    },
-    {
-        "ts_number": "05",
-        "edit_id": "RULEREVE000003",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/payloads/regression",
-        "postman_collection_name": "TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000003_00W28.json"
-    },
-    {
-        "ts_number": "06",
-        "edit_id": "RULEREVE000002",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/payloads/regression",
-        "postman_collection_name": "TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000002_00W28.json"
-    },
-    {
-        "ts_number": "07",
-        "edit_id": "RULEREVE000001",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/payloads/regression",
-        "postman_collection_name": "TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULEREVE000001_00W28.json"
-    },
-    {
-        "ts_number": "08",
-        "edit_id": "RULELAB0000009",
-        "code": "00W13",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/payloads/regression",
-        "postman_collection_name": "TS_08_Lab panel Model_Collection",
-        "postman_file_name": "lab_wgs_csbd_RULELAB0000009_00W13.json"
-    },
-    {
-        "ts_number": "09",
-        "edit_id": "RULEDEVI000003",
-        "code": "00W13",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/payloads/regression",
-        "postman_collection_name": "TS_09_Device Dependent Procedures_Collection",
-        "postman_file_name": "device_wgs_csbd_RULEDEVI000003_00W13.json"
-    },
-    {
-        "ts_number": "10",
-        "edit_id": "RULERECO000001",
-        "code": "00W34",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/payloads/regression",
-        "postman_collection_name": "TS_10_Recovery Room Reimbursement_Collection",
-        "postman_file_name": "recovery_wgs_csbd_RULERECO000001_00W34.json"
-    },
-    {
-        "ts_number": "11",
-        "edit_id": "RULERECO000003",
-        "code": "00W26",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_dis/payloads/regression",
-        "postman_collection_name": "TS_11_Revenue Code to HCPCS Xwalk-1B_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULERECO000003_00W26.json"
-    },
-    {
-        "ts_number": "12",
-        "edit_id": "RULEINCI000001",
-        "code": "00W34",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_dis/payloads/regression",
-        "postman_collection_name": "TS_12_Incidentcal Services Facility_Collection",
-        "postman_file_name": "incidentcal_wgs_csbd_RULEINCI000001_00W34.json"
-    },
-    {
-        "ts_number": "13",
-        "edit_id": "RULERCE0000006",
-        "code": "00W06",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_dis/payloads/regression",
-        "postman_collection_name": "TS_13_Revenue model CR v3_Collection",
-        "postman_file_name": "revenue_model_wgs_csbd_RULERCE0000006_00W06.json"
-    },
-    {
-        "ts_number": "14",
-        "edit_id": "RULERCE000001",
-        "code": "00W26",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_dis/payloads/regression",
-        "postman_collection_name": "TS_14_HCPCS to Revenue Code Xwalk_Collection",
-        "postman_file_name": "hcpcs_wgs_csbd_RULERCE000001_00W26.json"
-    },
-    {
-        "ts_number": "15",
-        "edit_id": "RULERCE000005",
-        "code": "00W06",
-        "source_dir": "source_folder/WGS_CSBD/TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_sur/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/regression",
-        "postman_collection_name": "TS_15_revenue model_Collection",
-        "postman_file_name": "revenue_wgs_csbd_RULERCE000005_00W06.json"
-    },
-    {
-        "ts_number": "20",
-        "edit_id": "RULERBWR000001",
-        "code": "00W30",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_20_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_RULERBWR000001_00W30_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_20_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_RULERBWR000001_00W30_dis/payloads/regression",
-        "postman_collection_name": "TS_20_RadioservicesbilledwithoutRadiopharma_Collection",
-        "postman_file_name": "radioservices_wgs_csbd_RULERBWR000001_00W30.json"
-    },
-    {
-        "ts_number": "46",
-        "edit_id": "RULEEMSD000002",
-        "code": "00W09",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/payloads/regression",
-        "postman_collection_name": "TS_46_Multiple E&M Same day_Collection",
-        "postman_file_name": "multiple_em_wgs_csbd_RULEEMSD000002_00W09.json"
-    },
-    {
-        "ts_number": "47",
-        "edit_id": "RULEMBOS000001",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_dis/payloads/regression",
-        "postman_collection_name": "TS_47_Multiple Billing of Obstetrical Services_Collection",
-        "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEMBOS000001_00W28.json"
-    },
-    {
-        "ts_number": "48",
-        "edit_id": "RULERCTH00001",
-        "code": "00W26",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_48_Revenue code to HCPCS Alignment edit_Collection",
-        "postman_file_name": "revenue_code_to_hcpcs_alignment_edit_wgs_csbd_RULERCTH00001_00W26.json"
-    },
-    {
-        "ts_number": "49",
-        "edit_id": "RULEOBSER00001",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULEOBSER00001_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_49_Observation_Services_WGS_CSBD_RULEOBSER00001_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_49_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00001_00W28.json"
-    },
-    {
-        "ts_number": "50",
-        "edit_id": "RULEOBSER00002",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULEOBSER00002_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_50_Observation_Services_WGS_CSBD_RULEOBSER00002_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_50_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00002_00W28.json"
-    },
-    {
-        "ts_number": "51",
-        "edit_id": "RULEOBSER00003",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULEOBSER00003_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_51_Observation_Services_WGS_CSBD_RULEOBSER00003_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_51_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00003_00W28.json"
-    },
-    {
-        "ts_number": "52",
-        "edit_id": "RULEOBSER00004",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULEOBSER00004_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_52_Observation_Services_WGS_CSBD_RULEOBSER00004_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_52_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00004_00W28.json"
-    },
-    {
-        "ts_number": "53",
-        "edit_id": "RULEOBSER00005",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULEOBSER00005_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_53_Observation_Services_WGS_CSBD_RULEOBSER00005_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_53_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00005_00W28.json"
-    },
-    {
-        "ts_number": "54",
-        "edit_id": "RULEOBSER00006",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULEOBSER00006_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_54_Observation_Services_WGS_CSBD_RULEOBSER00006_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_54_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00006_00W28.json"
-    },
-    {
-        "ts_number": "55",
-        "edit_id": "RULEOBSER00007",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULEOBSER00007_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_55_Observation_Services_WGS_CSBD_RULEOBSER00007_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_55_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00007_00W28.json"
-    },
-    {
-        "ts_number": "56",
-        "edit_id": "RULEOBSER00008",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULEOBSER00008_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_56_Observation_Services_WGS_CSBD_RULEOBSER00008_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_56_Observation_Services_Collection",
-        "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00008_00W28.json"
-    },
-    {
-        "ts_number": "57",
-        "edit_id": "RULERADDON00001",
-        "code": "00W60",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_57_add_on without base_WGS_CSBD_RULERADDON00001_00W60_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_57_add_on without base_WGS_CSBD_RULERADDON00001_00W60_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_57_add_on without base_Collection",
-        "postman_file_name": "add_on_without_base_wgs_csbd_RULERADDON00001_00W60.json"
-    },
-    {
-        "ts_number": "58",
-        "edit_id": "RULESUB4000001",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_58_Expansion_WGS_CSBD_RULESUB4000001_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_58_Expansion_WGS_CSBD_RULESUB4000001_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_58_Expansion_Collection",
-        "postman_file_name": "expansion_on_sub_edit4_wgs_csbd_RULESUB4000001_00W28.json"
-    },
-    {
-        "ts_number": "59",
-        "edit_id": "RULESUB4000001",
-        "code": "00W00",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_59_Wgs_WGS_CSBD_RULESUB4000001_00W00_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_59_Wgs_WGS_CSBD_RULESUB4000001_00W00_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_59_Wgs_Collection",
-        "postman_file_name": "wgs_csbd_expansion_on_sub_edit4_RULESUB4000001_00W00.json"
-    },
-    {
-        "ts_number": "60",
-        "edit_id": "RULEINPCC00001",
-        "code": "00W45",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_60_Inpatient_WGS_CSBD_RULEINPCC00001_00W45_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_60_Inpatient_WGS_CSBD_RULEINPCC00001_00W45_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_60_Inpatient_Collection",
-        "postman_file_name": "inpatient_neonatal_and_pediatric_critical_care_iprep_332_wgs_csbd_RULEINPCC00001_00W45.json"
-    },
-    {
-        "ts_number": "61",
-        "edit_id": "RULEOPBS000001",
-        "code": "00W15",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_61_Op_WGS_CSBD_RULEOPBS000001_00W15_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_61_Op_WGS_CSBD_RULEOPBS000001_00W15_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_61_Op_Collection",
-        "postman_file_name": "op_facility_bundled_services_wgs_csbd_RULEOPBS000001_00W15.json"
-    },
-    {
-        "ts_number": "62",
-        "edit_id": "RULEANES000001",
-        "code": "00W32",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_62_Anesthesia_WGS_CSBD_RULEANES000001_00W32_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_62_Anesthesia_WGS_CSBD_RULEANES000001_00W32_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_62_Anesthesia_Collection",
-        "postman_file_name": "anesthesia_billed_time_units_wgs_csbd_RULEANES000001_00W32.json"
-    },
-    {
-        "ts_number": "63",
-        "edit_id": "RULEBDLG000004",
-        "code": "00W15",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_63_Bundled_WGS_CSBD_RULEBDLG000004_00W15_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_63_Bundled_WGS_CSBD_RULEBDLG000004_00W15_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_63_Bundled_Collection",
-        "postman_file_name": "bundled_services_logic_4_wgs_csbd_RULEBDLG000004_00W15.json"
-    },
-    {
-        "ts_number": "64",
-        "edit_id": "RULECLIA00001",
-        "code": "00W00",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_64_Clia_WGS_CSBD_RULECLIA00001_00W00_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_64_Clia_WGS_CSBD_RULECLIA00001_00W00_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_64_Clia_Collection",
-        "postman_file_name": "clia_edit_wgs_csbd_l92l95l94l93l90l91_RULECLIA00001_00W00.json"
-    },
-    {
-        "ts_number": "65",
-        "edit_id": "RULEJWME000001",
-        "code": "00W59",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_65_Medical_WGS_CSBD_RULEJWME000001_00W59_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_65_Medical_WGS_CSBD_RULEJWME000001_00W59_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_65_Medical_Collection",
-        "postman_file_name": "medical_injectable_edits_jw_modifier_i_352_wgs_csbd_RULEJWME000001_00W59.json"
-    },
-    {
-        "ts_number": "66",
-        "edit_id": "RULEMFTM000001",
-        "code": "00W31",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_66_Missing_WGS_CSBD_RULEMFTM000001_00W31_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_66_Missing_WGS_CSBD_RULEMFTM000001_00W31_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_66_Missing_Collection",
-        "postman_file_name": "missing_required_finger_or_toe_anatomical_modifier_iprep_310_wgs_csbd_RULEMFTM000001_00W31.json"
-    },
-    {
-        "ts_number": "67",
-        "edit_id": "RULENCCIPTP001",
-        "code": "00W10",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_67_Ncci_WGS_CSBD_RULENCCIPTP001_00W10_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_67_Ncci_WGS_CSBD_RULENCCIPTP001_00W10_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_67_Ncci_Collection",
-        "postman_file_name": "ncci_ptp_outpt_facility_iprep_271_wgs_csbd_RULENCCIPTP001_00W10.json"
-    },
-    {
-        "ts_number": "68",
-        "edit_id": "RULENDC000001",
-        "code": "00W40",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_68_Ndc_WGS_CSBD_RULENDC000001_00W40_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_68_Ndc_WGS_CSBD_RULENDC000001_00W40_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_68_Ndc_Collection",
-        "postman_file_name": "ndc_validation_edit_expansion_iprep_296_wgs_csbd_RULENDC000001_00W40.json"
-    },
-    {
-        "ts_number": "70",
-        "edit_id": "RULERCRO000001",
-        "code": "00W34",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_70_Correct_WGS_CSBD_RULERCRO000001_00W34_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_70_Correct_WGS_CSBD_RULERCRO000001_00W34_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_70_Correct_Collection",
-        "postman_file_name": "correct_coding_recovery_room_reimbursement_iprep_241_wgs_csbd_RULERCRO000001_00W34.json"
-    },
-    {
-        "ts_number": "71",
-        "edit_id": "RULERCTH000001",
-        "code": "00W26",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_71_Revenue_WGS_CSBD_RULERCTH000001_00W26_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_71_Revenue_WGS_CSBD_RULERCTH000001_00W26_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_71_Revenue_Collection",
-        "postman_file_name": "revenue_code_to_hcpcs_alignment_edit_iprep_205_wgs_csbd_RULERCTH000001_00W26.json"
-    },
-    {
-        "ts_number": "73",
-        "edit_id": "RULEUNAC000001",
-        "code": "00W16",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_73_Unacceptable_WGS_CSBD_RULEUNAC000001_00W16_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_73_Unacceptable_WGS_CSBD_RULEUNAC000001_00W16_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_73_Unacceptable_Collection",
-        "postman_file_name": "unacceptable_principal_diagnosis_wgs_csbd_RULEUNAC000001_00W16.json"
-    },
-    {
-        "ts_number": "75",
-        "edit_id": "RULEPREV000001",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_75_Preventative_WGS_CSBD_RULEPREV000001_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_75_Preventative_WGS_CSBD_RULEPREV000001_00W28_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_75_Preventative_Collection",
-        "postman_file_name": "preventative_medicine_and_screening_iprep_362_wgs_csbd_RULEPREV000001_00W28.json"
-    },
-    {
-        "ts_number": "74",
-        "edit_id": "RULEEM0000012 MNP Model",
-        "code": "00W00",
-        "source_dir": "source_folder/WGS_CSBD/CSBDTS_74_Wgs_WGS_CSBD_RULEEM0000012 MNP Model_00W00_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_74_Wgs_WGS_CSBD_RULEEM0000012 MNP Model_00W00_dis/payloads/regression",
-        "postman_collection_name": "CSBDTS_74_Wgs_Collection",
-        "postman_file_name": "wgs_csbd_w07_RULEEM0000012 MNP Model_00W00.json"
-    }
+        {
+            "ts_number": "01",
+            "edit_id": "RULEEM000001",
+            "code": "00W04",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_01_Covid_WGS_CSBD_RULEEM000001_00W04_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_01_Covid_WGS_CSBD_RULEEM000001_00W04_dis/payloads/regression",
+            "postman_collection_name": "TS_01_Covid_Collection",
+            "postman_file_name": "covid_wgs_csbd_RULEEM000001_00W04.json"
+        },
+        {
+            "ts_number": "02",
+            "edit_id": "RULELATE000001",
+            "code": "00W17",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_02_Laterality Policy-Disgnosis to Diagnosis_WGS_CSBD_RULELATE000001_00W17_dis/payloads/regression",
+            "postman_collection_name": "TS_02_Laterality_Collection",
+            "postman_file_name": "laterality_wgs_csbd_RULELATE000001_00W17.json"
+        },
+        {
+            "ts_number": "03",
+            "edit_id": "RULEREVE000005",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_03_Revenue code Services not payable on Facility claim Sub Edit 5_WGS_CSBD_RULEREVE000005_00W28_dis/payloads/regression",
+            "postman_collection_name": "TS_03_Revenue code Services not payable on Facility claim Sub Edit 5_Collection",
+            "postman_file_name": "revenue_wgs_csbd_RULEREVE000005_00W28.json"
+        },
+        {
+            "ts_number": "04",
+            "edit_id": "RULEREVE000004",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_04_Revenue code Services not payable on Facility claim Sub Edit 4_WGS_CSBD_RULEREVE000004_00W28_dis/payloads/regression",
+            "postman_collection_name": "TS_04_Revenue code Services not payable on Facility claim Sub Edit 4_Collection",
+            "postman_file_name": "revenue_wgs_csbd_RULEREVE000004_00W28.json"
+        },
+        {
+            "ts_number": "05",
+            "edit_id": "RULEREVE000003",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_05_Revenue code Services not payable on Facility claim Sub Edit 3_WGS_CSBD_RULEREVE000003_00W28_dis/payloads/regression",
+            "postman_collection_name": "TS_05_Revenue code Services not payable on Facility claim Sub Edit 3_Collection",
+            "postman_file_name": "revenue_wgs_csbd_RULEREVE000003_00W28.json"
+        },
+        {
+            "ts_number": "06",
+            "edit_id": "RULEREVE000002",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_06_Revenue code Services not payable on Facility claim Sub Edit 2_WGS_CSBD_RULEREVE000002_00W28_dis/payloads/regression",
+            "postman_collection_name": "TS_06_Revenue code Services not payable on Facility claim Sub Edit 2_Collection",
+            "postman_file_name": "revenue_wgs_csbd_RULEREVE000002_00W28.json"
+        },
+        {
+            "ts_number": "07",
+            "edit_id": "RULEREVE000001",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_07_Revenue code Services not payable on Facility claim Sub Edit 1_WGS_CSBD_RULEREVE000001_00W28_dis/payloads/regression",
+            "postman_collection_name": "TS_07_Revenue code Services not payable on Facility claim Sub Edit 1_Collection",
+            "postman_file_name": "revenue_wgs_csbd_RULEREVE000001_00W28.json"
+        },
+        {
+            "ts_number": "08",
+            "edit_id": "RULELAB0000009",
+            "code": "00W13",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_08_Lab panel Model_WGS_CSBD_RULELAB0000009_00W13_dis/payloads/regression",
+            "postman_collection_name": "TS_08_Lab panel Model_Collection",
+            "postman_file_name": "lab_wgs_csbd_RULELAB0000009_00W13.json"
+        },
+        {
+            "ts_number": "09",
+            "edit_id": "RULEDEVI000003",
+            "code": "00W13",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_09_Device Dependent Procedures(R1)-1B_WGS_CSBD_RULEDEVI000003_00W13_dis/payloads/regression",
+            "postman_collection_name": "TS_09_Device Dependent Procedures_Collection",
+            "postman_file_name": "device_wgs_csbd_RULEDEVI000003_00W13.json"
+        },
+        {
+            "ts_number": "10",
+            "edit_id": "RULERECO000001",
+            "code": "00W34",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_10_Recovery Room Reimbursement_WGS_CSBD_RULERECO000001_00W34_dis/payloads/regression",
+            "postman_collection_name": "TS_10_Recovery Room Reimbursement_Collection",
+            "postman_file_name": "recovery_wgs_csbd_RULERECO000001_00W34.json"
+        },
+        {
+            "ts_number": "11",
+            "edit_id": "RULERECO000003",
+            "code": "00W26",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_11_Revenue Code to HCPCS Xwalk-1B_WGS_CSBD_RULERECO000003_00W26_dis/payloads/regression",
+            "postman_collection_name": "TS_11_Revenue Code to HCPCS Xwalk-1B_Collection",
+            "postman_file_name": "revenue_wgs_csbd_RULERECO000003_00W26.json"
+        },
+        {
+            "ts_number": "12",
+            "edit_id": "RULEINCI000001",
+            "code": "00W34",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_12_Incidentcal Services Facility_WGS_CSBD_RULEINCI000001_00W34_dis/payloads/regression",
+            "postman_collection_name": "TS_12_Incidentcal Services Facility_Collection",
+            "postman_file_name": "incidentcal_wgs_csbd_RULEINCI000001_00W34.json"
+        },
+        {
+            "ts_number": "13",
+            "edit_id": "RULERCE0000006",
+            "code": "00W06",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_13_Revenue model CR v3_WGS_CSBD_RULERCE0000006_00W06_dis/payloads/regression",
+            "postman_collection_name": "TS_13_Revenue model CR v3_Collection",
+            "postman_file_name": "revenue_model_wgs_csbd_RULERCE0000006_00W06.json"
+        },
+        {
+            "ts_number": "14",
+            "edit_id": "RULERCE000001",
+            "code": "00W26",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_14_HCPCS to Revenue Code Xwalk_WGS_CSBD_RULERCE000001_00W26_dis/payloads/regression",
+            "postman_collection_name": "TS_14_HCPCS to Revenue Code Xwalk_Collection",
+            "postman_file_name": "hcpcs_wgs_csbd_RULERCE000001_00W26.json"
+        },
+        {
+            "ts_number": "15",
+            "edit_id": "RULERCE000005",
+            "code": "00W06",
+            "source_dir": "source_folder/WGS_CSBD/TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_sur/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/TS_15_revenue model_WGS_CSBD_RULERCE000005_00W06_dis/regression",
+            "postman_collection_name": "TS_15_revenue model_Collection",
+            "postman_file_name": "revenue_wgs_csbd_RULERCE000005_00W06.json"
+        },
+        {
+            "ts_number": "20",
+            "edit_id": "RULERBWR000001",
+            "code": "00W30",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_20_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_RULERBWR000001_00W30_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_20_RadioservicesbilledwithoutRadiopharma_WGS_CSBD_RULERBWR000001_00W30_dis/payloads/regression",
+            "postman_collection_name": "TS_20_RadioservicesbilledwithoutRadiopharma_Collection",
+            "postman_file_name": "radioservices_wgs_csbd_RULERBWR000001_00W30.json"
+        },
+        {
+            "ts_number": "46",
+            "edit_id": "RULEEMSD000002",
+            "code": "00W09",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_46_Multiple E&M Same day_WGS_CSBD_RULEEMSD000002_00W09_dis/payloads/regression",
+            "postman_collection_name": "TS_46_Multiple E&M Same day_Collection",
+            "postman_file_name": "multiple_em_wgs_csbd_RULEEMSD000002_00W09.json"
+        },
+        {
+            "ts_number": "47",
+            "edit_id": "RULEMBOS000001",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_47_Multiple Billing of Obstetrical Services_WGS_CSBD_RULEMBOS000001_00W28_dis/payloads/regression",
+            "postman_collection_name": "TS_47_Multiple Billing of Obstetrical Services_Collection",
+            "postman_file_name": "multiple_billing_obstetrical_wgs_csbd_RULEMBOS000001_00W28.json"
+        },
+        {
+            "ts_number": "48",
+            "edit_id": "RULERCTH00001",
+            "code": "00W26",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_48_Revenue code to HCPCS Alignment edit_WGS_CSBD_RULERCTH00001_00W26_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_48_Revenue code to HCPCS Alignment edit_Collection",
+            "postman_file_name": "revenue_code_to_hcpcs_alignment_edit_wgs_csbd_RULERCTH00001_00W26.json"
+        },
+        {
+            "ts_number": "49",
+            "edit_id": "RULEOBSER00001",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_49_Observation_Services_WGS_CSBD_RULEOBSER00001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_49_Observation_Services_WGS_CSBD_RULEOBSER00001_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_49_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00001_00W28.json"
+        },
+        {
+            "ts_number": "50",
+            "edit_id": "RULEOBSER00002",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_50_Observation_Services_WGS_CSBD_RULEOBSER00002_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_50_Observation_Services_WGS_CSBD_RULEOBSER00002_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_50_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00002_00W28.json"
+        },
+        {
+            "ts_number": "51",
+            "edit_id": "RULEOBSER00003",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_51_Observation_Services_WGS_CSBD_RULEOBSER00003_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_51_Observation_Services_WGS_CSBD_RULEOBSER00003_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_51_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00003_00W28.json"
+        },
+        {
+            "ts_number": "52",
+            "edit_id": "RULEOBSER00004",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_52_Observation_Services_WGS_CSBD_RULEOBSER00004_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_52_Observation_Services_WGS_CSBD_RULEOBSER00004_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_52_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00004_00W28.json"
+        },
+        {
+            "ts_number": "53",
+            "edit_id": "RULEOBSER00005",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_53_Observation_Services_WGS_CSBD_RULEOBSER00005_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_53_Observation_Services_WGS_CSBD_RULEOBSER00005_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_53_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00005_00W28.json"
+        },
+        {
+            "ts_number": "54",
+            "edit_id": "RULEOBSER00006",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_54_Observation_Services_WGS_CSBD_RULEOBSER00006_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_54_Observation_Services_WGS_CSBD_RULEOBSER00006_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_54_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00006_00W28.json"
+        },
+        {
+            "ts_number": "55",
+            "edit_id": "RULEOBSER00007",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_55_Observation_Services_WGS_CSBD_RULEOBSER00007_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_55_Observation_Services_WGS_CSBD_RULEOBSER00007_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_55_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00007_00W28.json"
+        },
+        {
+            "ts_number": "56",
+            "edit_id": "RULEOBSER00008",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_56_Observation_Services_WGS_CSBD_RULEOBSER00008_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_56_Observation_Services_WGS_CSBD_RULEOBSER00008_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_56_Observation_Services_Collection",
+            "postman_file_name": "observation_services_wgs_csbd_RULEOBSER00008_00W28.json"
+        },
+        {
+            "ts_number": "57",
+            "edit_id": "RULERADDON00001",
+            "code": "00W60",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_57_add_on without base_WGS_CSBD_RULERADDON00001_00W60_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_57_add_on without base_WGS_CSBD_RULERADDON00001_00W60_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_57_add_on without base_Collection",
+            "postman_file_name": "add_on_without_base_wgs_csbd_RULERADDON00001_00W60.json"
+        },
+        {
+            "ts_number": "58",
+            "edit_id": "RULESUB4000001",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_58_Expansion_WGS_CSBD_RULESUB4000001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_58_Expansion_WGS_CSBD_RULESUB4000001_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_58_Expansion_Collection",
+            "postman_file_name": "expansion_on_sub_edit4_wgs_csbd_RULESUB4000001_00W28.json"
+        },
+        {
+            "ts_number": "59",
+            "edit_id": "RULESUB4000001",
+            "code": "00W00",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_59_Wgs_WGS_CSBD_RULESUB4000001_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_59_Wgs_WGS_CSBD_RULESUB4000001_00W00_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_59_Wgs_Collection",
+            "postman_file_name": "wgs_csbd_expansion_on_sub_edit4_RULESUB4000001_00W00.json"
+        },
+        {
+            "ts_number": "60",
+            "edit_id": "RULEINPCC00001",
+            "code": "00W45",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_60_Inpatient_WGS_CSBD_RULEINPCC00001_00W45_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_60_Inpatient_WGS_CSBD_RULEINPCC00001_00W45_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_60_Inpatient_Collection",
+            "postman_file_name": "inpatient_neonatal_and_pediatric_critical_care_iprep_332_wgs_csbd_RULEINPCC00001_00W45.json"
+        },
+        {
+            "ts_number": "61",
+            "edit_id": "RULEOPBS000001",
+            "code": "00W15",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_61_Op_WGS_CSBD_RULEOPBS000001_00W15_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_61_Op_WGS_CSBD_RULEOPBS000001_00W15_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_61_Op_Collection",
+            "postman_file_name": "op_facility_bundled_services_wgs_csbd_RULEOPBS000001_00W15.json"
+        },
+        {
+            "ts_number": "62",
+            "edit_id": "RULEANES000001",
+            "code": "00W32",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_62_Anesthesia_WGS_CSBD_RULEANES000001_00W32_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_62_Anesthesia_WGS_CSBD_RULEANES000001_00W32_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_62_Anesthesia_Collection",
+            "postman_file_name": "anesthesia_billed_time_units_wgs_csbd_RULEANES000001_00W32.json"
+        },
+        {
+            "ts_number": "63",
+            "edit_id": "RULEBDLG000004",
+            "code": "00W15",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_63_Bundled_WGS_CSBD_RULEBDLG000004_00W15_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_63_Bundled_WGS_CSBD_RULEBDLG000004_00W15_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_63_Bundled_Collection",
+            "postman_file_name": "bundled_services_logic_4_wgs_csbd_RULEBDLG000004_00W15.json"
+        },
+        {
+            "ts_number": "64",
+            "edit_id": "RULECLIA00001",
+            "code": "00W00",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_64_Clia_WGS_CSBD_RULECLIA00001_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_64_Clia_WGS_CSBD_RULECLIA00001_00W00_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_64_Clia_Collection",
+            "postman_file_name": "clia_edit_wgs_csbd_l92l95l94l93l90l91_RULECLIA00001_00W00.json"
+        },
+        {
+            "ts_number": "65",
+            "edit_id": "RULEJWME000001",
+            "code": "00W59",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_65_Medical_WGS_CSBD_RULEJWME000001_00W59_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_65_Medical_WGS_CSBD_RULEJWME000001_00W59_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_65_Medical_Collection",
+            "postman_file_name": "medical_injectable_edits_jw_modifier_i_352_wgs_csbd_RULEJWME000001_00W59.json"
+        },
+        {
+            "ts_number": "66",
+            "edit_id": "RULEMFTM000001",
+            "code": "00W31",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_66_Missing_WGS_CSBD_RULEMFTM000001_00W31_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_66_Missing_WGS_CSBD_RULEMFTM000001_00W31_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_66_Missing_Collection",
+            "postman_file_name": "missing_required_finger_or_toe_anatomical_modifier_iprep_310_wgs_csbd_RULEMFTM000001_00W31.json"
+        },
+        {
+            "ts_number": "67",
+            "edit_id": "RULENCCIPTP001",
+            "code": "00W10",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_67_Ncci_WGS_CSBD_RULENCCIPTP001_00W10_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_67_Ncci_WGS_CSBD_RULENCCIPTP001_00W10_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_67_Ncci_Collection",
+            "postman_file_name": "ncci_ptp_outpt_facility_iprep_271_wgs_csbd_RULENCCIPTP001_00W10.json"
+        },
+        {
+            "ts_number": "68",
+            "edit_id": "RULENDC000001",
+            "code": "00W40",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_68_Ndc_WGS_CSBD_RULENDC000001_00W40_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_68_Ndc_WGS_CSBD_RULENDC000001_00W40_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_68_Ndc_Collection",
+            "postman_file_name": "ndc_validation_edit_expansion_iprep_296_wgs_csbd_RULENDC000001_00W40.json"
+        },
+        {
+            "ts_number": "70",
+            "edit_id": "RULERCRO000001",
+            "code": "00W34",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_70_Correct_WGS_CSBD_RULERCRO000001_00W34_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_70_Correct_WGS_CSBD_RULERCRO000001_00W34_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_70_Correct_Collection",
+            "postman_file_name": "correct_coding_recovery_room_reimbursement_iprep_241_wgs_csbd_RULERCRO000001_00W34.json"
+        },
+        {
+            "ts_number": "71",
+            "edit_id": "RULERCTH000001",
+            "code": "00W26",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_71_Revenue_WGS_CSBD_RULERCTH000001_00W26_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_71_Revenue_WGS_CSBD_RULERCTH000001_00W26_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_71_Revenue_Collection",
+            "postman_file_name": "revenue_code_to_hcpcs_alignment_edit_iprep_205_wgs_csbd_RULERCTH000001_00W26.json"
+        },
+        {
+            "ts_number": "73",
+            "edit_id": "RULEUNAC000001",
+            "code": "00W16",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_73_Unacceptable_WGS_CSBD_RULEUNAC000001_00W16_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_73_Unacceptable_WGS_CSBD_RULEUNAC000001_00W16_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_73_Unacceptable_Collection",
+            "postman_file_name": "unacceptable_principal_diagnosis_wgs_csbd_RULEUNAC000001_00W16.json"
+        },
+        {
+            "ts_number": "74",
+            "edit_id": "RULEEM0000012 MNP Model",
+            "code": "00W00",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_74_Wgs_WGS_CSBD_RULEEM0000012 MNP Model_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_74_Wgs_WGS_CSBD_RULEEM0000012 MNP Model_00W00_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_74_Wgs_Collection",
+            "postman_file_name": "wgs_csbd_w07_RULEEM0000012 MNP Model_00W00.json"
+        },
+        {
+            "ts_number": "75",
+            "edit_id": "RULEPREV000001",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_CSBD/CSBDTS_75_Preventative_WGS_CSBD_RULEPREV000001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/CSBDTS/CSBDTS_75_Preventative_WGS_CSBD_RULEPREV000001_00W28_dis/payloads/regression",
+            "postman_collection_name": "CSBDTS_75_Preventative_Collection",
+            "postman_file_name": "preventative_medicine_and_screening_iprep_362_wgs_csbd_RULEPREV000001_00W28.json"
+        }
     ],
     "gbdf_mcr": [
         {
@@ -416,85 +416,76 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "covid_gbdf_mcr_RULEEM000001_v04.json"
         },
         {
-            "ts_number": "49",
+            "ts_number": "50",
             "edit_id": "RULELATE000001",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/GBDTS_49_Laterality_gbdf_mcr_RULELATE000001_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_49_Laterality_gbdf_mcr_RULELATE000001_v17_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_49_Laterality_Collection",
-            "postman_file_name": "laterality_policy_diagnosis_to_diagnosis_gbd_facets_mcr_RULELATE000001_v17.json"
+            "source_dir": "source_folder/GBDF/GBDTS_50_Laterality_gbdf_mcr_RULELATE000001_v17_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_50_Laterality_gbdf_mcr_RULELATE000001_v17_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_50_Laterality_Collection",
+            "postman_file_name": "laterality_policy_diagnosis_to_diagnosis_gbdts_facegbdts_mcr_RULELATE000001_v17.json"
         },
         {
-            "ts_number": "50",
+            "ts_number": "51",
             "edit_id": "PSMEM000001",
             "code": "00W00",
-            "source_dir": "source_folder/GBDF/GBDTS_50_Psm_gbdf_mcr_PSMEM000001_00W00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_50_Psm_gbdf_mcr_PSMEM000001_00W00_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_50_Psm_Collection",
-            "postman_file_name": "psm_edits_established_patients_ep_gbd_facets_mcr_PSMEM000001_00W00.json"
+            "source_dir": "source_folder/GBDF/GBDTS_51_Psm_gbdf_mcr_PSMEM000001_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_51_Psm_gbdf_mcr_PSMEM000001_00W00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_51_Psm_Collection",
+            "postman_file_name": "psm_edigbdts_established_patiengbdts_ep_gbdts_facegbdts_mcr_PSMEM000001_00W00.json"
         },
         {
-            "ts_number": "52",
+            "ts_number": "53",
             "edit_id": "PSMEM000002",
             "code": "v00",
-            "source_dir": "source_folder/GBDF/GBDTS_52_Psm_gbdf_mcr_PSMEM000002_v00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_52_Psm_gbdf_mcr_PSMEM000002_v00_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_52_Psm_Collection",
-            "postman_file_name": "psm_edit_for_new_patient_visit_type_np_gbd_facets_mcr_PSMEM000002_v00.json"
+            "source_dir": "source_folder/GBDF/GBDTS_53_Psm_gbdf_mcr_PSMEM000002_v00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_53_Psm_gbdf_mcr_PSMEM000002_v00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_53_Psm_Collection",
+            "postman_file_name": "psm_edit_for_new_patient_visit_type_np_gbdts_facegbdts_mcr_PSMEM000002_v00.json"
         },
         {
-            "ts_number": "54",
+            "ts_number": "55",
             "edit_id": "PSMEM000003",
             "code": "v00",
-            "source_dir": "source_folder/GBDF/GBDTS_54_Psm_gbdf_mcr_PSMEM000003_v00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_54_Psm_gbdf_mcr_PSMEM000003_v00_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_54_Psm_Collection",
-            "postman_file_name": "psm_edits_for_emergency_department_personnel_ed_gbd_facets_mcr_PSMEM000003_v00.json"
+            "source_dir": "source_folder/GBDF/GBDTS_55_Psm_gbdf_mcr_PSMEM000003_v00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_55_Psm_gbdf_mcr_PSMEM000003_v00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_55_Psm_Collection",
+            "postman_file_name": "psm_edigbdts_for_emergency_department_personnel_ed_gbdts_facegbdts_mcr_PSMEM000003_v00.json"
         },
         {
-            "ts_number": "56",
+            "ts_number": "57",
             "edit_id": "PSMEM000004",
             "code": "v00",
-            "source_dir": "source_folder/GBDF/GBDTS_56_Psm_gbdf_mcr_PSMEM000004_v00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_56_Psm_gbdf_mcr_PSMEM000004_v00_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_56_Psm_Collection",
-            "postman_file_name": "psm_edits_for_emergency_department_facility_er_gbd_facets_mcr_PSMEM000004_v00.json"
+            "source_dir": "source_folder/GBDF/GBDTS_57_Psm_gbdf_mcr_PSMEM000004_v00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_57_Psm_gbdf_mcr_PSMEM000004_v00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_57_Psm_Collection",
+            "postman_file_name": "psm_edigbdts_for_emergency_department_facility_er_gbdts_facegbdts_mcr_PSMEM000004_v00.json"
         },
         {
-            "ts_number": "58",
+            "ts_number": "59",
             "edit_id": "RULEMAN000004",
             "code": "v14",
-            "source_dir": "source_folder/GBDF/GBDTS_58_Manifestation_gbdf_mcr_RULEMAN000004_v14_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_58_Manifestation_gbdf_mcr_RULEMAN000004_v14_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_58_Manifestation_Collection",
-            "postman_file_name": "manifestation_codes_gbd_facets_mcr_RULEMAN000004_v14.json"
-        },
-        {
-            "ts_number": "60",
-            "edit_id": "RULEUSD00100",
-            "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_60_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17_dis/payloads/regression",
-            "postman_collection_name": "TS_60_Unspecified_dx_code_outpt_gbdf_mcr_Collection",
-            "postman_file_name": "unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_v17.json"
-        },
-        {
-            "ts_number": "61",
-            "edit_id": "RULEUSD00100",
-            "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_61_Unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17_dis/payloads/regression",
-            "postman_collection_name": "TS_61_Unspecified_dx_code_prof_gbdf_mcr_Collection",
-            "postman_file_name": "unspecified_dx_code_prof_gbdf_mcr_RULEUSD00100_v17.json"
+            "source_dir": "source_folder/GBDF/GBDTS_59_Manifestation_gbdf_mcr_RULEMAN000004_v14_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_59_Manifestation_gbdf_mcr_RULEMAN000004_v14_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_59_Manifestation_Collection",
+            "postman_file_name": "manifestation_codes_gbdts_facegbdts_mcr_RULEMAN000004_v14.json"
         },
         {
             "ts_number": "62",
+            "edit_id": "RULEUSD00100_outpt_MCR",
+            "code": "v17",
+            "source_dir": "source_folder/GBDF/TS_62_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_outpt_MCR_v17_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_62_Unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_outpt_MCR_v17_dis/payloads/regression",
+            "postman_collection_name": "TS_62_Unspecified_dx_code_outpt_gbdf_mcr_Collection",
+            "postman_file_name": "unspecified_dx_code_outpt_gbdf_mcr_RULEUSD00100_outpt_MCR_v17.json"
+        },
+        {
+            "ts_number": "63",
             "edit_id": "RULEUSD00100_Prof_MCR",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/GBDTS_62_Unspecified_gbdf_mcr_RULEUSD00100_Prof_MCR_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_62_Unspecified_gbdf_mcr_RULEUSD00100_Prof_MCR_v17_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_62_Unspecified_Collection",
-            "postman_file_name": "unspecified_dxcodes_prof_mcr_gbd_facets_mcr_RULEUSD00100_Prof_MCR_v17.json"
+            "source_dir": "source_folder/GBDF/GBDTS_63_Unspecified_gbdf_mcr_RULEUSD00100_Prof_MCR_v17_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_63_Unspecified_gbdf_mcr_RULEUSD00100_Prof_MCR_v17_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_63_Unspecified_Collection",
+            "postman_file_name": "unspecified_dxcodes_prof_mcr_gbdts_facegbdts_mcr_RULEUSD00100_Prof_MCR_v17.json"
         },
         {
             "ts_number": "63",
@@ -515,13 +506,13 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "gbdf_mcr_shadow_ruleambu000001_mmp_v37_edits_group9_Ambulance Mileage without Base Transport Paid IPREP 192_v37.json"
         },
         {
-            "ts_number": "66",
+            "ts_number": "65",
             "edit_id": "RULE00000022",
             "code": "v19",
-            "source_dir": "source_folder/GBDF/GBDTS_66_Gbdf_gbdf_mcr_RULE00000022_v19_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_66_Gbdf_gbdf_mcr_RULE00000022_v19_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_66_Gbdf_Collection",
-            "postman_file_name": "gbdf_mcr_inaccurate_laterality_edit_gbd_facets_mmp_RULE00000022_v19.json"
+            "source_dir": "source_folder/GBDF/GBDTS_65_Inaccurate_gbdf_mcr_RULE00000022_v19_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_65_Inaccurate_gbdf_mcr_RULE00000022_v19_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_65_Inaccurate_Collection",
+            "postman_file_name": "inaccurate_laterality_edit_gbdts_facegbdts_mcr_RULE00000022_v19.json"
         },
         {
             "ts_number": "67",
@@ -533,31 +524,31 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "inaccurate_laterality_edit_gbd_facets_mcr_RULE00000022_v19.json"
         },
         {
-            "ts_number": "70",
+            "ts_number": "68",
             "edit_id": "RULE00000376",
             "code": "v16",
-            "source_dir": "source_folder/GBDF/GBDTS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_RULE00000376_v16_dis/payloads/regression",
-            "postman_collection_name": "TS_70_InappropriatePrimaryDiagnosis_gbdf_mcr_Collection",
-            "postman_file_name": "inappropriate_primary_diagnosis_gbdf_mcr_RULE00000376_v16.json"
+            "source_dir": "source_folder/GBDF/GBDTS_68_Inappropriate_gbdf_mcr_RULE00000376_v16_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_68_Inappropriate_gbdf_mcr_RULE00000376_v16_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_68_Inappropriate_Collection",
+            "postman_file_name": "inappropriate_primary_diagnosis_gbdts_facegbdts_mcr_RULE00000376_v16.json"
         },
         {
-            "ts_number": "72",
+            "ts_number": "70",
             "edit_id": "RULEALWA000001",
             "code": "v31",
-            "source_dir": "source_folder/GBDF/GBDTS_72_Always_gbdf_mcr_RULEALWA000001_v31_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_72_Always_gbdf_mcr_RULEALWA000001_v31_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_72_Always_Collection",
-            "postman_file_name": "always_therapy_missing_modifiers_gbd_facets_mcr_RULEALWA000001_v31.json"
+            "source_dir": "source_folder/GBDF/GBDTS_70_Always_gbdf_mcr_RULEALWA000001_v31_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_70_Always_gbdf_mcr_RULEALWA000001_v31_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_70_Always_Collection",
+            "postman_file_name": "always_therapy_missing_modifiers_gbdts_facegbdts_mcr_RULEALWA000001_v31.json"
         },
         {
-            "ts_number": "73",
+            "ts_number": "71",
             "edit_id": "RULEEXCL000001",
             "code": "v27",
-            "source_dir": "source_folder/GBDF/GBDTS_73_Gbdf_gbdf_mcr_RULEEXCL000001_v27_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_73_Gbdf_gbdf_mcr_RULEEXCL000001_v27_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_73_Gbdf_Collection",
-            "postman_file_name": "gbdf_mcr_excludes_1_notes_gbd_facets_mmp_RULEEXCL000001_v27.json"
+            "source_dir": "source_folder/GBDF/GBDTS_71_Gbdf_gbdf_mcr_RULEEXCL000001_v27_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_71_Gbdf_gbdf_mcr_RULEEXCL000001_v27_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_71_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_excludes_1_notes_gbdts_facegbdts_mmp_RULEEXCL000001_v27.json"
         },
         {
             "ts_number": "75",
@@ -569,22 +560,220 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "excludes_1_notes_gbd_facets_mcr_RULEEXCL000001_v27.json"
         },
         {
-            "ts_number": "123",
+            "ts_number": "75",
             "edit_id": "RULEANES000001",
             "code": "v32",
-            "source_dir": "source_folder/GBDF/GBDTS_123_Anesthesia_gbdf_mcr_RULEANES000001_v32_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_123_Anesthesia_gbdf_mcr_RULEANES000001_v32_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_123_Anesthesia_Collection",
-            "postman_file_name": "anesthesia_billed_time_units_gbd_facets_mcr_RULEANES000001_v32.json"
+            "source_dir": "source_folder/GBDF/GBDTS_75_Anesthesia_gbdf_mcr_RULEANES000001_v32_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_75_Anesthesia_gbdf_mcr_RULEANES000001_v32_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_75_Anesthesia_Collection",
+            "postman_file_name": "anesthesia_billed_time_unigbdts_gbdts_facegbdts_mcr_RULEANES000001_v32.json"
         },
         {
-            "ts_number": "125",
+            "ts_number": "78",
             "edit_id": "RULECLIA00001",
             "code": "00W00",
-            "source_dir": "source_folder/GBDF/GBDTS_125_Clia_gbdf_mcr_RULECLIA00001_00W00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_125_Clia_gbdf_mcr_RULECLIA00001_00W00_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_125_Clia_Collection",
-            "postman_file_name": "clia_edit_for_gbd_mcr_gbd_facets_mcr_r92r95r93r90r94r91_RULECLIA00001_00W00.json"
+            "source_dir": "source_folder/GBDF/GBDTS_78_Clia_gbdf_mcr_RULECLIA00001_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_78_Clia_gbdf_mcr_RULECLIA00001_00W00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_78_Clia_Collection",
+            "postman_file_name": "clia_edit_for_gbdts_mcr_gbdts_facegbdts_grs_r92r95r93r90r94r91_RULECLIA00001_00W00.json"
+        },
+        {
+            "ts_number": "81",
+            "edit_id": "Ambulance Mileage without Base Transport Paid IPREP 192",
+            "code": "v37",
+            "source_dir": "source_folder/GBDF/GBDTS_81_Gbdf_gbdf_mcr_Ambulance Mileage without Base Transport Paid IPREP 192_v37_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_81_Gbdf_gbdf_mcr_Ambulance Mileage without Base Transport Paid IPREP 192_v37_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_81_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_shadow_ruleambu000001_mmp_Ambulance Mileage without Base Transport Paid IPREP 192_v37.json"
+        },
+        {
+            "ts_number": "82",
+            "edit_id": "RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-MCR",
+            "code": "v38",
+            "source_dir": "source_folder/GBDF/GBDTS_82_Gbdf_gbdf_mcr_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-MCR_v38_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_82_Gbdf_gbdf_mcr_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-MCR_v38_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_82_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-MCR_v38.json"
+        },
+        {
+            "ts_number": "84",
+            "edit_id": "RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-MCR",
+            "code": "v08",
+            "source_dir": "source_folder/GBDF/GBDTS_84_Gbdf_gbdf_mcr_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_84_Gbdf_gbdf_mcr_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_84_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-MCR_v08.json"
+        },
+        {
+            "ts_number": "86",
+            "edit_id": "RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-MCR",
+            "code": "v08",
+            "source_dir": "source_folder/GBDF/GBDTS_86_Gbdf_gbdf_mcr_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_86_Gbdf_gbdf_mcr_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_86_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-MCR_v08.json"
+        },
+        {
+            "ts_number": "89",
+            "edit_id": "RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-MCR",
+            "code": "v59",
+            "source_dir": "source_folder/GBDF/GBDTS_89_Gbdf_gbdf_mcr_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-MCR_v59_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_89_Gbdf_gbdf_mcr_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-MCR_v59_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_89_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-MCR_v59.json"
+        },
+        {
+            "ts_number": "91",
+            "edit_id": "RULEEM0000012 MNP Model GBDTS-FaceGBDTS-MCR",
+            "code": "v07",
+            "source_dir": "source_folder/GBDF/GBDTS_91_Gbdf_gbdf_mcr_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-MCR_v07_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_91_Gbdf_gbdf_mcr_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-MCR_v07_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_91_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-MCR_v07.json"
+        },
+        {
+            "ts_number": "93",
+            "edit_id": "RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-MCR",
+            "code": "v09",
+            "source_dir": "source_folder/GBDF/GBDTS_93_Gbdf_gbdf_mcr_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-MCR_v09_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_93_Gbdf_gbdf_mcr_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-MCR_v09_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_93_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-MCR_v09.json"
+        },
+        {
+            "ts_number": "95",
+            "edit_id": "RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-MCR",
+            "code": "v41",
+            "source_dir": "source_folder/GBDF/GBDTS_95_Gbdf_gbdf_mcr_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-MCR_v41_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_95_Gbdf_gbdf_mcr_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-MCR_v41_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_95_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-MCR_v41.json"
+        },
+        {
+            "ts_number": "97",
+            "edit_id": "RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-MCR",
+            "code": "v40",
+            "source_dir": "source_folder/GBDF/GBDTS_97_Gbdf_gbdf_mcr_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-MCR_v40_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_97_Gbdf_gbdf_mcr_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-MCR_v40_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_97_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-MCR_v40.json"
+        },
+        {
+            "ts_number": "99",
+            "edit_id": "RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-MCR",
+            "code": "v08",
+            "source_dir": "source_folder/GBDF/GBDTS_99_Gbdf_gbdf_mcr_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_99_Gbdf_gbdf_mcr_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_99_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-MCR_v08.json"
+        },
+        {
+            "ts_number": "101",
+            "edit_id": "RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-MCR",
+            "code": "v18",
+            "source_dir": "source_folder/GBDF/GBDTS_101_Gbdf_gbdf_mcr_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-MCR_v18_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_101_Gbdf_gbdf_mcr_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-MCR_v18_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_101_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-MCR_v18.json"
+        },
+        {
+            "ts_number": "103",
+            "edit_id": "RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-MCR v08",
+            "code": "00W00",
+            "source_dir": "source_folder/GBDF/GBDTS_103_Gbdf_gbdf_mcr_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_103_Gbdf_gbdf_mcr_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_103_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00.json"
+        },
+        {
+            "ts_number": "105",
+            "edit_id": "RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-MCR v08",
+            "code": "00W00",
+            "source_dir": "source_folder/GBDF/GBDTS_105_Gbdf_gbdf_mcr_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_105_Gbdf_gbdf_mcr_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_105_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00.json"
+        },
+        {
+            "ts_number": "107",
+            "edit_id": "RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-MCR",
+            "code": "v34",
+            "source_dir": "source_folder/GBDF/GBDTS_107_Gbdf_gbdf_mcr_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-MCR_v34_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_107_Gbdf_gbdf_mcr_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-MCR_v34_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_107_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-MCR_v34.json"
+        },
+        {
+            "ts_number": "109",
+            "edit_id": "RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_MCR",
+            "code": "v16",
+            "source_dir": "source_folder/GBDF/GBDTS_109_Gbdf_gbdf_mcr_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_MCR_v16_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_109_Gbdf_gbdf_mcr_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_MCR_v16_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_109_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_edit_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_MCR_v16.json"
+        },
+        {
+            "ts_number": "110",
+            "edit_id": "RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_GRS",
+            "code": "v16",
+            "source_dir": "source_folder/GBDF/GBDTS_110_Gbdf_gbdf_mcr_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_GRS_v16_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_110_Gbdf_gbdf_mcr_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_GRS_v16_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_110_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_GRS_v16.json"
+        },
+        {
+            "ts_number": "111",
+            "edit_id": "RULEGENE000001",
+            "code": "v25",
+            "source_dir": "source_folder/GBDF/GBDTS_111_Geneticstesting_gbdf_mcr_RULEGENE000001_v25_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_111_Geneticstesting_gbdf_mcr_RULEGENE000001_v25_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_111_Geneticstesting_Collection",
+            "postman_file_name": "geneticstesting_gbdts_facegbdts_mcr_RULEGENE000001_v25.json"
+        },
+        {
+            "ts_number": "114",
+            "edit_id": "RULERCWP000001-Revenue Code without Procedure",
+            "code": "v06",
+            "source_dir": "source_folder/GBDF/GBDTS_114_Mcr_gbdf_mcr_RULERCWP000001-Revenue Code without Procedure_v06_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_114_Mcr_gbdf_mcr_RULERCWP000001-Revenue Code without Procedure_v06_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_114_Mcr_Collection",
+            "postman_file_name": "mcr_RULERCWP000001-Revenue Code without Procedure_v06.json"
+        },
+        {
+            "ts_number": "116",
+            "edit_id": "RULEPMAM000001 - PRocedures missing  Anatomical Modifier",
+            "code": "v31",
+            "source_dir": "source_folder/GBDF/GBDTS_116_Mcr_gbdf_mcr_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_116_Mcr_gbdf_mcr_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_116_Mcr_Collection",
+            "postman_file_name": "mcr_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31.json"
+        },
+        {
+            "ts_number": "117",
+            "edit_id": "PSMEM000003_algo",
+            "code": "00W00",
+            "source_dir": "source_folder/GBDF/GBDTS_117_Gbdf_gbdf_mcr_PSMEM000003_algo_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_117_Gbdf_gbdf_mcr_PSMEM000003_algo_00W00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_117_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_psm_edigbdts_for_emergency_PSMEM000003_algo_00W00.json"
+        },
+        {
+            "ts_number": "119",
+            "edit_id": "PSMEM000004_algo",
+            "code": "v00",
+            "source_dir": "source_folder/GBDF/GBDTS_119_Psm_gbdf_mcr_PSMEM000004_algo_v00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_119_Psm_gbdf_mcr_PSMEM000004_algo_v00_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_119_Psm_Collection",
+            "postman_file_name": "psm_edigbdts_for_emergency_department_facility_new_algo_mcr_PSMEM000004_algo_v00.json"
+        },
+        {
+            "ts_number": "121",
+            "edit_id": "RULEEM000002_refdb",
+            "code": "v05",
+            "source_dir": "source_folder/GBDF/GBDTS_121_Sick_gbdf_mcr_RULEEM000002_refdb_v05_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_121_Sick_gbdf_mcr_RULEEM000002_refdb_v05_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_121_Sick_Collection",
+            "postman_file_name": "sick_well_unbundle_mcr_RULEEM000002_refdb_v05.json"
         },
         {
             "ts_number": "126",
@@ -731,15 +920,6 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "gbdf_grs_edit_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBD_Fcets_GRS_v16.json"
         },
         {
-            "ts_number": "156",
-            "edit_id": "RULEGENE000001",
-            "code": "v25",
-            "source_dir": "source_folder/GBDF/GBDTS_156_Geneticstesting_gbdf_mcr_RULEGENE000001_v25_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_156_Geneticstesting_gbdf_mcr_RULEGENE000001_v25_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_156_Geneticstesting_Collection",
-            "postman_file_name": "geneticstesting_gbd_facets_mcr_RULEGENE000001_v25.json"
-        },
-        {
             "ts_number": "159",
             "edit_id": "RULERCWP000001",
             "code": "v06",
@@ -758,294 +938,87 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "mcr_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31.json"
         },
         {
-            "ts_number": "162",
-            "edit_id": "PSMEM000003_algo",
-            "code": "00W00",
-            "source_dir": "source_folder/GBDF/GBDTS_162_Gbdf_gbdf_mcr_PSMEM000003_algo_00W00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_162_Gbdf_gbdf_mcr_PSMEM000003_algo_00W00_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_162_Gbdf_Collection",
-            "postman_file_name": "gbdf_mcr_psm_edits_for_emergency_PSMEM000003_algo_00W00.json"
-        },
-        {
-            "ts_number": "164",
-            "edit_id": "PSMEM000004_algo",
-            "code": "v00",
-            "source_dir": "source_folder/GBDF/GBDTS_164_Psm_gbdf_mcr_PSMEM000004_algo_v00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/GBDTS_164_Psm_gbdf_mcr_PSMEM000004_algo_v00_dis/payloads/regression",
-            "postman_collection_name": "GBDTS_164_Psm_Collection",
-            "postman_file_name": "psm_edits_for_emergency_department_facility_new_algo_mcr_PSMEM000004_algo_v00.json"
-        },
-    {
-        "ts_number": "168",
-        "edit_id": "RULEUSD00100_Outpt_GRS",
-        "code": "v17",
-        "source_dir": "source_folder/GBDF/GBDTS_168_Unspecified_gbdf_mcr_RULEUSD00100_Outpt_GRS_v17_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_168_Unspecified_gbdf_mcr_RULEUSD00100_Outpt_GRS_v17_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_168_Unspecified_Collection",
-        "postman_file_name": "unspecified_dxcodes_outpt_mcr_gbdts_facegbdts_grs_RULEUSD00100_Outpt_GRS_v17.json"
-    },
-    {
-        "ts_number": "169",
-        "edit_id": "Ambulance Mileage without Base Transport Paid IPREP 192",
-        "code": "v37",
-        "source_dir": "source_folder/GBDF/GBDTS_169_Shadow_gbdf_mcr_Ambulance Mileage without Base Transport Paid IPREP 192_v37_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_169_Shadow_gbdf_mcr_Ambulance Mileage without Base Transport Paid IPREP 192_v37_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_169_Shadow_Collection",
-        "postman_file_name": "shadow_ruleambu000001_mcr_v37_edigbdts_group9_Ambulance Mileage without Base Transport Paid IPREP 192_v37.json"
-    },
-    {
-        "ts_number": "170",
-        "edit_id": "Ambulance Mileage without Base Transport Paid IPREP 192",
-        "code": "v37",
-        "source_dir": "source_folder/GBDF/GBDTS_170_Gbdf_gbdf_mcr_Ambulance Mileage without Base Transport Paid IPREP 192_v37_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_170_Gbdf_gbdf_mcr_Ambulance Mileage without Base Transport Paid IPREP 192_v37_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_170_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_shadow_ruleambu000001_mmp_v37_edigbdts_group9_Ambulance Mileage without Base Transport Paid IPREP 192_v37.json"
-    },
-    {
-        "ts_number": "171",
-        "edit_id": "RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-MCR",
-        "code": "v38",
-        "source_dir": "source_folder/GBDF/GBDTS_171_Gbdf_gbdf_mcr_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-MCR_v38_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_171_Gbdf_gbdf_mcr_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-MCR_v38_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_171_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-MCR_v38.json"
-    },
-    {
-        "ts_number": "172",
-        "edit_id": "RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-MCR",
-        "code": "v08",
-        "source_dir": "source_folder/GBDF/GBDTS_172_Gbdf_gbdf_mcr_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_172_Gbdf_gbdf_mcr_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_172_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-MCR_v08.json"
-    },
-    {
-        "ts_number": "173",
-        "edit_id": "RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-MCR",
-        "code": "v08",
-        "source_dir": "source_folder/GBDF/GBDTS_173_Gbdf_gbdf_mcr_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_173_Gbdf_gbdf_mcr_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_173_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-MCR_v08.json"
-    },
-    {
-        "ts_number": "174",
-        "edit_id": "RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-MCR",
-        "code": "v59",
-        "source_dir": "source_folder/GBDF/GBDTS_174_Gbdf_gbdf_mcr_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-MCR_v59_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_174_Gbdf_gbdf_mcr_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-MCR_v59_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_174_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-MCR_v59.json"
-    },
-    {
-        "ts_number": "175",
-        "edit_id": "RULEEM0000012 MNP Model GBDTS-FaceGBDTS-MCR",
-        "code": "v07",
-        "source_dir": "source_folder/GBDF/GBDTS_175_Gbdf_gbdf_mcr_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-MCR_v07_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_175_Gbdf_gbdf_mcr_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-MCR_v07_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_175_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-MCR_v07.json"
-    },
-    {
-        "ts_number": "176",
-        "edit_id": "RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-MCR",
-        "code": "v09",
-        "source_dir": "source_folder/GBDF/GBDTS_176_Gbdf_gbdf_mcr_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-MCR_v09_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_176_Gbdf_gbdf_mcr_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-MCR_v09_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_176_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-MCR_v09.json"
-    },
-    {
-        "ts_number": "177",
-        "edit_id": "RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-MCR",
-        "code": "v41",
-        "source_dir": "source_folder/GBDF/GBDTS_177_Gbdf_gbdf_mcr_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-MCR_v41_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_177_Gbdf_gbdf_mcr_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-MCR_v41_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_177_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-MCR_v41.json"
-    },
-    {
-        "ts_number": "178",
-        "edit_id": "RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-MCR",
-        "code": "v40",
-        "source_dir": "source_folder/GBDF/GBDTS_178_Gbdf_gbdf_mcr_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-MCR_v40_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_178_Gbdf_gbdf_mcr_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-MCR_v40_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_178_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-MCR_v40.json"
-    },
-    {
-        "ts_number": "179",
-        "edit_id": "RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-MCR",
-        "code": "v08",
-        "source_dir": "source_folder/GBDF/GBDTS_179_Gbdf_gbdf_mcr_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_179_Gbdf_gbdf_mcr_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-MCR_v08_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_179_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-MCR_v08.json"
-    },
-    {
-        "ts_number": "180",
-        "edit_id": "RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-MCR",
-        "code": "v18",
-        "source_dir": "source_folder/GBDF/GBDTS_180_Gbdf_gbdf_mcr_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-MCR_v18_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_180_Gbdf_gbdf_mcr_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-MCR_v18_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_180_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-MCR_v18.json"
-    },
-    {
-        "ts_number": "181",
-        "edit_id": "RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-MCR v08",
-        "code": "00W00",
-        "source_dir": "source_folder/GBDF/GBDTS_181_Gbdf_gbdf_mcr_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_181_Gbdf_gbdf_mcr_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_181_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00.json"
-    },
-    {
-        "ts_number": "182",
-        "edit_id": "RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-MCR v08",
-        "code": "00W00",
-        "source_dir": "source_folder/GBDF/GBDTS_182_Gbdf_gbdf_mcr_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_182_Gbdf_gbdf_mcr_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_182_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-MCR v08_00W00.json"
-    },
-    {
-        "ts_number": "183",
-        "edit_id": "RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-MCR",
-        "code": "v34",
-        "source_dir": "source_folder/GBDF/GBDTS_183_Gbdf_gbdf_mcr_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-MCR_v34_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_183_Gbdf_gbdf_mcr_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-MCR_v34_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_183_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-MCR_v34.json"
-    },
-    {
-        "ts_number": "184",
-        "edit_id": "RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_MCR",
-        "code": "v16",
-        "source_dir": "source_folder/GBDF/GBDTS_184_Gbdf_gbdf_mcr_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_MCR_v16_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_184_Gbdf_gbdf_mcr_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_MCR_v16_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_184_Gbdf_Collection",
-        "postman_file_name": "gbdf_mcr_edit_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_MCR_v16.json"
-    },
-    {
-        "ts_number": "185",
-        "edit_id": "RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_GRS",
-        "code": "v16",
-        "source_dir": "source_folder/GBDF/GBDTS_185_Gbdf_gbdf_mcr_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_GRS_v16_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_185_Gbdf_gbdf_mcr_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_GRS_v16_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_185_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEIPDXE00001 IPREP-115 Inappropriate Primary Dxs-Expansion _GBDTS_FceGBDTS_GRS_v16.json"
-    },
-    {
-        "ts_number": "186",
-        "edit_id": "RULERCWP000001-Revenue Code without Procedure",
-        "code": "v06",
-        "source_dir": "source_folder/GBDF/GBDTS_186_Mcr_gbdf_mcr_RULERCWP000001-Revenue Code without Procedure_v06_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_186_Mcr_gbdf_mcr_RULERCWP000001-Revenue Code without Procedure_v06_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_186_Mcr_Collection",
-        "postman_file_name": "mcr_RULERCWP000001-Revenue Code without Procedure_v06.json"
-    },
-    {
-        "ts_number": "187",
-        "edit_id": "RULEPMAM000001 - PRocedures missing  Anatomical Modifier",
-        "code": "v31",
-        "source_dir": "source_folder/GBDF/GBDTS_187_Mcr_gbdf_mcr_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_187_Mcr_gbdf_mcr_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_187_Mcr_Collection",
-        "postman_file_name": "mcr_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31.json"
-    },
-    {
-        "ts_number": "166",
-        "edit_id": "RULEEM000002_refdb",
-        "code": "v05",
-        "source_dir": "source_folder/GBDF/GBDTS_166_Sick_gbdf_mcr_RULEEM000002_refdb_v05_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/GBDTS_166_Sick_gbdf_mcr_RULEEM000002_refdb_v05_dis/payloads/regression",
-        "postman_collection_name": "GBDTS_166_Sick_Collection",
-        "postman_file_name": "sick_well_unbundle_mcr_RULEEM000002_refdb_v05.json"
-    }
+            "ts_number": "170",
+            "edit_id": "Ambulance Mileage without Base Transport Paid IPREP 192",
+            "code": "v37",
+            "source_dir": "source_folder/GBDF/GBDTS_170_Gbdf_gbdf_mcr_Ambulance Mileage without Base Transport Paid IPREP 192_v37_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/GBDTS_170_Gbdf_gbdf_mcr_Ambulance Mileage without Base Transport Paid IPREP 192_v37_dis/payloads/regression",
+            "postman_collection_name": "GBDTS_170_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_shadow_ruleambu000001_mmp_v37_edigbdts_group9_Ambulance Mileage without Base Transport Paid IPREP 192_v37.json"
+        }
     ],
     "gbdf_grs": [
         {
-            "ts_number": "47",
+            "ts_number": "48",
             "edit_id": "RULEEM000001",
             "code": "v04",
-            "source_dir": "source_folder/GBDF/TS_47_Covid_gbdf_grs_RULEEM000001_v04_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_47_Covid_gbdf_grs_RULEEM000001_v04_dis/payloads/regression",
-            "postman_collection_name": "TS_47_Covid_Collection",
-            "postman_file_name": "covid_model_gbd_facets_grs_RULEEM000001_v04.json"
+            "source_dir": "source_folder/GBDF/TS_48_Covid_gbdf_grs_RULEEM000001_v04_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_48_Covid_gbdf_grs_RULEEM000001_v04_dis/payloads/regression",
+            "postman_collection_name": "TS_48_Covid_Collection",
+            "postman_file_name": "covid_model_gbdts_facegbdts_grs_RULEEM000001_v04.json"
         },
         {
-            "ts_number": "48",
+            "ts_number": "49",
             "edit_id": "RULELATE000001",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_48_Laterality_gbdf_grs_RULELATE000001_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_48_Laterality_gbdf_grs_RULELATE000001_v17_dis/payloads/regression",
-            "postman_collection_name": "TS_48_Laterality_Collection",
-            "postman_file_name": "laterality_policy_diagnosis_to_diagnosis_gbd_facets_grs_RULELATE000001_v17.json"
+            "source_dir": "source_folder/GBDF/TS_49_Laterality_gbdf_grs_RULELATE000001_v17_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_49_Laterality_gbdf_grs_RULELATE000001_v17_dis/payloads/regression",
+            "postman_collection_name": "TS_49_Laterality_Collection",
+            "postman_file_name": "laterality_policy_diagnosis_to_diagnosis_gbdts_facegbdts_grs_RULELATE000001_v17.json"
         },
         {
-            "ts_number": "51",
+            "ts_number": "52",
             "edit_id": "PSMEM000001",
             "code": "00W00",
-            "source_dir": "source_folder/GBDF/TS_51_Psm_gbdf_grs_PSMEM000001_00W00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_51_Psm_gbdf_grs_PSMEM000001_00W00_dis/payloads/regression",
-            "postman_collection_name": "TS_51_Psm_Collection",
-            "postman_file_name": "psm_edits_established_patients_ep_gbd_facets_grs_PSMEM000001_00W00.json"
+            "source_dir": "source_folder/GBDF/TS_52_Psm_gbdf_grs_PSMEM000001_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_52_Psm_gbdf_grs_PSMEM000001_00W00_dis/payloads/regression",
+            "postman_collection_name": "TS_52_Psm_Collection",
+            "postman_file_name": "psm_edigbdts_established_patiengbdts_ep_gbdts_facegbdts_grs_PSMEM000001_00W00.json"
         },
         {
-            "ts_number": "53",
+            "ts_number": "54",
             "edit_id": "PSMEM000002",
             "code": "v00",
-            "source_dir": "source_folder/GBDF/TS_53_Psm_gbdf_grs_PSMEM000002_v00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_53_Psm_gbdf_grs_PSMEM000002_v00_dis/payloads/regression",
-            "postman_collection_name": "TS_53_Psm_Collection",
-            "postman_file_name": "psm_edit_for_new_patient_visit_type_np_gbd_facets_grs_PSMEM000002_v00.json"
+            "source_dir": "source_folder/GBDF/TS_54_Psm_gbdf_grs_PSMEM000002_v00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_54_Psm_gbdf_grs_PSMEM000002_v00_dis/payloads/regression",
+            "postman_collection_name": "TS_54_Psm_Collection",
+            "postman_file_name": "psm_edit_for_new_patient_visit_type_np_gbdts_facegbdts_grs_PSMEM000002_v00.json"
         },
         {
-            "ts_number": "55",
+            "ts_number": "56",
             "edit_id": "PSMEM000003",
             "code": "v00",
-            "source_dir": "source_folder/GBDF/TS_55_Psm_gbdf_grs_PSMEM000003_v00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_55_Psm_gbdf_grs_PSMEM000003_v00_dis/payloads/regression",
-            "postman_collection_name": "TS_55_Psm_Collection",
-            "postman_file_name": "psm_edits_for_emergency_department_personnel_ed_gbd_facets_grs_PSMEM000003_v00.json"
+            "source_dir": "source_folder/GBDF/TS_56_Psm_gbdf_grs_PSMEM000003_v00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_56_Psm_gbdf_grs_PSMEM000003_v00_dis/payloads/regression",
+            "postman_collection_name": "TS_56_Psm_Collection",
+            "postman_file_name": "psm_edigbdts_for_emergency_department_personnel_ed_gbdts_facegbdts_grs_PSMEM000003_v00.json"
         },
         {
-            "ts_number": "57",
+            "ts_number": "58",
             "edit_id": "PSMEM000004",
             "code": "v00",
-            "source_dir": "source_folder/GBDF/TS_57_Psm_gbdf_grs_PSMEM000004_v00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_57_Psm_gbdf_grs_PSMEM000004_v00_dis/payloads/regression",
-            "postman_collection_name": "TS_57_Psm_Collection",
-            "postman_file_name": "psm_edits_for_emergency_department_facility_er_gbd_facets_grs_PSMEM000004_v00.json"
+            "source_dir": "source_folder/GBDF/TS_58_Psm_gbdf_grs_PSMEM000004_v00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_58_Psm_gbdf_grs_PSMEM000004_v00_dis/payloads/regression",
+            "postman_collection_name": "TS_58_Psm_Collection",
+            "postman_file_name": "psm_edigbdts_for_emergency_department_facility_er_gbdts_facegbdts_grs_PSMEM000004_v00.json"
         },
         {
-            "ts_number": "59",
-            "edit_id": "RULEUSD00100",
+            "ts_number": "60",
+            "edit_id": "RULEUSD00100_Outpt_GRS",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_59_Unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17_dis/payloads/regression",
-            "postman_collection_name": "TS_59_Unspecified_dx_code_outpt_gbdf_grs_Collection",
-            "postman_file_name": "unspecified_dx_code_outpt_gbdf_grs_RULEUSD00100_v17.json"
-        },
-        {
-            "ts_number": "61",
-            "edit_id": "RULEUSD00100_Prof_GRS",
-            "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_61_Unspecified_gbdf_grs_RULEUSD00100_Prof_GRS_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_61_Unspecified_gbdf_grs_RULEUSD00100_Prof_GRS_v17_dis/payloads/regression",
-            "postman_collection_name": "TS_61_Unspecified_Collection",
-            "postman_file_name": "unspecified_dxcodes_prof_grs_gbd_facets_grs_RULEUSD00100_Prof_GRS_v17.json"
+            "source_dir": "source_folder/GBDF/TS_60_Unspecified_gbdf_grs_RULEUSD00100_Outpt_GRS_v17_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_60_Unspecified_gbdf_grs_RULEUSD00100_Outpt_GRS_v17_dis/payloads/regression",
+            "postman_collection_name": "TS_60_Unspecified_Collection",
+            "postman_file_name": "unspecified_dxcodes_outpt_grs_gbdts_facegbdts_grs_RULEUSD00100_Outpt_GRS_v17.json"
         },
         {
             "ts_number": "62",
-            "edit_id": "RULEUSD00100",
+            "edit_id": "RULEUSD00100_Prof_GRS",
             "code": "v17",
-            "source_dir": "source_folder/GBDF/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_62_Unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17_dis/payloads/regression",
-            "postman_collection_name": "TS_62_Unspecified_dx_code_prof_gbdf_grs_Collection",
-            "postman_file_name": "unspecified_dx_code_prof_gbdf_grs_RULEUSD00100_v17.json"
+            "source_dir": "source_folder/GBDF/TS_62_Unspecified_gbdf_grs_RULEUSD00100_Prof_GRS_v17_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_62_Unspecified_gbdf_grs_RULEUSD00100_Prof_GRS_v17_dis/payloads/regression",
+            "postman_collection_name": "TS_62_Unspecified_Collection",
+            "postman_file_name": "unspecified_dxcodes_prof_grs_gbdts_facegbdts_grs_RULEUSD00100_Prof_GRS_v17.json"
         },
         {
             "ts_number": "64",
@@ -1057,58 +1030,247 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "shadow_ruleambu000001_grs_v37_edits_group9_Ambulance Mileage without Base Transport Paid IPREP 192_v37.json"
         },
         {
-            "ts_number": "68",
+            "ts_number": "66",
             "edit_id": "RULE00000022",
             "code": "v19",
-            "source_dir": "source_folder/GBDF/TS_68_Inaccurate_gbdf_grs_RULE00000022_v19_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_68_Inaccurate_gbdf_grs_RULE00000022_v19_dis/payloads/regression",
-            "postman_collection_name": "TS_68_Inaccurate_Collection",
-            "postman_file_name": "inaccurate_laterality_edit_gbd_facets_grs_RULE00000022_v19.json"
+            "source_dir": "source_folder/GBDF/TS_66_Inaccurate_gbdf_grs_RULE00000022_v19_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_66_Inaccurate_gbdf_grs_RULE00000022_v19_dis/payloads/regression",
+            "postman_collection_name": "TS_66_Inaccurate_Collection",
+            "postman_file_name": "inaccurate_laterality_edit_gbdts_facegbdts_grs_RULE00000022_v19.json"
+        },
+        {
+            "ts_number": "67",
+            "edit_id": "RULE00000376",
+            "code": "v16",
+            "source_dir": "source_folder/GBDF/TS_67_Inappropriate_gbdf_grs_RULE00000376_v16_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_67_Inappropriate_gbdf_grs_RULE00000376_v16_dis/payloads/regression",
+            "postman_collection_name": "TS_67_Inappropriate_Collection",
+            "postman_file_name": "inappropriate_primary_diagnosis_gbdts_facegbdts_grs_RULE00000376_v16.json"
         },
         {
             "ts_number": "69",
-            "edit_id": "RULE00000376",
-            "code": "v16",
-            "source_dir": "source_folder/GBDF/TS_69_Inappropriate_gbdf_grs_RULE00000376_v16_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_69_Inappropriate_gbdf_grs_RULE00000376_v16_dis/payloads/regression",
-            "postman_collection_name": "TS_69_Inappropriate_Collection",
-            "postman_file_name": "inappropriate_primary_diagnosis_gbd_facets_grs_RULE00000376_v16.json"
-        },
-        {
-            "ts_number": "71",
             "edit_id": "RULEALWA000001",
             "code": "v31",
-            "source_dir": "source_folder/GBDF/TS_71_Always_gbdf_grs_RULEALWA000001_v31_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_71_Always_gbdf_grs_RULEALWA000001_v31_dis/payloads/regression",
-            "postman_collection_name": "TS_71_Always_Collection",
-            "postman_file_name": "always_therapy_missing_modifiers_gbd_facets_grs_RULEALWA000001_v31.json"
+            "source_dir": "source_folder/GBDF/TS_69_Always_gbdf_grs_RULEALWA000001_v31_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_69_Always_gbdf_grs_RULEALWA000001_v31_dis/payloads/regression",
+            "postman_collection_name": "TS_69_Always_Collection",
+            "postman_file_name": "always_therapy_missing_modifiers_gbdts_facegbdts_grs_RULEALWA000001_v31.json"
+        },
+        {
+            "ts_number": "72",
+            "edit_id": "RULEEXCL000001",
+            "code": "v27",
+            "source_dir": "source_folder/GBDF/TS_72_Excludes_gbdf_grs_RULEEXCL000001_v27_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_72_Excludes_gbdf_grs_RULEEXCL000001_v27_dis/payloads/regression",
+            "postman_collection_name": "TS_72_Excludes_Collection",
+            "postman_file_name": "excludes_1_notes_gbdts_facegbdts_grs_RULEEXCL000001_v27.json"
         },
         {
             "ts_number": "74",
-            "edit_id": "RULEEXCL000001",
-            "code": "v27",
-            "source_dir": "source_folder/GBDF/TS_74_Excludes_gbdf_grs_RULEEXCL000001_v27_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_74_Excludes_gbdf_grs_RULEEXCL000001_v27_dis/payloads/regression",
-            "postman_collection_name": "TS_74_Excludes_Collection",
-            "postman_file_name": "excludes_1_notes_gbd_facets_grs_RULEEXCL000001_v27.json"
+            "edit_id": "RULEGENE000001",
+            "code": "v25",
+            "source_dir": "source_folder/GBDF/TS_74_Geneticstesting_gbdf_grs_RULEGENE000001_v25_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_74_Geneticstesting_gbdf_grs_RULEGENE000001_v25_dis/payloads/regression",
+            "postman_collection_name": "TS_74_Geneticstesting_Collection",
+            "postman_file_name": "geneticstesting_gbdts_facegbdts_grs_RULEGENE000001_v25.json"
+        },
+        {
+            "ts_number": "76",
+            "edit_id": "RULEANES000001",
+            "code": "v32",
+            "source_dir": "source_folder/GBDF/TS_76_Anesthesia_gbdf_grs_RULEANES000001_v32_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_76_Anesthesia_gbdf_grs_RULEANES000001_v32_dis/payloads/regression",
+            "postman_collection_name": "TS_76_Anesthesia_Collection",
+            "postman_file_name": "anesthesia_billed_time_unigbdts_gbdts_facegbdts_grs_RULEANES000001_v32.json"
+        },
+        {
+            "ts_number": "80",
+            "edit_id": "Ambulance Mileage without Base Transport Paid IPREP 192",
+            "code": "v37",
+            "source_dir": "source_folder/GBDF/TS_80_Shadow_gbdf_grs_Ambulance Mileage without Base Transport Paid IPREP 192_v37_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_80_Shadow_gbdf_grs_Ambulance Mileage without Base Transport Paid IPREP 192_v37_dis/payloads/regression",
+            "postman_collection_name": "TS_80_Shadow_Collection",
+            "postman_file_name": "shadow_ruleambu000001_grs_Ambulance Mileage without Base Transport Paid IPREP 192_v37.json"
+        },
+        {
+            "ts_number": "83",
+            "edit_id": "RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-GRS",
+            "code": "v38",
+            "source_dir": "source_folder/GBDF/TS_83_Gbdf_gbdf_grs_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-GRS_v38_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_83_Gbdf_gbdf_grs_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-GRS_v38_dis/payloads/regression",
+            "postman_collection_name": "TS_83_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-GRS_v38.json"
+        },
+        {
+            "ts_number": "85",
+            "edit_id": "RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-GRS",
+            "code": "v08",
+            "source_dir": "source_folder/GBDF/TS_85_Gbdf_gbdf_grs_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_85_Gbdf_gbdf_grs_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_dis/payloads/regression",
+            "postman_collection_name": "TS_85_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-GRS_v08.json"
+        },
+        {
+            "ts_number": "87",
+            "edit_id": "RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-GRS",
+            "code": "v08",
+            "source_dir": "source_folder/GBDF/TS_87_Gbdf_gbdf_grs_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_87_Gbdf_gbdf_grs_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_dis/payloads/regression",
+            "postman_collection_name": "TS_87_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-GRS_v08.json"
+        },
+        {
+            "ts_number": "88",
+            "edit_id": "RULEMAN000004",
+            "code": "v14",
+            "source_dir": "source_folder/GBDF/TS_88_Manifestation_gbdf_grs_RULEMAN000004_v14_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_88_Manifestation_gbdf_grs_RULEMAN000004_v14_dis/payloads/regression",
+            "postman_collection_name": "TS_88_Manifestation_Collection",
+            "postman_file_name": "manifestation_codes_gbdts_facegbdts_grs_RULEMAN000004_v14.json"
+        },
+        {
+            "ts_number": "90",
+            "edit_id": "RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-GRS",
+            "code": "v59",
+            "source_dir": "source_folder/GBDF/TS_90_Gbdf_gbdf_grs_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-GRS_v59_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_90_Gbdf_gbdf_grs_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-GRS_v59_dis/payloads/regression",
+            "postman_collection_name": "TS_90_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-GRS_v59.json"
+        },
+        {
+            "ts_number": "92",
+            "edit_id": "RULEEM0000012 MNP Model GBDTS-FaceGBDTS-GRS",
+            "code": "v07",
+            "source_dir": "source_folder/GBDF/TS_92_Gbdf_gbdf_grs_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-GRS_v07_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_92_Gbdf_gbdf_grs_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-GRS_v07_dis/payloads/regression",
+            "postman_collection_name": "TS_92_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-GRS_v07.json"
+        },
+        {
+            "ts_number": "94",
+            "edit_id": "RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-GRS",
+            "code": "v09",
+            "source_dir": "source_folder/GBDF/TS_94_Gbdf_gbdf_grs_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-GRS_v09_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_94_Gbdf_gbdf_grs_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-GRS_v09_dis/payloads/regression",
+            "postman_collection_name": "TS_94_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-GRS_v09.json"
+        },
+        {
+            "ts_number": "96",
+            "edit_id": "RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-GRS",
+            "code": "v41",
+            "source_dir": "source_folder/GBDF/TS_96_Gbdf_gbdf_grs_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-GRS_v41_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_96_Gbdf_gbdf_grs_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-GRS_v41_dis/payloads/regression",
+            "postman_collection_name": "TS_96_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-GRS_v41.json"
+        },
+        {
+            "ts_number": "98",
+            "edit_id": "RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-GRS",
+            "code": "v40",
+            "source_dir": "source_folder/GBDF/TS_98_Gbdf_gbdf_grs_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-GRS_v40_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_98_Gbdf_gbdf_grs_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-GRS_v40_dis/payloads/regression",
+            "postman_collection_name": "TS_98_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-GRS_v40.json"
+        },
+        {
+            "ts_number": "100",
+            "edit_id": "RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-GRS",
+            "code": "v08",
+            "source_dir": "source_folder/GBDF/TS_100_Gbdf_gbdf_grs_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_100_Gbdf_gbdf_grs_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_dis/payloads/regression",
+            "postman_collection_name": "TS_100_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-GRS_v08.json"
+        },
+        {
+            "ts_number": "102",
+            "edit_id": "RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-GRS",
+            "code": "v18",
+            "source_dir": "source_folder/GBDF/TS_102_Gbdf_gbdf_grs_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-GRS_v18_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_102_Gbdf_gbdf_grs_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-GRS_v18_dis/payloads/regression",
+            "postman_collection_name": "TS_102_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-GRS_v18.json"
+        },
+        {
+            "ts_number": "104",
+            "edit_id": "RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-GRS v08",
+            "code": "00W00",
+            "source_dir": "source_folder/GBDF/TS_104_Gbdf_gbdf_grs_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-GRS v08_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_104_Gbdf_gbdf_grs_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-GRS v08_00W00_dis/payloads/regression",
+            "postman_collection_name": "TS_104_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-GRS v08_00W00.json"
+        },
+        {
+            "ts_number": "106",
+            "edit_id": "RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-GRS",
+            "code": "v08",
+            "source_dir": "source_folder/GBDF/TS_106_Gbdf_gbdf_grs_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_106_Gbdf_gbdf_grs_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_dis/payloads/regression",
+            "postman_collection_name": "TS_106_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-GRS_v08.json"
+        },
+        {
+            "ts_number": "108",
+            "edit_id": "RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-GRS",
+            "code": "v34",
+            "source_dir": "source_folder/GBDF/TS_108_Gbdf_gbdf_grs_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-GRS_v34_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_108_Gbdf_gbdf_grs_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-GRS_v34_dis/payloads/regression",
+            "postman_collection_name": "TS_108_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-GRS_v34.json"
+        },
+        {
+            "ts_number": "112",
+            "edit_id": "RULEIPDXH00001 Inappropriate_Primary_DX_PROF_HEADER_GBDTS-FaceGBDTS-GRS",
+            "code": "v16",
+            "source_dir": "source_folder/GBDF/TS_112_Gbdf_gbdf_grs_RULEIPDXH00001 Inappropriate_Primary_DX_PROF_HEADER_GBDTS-FaceGBDTS-GRS_v16_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_112_Gbdf_gbdf_grs_RULEIPDXH00001 Inappropriate_Primary_DX_PROF_HEADER_GBDTS-FaceGBDTS-GRS_v16_dis/payloads/regression",
+            "postman_collection_name": "TS_112_Gbdf_Collection",
+            "postman_file_name": "gbdf_grs_edit_RULEIPDXH00001 Inappropriate_Primary_DX_PROF_HEADER_GBDTS-FaceGBDTS-GRS_v16.json"
+        },
+        {
+            "ts_number": "113",
+            "edit_id": "RULERCWP000001-Revenue Code without Procedure",
+            "code": "v06",
+            "source_dir": "source_folder/GBDF/TS_113_Grs_gbdf_grs_RULERCWP000001-Revenue Code without Procedure_v06_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_113_Grs_gbdf_grs_RULERCWP000001-Revenue Code without Procedure_v06_dis/payloads/regression",
+            "postman_collection_name": "TS_113_Grs_Collection",
+            "postman_file_name": "grs_RULERCWP000001-Revenue Code without Procedure_v06.json"
+        },
+        {
+            "ts_number": "115",
+            "edit_id": "RULEPMAM000001 - PRocedures missing  Anatomical Modifier",
+            "code": "v31",
+            "source_dir": "source_folder/GBDF/TS_115_Grs_gbdf_grs_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_115_Grs_gbdf_grs_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_dis/payloads/regression",
+            "postman_collection_name": "TS_115_Grs_Collection",
+            "postman_file_name": "grs_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31.json"
+        },
+        {
+            "ts_number": "118",
+            "edit_id": "PSMEM000003_algo",
+            "code": "00W00",
+            "source_dir": "source_folder/GBDF/TS_118_Gbdf_gbdf_grs_PSMEM000003_algo_00W00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_118_Gbdf_gbdf_grs_PSMEM000003_algo_00W00_dis/payloads/regression",
+            "postman_collection_name": "TS_118_Gbdf_Collection",
+            "postman_file_name": "gbdf_mcr_psm_edigbdts_for_emergency_PSMEM000003_algo_00W00.json"
+        },
+        {
+            "ts_number": "120",
+            "edit_id": "PSMEM000004_algo",
+            "code": "v00",
+            "source_dir": "source_folder/GBDF/TS_120_Psm_gbdf_grs_PSMEM000004_algo_v00_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_120_Psm_gbdf_grs_PSMEM000004_algo_v00_dis/payloads/regression",
+            "postman_collection_name": "TS_120_Psm_Collection",
+            "postman_file_name": "psm_edigbdts_for_emergency_department_facility_new_algo_grs_PSMEM000004_algo_v00.json"
         },
         {
             "ts_number": "122",
-            "edit_id": "RULEGENE000001",
-            "code": "v25",
-            "source_dir": "source_folder/GBDF/TS_122_Geneticstesting_gbdf_grs_RULEGENE000001_v25_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_122_Geneticstesting_gbdf_grs_RULEGENE000001_v25_dis/payloads/regression",
-            "postman_collection_name": "TS_122_Geneticstesting_Collection",
-            "postman_file_name": "geneticstesting_gbd_facets_grs_RULEGENE000001_v25.json"
-        },
-        {
-            "ts_number": "124",
-            "edit_id": "RULEANES000001",
-            "code": "v32",
-            "source_dir": "source_folder/GBDF/TS_124_Anesthesia_gbdf_grs_RULEANES000001_v32_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_124_Anesthesia_gbdf_grs_RULEANES000001_v32_dis/payloads/regression",
-            "postman_collection_name": "TS_124_Anesthesia_Collection",
-            "postman_file_name": "anesthesia_billed_time_units_gbd_facets_grs_RULEANES000001_v32.json"
+            "edit_id": "RULEEM000002_refdb",
+            "code": "v05",
+            "source_dir": "source_folder/GBDF/TS_122_Sick_gbdf_grs_RULEEM000002_refdb_v05_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/GBDTS/TS_122_Sick_gbdf_grs_RULEEM000002_refdb_v05_dis/payloads/regression",
+            "postman_collection_name": "TS_122_Sick_Collection",
+            "postman_file_name": "sick_well_unbundle_grs_RULEEM000002_refdb_v05.json"
         },
         {
             "ts_number": "128",
@@ -1136,15 +1298,6 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/GBDTS/TS_132_Gbdf_gbdf_grs_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBD-Facets-GRS_v08_dis/payloads/regression",
             "postman_collection_name": "TS_132_Gbdf_Collection",
             "postman_file_name": "gbdf_grs_edit_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBD-Facets-GRS_v08.json"
-        },
-        {
-            "ts_number": "133",
-            "edit_id": "RULEMAN000004",
-            "code": "v14",
-            "source_dir": "source_folder/GBDF/TS_133_Manifestation_gbdf_grs_RULEMAN000004_v14_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_133_Manifestation_gbdf_grs_RULEMAN000004_v14_dis/payloads/regression",
-            "postman_collection_name": "TS_133_Manifestation_Collection",
-            "postman_file_name": "manifestation_codes_gbd_facets_grs_RULEMAN000004_v14.json"
         },
         {
             "ts_number": "135",
@@ -1262,196 +1415,7 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/GBDTS/TS_160_Grs_gbdf_grs_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_dis/payloads/regression",
             "postman_collection_name": "TS_160_Grs_Collection",
             "postman_file_name": "grs_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31.json"
-        },
-        {
-            "ts_number": "163",
-            "edit_id": "PSMEM000003_algo",
-            "code": "00W00",
-            "source_dir": "source_folder/GBDF/TS_163_Gbdf_gbdf_grs_PSMEM000003_algo_00W00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_163_Gbdf_gbdf_grs_PSMEM000003_algo_00W00_dis/payloads/regression",
-            "postman_collection_name": "TS_163_Gbdf_Collection",
-            "postman_file_name": "gbdf_mcr_psm_edits_for_emergency_PSMEM000003_algo_00W00.json"
-        },
-        {
-            "ts_number": "165",
-            "edit_id": "PSMEM000004_algo",
-            "code": "v00",
-            "source_dir": "source_folder/GBDF/TS_165_Psm_gbdf_grs_PSMEM000004_algo_v00_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/GBDTS/TS_165_Psm_gbdf_grs_PSMEM000004_algo_v00_dis/payloads/regression",
-            "postman_collection_name": "TS_165_Psm_Collection",
-            "postman_file_name": "psm_edits_for_emergency_department_facility_new_algo_grs_PSMEM000004_algo_v00.json"
-        },
-    {
-        "ts_number": "168",
-        "edit_id": "RULEUSD00100_Outpt_GRS",
-        "code": "v17",
-        "source_dir": "source_folder/GBDF/TS_168_Unspecified_gbdf_grs_RULEUSD00100_Outpt_GRS_v17_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_168_Unspecified_gbdf_grs_RULEUSD00100_Outpt_GRS_v17_dis/payloads/regression",
-        "postman_collection_name": "TS_168_Unspecified_Collection",
-        "postman_file_name": "unspecified_dxcodes_outpt_grs_gbdts_facegbdts_grs_RULEUSD00100_Outpt_GRS_v17.json"
-    },
-    {
-        "ts_number": "169",
-        "edit_id": "Ambulance Mileage without Base Transport Paid IPREP 192",
-        "code": "v37",
-        "source_dir": "source_folder/GBDF/TS_169_Shadow_gbdf_grs_Ambulance Mileage without Base Transport Paid IPREP 192_v37_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_169_Shadow_gbdf_grs_Ambulance Mileage without Base Transport Paid IPREP 192_v37_dis/payloads/regression",
-        "postman_collection_name": "TS_169_Shadow_Collection",
-        "postman_file_name": "shadow_ruleambu000001_grs_v37_edigbdts_group9_Ambulance Mileage without Base Transport Paid IPREP 192_v37.json"
-    },
-    {
-        "ts_number": "170",
-        "edit_id": "RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-GRS",
-        "code": "v38",
-        "source_dir": "source_folder/GBDF/TS_170_Gbdf_gbdf_grs_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-GRS_v38_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_170_Gbdf_gbdf_grs_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-GRS_v38_dis/payloads/regression",
-        "postman_collection_name": "TS_170_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEIPVT000001 Immunization Procedure code without Vaccine/Toxoid GBDTS-FaceGBDTS-GRS_v38.json"
-    },
-    {
-        "ts_number": "171",
-        "edit_id": "RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-GRS",
-        "code": "v08",
-        "source_dir": "source_folder/GBDF/TS_171_Gbdf_gbdf_grs_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_171_Gbdf_gbdf_grs_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_dis/payloads/regression",
-        "postman_collection_name": "TS_171_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEIMMU000001 Immuno Drugs A52474 IPREP-132 GBDTS-FaceGBDTS-GRS_v08.json"
-    },
-    {
-        "ts_number": "172",
-        "edit_id": "RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-GRS",
-        "code": "v08",
-        "source_dir": "source_folder/GBDF/TS_172_Gbdf_gbdf_grs_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_172_Gbdf_gbdf_grs_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_dis/payloads/regression",
-        "postman_collection_name": "TS_172_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEKNEE000001 Knee Orthosis A52465 IPREP-132 GBDTS-FaceGBDTS-GRS_v08.json"
-    },
-    {
-        "ts_number": "173",
-        "edit_id": "RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-GRS",
-        "code": "v59",
-        "source_dir": "source_folder/GBDF/TS_173_Gbdf_gbdf_grs_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-GRS_v59_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_173_Gbdf_gbdf_grs_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-GRS_v59_dis/payloads/regression",
-        "postman_collection_name": "TS_173_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEJWME000001 Medical Injectable EdiGBDTS JW Modifier I-352 GBDTS-FaceGBDTS-GRS_v59.json"
-    },
-    {
-        "ts_number": "174",
-        "edit_id": "RULEEM0000012 MNP Model GBDTS-FaceGBDTS-GRS",
-        "code": "v07",
-        "source_dir": "source_folder/GBDF/TS_174_Gbdf_gbdf_grs_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-GRS_v07_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_174_Gbdf_gbdf_grs_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-GRS_v07_dis/payloads/regression",
-        "postman_collection_name": "TS_174_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEEM0000012 MNP Model GBDTS-FaceGBDTS-GRS_v07.json"
-    },
-    {
-        "ts_number": "175",
-        "edit_id": "RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-GRS",
-        "code": "v09",
-        "source_dir": "source_folder/GBDF/TS_175_Gbdf_gbdf_grs_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-GRS_v09_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_175_Gbdf_gbdf_grs_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-GRS_v09_dis/payloads/regression",
-        "postman_collection_name": "TS_175_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEEMSD000002 Multiple E&M Same Day (2nd pass) GBDTS-FaceGBDTS-GRS_v09.json"
-    },
-    {
-        "ts_number": "176",
-        "edit_id": "RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-GRS",
-        "code": "v41",
-        "source_dir": "source_folder/GBDF/TS_176_Gbdf_gbdf_grs_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-GRS_v41_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_176_Gbdf_gbdf_grs_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-GRS_v41_dis/payloads/regression",
-        "postman_collection_name": "TS_176_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULENDCUOM000001 NDC UOM Validation Edit Expansion IPREP-328 GBDTS-FaceGBDTS-GRS_v41.json"
-    },
-    {
-        "ts_number": "177",
-        "edit_id": "RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-GRS",
-        "code": "v40",
-        "source_dir": "source_folder/GBDF/TS_177_Gbdf_gbdf_grs_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-GRS_v40_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_177_Gbdf_gbdf_grs_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-GRS_v40_dis/payloads/regression",
-        "postman_collection_name": "TS_177_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULENDC000001 NDC Validation Edit Expansion IPREP-296 GBDTS-FaceGBDTS-GRS_v40.json"
-    },
-    {
-        "ts_number": "178",
-        "edit_id": "RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-GRS",
-        "code": "v08",
-        "source_dir": "source_folder/GBDF/TS_178_Gbdf_gbdf_grs_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_178_Gbdf_gbdf_grs_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_dis/payloads/regression",
-        "postman_collection_name": "TS_178_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULENEBU000001 Nebulizer A52466 IPREP-132 GBDTS-FaceGBDTS-GRS_v08.json"
-    },
-    {
-        "ts_number": "179",
-        "edit_id": "RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-GRS",
-        "code": "v18",
-        "source_dir": "source_folder/GBDF/TS_179_Gbdf_gbdf_grs_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-GRS_v18_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_179_Gbdf_gbdf_grs_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-GRS_v18_dis/payloads/regression",
-        "postman_collection_name": "TS_179_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULENMP000001 No match of Procedure code GBDTS-FaceGBDTS-GRS_v18.json"
-    },
-    {
-        "ts_number": "180",
-        "edit_id": "RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-GRS v08",
-        "code": "00W00",
-        "source_dir": "source_folder/GBDF/TS_180_Gbdf_gbdf_grs_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-GRS v08_00W00_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_180_Gbdf_gbdf_grs_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-GRS v08_00W00_dis/payloads/regression",
-        "postman_collection_name": "TS_180_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEOSTO000001 Ostomy Supplies A52487 IPREP-132 GBDTS-FaceGBDTS-GRS v08_00W00.json"
-    },
-    {
-        "ts_number": "181",
-        "edit_id": "RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-GRS",
-        "code": "v08",
-        "source_dir": "source_folder/GBDF/TS_181_Gbdf_gbdf_grs_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_181_Gbdf_gbdf_grs_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-GRS_v08_dis/payloads/regression",
-        "postman_collection_name": "TS_181_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULETRAC000001 Trach Supply A52492 IPREP-132 GBDTS-FaceGBDTS-GRS_v08.json"
-    },
-    {
-        "ts_number": "182",
-        "edit_id": "RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-GRS",
-        "code": "v34",
-        "source_dir": "source_folder/GBDF/TS_182_Gbdf_gbdf_grs_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-GRS_v34_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_182_Gbdf_gbdf_grs_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-GRS_v34_dis/payloads/regression",
-        "postman_collection_name": "TS_182_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULERCRO000001 Correct_Coding_Recovery_room GBDTS-FaceGBDTS-GRS_v34.json"
-    },
-    {
-        "ts_number": "183",
-        "edit_id": "RULEIPDXH00001 Inappropriate_Primary_DX_PROF_HEADER_GBDTS-FaceGBDTS-GRS",
-        "code": "v16",
-        "source_dir": "source_folder/GBDF/TS_183_Gbdf_gbdf_grs_RULEIPDXH00001 Inappropriate_Primary_DX_PROF_HEADER_GBDTS-FaceGBDTS-GRS_v16_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_183_Gbdf_gbdf_grs_RULEIPDXH00001 Inappropriate_Primary_DX_PROF_HEADER_GBDTS-FaceGBDTS-GRS_v16_dis/payloads/regression",
-        "postman_collection_name": "TS_183_Gbdf_Collection",
-        "postman_file_name": "gbdf_grs_edit_RULEIPDXH00001 Inappropriate_Primary_DX_PROF_HEADER_GBDTS-FaceGBDTS-GRS_v16.json"
-    },
-    {
-        "ts_number": "184",
-        "edit_id": "RULERCWP000001-Revenue Code without Procedure",
-        "code": "v06",
-        "source_dir": "source_folder/GBDF/TS_184_Grs_gbdf_grs_RULERCWP000001-Revenue Code without Procedure_v06_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_184_Grs_gbdf_grs_RULERCWP000001-Revenue Code without Procedure_v06_dis/payloads/regression",
-        "postman_collection_name": "TS_184_Grs_Collection",
-        "postman_file_name": "grs_RULERCWP000001-Revenue Code without Procedure_v06.json"
-    },
-    {
-        "ts_number": "185",
-        "edit_id": "RULEPMAM000001 - PRocedures missing  Anatomical Modifier",
-        "code": "v31",
-        "source_dir": "source_folder/GBDF/TS_185_Grs_gbdf_grs_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_185_Grs_gbdf_grs_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31_dis/payloads/regression",
-        "postman_collection_name": "TS_185_Grs_Collection",
-        "postman_file_name": "grs_RULEPMAM000001 - PRocedures missing  Anatomical Modifier_v31.json"
-    },
-    {
-        "ts_number": "167",
-        "edit_id": "RULEEM000002_refdb",
-        "code": "v05",
-        "source_dir": "source_folder/GBDF/TS_167_Sick_gbdf_grs_RULEEM000002_refdb_v05_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/GBDTS/TS_167_Sick_gbdf_grs_RULEEM000002_refdb_v05_dis/payloads/regression",
-        "postman_collection_name": "TS_167_Sick_Collection",
-        "postman_file_name": "sick_well_unbundle_grs_RULEEM000002_refdb_v05.json"
-    }
+        }
     ],
     "wgs_kernal": [
         {
@@ -1536,24 +1500,6 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "observation_services_wgs_nyk_RULEOBSER00008_00W28.json"
         },
         {
-        "ts_number": "149",
-        "edit_id": "RULEPREV00001 Preventative Medicine and Screening IPREP-362",
-        "code": "00W28",
-        "source_dir": "source_folder/WGS_Kernal/NYKTS_149_Wgs_WGS_NYK_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/NYKTS/NYKTS_149_Wgs_WGS_NYK_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28_dis/payloads/regression",
-        "postman_collection_name": "NYKTS_149_Wgs_Collection",
-        "postman_file_name": "wgs_csbd_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28.json"
-    },
-    {
-        "ts_number": "150",
-        "edit_id": "RULEINPCC00001",
-        "code": "00W45",
-        "source_dir": "source_folder/WGS_Kernal/NYKTS_150_Inpatient_WGS_NYK_RULEINPCC00001_00W45_sur/payloads/regression",
-        "dest_dir": "renaming_jsons/NYKTS/NYKTS_150_Inpatient_WGS_NYK_RULEINPCC00001_00W45_dis/payloads/regression",
-        "postman_collection_name": "NYKTS_150_Inpatient_Collection",
-        "postman_file_name": "inpatient_neonatal_and_pediatric_critical_care_iprep_332_wgs_nyk_RULEINPCC00001_00W45.json"
-    },
-        {
             "ts_number": "132",
             "edit_id": "RULERADDON00001",
             "code": "00W60",
@@ -1561,6 +1507,24 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/NYKTS/NYKTS_132_add_on without base_WGS_NYK_RULERADDON00001_00W60_dis/payloads/regression",
             "postman_collection_name": "NYKTS_132_add_on without base_Collection",
             "postman_file_name": "add_on_without_base_wgs_nyk_RULERADDON00001_00W60.json"
+        },
+        {
+            "ts_number": "149",
+            "edit_id": "RULEPREV00001 Preventative Medicine and Screening IPREP-362",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_149_Wgs_WGS_NYK_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/NYKTS/NYKTS_149_Wgs_WGS_NYK_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28_dis/payloads/regression",
+            "postman_collection_name": "NYKTS_149_Wgs_Collection",
+            "postman_file_name": "wgs_csbd_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28.json"
+        },
+        {
+            "ts_number": "150",
+            "edit_id": "RULEINPCC00001",
+            "code": "00W45",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_150_Inpatient_WGS_NYK_RULEINPCC00001_00W45_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/NYKTS/NYKTS_150_Inpatient_WGS_NYK_RULEINPCC00001_00W45_dis/payloads/regression",
+            "postman_collection_name": "NYKTS_150_Inpatient_Collection",
+            "postman_file_name": "inpatient_neonatal_and_pediatric_critical_care_iprep_332_wgs_nyk_RULEINPCC00001_00W45.json"
         }
     ]
 }

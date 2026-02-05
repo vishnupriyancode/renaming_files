@@ -338,7 +338,7 @@ class PostmanCollectionGenerator:
                 collection_dir_name = f"{dir_name.replace(' ', '_')}_collection"
         
         collection_dir = self.output_dir / collection_dir_name
-        collection_dir.mkdir(exist_ok=True)
+        collection_dir.mkdir(parents=True, exist_ok=True)
         
         # Step 6.6: Save collection.json file
         collection_file = collection_dir / "collection.json"

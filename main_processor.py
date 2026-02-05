@@ -259,13 +259,14 @@ Examples:
   python main_processor.py --gbdf_mcr --GBDTS48    # Process TS48 model (Multiple E&M Same day GBDF MCR)
   python main_processor.py --gbdf_mcr --GBDTS138   # Process TS138 model (Multiple E&M Same day GBDF MCR)
   python main_processor.py --gbdf_mcr --GBDTS144   # Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR)
+  python main_processor.py --gbdf_mcr --GBDTS62    # Process TS62 model (Unspecified outpt_MCR GBDF MCR)
+  python main_processor.py --gbdf_mcr --GBDTS64    # Process TS64 model (Unspecified Prof_MCR GBDF MCR)
   
   
   # Process GBDF GRS models (GBDF GRS flag required)
   python main_processor.py --gbdf_grs --GBDTS49    # Process TS49 model (Multiple E&M Same day GBDF GRS)
-  python main_processor.py --gbdf_grs --GBDTS59    # Process TS59 model (Unspecified dx code outpt GBDF GRS)
   python main_processor.py --gbdf_grs --GBDTS61    # Process TS61 model (Unspecified dx code prof GBDF GRS)
-  python main_processor.py --gbdf_grs --GBDTS62    # Process TS62 model (Unspecified dx code prof GBDF GRS)
+  python main_processor.py --gbdf_grs --GBDTS63    # Process TS63 model (Unspecified Outpt_GRS GBDF GRS)
   python main_processor.py --gbdf_grs --GBDTS139   # Process TS139 model (Multiple E&M Same day GBDF GRS)
   python main_processor.py --gbdf_grs --GBDTS141   # Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS)
   python main_processor.py --gbdf_grs --GBDTS145   # Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS)
@@ -312,7 +313,7 @@ Examples:
     
     # Add model-specific arguments for available models
     # Note: WGS_CSBD models (TS01-TS15, TS20, TS46) now use --CSBDTSXX format only
-    # GBDF MCR models (TS47, TS48, TS60, TS138, TS140, TS144, TS146) now only support --GBDTSXX format
+    # GBDF MCR models (TS47, TS48, TS62, TS64, TS138, TS140, TS144, TS146) now only support --GBDTSXX format
     # GBDF GRS models (TS49, TS59, TS61, TS62, TS139, TS141, TS145, TS147) now only support --GBDTSXX format
     # WGS_CSBD models should use --CSBDTSXX format (e.g., --CSBDTS01, --CSBDTS02)
     # GBDF MCR models should use --GBDTSXX format with --gbdf_mcr flag (e.g., --gbdf_mcr --GBDTS47)
@@ -329,7 +330,7 @@ Examples:
     parser.add_argument("--no-report", action="store_true",
                        help="Disable Excel report generation (skip timing reports)")
     parser.add_argument("--refdb", action="store_true",
-                       help="Apply refdb value replacement for refdb-specific models (CSBDTS_46, CSBDTS_47, NYKTS_123)")
+                       help="Apply refdb value replacement for refdb-specific models (CSBDTS_46, CSBDTS_47, CSBDTS_59, CSBDTS_75, NYKTS_123, NYKTS_149)")
     
     # Add custom parameter arguments
     parser.add_argument("--edit-id", type=str, help="Custom edit ID (e.g., rvn001)")
@@ -683,11 +684,12 @@ Examples:
         print("  --gbdf_mcr --GBDTS140   Process TS140 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF MCR) - Required format")
         print("  --gbdf_mcr --GBDTS144   Process TS144 model (Nebulizer A52466 IPERP-132 GBDF MCR) - Required format")
         print("  --gbdf_mcr --GBDTS146   Process TS146 model (No match of Procedure code GBDF MCR) - Required format")
-        print("  --gbdf_mcr --GBDTS60    Process TS60 model (Unspecified dx code outpt GBDF MCR) - Required format")
+        print("  --gbdf_mcr --GBDTS62    Process TS62 model (Unspecified dx code outpt_MCR GBDF MCR) - Required format")
+        print("  --gbdf_mcr --GBDTS64    Process TS64 model (Unspecified Prof_MCR GBDF MCR) - Required format")
         print("  --gbdf_grs --GBDTS49    Process TS49 model (Multiple E&M Same day GBDF GRS) - Required format")
         print("  --gbdf_grs --GBDTS59    Process TS59 model (Unspecified dx code outpt GBDF GRS) - Required format")
         print("  --gbdf_grs --GBDTS61    Process TS61 model (Unspecified dx code prof GBDF GRS) - Required format")
-        print("  --gbdf_grs --GBDTS62    Process TS62 model (Unspecified dx code prof GBDF GRS) - Required format")
+        print("  --gbdf_grs --GBDTS63    Process TS63 model (Unspecified Outpt_GRS GBDF GRS) - Required format")
         print("  --gbdf_grs --GBDTS139   Process TS139 model (Multiple E&M Same day GBDF GRS) - Required format")
         print("  --gbdf_grs --GBDTS141   Process TS141 model (NDC UOM Validation Edit Expansion Iprep-138 GBDF GRS) - Required format")
         print("  --gbdf_grs --GBDTS145   Process TS145 model (Nebulizer A52466 IPERP-132 GBDF GRS) - Required format")
@@ -796,7 +798,7 @@ Examples:
                             print(f"WARNING Refdb: Destination directory not found: {dest_dir}")
                     else:
                         print(f"WARNING Refdb: Model type '{model_type}' is not a refdb-supported model")
-                        print(f"   Supported refdb models: WGS_CSBD (CSBDTS_46, CSBDTS_47), WGS_NYK (NYKTS_123)")
+                        print(f"   Supported refdb models: WGS_CSBD (CSBDTS_46, CSBDTS_47, CSBDTS_59, CSBDTS_75), WGS_NYK (NYKTS_123, NYKTS_149)")
                 except Exception as refdb_error:
                     print(f"WARNING Refdb processing failed: {refdb_error}")
                     # Continue with normal processing even if refdb fails

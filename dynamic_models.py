@@ -128,8 +128,14 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
     
     if is_wgs_kernal:
         # WGS_NYK patterns - NYKTS naming convention
+        # Accept both: NYKTS_*_WGS_NYK_*_sur and NYKTS_*_RULE*_*_sur (e.g. Preventative Medicine IPREP-362)
         all_folders = glob.glob(os.path.join(base_dir, "NYKTS_*"))
-        ts_folders = [f for f in all_folders if os.path.isdir(f) and "_WGS_NYK_" in os.path.basename(f) and f.endswith("_sur")]
+        ts_folders = [
+            f for f in all_folders
+            if os.path.isdir(f)
+            and f.endswith("_sur")
+            and ("_WGS_NYK_" in os.path.basename(f) or re.search(r"NYKTS_\d+_.+_RULE[A-Z0-9]+_.+_sur$", os.path.basename(f)))
+        ]
     elif is_gbdf:
         # GBDF patterns - use catch-all patterns instead of listing every model
         patterns = [
@@ -169,7 +175,12 @@ def discover_ts_folders(base_dir: str = ".", use_wgs_csbd_destination: bool = Fa
         
         # Define patterns based on directory type
         if is_wgs_kernal:
-            patterns = [r'NYKTS_(\d{1,3})_(.+?)_WGS_NYK_([A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$']
+            # Standard: NYKTS_149_Wgs_WGS_NYK_RULEPREV00001_00W28_sur
+            # Alternative: NYKTS_149_Preventative Medicine and Screening IPREP-362_RULERCTH00001_00W28_sur
+            patterns = [
+                r'NYKTS_(\d{1,3})_(.+?)_WGS_NYK_([A-Za-z0-9]+(?:\s+[A-Za-z0-9\-]+)?)_([A-Za-z0-9]+)_sur$',
+                r'NYKTS_(\d{1,3})_(.+?)_(RULE[A-Za-z0-9]+)_([A-Za-z0-9]+)_sur$',
+            ]
         elif is_gbdf:
             # GBDF patterns - check GBDTS_* first, then TS_* (both naming conventions exist in source folders)
             patterns = [

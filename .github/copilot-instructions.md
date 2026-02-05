@@ -44,8 +44,8 @@ Healthcare test case automation system that renames JSON files (mapping `TC#ID#d
 ### Model Command Formats (Strict)
 - **WGS_CSBD**: `--wgs_csbd --CSBDTS[XX]` (e.g., `--CSBDTS49`, `--CSBDTS01`). Supports TS01-15, TS20, TS46-56 (27 total)
 - **WGS_NYK**: `--wgs_nyk --NYKTS[XXX]` (requires NYKTS prefix, NOT TSXX). Supports TS122-130, TS132 (10 total)
-- **GBDF_MCR**: `--gbdf_mcr --GBDTS[XX]` (e.g., `--GBDTS47`, `--GBDTS138`). Supports TS47-48, TS60-61, TS70, TS138, TS140, TS144, TS146 (9 total)
-- **GBDF_GRS**: `--gbdf_grs --TS[XX]` (uses TS prefix). Supports TS49, TS59, TS61-62, TS139, TS141, TS145, TS147 (8 total)
+- **GBDF_MCR**: `--gbdf_mcr --GBDTS[XX]` (e.g., `--GBDTS47`, `--GBDTS138`). Supports TS47-48, TS62, TS64, TS70, TS138, TS140, TS144, TS146
+- **GBDF_GRS**: `--gbdf_grs --GBDTS[XX]` (uses GBDTS prefix). Supports TS47, TS49, TS61, TS63-64, TS139, TS141, TS145, TS147
 - All support `--all` flag for batch processing, `--no-postman` to skip collections, `--list` to list models
 
 ### File Transformation Logic

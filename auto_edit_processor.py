@@ -14,6 +14,7 @@ This script:
 """
 
 import ast
+import importlib.util
 import os
 import re
 from collections import Counter
@@ -227,7 +228,8 @@ def validate_models_config_syntax(config_path: Path) -> bool:
 
 def _normalize_ts_number(ts_number: str) -> Optional[str]:
     """
-    Normalize a TS number to 2-digit numeric string if possible.
+    Normalize a TS number for consistent comparison (handles 2-digit and 3-digit).
+    Returns "47" for 47, "123" for 123 - preserves digit count for 3-digit numbers.
     """
     if ts_number is None:
         return None
@@ -235,9 +237,19 @@ def _normalize_ts_number(ts_number: str) -> Optional[str]:
     if not ts_str:
         return None
     try:
-        return f"{int(ts_str):02d}"
+        n = int(ts_str)
+        if 1 <= n <= 99:
+            return f"{n:02d}"
+        return str(n)  # 100+ keeps 3+ digits (e.g. "123", "169")
     except ValueError:
         return None
+
+
+def _ts_numbers_match(ts1, ts2) -> bool:
+    """Compare two ts_numbers for equality (handles 2-digit and 3-digit)."""
+    n1 = _normalize_ts_number(str(ts1)) if ts1 is not None else None
+    n2 = _normalize_ts_number(str(ts2)) if ts2 is not None else None
+    return n1 == n2 and n1 is not None
 
 
 def _get_used_ts_numbers(model_config: List[Dict]) -> set:
@@ -443,7 +455,7 @@ def check_command_exists(
     elif model_type == "gbdf_mcr":
         cmd_pattern = f"GBDTS{ts_number}"
     elif model_type == "gbdf_grs":
-        cmd_pattern = f"TS{ts_number}"
+        cmd_pattern = f"GBDTS{ts_number}"
     elif model_type == "wgs_kernal":
         cmd_pattern = f"NYKTS{ts_number}"
     else:
@@ -495,11 +507,108 @@ def read_edits_list(excel_path: str = "edits_list.xlsx") -> Dict[str, pd.DataFra
         return {}
 
 
+def sync_config_from_excel(
+    excel_path: str = "edits_list.xlsx",
+    sheet_name: str = "GBDF",
+    dry_run: bool = False
+) -> List[Dict]:
+    """
+    Sync STATIC_MODELS_CONFIG from Excel Test Suite IDs.
+    Reads edits_list.xlsx and updates models_config.py so ts_number matches Excel.
+    
+    Returns:
+        List of config updates applied
+    """
+    excel_data = read_edits_list(excel_path)
+    if sheet_name not in excel_data:
+        print(f"[ERROR] Sheet '{sheet_name}' not found")
+        return []
+    
+    df = excel_data[sheet_name]
+    edit_column = _resolve_edit_column(df)
+    if not edit_column:
+        print("[ERROR] Could not find the edit details column")
+        return []
+    
+    from models_config import STATIC_MODELS_CONFIG
+    config_by_type = STATIC_MODELS_CONFIG
+    base_model_type = MODEL_SHEET_MAPPING.get(sheet_name, "gbdf_mcr")
+    config_updates = []
+    
+    print(f"\n{'='*60}")
+    print(f"Syncing STATIC_MODELS_CONFIG from Excel ({sheet_name})")
+    print(f"{'='*60}\n")
+    
+    for idx, row in df.iterrows():
+        edit_string = row.get(edit_column)
+        if pd.isna(edit_string):
+            continue
+        edit_str_lower = str(edit_string).lower()
+        if "note:" in edit_str_lower and "python main_processor.py" in edit_str_lower:
+            continue
+        
+        test_suite_id = row.get("Test Sutie ID", "")
+        if pd.isna(test_suite_id) or not str(test_suite_id).strip():
+            continue
+        
+        ts_match = re.search(r'(\d+)', str(test_suite_id))
+        if not ts_match:
+            continue
+        excel_ts = _normalize_ts_number(ts_match.group(1))
+        if not excel_ts:
+            continue
+        
+        parsed = parse_edit_string(edit_string, sheet_name=sheet_name)
+        if not parsed:
+            continue
+        
+        edit_id = parsed["edit_id"]
+        eob_code = parsed["eob_code"]
+        model_name_with_lob = parsed["model_name_with_lob"]
+        row_model_type = "gbdf_grs" if (base_model_type == "gbdf_mcr" and is_grs_edit(edit_string, sheet_name)) else base_model_type
+        
+        current_config = config_by_type.get(row_model_type, [])
+        existing_entry = None
+        for config in current_config:
+            if config.get("edit_id") == edit_id and config.get("code") == eob_code:
+                existing_entry = config
+                break
+        
+        if not existing_entry:
+            continue
+        if _ts_numbers_match(existing_entry.get("ts_number"), excel_ts):
+            continue
+        
+        config_updates.append({
+            "model_type": row_model_type,
+            "edit_id": edit_id,
+            "eob_code": eob_code,
+            "model_name_with_lob": model_name_with_lob,
+            "new_ts_number": excel_ts,
+            "old_config": existing_entry,
+        })
+        print(f"  [SYNC] Row {idx + 1}: {edit_id} TS{existing_entry.get('ts_number')} -> TS{excel_ts}")
+    
+    if not config_updates:
+        print("[INFO] No config updates needed - Excel matches models_config")
+        return []
+    
+    if dry_run:
+        print(f"\n[DRY-RUN] Would apply {len(config_updates)} updates to models_config.py")
+        return config_updates
+    
+    _apply_config_updates(config_updates)
+    # Keep STATIC_MODELS_CONFIG in ascending order by ts_number for all models
+    config_path = Path(__file__).resolve().parent / "models_config.py"
+    sort_config_by_ts_number(str(config_path))
+    return config_updates
+
+
 def process_edits_from_excel(
     excel_path: str = "edits_list.xlsx",
     sheet_name: str = "WGS_CSBD",
     dry_run: bool = False
-) -> Tuple[List[Dict], List[Dict]]:
+) -> Tuple[List[Dict], List[Dict], List[Dict]]:
     """
     Process edits from Excel file and generate config entries.
     
@@ -509,7 +618,7 @@ def process_edits_from_excel(
         dry_run: If True, don't update files, just return results
         
     Returns:
-        Tuple of (generated config entries, excel update entries)
+        Tuple of (generated config entries, excel update entries, config updates)
     """
     print(f"\n{'='*60}")
     print(f"Processing edits from {sheet_name} sheet")
@@ -520,7 +629,7 @@ def process_edits_from_excel(
     
     if sheet_name not in excel_data:
         print(f"[ERROR] Sheet '{sheet_name}' not found in Excel file")
-        return [], []
+        return [], [], []
     
     df = excel_data[sheet_name]
     
@@ -536,10 +645,11 @@ def process_edits_from_excel(
     # Process each row
     generated_configs = []
     excel_updates = []
+    config_updates = []  # Existing entries to sync ts_number from Excel
     edit_column = _resolve_edit_column(df)
     if not edit_column:
         print("[ERROR] Could not find the edit details column in sheet")
-        return [], []
+        return [], [], []
     
     for idx, row in df.iterrows():
         edit_string = row.get(edit_column)
@@ -602,12 +712,30 @@ def process_edits_from_excel(
         
         if existing_entry:
             existing_ts = existing_entry.get("ts_number")
+            ts_to_use = existing_ts
+            # Sync from Excel: if Excel has Test Suite ID and it differs, update config to match
+            test_suite_id = row.get("Test Sutie ID", "")
+            if pd.notna(test_suite_id) and str(test_suite_id).strip():
+                ts_match = re.search(r'(\d+)', str(test_suite_id))
+                if ts_match:
+                    excel_ts = _normalize_ts_number(ts_match.group(1))
+                    if excel_ts and not _ts_numbers_match(existing_ts, excel_ts):
+                        print(f"  [SYNC] Excel has GBDTS{excel_ts}, config has TS{existing_ts} - updating config to match Excel")
+                        config_updates.append({
+                            "model_type": row_model_type,
+                            "edit_id": edit_id,
+                            "eob_code": eob_code,
+                            "model_name_with_lob": model_name_with_lob,
+                            "new_ts_number": excel_ts,
+                            "old_config": existing_entry,
+                        })
+                        ts_to_use = excel_ts
             print(f"  [SKIP] Entry already exists with TS number: {existing_ts}")
-            if existing_ts:
+            if ts_to_use:
                 excel_updates.append({
-                    "config": {"ts_number": existing_ts},
+                    "config": {"ts_number": ts_to_use},
                     "row_index": idx,
-                    "command": generate_command(existing_ts, row_model_type),
+                    "command": generate_command(ts_to_use, row_model_type),
                     "model_type": row_model_type
                 })
             continue
@@ -637,7 +765,7 @@ def process_edits_from_excel(
                 # Check if this TS number already has this edit_id + eob_code combination
                 existing_config = None
                 for config in current_config:
-                    if (config.get("ts_number") == existing_ts.zfill(2) and 
+                    if (_ts_numbers_match(config.get("ts_number"), existing_ts) and 
                         config.get("edit_id") == edit_id and 
                         config.get("code") == eob_code):
                         existing_config = config
@@ -698,7 +826,86 @@ def process_edits_from_excel(
         print(f"  [SUCCESS] Generated config for TS{ts_number}")
         print(f"  Command: {generate_command(ts_number, row_model_type)}")
     
-    return generated_configs, excel_updates
+    return generated_configs, excel_updates, config_updates
+
+
+def _apply_config_updates(config_updates: List[Dict]) -> bool:
+    """
+    Update existing entries in models_config.py to sync ts_number from Excel.
+    Replaces the config block (ts_number + paths) for each matching edit_id + eob_code.
+    """
+    if not config_updates:
+        return True
+    try:
+        config_path = "models_config.py"
+        with open(config_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        original_content = content
+        for upd in config_updates:
+            new_config = generate_config_entry(
+                ts_number=upd["new_ts_number"],
+                edit_id=upd["edit_id"],
+                eob_code=upd["eob_code"],
+                model_name_with_lob=upd["model_name_with_lob"],
+                model_type=upd["model_type"],
+            )
+            # Find and replace the block - match edit_id and code
+            edit_id_esc = re.escape(upd["edit_id"])
+            code_esc = re.escape(upd["eob_code"])
+            # Pattern: block from { to }, with our edit_id and code (capture trailing comma if any)
+            old_block_pattern = (
+                r'(\s+\{\s*\n'
+                r'\s+"ts_number":\s*"[^"]*",\s*\n'
+                r'\s+"edit_id":\s*"' + edit_id_esc + r'",\s*\n'
+                r'\s+"code":\s*"' + code_esc + r'",\s*\n'
+                r'\s+"source_dir":\s*"[^"]*",\s*\n'
+                r'\s+"dest_dir":\s*"[^"]*",\s*\n'
+                r'\s+"postman_collection_name":\s*"[^"]*",\s*\n'
+                r'\s+"postman_file_name":\s*"[^"]*"\s*\n'
+                r'\s+\}(?:,|\s*)\n?)'
+            )
+            new_block_content = (
+                '    {\n'
+                f'        "ts_number": "{new_config["ts_number"]}",\n'
+                f'        "edit_id": "{new_config["edit_id"]}",\n'
+                f'        "code": "{new_config["code"]}",\n'
+                f'        "source_dir": "{new_config["source_dir"]}",\n'
+                f'        "dest_dir": "{new_config["dest_dir"]}",\n'
+                f'        "postman_collection_name": "{new_config["postman_collection_name"]}",\n'
+                f'        "postman_file_name": "{new_config["postman_file_name"]}"\n'
+                '    }'
+            )
+            # Only replace within the correct model type section
+            model_key = f'"{upd["model_type"]}":'
+            model_start = content.find(model_key)
+            if model_start == -1:
+                print(f"[WARNING] Could not find {upd['model_type']} section for config update")
+                continue
+            model_end = content.find('\n    "', model_start + 1)
+            if model_end == -1:
+                model_end = len(content)
+            section = content[model_start:model_end]
+            match = re.search(old_block_pattern, section)
+            if match:
+                old_block = match.group(1)
+                # Preserve trailing comma/newline from original
+                trailing = old_block[old_block.rfind('}') + 1:]
+                new_block = new_block_content + trailing
+                new_section = section.replace(old_block, new_block, 1)
+                content = content[:model_start] + new_section + content[model_end:]
+                print(f"  [SYNC] Updated {upd['model_type']} TS{upd['old_config'].get('ts_number')} -> TS{upd['new_ts_number']} ({upd['edit_id']})")
+            else:
+                print(f"[WARNING] Could not find block to update for {upd['edit_id']} + {upd['eob_code']}")
+        if content != original_content:
+            with open(config_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            print(f"\n[SUCCESS] Applied {len(config_updates)} config sync updates to models_config.py")
+        return True
+    except Exception as e:
+        print(f"[ERROR] Failed to apply config updates: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 
 def update_models_config(
@@ -866,12 +1073,16 @@ def update_excel_file(
             ts_number = item["config"]["ts_number"]
             item_model_type = item.get("model_type")
             
-            # Update Test Suite ID column
+            # Update Test Suite ID column - only if empty (preserve user's manual edits)
             if "Test Sutie ID" in df.columns:
-                if item_model_type == "gbdf_grs":
-                    df.at[row_idx, "Test Sutie ID"] = f"GBDTS{ts_number}"
-                else:
-                    df.at[row_idx, "Test Sutie ID"] = f"CSBDTS{ts_number}" if "CSBDTS" in command else f"GBDTS{ts_number}" if "GBDTS" in command else f"NYKTS{ts_number}"
+                current_val = df.at[row_idx, "Test Sutie ID"]
+                is_empty = pd.isna(current_val) or not str(current_val).strip()
+                if is_empty:
+                    if item_model_type == "gbdf_grs":
+                        df.at[row_idx, "Test Sutie ID"] = f"GBDTS{ts_number}"
+                    else:
+                        df.at[row_idx, "Test Sutie ID"] = f"CSBDTS{ts_number}" if "CSBDTS" in command else f"GBDTS{ts_number}" if "GBDTS" in command else f"NYKTS{ts_number}"
+                # else: preserve user's value - do not overwrite
             
             # Update Cmd status column
             if "Cmd status" in df.columns:
@@ -901,6 +1112,95 @@ def update_excel_file(
         return False
 
 
+def _serialize_config_value(val: str) -> str:
+    """Escape string for Python/JSON output."""
+    return val.replace("\\", "\\\\").replace('"', '\\"')
+
+
+def sort_config_by_ts_number(config_path: str = "models_config.py") -> bool:
+    """
+    Sort STATIC_MODELS_CONFIG entries by ts_number in ascending order.
+    """
+    try:
+        # Load config from file (avoid circular import)
+        spec = importlib.util.spec_from_file_location("models_config", config_path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        config = mod.STATIC_MODELS_CONFIG
+
+        def _ts_sort_key(entry):
+            try:
+                return int(entry.get("ts_number", 0))
+            except (ValueError, TypeError):
+                return 0
+
+        for model_type in config:
+            if isinstance(config[model_type], list):
+                config[model_type].sort(key=_ts_sort_key)
+
+        # Read file to get header and footer
+        with open(config_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        start_marker = "STATIC_MODELS_CONFIG = {"
+        start_idx = content.find(start_marker)
+        if start_idx == -1:
+            print("[ERROR] Could not find STATIC_MODELS_CONFIG in file")
+            return False
+
+        # Find end: closing } of the dict (before "# Dynamic model discovery")
+        end_marker = "\n}\n\n# Dynamic model discovery"
+        end_idx = content.find(end_marker, start_idx)
+        if end_idx == -1:
+            end_idx = content.find("\n}\n", start_idx) + 3
+        else:
+            end_idx = end_idx + 4  # keep from "# Dynamic..."
+
+        # Build new config section
+        lines = [start_marker + "\n"]
+        model_types = list(config.keys())
+        for mi, model_type in enumerate(model_types):
+            entries = config[model_type]
+            if not isinstance(entries, list):
+                lines.append(f'    "{model_type}": {repr(entries)},\n')
+                continue
+            lines.append(f'    "{model_type}": [\n')
+            for i, entry in enumerate(entries):
+                entry_str = (
+                    '        {\n'
+                    f'            "ts_number": "{_serialize_config_value(str(entry.get("ts_number", "")))}",\n'
+                    f'            "edit_id": "{_serialize_config_value(str(entry.get("edit_id", "")))}",\n'
+                    f'            "code": "{_serialize_config_value(str(entry.get("code", "")))}",\n'
+                    f'            "source_dir": "{_serialize_config_value(str(entry.get("source_dir", "")))}",\n'
+                    f'            "dest_dir": "{_serialize_config_value(str(entry.get("dest_dir", "")))}",\n'
+                    f'            "postman_collection_name": "{_serialize_config_value(str(entry.get("postman_collection_name", "")))}",\n'
+                    f'            "postman_file_name": "{_serialize_config_value(str(entry.get("postman_file_name", "")))}"\n'
+                    '        }'
+                )
+                if i < len(entries) - 1:
+                    entry_str += ","
+                entry_str += "\n"
+                lines.append(entry_str)
+            if mi < len(model_types) - 1:
+                lines.append("    ],\n")
+            else:
+                lines.append("    ]\n")
+
+        new_config_section = "".join(lines) + "}\n\n"
+        new_content = content[:start_idx] + new_config_section + content[end_idx:]
+
+        with open(config_path, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+
+        print(f"[SUCCESS] Sorted STATIC_MODELS_CONFIG by ts_number (ascending)")
+        return True
+    except Exception as e:
+        print(f"[ERROR] Failed to sort config: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
+
+
 def main():
     """
     Main function to process edits from Excel file.
@@ -927,8 +1227,38 @@ def main():
         action="store_true",
         help="Don't update files, just show what would be done"
     )
+    parser.add_argument(
+        "--sync-from-excel",
+        action="store_true",
+        help="Sync STATIC_MODELS_CONFIG from Excel Test Suite IDs (updates models_config.py)"
+    )
+    parser.add_argument(
+        "--sort-config",
+        action="store_true",
+        help="Sort STATIC_MODELS_CONFIG by ts_number in ascending order"
+    )
     
     args = parser.parse_args()
+
+    # Sort config by ts_number
+    if args.sort_config:
+        config_path = Path(__file__).resolve().parent / "models_config.py"
+        if not validate_models_config_syntax(config_path):
+            return
+        sort_config_by_ts_number(str(config_path))
+        return
+
+    # Sync-only mode: read Excel and update models_config with Test Suite IDs
+    if args.sync_from_excel:
+        config_path = Path(__file__).resolve().parent / "models_config.py"
+        if not validate_models_config_syntax(config_path):
+            return
+        sync_config_from_excel(
+            excel_path=args.excel,
+            sheet_name=args.sheet,
+            dry_run=args.dry_run
+        )
+        return
 
     # Preflight: validate models_config.py syntax for clearer errors
     config_path = Path(__file__).resolve().parent / "models_config.py"
@@ -936,19 +1266,19 @@ def main():
         return
     
     # Process edits
-    generated_configs, excel_updates = process_edits_from_excel(
+    generated_configs, excel_updates, config_updates = process_edits_from_excel(
         excel_path=args.excel,
         sheet_name=args.sheet,
         dry_run=args.dry_run
     )
     
-    if not generated_configs and not excel_updates:
+    if not generated_configs and not excel_updates and not config_updates:
         print("\n[INFO] No new edits to process")
         return
     
     # Show summary
     print(f"\n{'='*60}")
-    print(f"SUMMARY: Generated {len(generated_configs)} new config entries")
+    print(f"SUMMARY: Generated {len(generated_configs)} new config entries, {len(config_updates)} config syncs")
     print(f"{'='*60}\n")
     
     for item in generated_configs:
@@ -965,8 +1295,17 @@ def main():
     print("Updating files...")
     print(f"{'='*60}\n")
     
-    # Update models_config.py
+    # Sync config from Excel (update existing entries to match Test Suite ID)
+    if config_updates:
+        _apply_config_updates(config_updates)
+    
+    # Update models_config.py with new entries
     update_models_config(generated_configs, model_type)
+    
+    # Keep STATIC_MODELS_CONFIG in ascending order by ts_number for all models
+    if config_updates or generated_configs:
+        config_path = Path(__file__).resolve().parent / "models_config.py"
+        sort_config_by_ts_number(str(config_path))
     
     # Update Excel file
     update_excel_file(args.excel, args.sheet, excel_updates)

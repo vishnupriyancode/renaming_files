@@ -19,8 +19,8 @@ Note: This module is integrated into main_processor.py. Use the following comman
   python main_processor.py --wgs_nyk --NYKTS123 --refdb
 
 Currently supported refdb models:
-- wgs_csbd: CSBDTS_46, CSBDTS_47
-- wgs_kernal: NYKTS_123
+- wgs_csbd: CSBDTS_46, CSBDTS_47, CSBDTS_59, CSBDTS_75
+- wgs_kernal: NYKTS_123, NYKTS_149
 
 Path patterns: CSBDTS_XX_* (for wgs_csbd) or NYKTS_XX_* (for wgs_kernal)
 Values are loaded from refdb_values.json based on the specified model.
@@ -53,8 +53,8 @@ if sys.platform == 'win32':
 # Example refdb models: TS_46 (Multiple E&M Same day), TS_47 (Multiple Billing of Obstetrical Services)
 # To add more refdb models, add their TS numbers to the appropriate list below
 REFDB_TS_NUMBERS = {
-    "wgs_csbd": ["46", "47","59"],  # TS_46: Multiple E&M Same day, TS_47: Multiple Billing of Obstetrical Services, TS_59: Antepartum Services
-    "wgs_kernal": ["123"]  # NYKTS_123: Observation Services
+    "wgs_csbd": ["46", "47", "59", "75"],  # TS_46: Multiple E&M Same day, TS_47: Multiple Billing of Obstetrical Services, TS_59: Antepartum Services, TS_75: Preventative
+    "wgs_kernal": ["123", "149"]  # NYKTS_123: Observation Services, NYKTS_149: Preventative Medicine and Screening IPREP-362
 }
 
 
@@ -452,8 +452,8 @@ Standalone Usage (Advanced - Not recommended for normal workflow):
 Note: This script ONLY processes refdb-specific models. 
       Path patterns: CSBDTS_XX_* (for wgs_csbd) or NYKTS_XX_* (for wgs_kernal)
       Currently supported refdb models:
-      - wgs_csbd: CSBDTS_46, CSBDTS_47
-      - wgs_kernal: NYKTS_123
+      - wgs_csbd: CSBDTS_46, CSBDTS_47, CSBDTS_59, CSBDTS_75
+      - wgs_kernal: NYKTS_123, NYKTS_149
       Files from other TS numbers will be automatically skipped.
       
       To add more refdb models, update REFDB_TS_NUMBERS in refdb_change.py

@@ -10,6 +10,18 @@ import sys      # For system-specific parameters and functions
 import os       # For operating system interface
 from pathlib import Path  # For object-oriented filesystem paths
 
+# Fix Windows encoding for emoji/Unicode in print statements
+if sys.platform == 'win32':
+    try:
+        if hasattr(sys.stdout, 'reconfigure'):
+            sys.stdout.reconfigure(encoding='utf-8')
+        if hasattr(sys.stderr, 'reconfigure'):
+            sys.stderr.reconfigure(encoding='utf-8')
+    except (AttributeError, ValueError):
+        import io
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 # Import the Postman generator - main class that handles collection generation
 from postman_generator import PostmanCollectionGenerator
 
