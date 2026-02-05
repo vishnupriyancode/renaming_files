@@ -1510,12 +1510,12 @@ STATIC_MODELS_CONFIG = {
         },
         {
             "ts_number": "149",
-            "edit_id": "RULEPREV00001 Preventative Medicine and Screening IPREP-362",
+            "edit_id": "RULEPREV00001",
             "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_149_Wgs_WGS_NYK_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/NYKTS/NYKTS_149_Wgs_WGS_NYK_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28_dis/payloads/regression",
-            "postman_collection_name": "NYKTS_149_Wgs_Collection",
-            "postman_file_name": "wgs_csbd_RULEPREV00001 Preventative Medicine and Screening IPREP-362_00W28.json"
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_149_Preventative_WGS_NYK_RULEPREV00001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/NYKTS/NYKTS_149_Preventative_WGS_NYK_RULEPREV00001_00W28_dis/payloads/regression",
+            "postman_collection_name": "NYKTS_149_Preventative_Collection",
+            "postman_file_name": "preventative_medicine_and_screening_iprep_362_wgs_nyk_RULEPREV00001_00W28.json"
         },
         {
             "ts_number": "150",
