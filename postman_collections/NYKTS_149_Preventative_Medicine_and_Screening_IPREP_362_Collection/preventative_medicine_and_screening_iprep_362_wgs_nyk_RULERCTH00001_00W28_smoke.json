@@ -39,7 +39,7 @@
         },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test\": \"data\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\"\n}",
+          "raw": "{\n  \"adhoc\": \"true\",\n  \"analyticId\": \" \",\n  \"hints\": [\n    \"congnitive_claims_async\"\n  ],\n  \"payload\": {\n    \"test\": \"data\",\n    \"KEY_CHK_DCN_NBR\": \"55882906825\"\n  },\n  \"responseRequired\": \"false\",\n  \"meta-src-envrmt\": \"IMST\",\n  \"meta-transid\": \"20220117181853TMBL20359Cl893580999\",\n  \"Protigrity\": \"true\"\n}",
           "options": {
             "raw": {
               "language": "json"

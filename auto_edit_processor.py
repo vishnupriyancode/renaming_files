@@ -297,6 +297,14 @@ def _resolve_edit_column(df: pd.DataFrame) -> Optional[str]:
     return None
 
 
+def _get_test_suite_id_column(df: pd.DataFrame) -> Optional[str]:
+    """Return the Test Suite ID column name (supports both 'Test Sutie ID' and 'Test Suite ID')."""
+    for name in ("Test Sutie ID", "Test Suite ID"):
+        if name in df.columns:
+            return name
+    return None
+
+
 def _get_excel_ts_counts(df: pd.DataFrame, model_type: str) -> Counter:
     """
     Count TS numbers in the Excel "Test Sutie ID" column for a model type.
@@ -507,6 +515,17 @@ def read_edits_list(excel_path: str = "edits_list.xlsx") -> Dict[str, pd.DataFra
         return {}
 
 
+def _resolve_sheet_name(excel_data: Dict, sheet_name: str) -> Optional[str]:
+    """Return the actual sheet key from Excel (case-insensitive match), or None."""
+    if sheet_name in excel_data:
+        return sheet_name
+    sheet_lower = sheet_name.lower()
+    for key in excel_data:
+        if key.lower() == sheet_lower:
+            return key
+    return None
+
+
 def sync_config_from_excel(
     excel_path: str = "edits_list.xlsx",
     sheet_name: str = "GBDF",
@@ -520,14 +539,22 @@ def sync_config_from_excel(
         List of config updates applied
     """
     excel_data = read_edits_list(excel_path)
-    if sheet_name not in excel_data:
-        print(f"[ERROR] Sheet '{sheet_name}' not found")
+    actual_sheet = _resolve_sheet_name(excel_data, sheet_name)
+    if actual_sheet is None:
+        print(f"[ERROR] Sheet '{sheet_name}' not found (available: {list(excel_data.keys())})")
         return []
     
-    df = excel_data[sheet_name]
+    df = excel_data[actual_sheet]
+    if actual_sheet != sheet_name:
+        print(f"[INFO] Using sheet '{actual_sheet}' (case-insensitive match for '{sheet_name}')")
     edit_column = _resolve_edit_column(df)
     if not edit_column:
         print("[ERROR] Could not find the edit details column")
+        return []
+    
+    ts_id_column = _get_test_suite_id_column(df)
+    if not ts_id_column:
+        print("[ERROR] Could not find 'Test Sutie ID' or 'Test Suite ID' column in sheet")
         return []
     
     from models_config import STATIC_MODELS_CONFIG
@@ -535,10 +562,12 @@ def sync_config_from_excel(
     base_model_type = MODEL_SHEET_MAPPING.get(sheet_name, "gbdf_mcr")
     config_updates = []
     
+    config_path = str(Path(__file__).resolve().parent / "models_config.py")
     print(f"\n{'='*60}")
-    print(f"Syncing STATIC_MODELS_CONFIG from Excel ({sheet_name})")
+    print(f"Syncing STATIC_MODELS_CONFIG from Excel ({sheet_name}) -> {config_path}")
     print(f"{'='*60}\n")
     
+    rows_with_ts = 0
     for idx, row in df.iterrows():
         edit_string = row.get(edit_column)
         if pd.isna(edit_string):
@@ -547,12 +576,14 @@ def sync_config_from_excel(
         if "note:" in edit_str_lower and "python main_processor.py" in edit_str_lower:
             continue
         
-        test_suite_id = row.get("Test Sutie ID", "")
+        test_suite_id = row.get(ts_id_column, "")
         if pd.isna(test_suite_id) or not str(test_suite_id).strip():
             continue
         
+        rows_with_ts += 1
         ts_match = re.search(r'(\d+)', str(test_suite_id))
         if not ts_match:
+            print(f"  [SKIP] Row {idx + 2}: could not extract TS number from '{test_suite_id}'")
             continue
         excel_ts = _normalize_ts_number(ts_match.group(1))
         if not excel_ts:
@@ -560,6 +591,7 @@ def sync_config_from_excel(
         
         parsed = parse_edit_string(edit_string, sheet_name=sheet_name)
         if not parsed:
+            print(f"  [SKIP] Row {idx + 2}: could not parse edit string")
             continue
         
         edit_id = parsed["edit_id"]
@@ -575,8 +607,10 @@ def sync_config_from_excel(
                 break
         
         if not existing_entry:
+            print(f"  [SKIP] Row {idx + 2}: no entry in models_config for edit_id={edit_id} code={eob_code} (section '{row_model_type}')")
             continue
         if _ts_numbers_match(existing_entry.get("ts_number"), excel_ts):
+            print(f"  [SKIP] Row {idx + 2}: {edit_id} already TS{excel_ts} (no change)")
             continue
         
         config_updates.append({
@@ -587,20 +621,20 @@ def sync_config_from_excel(
             "new_ts_number": excel_ts,
             "old_config": existing_entry,
         })
-        print(f"  [SYNC] Row {idx + 1}: {edit_id} TS{existing_entry.get('ts_number')} -> TS{excel_ts}")
+        print(f"  [SYNC] Row {idx + 2}: {edit_id} TS{existing_entry.get('ts_number')} -> TS{excel_ts}")
     
     if not config_updates:
-        print("[INFO] No config updates needed - Excel matches models_config")
+        print(f"[INFO] No config updates needed - Excel matches models_config (or no rows matched existing entries).")
+        print(f"       Rows with Test Suite ID on this sheet: {rows_with_ts}. Config: {config_path}")
         return []
     
     if dry_run:
         print(f"\n[DRY-RUN] Would apply {len(config_updates)} updates to models_config.py")
         return config_updates
     
-    _apply_config_updates(config_updates)
+    _apply_config_updates(config_updates, config_path=config_path)
     # Keep STATIC_MODELS_CONFIG in ascending order by ts_number for all models
-    config_path = Path(__file__).resolve().parent / "models_config.py"
-    sort_config_by_ts_number(str(config_path))
+    sort_config_by_ts_number(config_path)
     return config_updates
 
 
@@ -829,15 +863,17 @@ def process_edits_from_excel(
     return generated_configs, excel_updates, config_updates
 
 
-def _apply_config_updates(config_updates: List[Dict]) -> bool:
+def _apply_config_updates(config_updates: List[Dict], config_path: Optional[str] = None) -> bool:
     """
     Update existing entries in models_config.py to sync ts_number from Excel.
     Replaces the config block (ts_number + paths) for each matching edit_id + eob_code.
+    Uses models_config.py in the same directory as this script if config_path is not given.
     """
     if not config_updates:
         return True
+    if config_path is None:
+        config_path = str(Path(__file__).resolve().parent / "models_config.py")
     try:
-        config_path = "models_config.py"
         with open(config_path, 'r', encoding='utf-8') as f:
             content = f.read()
         original_content = content
@@ -1290,6 +1326,7 @@ def main():
     
     # Update files
     model_type = MODEL_SHEET_MAPPING.get(args.sheet, "wgs_csbd")
+    config_path = str(Path(__file__).resolve().parent / "models_config.py")
     
     print(f"\n{'='*60}")
     print("Updating files...")
@@ -1297,15 +1334,14 @@ def main():
     
     # Sync config from Excel (update existing entries to match Test Suite ID)
     if config_updates:
-        _apply_config_updates(config_updates)
+        _apply_config_updates(config_updates, config_path=config_path)
     
     # Update models_config.py with new entries
     update_models_config(generated_configs, model_type)
     
     # Keep STATIC_MODELS_CONFIG in ascending order by ts_number for all models
     if config_updates or generated_configs:
-        config_path = Path(__file__).resolve().parent / "models_config.py"
-        sort_config_by_ts_number(str(config_path))
+        sort_config_by_ts_number(config_path)
     
     # Update Excel file
     update_excel_file(args.excel, args.sheet, excel_updates)

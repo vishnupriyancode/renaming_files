@@ -216,7 +216,8 @@ def apply_wgs_csbd_header_footer(file_path):
             "hints": ["congnitive_claims_async"],
             "responseRequired": "false",
             "meta-src-envrmt": "IMST",
-            "meta-transid": "20220117181853TMBL20359Cl893580999"
+            "meta-transid": "20220117181853TMBL20359Cl893580999",
+            "Protigrity": "true"
         }
         
         # Generate random 11-digit number for KEY_CHK_DCN_NBR field
@@ -245,7 +246,8 @@ def apply_wgs_csbd_header_footer(file_path):
                 "payload": existing_data.get("payload", existing_data),  # Use existing payload or entire data
                 "responseRequired": header_footer["responseRequired"],
                 "meta-src-envrmt": header_footer["meta-src-envrmt"],
-                "meta-transid": header_footer["meta-transid"]
+                "meta-transid": header_footer["meta-transid"],
+                "Protigrity": header_footer["Protigrity"]
             }
             
             # Preserve KEY_CHK_DCN_NBR if it exists at root level
@@ -265,7 +267,8 @@ def apply_wgs_csbd_header_footer(file_path):
                 "payload": existing_data,  # The existing JSON becomes the payload
                 "responseRequired": header_footer["responseRequired"],
                 "meta-src-envrmt": header_footer["meta-src-envrmt"],
-                "meta-transid": header_footer["meta-transid"]
+                "meta-transid": header_footer["meta-transid"],
+                "Protigrity": header_footer["Protigrity"]
             }
             
             # Write the transformed JSON back to the file
@@ -499,9 +502,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 shutil.copy2(source_path, dest_path)
                 print(f"Successfully copied and renamed: {filename} -> {new_filename}")
                 
-                # Apply header/footer transformation for WGS_CSBD and WGS_KERNAL files
-                if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir:
-                    model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else "WGS_KERNAL"
+                # Apply header/footer transformation for WGS_CSBD, WGS_KERNAL, and WGS_NYK (NYKTS) files
+                if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir or "WGS_NYK" in dest_dir:
+                    model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else ("WGS_NYK" if ("NYKTS" in dest_dir or "WGS_NYK" in dest_dir) else "WGS_KERNAL")
                     print(f"Applying {model_type} header/footer transformation to: {new_filename}")
                     if apply_wgs_csbd_header_footer(dest_path):
                         print(f"[SUCCESS] Header/footer applied to: {new_filename}")
@@ -563,9 +566,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 shutil.copy2(source_path, dest_path)
                 print(f"Successfully copied and renamed: {filename} -> {new_filename}")
                 
-                # Apply header/footer transformation for WGS_CSBD and WGS_KERNAL files
-                if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir:
-                    model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else "WGS_KERNAL"
+                # Apply header/footer transformation for WGS_CSBD, WGS_KERNAL, and WGS_NYK (NYKTS) files
+                if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir or "WGS_NYK" in dest_dir:
+                    model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else ("WGS_NYK" if ("NYKTS" in dest_dir or "WGS_NYK" in dest_dir) else "WGS_KERNAL")
                     print(f"Applying {model_type} header/footer transformation to: {new_filename}")
                     if apply_wgs_csbd_header_footer(dest_path):
                         print(f"[SUCCESS] Header/footer applied to: {new_filename}")
@@ -640,9 +643,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                     shutil.copy2(source_path, dest_path)
                     print(f"Successfully moved: {filename}")
                     
-                    # Apply header/footer transformation for WGS_CSBD and WGS_KERNAL files
-                    if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir:
-                        model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else "WGS_KERNAL"
+                    # Apply header/footer transformation for WGS_CSBD, WGS_KERNAL, and WGS_NYK (NYKTS) files
+                    if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir or "WGS_NYK" in dest_dir:
+                        model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else ("WGS_NYK" if ("NYKTS" in dest_dir or "WGS_NYK" in dest_dir) else "WGS_KERNAL")
                         print(f"Applying {model_type} header/footer transformation to: {new_filename}")
                         if apply_wgs_csbd_header_footer(dest_path):
                             print(f"[SUCCESS] Header/footer applied to: {new_filename}")

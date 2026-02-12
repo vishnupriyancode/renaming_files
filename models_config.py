@@ -1509,15 +1509,6 @@ STATIC_MODELS_CONFIG = {
             "postman_file_name": "add_on_without_base_wgs_nyk_RULERADDON00001_00W60.json"
         },
         {
-            "ts_number": "149",
-            "edit_id": "RULEPREV00001",
-            "code": "00W28",
-            "source_dir": "source_folder/WGS_Kernal/NYKTS_149_Preventative_WGS_NYK_RULEPREV00001_00W28_sur/payloads/regression",
-            "dest_dir": "renaming_jsons/NYKTS/NYKTS_149_Preventative_WGS_NYK_RULEPREV00001_00W28_dis/payloads/regression",
-            "postman_collection_name": "NYKTS_149_Preventative_Collection",
-            "postman_file_name": "preventative_medicine_and_screening_iprep_362_wgs_nyk_RULEPREV00001_00W28.json"
-        },
-        {
             "ts_number": "150",
             "edit_id": "RULEINPCC00001",
             "code": "00W45",
@@ -1525,6 +1516,15 @@ STATIC_MODELS_CONFIG = {
             "dest_dir": "renaming_jsons/NYKTS/NYKTS_150_Inpatient_WGS_NYK_RULEINPCC00001_00W45_dis/payloads/regression",
             "postman_collection_name": "NYKTS_150_Inpatient_Collection",
             "postman_file_name": "inpatient_neonatal_and_pediatric_critical_care_iprep_332_wgs_nyk_RULEINPCC00001_00W45.json"
+        },
+        {
+            "ts_number": "151",
+            "edit_id": "RULEPREV000001",
+            "code": "00W28",
+            "source_dir": "source_folder/WGS_Kernal/NYKTS_151_Preventative_WGS_NYK_RULEPREV000001_00W28_sur/payloads/regression",
+            "dest_dir": "renaming_jsons/NYKTS/NYKTS_151_Preventative_WGS_NYK_RULEPREV000001_00W28_dis/payloads/regression",
+            "postman_collection_name": "NYKTS_151_Preventative_Collection",
+            "postman_file_name": "preventative_medicine_and_screening_iprep_362_wgs_nyk_RULEPREV000001_00W28.json"
         }
     ]
 }
@@ -1690,7 +1690,8 @@ def apply_header_footer_to_json(file_path):
             "hints": ["congnitive_claims_async"],
             "responseRequired": "false",
             "meta-src-envrmt": "IMST",
-            "meta-transid": "20220117181853TMBL20359Cl893580999"
+            "meta-transid": "20220117181853TMBL20359Cl893580999",
+            "Protigrity": "true"
         }
         
         # Always ensure header/footer structure is correct
@@ -1703,12 +1704,13 @@ def apply_header_footer_to_json(file_path):
                 "payload": existing_data.get("payload", existing_data),  # Use existing payload or entire data
                 "responseRequired": header_footer["responseRequired"],
                 "meta-src-envrmt": header_footer["meta-src-envrmt"],
-                "meta-transid": header_footer["meta-transid"]
+                "meta-transid": header_footer["meta-transid"],
+                "Protigrity": header_footer["Protigrity"]
             }
             
             # Preserve any additional fields that might exist
             for key, value in existing_data.items():
-                if key not in ["adhoc", "analyticId", "hints", "payload", "responseRequired", "meta-src-envrmt", "meta-transid"]:
+                if key not in ["adhoc", "analyticId", "hints", "payload", "responseRequired", "meta-src-envrmt", "meta-transid", "Protigrity"]:
                     new_structure[key] = value
             
             # Write the updated structure back to the file
@@ -1724,7 +1726,8 @@ def apply_header_footer_to_json(file_path):
                 "payload": existing_data,  # The existing JSON becomes the payload
                 "responseRequired": header_footer["responseRequired"],
                 "meta-src-envrmt": header_footer["meta-src-envrmt"],
-                "meta-transid": header_footer["meta-transid"]
+                "meta-transid": header_footer["meta-transid"],
+                "Protigrity": header_footer["Protigrity"]
             }
             
             # Write the transformed JSON back to the file
