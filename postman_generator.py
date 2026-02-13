@@ -80,13 +80,18 @@ class PostmanCollectionGenerator:
         
         return None
     
-    def _get_headers(self, is_gbdf_model: bool, format_type: str = "v2.1.0") -> List[Dict]:
+    # meta-transid values for Postman HEADERS (applies to all wgs_kernal vs WGS_CSBD models)
+    META_TRANSID_WGS_KERNAL = "20240705012036TMBLMMY437A003580999CS90TIMBER01"  # all WGS_Kernal / NYKTS
+    META_TRANSID_WGS_CSBD = "20220117181853TMBL20359Cl893580999"
+
+    def _get_headers(self, is_gbdf_model: bool, format_type: str = "v2.1.0", is_wgs_kernal: bool = False) -> List[Dict]:
         """
         Get headers for Postman request based on model type.
         
         Args:
             is_gbdf_model: Whether this is a GBDF model
             format_type: Postman format type ("v2.1.0" or "minimal")
+            is_wgs_kernal: If True use WGS_Kernal meta-transid; else use WGS_CSBD meta-transid (for non-GBDF)
             
         Returns:
             List of header dictionaries
@@ -97,20 +102,21 @@ class PostmanCollectionGenerator:
             else:
                 return [{"uid": str(uuid.uuid4()), "name": "Client_Transaction_ID", "value": "20115660390020220225161114893", "enabled": True}]
         else:
+            meta_transid = self.META_TRANSID_WGS_KERNAL if is_wgs_kernal else self.META_TRANSID_WGS_CSBD
             if format_type == "v2.1.0":
                 return [
                     {"key": "Content-Type", "value": "application/json", "type": "text"},
-                    {"key": "meta-transid", "value": "20220117181853TMBL20359Cl893580999", "type": "text"},
+                    {"key": "meta-transid", "value": meta_transid, "type": "text"},
                     {"key": "meta-src-envrmt", "value": "IMSH", "type": "text"}
                 ]
             else:
                 return [
                     {"uid": str(uuid.uuid4()), "name": "Content-Type", "value": "application/json", "enabled": True},
-                    {"uid": str(uuid.uuid4()), "name": "meta-transid", "value": "20220117181853TMBL20359Cl893580999", "enabled": True},
+                    {"uid": str(uuid.uuid4()), "name": "meta-transid", "value": meta_transid, "enabled": True},
                     {"uid": str(uuid.uuid4()), "name": "meta-src-envrmt", "value": "IMSH", "enabled": True}
                 ]
     
-    def _create_postman_request(self, json_file_path: Path, parsed_info: Dict[str, str], is_gbdf_model: bool = False) -> Dict[str, Any]:
+    def _create_postman_request(self, json_file_path: Path, parsed_info: Dict[str, str], is_gbdf_model: bool = False, is_wgs_kernal: bool = False) -> Dict[str, Any]:
         """
         STAGE 4: POSTMAN REQUEST CREATION
         Create a Postman request from a JSON file with proper structure and headers.
@@ -119,6 +125,7 @@ class PostmanCollectionGenerator:
             json_file_path: Path to the JSON file
             parsed_info: Parsed filename information
             is_gbdf_model: Whether this is a GBDF model (affects headers)
+            is_wgs_kernal: Whether this is WGS_Kernal (affects meta-transid in headers)
             
         Returns:
             Postman request structure
@@ -138,12 +145,12 @@ class PostmanCollectionGenerator:
             "type": "http",
             "method": method,
             "url": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
-            "headers": self._get_headers(is_gbdf_model, "minimal"),
+            "headers": self._get_headers(is_gbdf_model, "minimal", is_wgs_kernal),
             "body": {"mode": "raw", "raw": json.dumps(json_content, indent=2)}
         }
     
     
-    def generate_postman_collection(self, collection_name: str = "TestCollection", custom_filename: str = None, is_gbdf_model: bool = False) -> Optional[Path]:
+    def generate_postman_collection(self, collection_name: str = "TestCollection", custom_filename: str = None, is_gbdf_model: bool = False, is_wgs_kernal: bool = False) -> Optional[Path]:
         """
         STAGE 5: MAIN COLLECTION GENERATION
         Generate Postman-compatible collection for JSON files in source directory.
@@ -153,6 +160,7 @@ class PostmanCollectionGenerator:
             collection_name: Name of the collection to generate
             custom_filename: Optional custom filename for the collection file
             is_gbdf_model: Whether this is a GBDF model (affects headers)
+            is_wgs_kernal: Whether this is WGS_Kernal (sets meta-transid in HEADERS; else WGS_CSBD value)
             
         Returns:
             Path to generated Postman collection file or None if no files found
@@ -219,7 +227,7 @@ class PostmanCollectionGenerator:
                     "name": json_file.stem,
                     "request": {
                         "method": method,
-                        "header": self._get_headers(is_gbdf_model, "v2.1.0"),
+                        "header": self._get_headers(is_gbdf_model, "v2.1.0", is_wgs_kernal),
                         "url": {
                             "raw": "https://pi-timber-claims-api-uat.ingress-nginx.dig-gld-shared.gcpdns.internal.das/claims/Timber/GetRecommendations",
                             "host": ["{{baseUrl}}"],
@@ -266,7 +274,7 @@ class PostmanCollectionGenerator:
             print(f"ERROR: Error saving Postman collection for {collection_name}: {e}")
             return None
 
-    def generate_collection_for_directory(self, dir_name: str, is_gbdf_model: bool = False) -> Optional[Path]:
+    def generate_collection_for_directory(self, dir_name: str, is_gbdf_model: bool = False, is_wgs_kernal: bool = False) -> Optional[Path]:
         """
         STAGE 6: DIRECTORY-SPECIFIC COLLECTION GENERATION
         Generate Postman collection for a specific directory using minimal format.
@@ -275,6 +283,7 @@ class PostmanCollectionGenerator:
         Args:
             dir_name: Name of the directory to generate collection for
             is_gbdf_model: Whether this is a GBDF model (affects headers)
+            is_wgs_kernal: Whether this is WGS_Kernal (sets meta-transid in HEADERS)
             
         Returns:
             Path to generated collection file or None if no files found
@@ -300,7 +309,7 @@ class PostmanCollectionGenerator:
         for json_file in json_files:
             parsed_info = self._parse_filename(json_file.name)
             if parsed_info:
-                request = self._create_postman_request(json_file, parsed_info, is_gbdf_model)
+                request = self._create_postman_request(json_file, parsed_info, is_gbdf_model, is_wgs_kernal)
                 requests.append(request)
             else:
                 print(f"Warning: Could not parse filename '{json_file.name}'")
@@ -386,8 +395,10 @@ class PostmanCollectionGenerator:
                 break
         
         # Step 7.4: Generate a single collection for all files
+        # Use WGS_Kernal meta-transid for all wgs_kernal models (NYKTS / WGS_KERNAL)
+        is_wgs_kernal = "NYKTS" in collection_name or "WGS_KERNAL" in collection_name.upper() or "WGS_Kernal" in collection_name
         print(f"Generating collection '{collection_name}' for all files...")
-        collection_path = self.generate_postman_collection(collection_name)
+        collection_path = self.generate_postman_collection(collection_name, is_wgs_kernal=is_wgs_kernal)
         
         if collection_path:
             collections[collection_name] = collection_path
@@ -580,7 +591,9 @@ def main():
     
     elif args.directory:
         # Generate collection for a specific directory
-        collection_path = generator.generate_collection_for_directory(args.directory)
+        # Infer is_wgs_kernal from directory name (NYKTS or WGS_KERNAL) so meta-transid is correct
+        is_wgs_kernal = "NYKTS" in args.directory or "WGS_KERNAL" in args.directory.upper() or "WGS_Kernal" in args.directory
+        collection_path = generator.generate_collection_for_directory(args.directory, is_wgs_kernal=is_wgs_kernal)
         if collection_path:
             print(f"Collection generated: {collection_path}")
         else:
@@ -588,7 +601,9 @@ def main():
     
     else:
         # Default: Generate collection for all files with specified name
-        collection_path = generator.generate_postman_collection(args.collection_name)
+        # Infer is_wgs_kernal from collection name so meta-transid is correct for WGS_Kernal/NYKTS
+        is_wgs_kernal = "NYKTS" in args.collection_name or "WGS_KERNAL" in args.collection_name.upper() or "WGS_Kernal" in args.collection_name
+        collection_path = generator.generate_postman_collection(args.collection_name, is_wgs_kernal=is_wgs_kernal)
         if collection_path:
             print(f"Collection generated: {collection_path}")
         else:

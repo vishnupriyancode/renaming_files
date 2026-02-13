@@ -1645,7 +1645,7 @@ GENERATE_POSTMAN_COLLECTIONS = True
 VERBOSE_OUTPUT = True
 
 
-def apply_header_footer_to_json(file_path):
+def apply_header_footer_to_json(file_path, is_wgs_kernal=False):
     """
     Apply header and footer structure to JSON files.
     Wraps the existing JSON content with header and footer metadata.
@@ -1662,10 +1662,13 @@ def apply_header_footer_to_json(file_path):
     Footer structure:
     - responseRequired: "false"
     - meta-src-envrmt: "IMST"
-    - meta-transid: "20220117181853TMBL20359Cl893580999"
+    - meta-transid: WGS_Kernal uses "20240705012036TMBLMMY437A003580999CS90TIMBER01",
+                   WGS_CSBD uses "20220117181853TMBL20359Cl893580999"
+    - protegrity / Protigrity: "false" (for WGS_Kernal and WGS_CSBD models)
     
     Args:
         file_path: Path to the JSON file to transform
+        is_wgs_kernal: If True, use WGS_Kernal meta-transid; else use WGS_CSBD meta-transid
         
     Returns:
         bool: True if transformation was successful, False otherwise
@@ -1683,6 +1686,8 @@ def apply_header_footer_to_json(file_path):
                                 "meta-src-envrmt" in existing_data and
                                 "meta-transid" in existing_data)
         
+        # meta-transid: WGS_Kernal uses dedicated value; WGS_CSBD uses legacy value
+        meta_transid = "20240705012036TMBLMMY437A003580999CS90TIMBER01" if is_wgs_kernal else "20220117181853TMBL20359Cl893580999"
         # Header and footer structure (always use these values)
         header_footer = {
             "adhoc": "true",
@@ -1690,8 +1695,9 @@ def apply_header_footer_to_json(file_path):
             "hints": ["congnitive_claims_async"],
             "responseRequired": "false",
             "meta-src-envrmt": "IMST",
-            "meta-transid": "20220117181853TMBL20359Cl893580999",
-            "Protigrity": "true"
+            "meta-transid": meta_transid,
+            "protegrity": "false",
+            "Protigrity": "false"
         }
         
         # Always ensure header/footer structure is correct
@@ -1705,12 +1711,13 @@ def apply_header_footer_to_json(file_path):
                 "responseRequired": header_footer["responseRequired"],
                 "meta-src-envrmt": header_footer["meta-src-envrmt"],
                 "meta-transid": header_footer["meta-transid"],
+                "protegrity": header_footer["protegrity"],
                 "Protigrity": header_footer["Protigrity"]
             }
             
             # Preserve any additional fields that might exist
             for key, value in existing_data.items():
-                if key not in ["adhoc", "analyticId", "hints", "payload", "responseRequired", "meta-src-envrmt", "meta-transid", "Protigrity"]:
+                if key not in ["adhoc", "analyticId", "hints", "payload", "responseRequired", "meta-src-envrmt", "meta-transid", "protegrity", "Protigrity"]:
                     new_structure[key] = value
             
             # Write the updated structure back to the file
@@ -1727,6 +1734,7 @@ def apply_header_footer_to_json(file_path):
                 "responseRequired": header_footer["responseRequired"],
                 "meta-src-envrmt": header_footer["meta-src-envrmt"],
                 "meta-transid": header_footer["meta-transid"],
+                "protegrity": header_footer["protegrity"],
                 "Protigrity": header_footer["Protigrity"]
             }
             
@@ -1783,13 +1791,14 @@ def apply_header_footer_to_renaming_jsons():
         print("-" * 60)
         
         # Recursively find all JSON files
+        is_wgs_kernal = "WGS_KERNAL" in target_dir.upper()
         for root, dirs, files in os.walk(target_dir):
             for filename in files:
                 if filename.endswith('.json'):
                     file_path = os.path.join(root, filename)
                     
                     # Apply header/footer (function will handle both new and existing structures)
-                    if apply_header_footer_to_json(file_path):
+                    if apply_header_footer_to_json(file_path, is_wgs_kernal=is_wgs_kernal):
                         processed_count += 1
                     else:
                         error_count += 1

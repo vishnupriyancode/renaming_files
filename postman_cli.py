@@ -119,14 +119,19 @@ def handle_generate(args):
     )
     
     # Stage 14: Choose generation method based on arguments
+    # Use WGS_Kernal meta-transid for all wgs_kernal models (NYKTS / WGS_KERNAL)
+    is_wgs_kernal = bool(
+        (args.directory and ("NYKTS" in args.directory or "WGS_KERNAL" in args.directory.upper() or "WGS_Kernal" in args.directory))
+        or ("NYKTS" in args.collection_name or "WGS_KERNAL" in args.collection_name.upper() or "WGS_Kernal" in args.collection_name)
+    )
     if args.directory:
         # Generate collection for specific directory
         print(f"📁 Generating collection for directory: {args.directory}")
-        collection_path = generator.generate_collection_for_directory(args.directory)
+        collection_path = generator.generate_collection_for_directory(args.directory, is_wgs_kernal=is_wgs_kernal)
     else:
         # Generate collection for all files with custom name
         print(f"📁 Generating collection: {args.collection_name}")
-        collection_path = generator.generate_postman_collection(args.collection_name)
+        collection_path = generator.generate_postman_collection(args.collection_name, is_wgs_kernal=is_wgs_kernal)
     
     # Stage 15: Display results and usage instructions
     if collection_path:

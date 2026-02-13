@@ -178,18 +178,22 @@ def clean_duplicate_fields_csbd(file_path):
         return False
 
 
-def apply_wgs_csbd_header_footer(file_path):
+def apply_wgs_csbd_header_footer(file_path, is_wgs_kernal=False):
     """
     Apply header and footer structure to WGS_CSBD and WGS_KERNAL JSON files.
     This function transforms the JSON content by wrapping the existing data
     with the required header and footer metadata, avoiding duplicate fields.
     Additionally, generates random 11-digit numbers for KEY_CHK_CDN_NBR field.
+
+    meta-transid: WGS_Kernal uses "20240705012036TMBLMMY437A003580999CS90TIMBER01";
+    WGS_CSBD uses "20220117181853TMBL20359Cl893580999".
     
     This function ALWAYS ensures the header/footer structure is present,
     even if the file already has it (to ensure consistency).
     
     Args:
         file_path: Path to the JSON file to transform
+        is_wgs_kernal: If True, use WGS_Kernal meta-transid; else use WGS_CSBD meta-transid
         
     Returns:
         bool: True if transformation was successful, False otherwise
@@ -209,6 +213,8 @@ def apply_wgs_csbd_header_footer(file_path):
                                 "meta-src-envrmt" in existing_data and
                                 "meta-transid" in existing_data)
         
+        # meta-transid: WGS_Kernal uses dedicated value; WGS_CSBD uses legacy value
+        meta_transid = "20240705012036TMBLMMY437A003580999CS90TIMBER01" if is_wgs_kernal else "20220117181853TMBL20359Cl893580999"
         # Header and footer structure (always use these values)
         header_footer = {
             "adhoc": "true",
@@ -216,8 +222,8 @@ def apply_wgs_csbd_header_footer(file_path):
             "hints": ["congnitive_claims_async"],
             "responseRequired": "false",
             "meta-src-envrmt": "IMST",
-            "meta-transid": "20220117181853TMBL20359Cl893580999",
-            "Protigrity": "true"
+            "meta-transid": meta_transid,
+            "Protigrity": "false"
         }
         
         # Generate random 11-digit number for KEY_CHK_DCN_NBR field
@@ -505,8 +511,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 # Apply header/footer transformation for WGS_CSBD, WGS_KERNAL, and WGS_NYK (NYKTS) files
                 if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir or "WGS_NYK" in dest_dir:
                     model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else ("WGS_NYK" if ("NYKTS" in dest_dir or "WGS_NYK" in dest_dir) else "WGS_KERNAL")
+                    is_wgs_kernal = "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir
                     print(f"Applying {model_type} header/footer transformation to: {new_filename}")
-                    if apply_wgs_csbd_header_footer(dest_path):
+                    if apply_wgs_csbd_header_footer(dest_path, is_wgs_kernal=is_wgs_kernal):
                         print(f"[SUCCESS] Header/footer applied to: {new_filename}")
                     else:
                         print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
@@ -569,8 +576,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 # Apply header/footer transformation for WGS_CSBD, WGS_KERNAL, and WGS_NYK (NYKTS) files
                 if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir or "WGS_NYK" in dest_dir:
                     model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else ("WGS_NYK" if ("NYKTS" in dest_dir or "WGS_NYK" in dest_dir) else "WGS_KERNAL")
+                    is_wgs_kernal = "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir
                     print(f"Applying {model_type} header/footer transformation to: {new_filename}")
-                    if apply_wgs_csbd_header_footer(dest_path):
+                    if apply_wgs_csbd_header_footer(dest_path, is_wgs_kernal=is_wgs_kernal):
                         print(f"[SUCCESS] Header/footer applied to: {new_filename}")
                     else:
                         print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
@@ -646,8 +654,9 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                     # Apply header/footer transformation for WGS_CSBD, WGS_KERNAL, and WGS_NYK (NYKTS) files
                     if "WGS_CSBD" in dest_dir or "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir or "WGS_NYK" in dest_dir:
                         model_type = "WGS_CSBD" if "WGS_CSBD" in dest_dir else ("WGS_NYK" if ("NYKTS" in dest_dir or "WGS_NYK" in dest_dir) else "WGS_KERNAL")
+                        is_wgs_kernal = "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir
                         print(f"Applying {model_type} header/footer transformation to: {new_filename}")
-                        if apply_wgs_csbd_header_footer(dest_path):
+                        if apply_wgs_csbd_header_footer(dest_path, is_wgs_kernal=is_wgs_kernal):
                             print(f"[SUCCESS] Header/footer applied to: {new_filename}")
                         else:
                             print(f"[WARNING] Failed to apply header/footer to: {new_filename}")
@@ -697,14 +706,8 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             # STAGE 2.1: POSTMAN GENERATOR SETUP
             # ==================================
             # Initialize Postman generator with specific model directory
-            # Use appropriate subdirectory when processing models
-            output_dir = "postman_collections"
-            if "WGS_CSBD" in dest_dir:
-                output_dir = "postman_collections/WGS_CSBD"
-            elif "GBDF" in dest_dir:
-                output_dir = "postman_collections/GBDF"
-            elif "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "WGS_NYK" in dest_dir:
-                output_dir = "postman_collections/WGS_KERNAL"
+            # All Postman collections stored under WGS_KERNAL only
+            output_dir = "postman_collections/WGS_KERNAL"
             
             generator = PostmanCollectionGenerator(
                 source_dir=dest_dir,  # Use the specific model's destination directory
@@ -735,11 +738,12 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             
             # STAGE 2.3: COLLECTION GENERATION
             # ===============================
-            # Determine if this is a GBDF model
+            # Determine model type for Postman HEADERS (meta-transid)
             is_gbdf_model = "GBDF" in dest_dir
+            is_wgs_kernal = "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir or "WGS_NYK" in dest_dir
             
-            # Generate collection
-            collection_path = generator.generate_postman_collection(postman_collection_name, custom_filename, is_gbdf_model)
+            # Generate collection (wgs_kernal vs wgs_csbd sets meta-transid in HEADERS)
+            collection_path = generator.generate_postman_collection(postman_collection_name, custom_filename, is_gbdf_model, is_wgs_kernal)
             
             if collection_path:
                 print(f"Postman collection generated: {collection_path}")
