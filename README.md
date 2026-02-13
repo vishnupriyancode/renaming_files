@@ -15,6 +15,7 @@ For full command reference, see [Quick Start Commands](#-quick-start-commands-ve
 - [Getting Started (New Users)](#-getting-started-new-users)
 - [Recent Updates & Fixes](#-recent-updates--fixes)
 - [Quick Start Commands](#-quick-start-commands-verified--ready-to-use)
+- [User Commands & Model Commands](#-user-commands--model-commands)
 - [Model Summary & Quick Reference](#-model-summary--quick-reference)
 - [Overview](#overview)
 - [Model Types Supported](#-model-types-supported)
@@ -381,6 +382,70 @@ python main_processor.py --wgs_csbd --CSBDTS75    # Process TS75 model (Preventi
 
 # Process all WGS_CSBD models at once
 python main_processor.py --wgs_csbd --all     # Process all WGS_CSBD models
+```
+
+## 📋 User Commands & Model Commands
+
+This section documents all CLI options for `main_processor.py`: **user commands** (global options and modifiers) and **model commands** (model type + model selector).
+
+### User commands (global options)
+
+These flags control *how* the script runs. They can be combined with any model command.
+
+| Command | Description |
+|--------|-------------|
+| `--list` | List all available TS models for the given model type; with a specific model (e.g. `--CSBDTS01`) generates JSON renaming timing report for that model |
+| `--all` | Process all discovered models for the selected model type (requires `--wgs_csbd`, `--wgs_nyk`, `--gbdf_mcr`, or `--gbdf_grs`) |
+| `--no-postman` | Skip Postman collection generation; only rename files |
+| `--no-report` | Disable Excel report generation (skip timing reports) |
+| `--refdb` | Apply refdb value replacement for refdb-supported models (e.g. CSBDTS46, CSBDTS47, CSBDTS59, NYKTS123) |
+| `--edit-id <id>` | Custom edit ID (e.g. `rvn001`) |
+| `--code <code>` | Custom code (e.g. `00W5`) |
+| `--source-dir <path>` | Custom source directory path |
+| `--dest-dir <path>` | Custom destination directory path |
+| `--collection-name <name>` | Custom Postman collection name |
+| `--help` | Show help and example usage |
+
+**Examples (user commands with a model):**
+```bash
+python main_processor.py --wgs_csbd --CSBDTS01 --list      # Timing report for TS01
+python main_processor.py --wgs_csbd --CSBDTS07 --no-postman
+python main_processor.py --gbdf_mcr --GBDTS47 --no-postman
+python main_processor.py --wgs_csbd --all --refdb
+python main_processor.py --wgs_csbd --all --no-postman
+```
+
+### Model commands (model type + model selector)
+
+You must choose **one** model type and **one** model (or `--all`). Model type and selector format must match.
+
+| Model type (flag) | Model selector format | Example |
+|-------------------|------------------------|--------|
+| `--wgs_csbd` | `--CSBDTS<NN>` or `--all` | `--wgs_csbd --CSBDTS01`, `--wgs_csbd --all` |
+| `--wgs_nyk` | `--NYKTS<NN>` or `--all` | `--wgs_nyk --NYKTS124`, `--wgs_nyk --all` |
+| `--gbdf_mcr` | `--GBDTS<NN>` or `--all` | `--gbdf_mcr --GBDTS47`, `--gbdf_mcr --all` |
+| `--gbdf_grs` | `--GBDTS<NN>` or `--all` | `--gbdf_grs --GBDTS49`, `--gbdf_grs --all` |
+
+**Rules:**
+
+- **WGS_CSBD:** Use `--wgs_csbd` with `--CSBDTS01`, `--CSBDTS02`, … `--CSBDTS75` (no `--TSXX`).
+- **WGS_NYK:** Use `--wgs_nyk` with `--NYKTS122`, `--NYKTS123`, … (e.g. `--NYKTS130`, `--NYKTS132`, `--NYKTS149`, `--NYKTS150`).
+- **GBDF MCR:** Use `--gbdf_mcr` with `--GBDTS47`, `--GBDTS62`, … (e.g. `--GBDTS138`, `--GBDTS144`).
+- **GBDF GRS:** Use `--gbdf_grs` with `--GBDTS49`, `--GBDTS61`, … (e.g. `--GBDTS139`, `--GBDTS141`).
+
+**Examples (model commands only):**
+```bash
+# Single model
+python main_processor.py --wgs_csbd --CSBDTS01
+python main_processor.py --wgs_nyk --NYKTS124
+python main_processor.py --gbdf_mcr --GBDTS47
+python main_processor.py --gbdf_grs --GBDTS49
+
+# All models of a type
+python main_processor.py --wgs_csbd --all
+python main_processor.py --wgs_nyk --all
+python main_processor.py --gbdf_mcr --all
+python main_processor.py --gbdf_grs --all
 ```
 
 ### GBDF_MCR Models (Global Burden of Disease Foundation - Medical Claims Research)
