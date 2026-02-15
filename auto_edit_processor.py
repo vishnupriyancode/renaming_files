@@ -285,16 +285,48 @@ def _resolve_edit_column(df: pd.DataFrame) -> Optional[str]:
     """
     candidates = [
         "List of Edits that need to be Automated",
+        "List of Edits to be Automated",
+        "List of Edits  to be Automated",  # Double space (Excel GBDF sheet)
         "List of EdiGBDTS that need to be Automated",  # Known typo in GBDF sheet
     ]
     for candidate in candidates:
         if candidate in df.columns:
             return candidate
     for column in df.columns:
-        normalized = str(column).strip().lower()
-        if "need to be automated" in normalized:
+        # Normalize: strip, lower, collapse multiple spaces to one
+        raw = str(column).strip().lower()
+        normalized = " ".join(raw.split())
+        if "need to be automated" in normalized or "edits to be automated" in normalized:
             return column
     return None
+
+
+def _get_sheet_df_with_edit_column(
+    excel_path: str,
+    excel_data: Dict[str, pd.DataFrame],
+    sheet_name: str,
+    actual_sheet: str,
+) -> Tuple[pd.DataFrame, Optional[str]]:
+    """
+    Return (df, edit_column) for the sheet. For GBDF sheets, if the edit column
+    is not found (header in row 0), re-read with header=1 so "List of Edits to be Automated"
+    in row 2 is used as the column header.
+    """
+    df = excel_data[actual_sheet]
+    edit_column = _resolve_edit_column(df)
+    if edit_column:
+        return df, edit_column
+    for name in ("GBDF", "GBDF_MCR", "GBDF_GRS"):
+        if sheet_name == name or actual_sheet == name:
+            try:
+                df_alt = pd.read_excel(excel_path, sheet_name=actual_sheet, header=1)
+            except Exception:
+                break
+            edit_column = _resolve_edit_column(df_alt)
+            if edit_column:
+                return df_alt, edit_column
+            break
+    return df, None
 
 
 def _get_test_suite_id_column(df: pd.DataFrame) -> Optional[str]:
@@ -399,13 +431,15 @@ def generate_config_entry(
         source_base = "source_folder/GBDF"
         dest_base = "renaming_jsons/GBDTS"
         model_name = generate_model_name(edit_id, model_name_with_lob)
-        folder_name = f"{ts_prefix}_{ts_number}_{model_name}_gbdf_mcr_{edit_id}_{eob_code}"
+        # Use gbd_mcr in path to match Excel GBDF sheet / models_config convention
+        folder_name = f"{ts_prefix}_{ts_number}_{model_name}_gbd_mcr_{edit_id}_{eob_code}"
     elif model_type == "gbdf_grs":
         ts_prefix = "TS"
         source_base = "source_folder/GBDF"
         dest_base = "renaming_jsons/GBDTS"
         model_name = generate_model_name(edit_id, model_name_with_lob)
-        folder_name = f"{ts_prefix}_{ts_number}_{model_name}_gbdf_grs_{edit_id}_{eob_code}"
+        # Use gbd_grs in path to match Excel GBDF sheet / models_config convention
+        folder_name = f"{ts_prefix}_{ts_number}_{model_name}_gbd_grs_{edit_id}_{eob_code}"
     elif model_type == "wgs_kernal":
         ts_prefix = "NYKTS"
         source_base = "source_folder/WGS_Kernal"
@@ -544,14 +578,13 @@ def sync_config_from_excel(
         print(f"[ERROR] Sheet '{sheet_name}' not found (available: {list(excel_data.keys())})")
         return []
     
-    df = excel_data[actual_sheet]
     if actual_sheet != sheet_name:
         print(f"[INFO] Using sheet '{actual_sheet}' (case-insensitive match for '{sheet_name}')")
-    edit_column = _resolve_edit_column(df)
+    df, edit_column = _get_sheet_df_with_edit_column(excel_path, excel_data, sheet_name, actual_sheet)
     if not edit_column:
         print("[ERROR] Could not find the edit details column")
         return []
-    
+
     ts_id_column = _get_test_suite_id_column(df)
     if not ts_id_column:
         print("[ERROR] Could not find 'Test Sutie ID' or 'Test Suite ID' column in sheet")
@@ -621,7 +654,17 @@ def sync_config_from_excel(
             "new_ts_number": excel_ts,
             "old_config": existing_entry,
         })
-        print(f"  [SYNC] Row {idx + 2}: {edit_id} TS{existing_entry.get('ts_number')} -> TS{excel_ts}")
+    
+    # Deduplicate: multiple Excel rows can have same (edit_id, eob_code) but different Test Suite IDs.
+    # Keep last occurrence per config entry so we apply one update per entry (avoids wrong TS overwriting correct one).
+    num_before_dedup = len(config_updates)
+    seen = {}
+    for upd in config_updates:
+        key = (upd["model_type"], upd["edit_id"], upd["eob_code"])
+        seen[key] = upd
+    config_updates = list(seen.values())
+    if num_before_dedup > len(config_updates):
+        print(f"  [INFO] Deduplicated {num_before_dedup - len(config_updates)} duplicate Excel row(s) for same (edit_id, code); using last row's Test Suite ID per entry.")
     
     if not config_updates:
         print(f"[INFO] No config updates needed - Excel matches models_config (or no rows matched existing entries).")
@@ -636,6 +679,91 @@ def sync_config_from_excel(
     # Keep STATIC_MODELS_CONFIG in ascending order by ts_number for all models
     sort_config_by_ts_number(config_path)
     return config_updates
+
+
+def update_cmd_status_from_config(
+    excel_path: str = "edits_list.xlsx",
+    dry_run: bool = False
+) -> bool:
+    """
+    Set Cmd status to "Created" in edits_list.xlsx for every row whose (edit_id, eob_code)
+    exists in STATIC_MODELS_CONFIG for that sheet's model type (wgs_csbd, gbdf_mcr, gbdf_grs, wgs_kernal).
+    Previously only gbdf_mcr/gbdf_grs were considered; now all types are included.
+    """
+    try:
+        from models_config import STATIC_MODELS_CONFIG
+    except Exception as e:
+        print(f"[ERROR] Failed to load models_config: {e}")
+        return False
+
+    # Build (edit_id, code) sets for all model types in STATIC_MODELS_CONFIG
+    config_model_types = ("wgs_csbd", "gbdf_mcr", "gbdf_grs", "wgs_kernal")
+    config_pairs = {mt: set() for mt in config_model_types}
+    for model_type in config_model_types:
+        for entry in STATIC_MODELS_CONFIG.get(model_type, []):
+            edit_id = entry.get("edit_id")
+            code = entry.get("code")
+            if edit_id is not None and code is not None:
+                config_pairs[model_type].add((str(edit_id).strip(), str(code).strip()))
+
+    excel_data = read_edits_list(excel_path)
+    if not excel_data:
+        return False
+
+    # Process all sheets that map to a model type we have config for
+    sheets_to_process = [
+        name for name in excel_data
+        if MODEL_SHEET_MAPPING.get(name) in config_pairs
+    ]
+    if not sheets_to_process:
+        print("[INFO] No sheets (WGS_CSBD, GBDF, GBDF_MCR, GBDF_GRS, KERNAL) found in Excel")
+        return True
+
+    updated_count = 0
+    for sheet_name in sheets_to_process:
+        df, edit_column = _get_sheet_df_with_edit_column(excel_path, excel_data, sheet_name, sheet_name)
+        if not edit_column:
+            continue
+        excel_data[sheet_name] = df  # use df (may be header=1 version) for later write
+        if "Cmd status" not in df.columns:
+            df["Cmd status"] = ""
+        else:
+            df["Cmd status"] = df["Cmd status"].fillna("").astype(str)
+
+        base_model_type = MODEL_SHEET_MAPPING.get(sheet_name, "gbdf_mcr")
+        for idx, row in df.iterrows():
+            edit_string = row.get(edit_column)
+            if pd.isna(edit_string) or not str(edit_string).strip():
+                continue
+            edit_str_lower = str(edit_string).lower()
+            if "note:" in edit_str_lower and "python main_processor.py" in edit_str_lower:
+                continue
+            parsed = parse_edit_string(edit_string, sheet_name=sheet_name)
+            if not parsed:
+                continue
+            row_model_type = (
+                "gbdf_grs"
+                if (base_model_type == "gbdf_mcr" and is_grs_edit(edit_string, sheet_name))
+                else base_model_type
+            )
+            if row_model_type not in config_pairs:
+                continue
+            edit_id = str(parsed["edit_id"]).strip()
+            eob_code = str(parsed["eob_code"]).strip()
+            if (edit_id, eob_code) in config_pairs[row_model_type]:
+                df.at[idx, "Cmd status"] = "Created"
+                updated_count += 1
+
+    if dry_run:
+        print(f"[DRY-RUN] Would set Cmd status = 'Created' for {updated_count} row(s)")
+        return True
+
+    with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
+        for sheet, data in excel_data.items():
+            data.to_excel(writer, sheet_name=sheet, index=False)
+
+    print(f"[SUCCESS] Updated Cmd status to 'Created' for {updated_count} row(s) in {excel_path}")
+    return True
 
 
 def process_edits_from_excel(
@@ -660,13 +788,16 @@ def process_edits_from_excel(
     
     # Read Excel file
     excel_data = read_edits_list(excel_path)
-    
-    if sheet_name not in excel_data:
+    actual_sheet = _resolve_sheet_name(excel_data, sheet_name)
+    if actual_sheet is None:
         print(f"[ERROR] Sheet '{sheet_name}' not found in Excel file")
         return [], [], []
-    
-    df = excel_data[sheet_name]
-    
+
+    df, edit_column = _get_sheet_df_with_edit_column(excel_path, excel_data, sheet_name, actual_sheet)
+    if not edit_column:
+        print("[ERROR] Could not find the edit details column in sheet")
+        return [], [], []
+
     # Read current config
     from models_config import STATIC_MODELS_CONFIG
     config_by_type = STATIC_MODELS_CONFIG
@@ -680,11 +811,7 @@ def process_edits_from_excel(
     generated_configs = []
     excel_updates = []
     config_updates = []  # Existing entries to sync ts_number from Excel
-    edit_column = _resolve_edit_column(df)
-    if not edit_column:
-        print("[ERROR] Could not find the edit details column in sheet")
-        return [], [], []
-    
+
     for idx, row in df.iterrows():
         edit_string = row.get(edit_column)
         
@@ -1110,15 +1237,26 @@ def update_excel_file(
             item_model_type = item.get("model_type")
             
             # Update Test Suite ID column - only if empty (preserve user's manual edits)
-            if "Test Sutie ID" in df.columns:
-                current_val = df.at[row_idx, "Test Sutie ID"]
+            ts_id_column = _get_test_suite_id_column(df)
+            if ts_id_column:
+                current_val = df.at[row_idx, ts_id_column]
                 is_empty = pd.isna(current_val) or not str(current_val).strip()
                 if is_empty:
                     if item_model_type == "gbdf_grs":
-                        df.at[row_idx, "Test Sutie ID"] = f"GBDTS{ts_number}"
+                        df.at[row_idx, ts_id_column] = f"GBDTS{ts_number}"
                     else:
-                        df.at[row_idx, "Test Sutie ID"] = f"CSBDTS{ts_number}" if "CSBDTS" in command else f"GBDTS{ts_number}" if "GBDTS" in command else f"NYKTS{ts_number}"
+                        df.at[row_idx, ts_id_column] = f"CSBDTS{ts_number}" if "CSBDTS" in command else f"GBDTS{ts_number}" if "GBDTS" in command else f"NYKTS{ts_number}"
                 # else: preserve user's value - do not overwrite
+
+            # Command must always match the row's Test Suit ID (so GBDTS in sheet matches --GBDTS in command)
+            final_ts_number = ts_number
+            if ts_id_column:
+                cell_val = df.at[row_idx, ts_id_column]
+                if pd.notna(cell_val) and str(cell_val).strip():
+                    ts_match = re.search(r"(\d+)", str(cell_val))
+                    if ts_match:
+                        final_ts_number = _normalize_ts_number(ts_match.group(1)) or ts_number
+            command_to_write = generate_command(final_ts_number, item_model_type or "gbdf_mcr")
             
             # Update Cmd status column
             if "Cmd status" in df.columns:
@@ -1129,7 +1267,7 @@ def update_excel_file(
                 df["generate_command"] = ""
             else:
                 df["generate_command"] = df["generate_command"].fillna("").astype(str)
-            df.at[row_idx, "generate_command"] = command
+            df.at[row_idx, "generate_command"] = command_to_write
         
         # Write back to Excel
         with pd.ExcelWriter(excel_path, engine='openpyxl') as writer:
@@ -1146,6 +1284,73 @@ def update_excel_file(
     except Exception as e:
         print(f"[ERROR] Failed to update Excel file: {e}")
         return False
+
+
+def fix_command_mismatch_in_excel(
+    excel_path: str = "edits_list.xlsx",
+    dry_run: bool = False
+) -> int:
+    """
+    Rewrite generate_command for each row to use the row's Test Suit ID so that
+    the command (e.g. --GBDTS62) always matches the Test Suit ID (e.g. GBDTS62).
+    Returns the number of rows updated.
+    """
+    excel_data = read_edits_list(excel_path)
+    if not excel_data:
+        return 0
+    ts_id_col = None
+    edit_col = None
+    updated_count = 0
+    for sheet_name in list(excel_data.keys()):
+        df = excel_data[sheet_name]
+        ts_id_column = _get_test_suite_id_column(df)
+        if not ts_id_column or "generate_command" not in df.columns:
+            continue
+        edit_column = _resolve_edit_column(df)
+        if not edit_column and sheet_name in ("GBDF", "GBDF_MCR", "GBDF_GRS"):
+            try:
+                df_alt = pd.read_excel(excel_path, sheet_name=sheet_name, header=1)
+                edit_column = _resolve_edit_column(df_alt)
+                if edit_column:
+                    df = df_alt
+                    excel_data[sheet_name] = df
+            except Exception:
+                pass
+        base_model_type = MODEL_SHEET_MAPPING.get(sheet_name)
+        if not base_model_type:
+            continue
+        if "generate_command" not in df.columns:
+            continue
+        df["generate_command"] = df["generate_command"].fillna("").astype(str)
+        for idx, row in df.iterrows():
+            test_suite_id = row.get(ts_id_column, "")
+            if pd.isna(test_suite_id) or not str(test_suite_id).strip():
+                continue
+            ts_match = re.search(r"(\d+)", str(test_suite_id))
+            if not ts_match:
+                continue
+            ts_number = _normalize_ts_number(ts_match.group(1))
+            if not ts_number:
+                continue
+            row_model_type = base_model_type
+            if base_model_type == "gbdf_mcr" and edit_column:
+                edit_string = row.get(edit_column, "")
+                if is_grs_edit(edit_string, sheet_name):
+                    row_model_type = "gbdf_grs"
+            correct_command = generate_command(ts_number, row_model_type)
+            current = str(row.get("generate_command", "") or "").strip()
+            if current != correct_command:
+                df.at[idx, "generate_command"] = correct_command
+                updated_count += 1
+                if dry_run:
+                    print(f"  [FIX] {sheet_name} row {idx + 2}: Test Suit ID {test_suite_id} -> command {correct_command!r} (was {current!r})")
+        excel_data[sheet_name] = df
+    if not dry_run and updated_count > 0:
+        with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
+            for sheet, data in excel_data.items():
+                data.to_excel(writer, sheet_name=sheet, index=False)
+        print(f"[SUCCESS] Updated {updated_count} row(s) so command matches Test Suit ID in {excel_path}")
+    return updated_count
 
 
 def _serialize_config_value(val: str) -> str:
@@ -1273,8 +1478,33 @@ def main():
         action="store_true",
         help="Sort STATIC_MODELS_CONFIG by ts_number in ascending order"
     )
+    parser.add_argument(
+        "--update-cmd-status",
+        action="store_true",
+        help="Set Cmd status to 'Created' in edits_list.xlsx for rows present in STATIC_MODELS_CONFIG (all model types)"
+    )
+    parser.add_argument(
+        "--fix-cmd-mismatch",
+        action="store_true",
+        help="Rewrite generate_command in edits_list.xlsx so each row's command uses that row's Test Suit ID (fixes GBDTS62 vs --GBDTS171 mismatch)"
+    )
     
     args = parser.parse_args()
+
+    # Fix command vs Test Suit ID mismatch (one-time or whenever needed)
+    if args.fix_cmd_mismatch:
+        n = fix_command_mismatch_in_excel(excel_path=args.excel, dry_run=args.dry_run)
+        if args.dry_run and n > 0:
+            print(f"[DRY-RUN] Would update {n} row(s). Run without --dry-run to apply.")
+        return
+
+    # Update Cmd status from gbdf_mcr/gbdf_grs config
+    if args.update_cmd_status:
+        update_cmd_status_from_config(
+            excel_path=args.excel,
+            dry_run=args.dry_run
+        )
+        return
 
     # Sort config by ts_number
     if args.sort_config:
@@ -1294,6 +1524,12 @@ def main():
             sheet_name=args.sheet,
             dry_run=args.dry_run
         )
+        # After sync, set Cmd status to "Created" in Excel for rows present in STATIC_MODELS_CONFIG
+        if not args.dry_run:
+            import importlib
+            import models_config
+            importlib.reload(models_config)
+            update_cmd_status_from_config(excel_path=args.excel, dry_run=False)
         return
 
     # Preflight: validate models_config.py syntax for clearer errors
@@ -1310,6 +1546,7 @@ def main():
     
     if not generated_configs and not excel_updates and not config_updates:
         print("\n[INFO] No new edits to process")
+        print("All edits is added")
         return
     
     # Show summary
@@ -1348,6 +1585,7 @@ def main():
     
     print(f"\n{'='*60}")
     print("Processing complete!")
+    print("All edits is added")
     print(f"{'='*60}\n")
 
 
