@@ -10,50 +10,45 @@
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
 │  │                           USER INTERFACES                                │   │
 │  │                                                                         │   │
-│  │  ┌─────────────────┐              ┌─────────────────┐                    │   │
-│  │  │  main_processor │              │  postman_cli    │                    │   │
-│  │  │      .py        │              │      .py        │                    │   │
-│  │  │                 │              │                 │                    │   │
-│  │  │ • CLI Interface │              │ • CLI Interface │                    │   │
-│  │  │ • TS Commands   │              │ • Standalone    │                    │   │
-│  │  │ • Batch Process │              │   Operations    │                    │   │
-│  │  │ • File Renaming │              │ • Collection    │                    │   │
-│  │  │ • Auto Postman  │              │   Management    │                    │   │
-│  │  └─────────┬───────┘              └─────────┬───────┘                    │   │
-│  └────────────┼─────────────────────────────────┼───────────────────────────┘   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐            │   │
+│  │  │ main_processor  │  │ postman_cli     │  │ Support Tools   │            │   │
+│  │  │      .py        │  │      .py        │  │                 │            │   │
+│  │  │ • CLI Interface │  │ • CLI Interface │  │ auto_edit_      │            │   │
+│  │  │ • TS Commands   │  │ • Standalone    │  │   processor.py  │            │   │
+│  │  │ • Batch Process │  │   Operations    │  │ • edits_list    │            │   │
+│  │  │ • File Renaming │  │ • Collection    │  │   .xlsx → config│            │   │
+│  │  │ • Auto Postman  │  │   Management    │  │                 │            │   │
+│  │  │ • --refdb       │  │                 │  │                 │            │   │
+│  │  └─────────┬───────┘  └─────────┬───────┘  └─────────────────┘            │   │
+│  │            │                    │                                            │   │
+│  └────────────┼────────────────────┼───────────────────────────────────────────┘   │
 │               │                                 │                               │
 │               │                                 │                               │
 │               ▼                                 ▼                               │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
 │  │                        CORE PROCESSING LAYER                            │   │
 │  │                                                                         │   │
-│  │  ┌─────────────────┐              ┌─────────────────┐                    │   │
-│  │  │ models_config   │              │ postman_generator│                   │   │
-│  │  │      .py        │              │      .py        │                    │   │
-│  │  │                 │              │                 │                    │   │
-│  │  │ • Configuration │              │ • Collection    │                    │   │
-│  │  │   Management    │              │   Generation    │                    │   │
-│  │  │ • Model Data    │              │ • JSON Parsing  │                    │   │
-│  │  │ • Static Config │  │ • File Renaming │  │ • Request       │        │   │
-│  │  │ • Dynamic Config│  │ • Header/Footer │  │   Creation      │        │   │
-│  │  │ • Fallback      │  │   Transform     │  │ • Validation     │        │   │
-│  │  └─────────┬───────┘  │ • KEY_CHK_CDN   │  └─────────────────┘        │   │
-│  │            │          │   Generation    │                              │   │
-│  │            │          │ • Model Info    │                              │   │
-│  │            │          │   Extraction   │                              │   │
+│  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐        │   │
+│  │  │ models_config   │  │ rename_files.py │  │ postman_generator│        │   │
+│  │  │      .py        │  │                 │  │      .py         │        │   │
+│  │  │ • Configuration │  │ • File Renaming │  │ • Collection     │        │   │
+│  │  │   Management    │  │ • Header/Footer │  │   Generation     │        │   │
+│  │  │ • Model Data    │  │   Transform     │  │ • JSON Parsing   │        │   │
+│  │  │ • Static Config │  │ • KEY_CHK_CDN   │  │ • Request        │        │   │
+│  │  │ • Dynamic Config│  │   Generation    │  │   Creation       │        │   │
+│  │  │ • Fallback      │  │ • Model Info    │  │ • Validation     │        │   │
+│  │  └─────────┬───────┘  │   Extraction    │  └─────────────────┘        │   │
 │  │            │          └─────────────────┘                              │   │
 │  │            │                                                           │   │
-│  │            ▼                                                           │   │
 │  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐        │   │
-│  │  │ dynamic_models   │  │ excel_report    │  │ report_generate │        │   │
-│  │  │      .py         │  │ _generator.py   │  │      .py        │        │   │
-│  │  │                  │  │                 │  │                 │        │   │
-│  │  │ • Auto-Discovery  │  │ • Timing Track  │  │ • Timing Reports│        │   │
-│  │  │ • Folder Parsing  │  │ • Excel Reports │  │ • Analytics     │        │   │
-│  │  │ • Model Detection │  │ • Performance   │  │ • Report Gen    │        │   │
-│  │  │ • TS Number       │  │   Metrics       │  │ • Batch Reports │        │   │
-│  │  │   Normalization   │  │ • Statistics    │  │                 │        │   │
-│  │  │ • Pattern Matching│  │                 │  │                 │        │   │
+│  │  │ dynamic_models  │  │ report_generate │  │ refdb_change.py │        │   │
+│  │  │      .py        │  │      .py        │  │                 │        │   │
+│  │  │ • Auto-Discovery│  │ • Timing Track  │  │ • RefDB Value    │        │   │
+│  │  │ • Folder Parsing│  │ • Excel Reports │  │   Replacement    │        │   │
+│  │  │ • Model Detect. │  │ • Performance   │  │ • HCID, NPI,     │        │   │
+│  │  │ • TS Number     │  │   Metrics       │  │   PAT_* etc.     │        │   │
+│  │  │   Normalization │  │ • Statistics    │  │ • refdb_values   │        │   │
+│  │  │ • Pattern Match │  │ • Batch Reports │  │   .json          │        │   │
 │  │  └─────────────────┘  └─────────────────┘  └─────────────────┘        │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────────────────────┘
@@ -70,12 +65,19 @@
 │  │   Source    │    │   File      │    │  Renamed    │    │  Postman    │      │
 │  │  Folders    │───▶│  Renaming   │───▶│   Files     │───▶│ Collection  │      │
 │  │             │    │(rename_     │    │             │    │             │      │
-│  │ TS_*_sur/   │    │ files.py)  │    │ TC#ID#edit  │    │ JSON File   │      │
+│  │ TS_*_sur/   │    │ files.py)   │    │ TC#ID#edit  │    │ JSON File   │      │
 │  │ regression/ │    │             │    │ #code#LR/NR │    │ Ready for   │      │
 │  │             │    │ • Transform │    │ /EX.json    │    │ Import      │      │
-│  └─────────────┘    │ • Rename   │    └─────────────┘    └─────────────┘      │
-│         │            │ • Move     │                                              │
-│         │            └─────────────┘                                              │
+│  └─────────────┘    │ • Rename   │    └──────┬──────┘    └─────────────┘      │
+│         │            │ • Move     │           │ (optional)                     │
+│         │            └─────────────┘           │ --refdb                        │
+│         │                                      ▼                                │
+│         │                               ┌─────────────┐                         │
+│         │                               │ refdb_      │                         │
+│         │                               │ change.py   │                         │
+│         │                               │ Value       │                         │
+│         │                               │ replacement │                         │
+│         │                               └─────────────┘                         │
 │         │                   │                   │                   │          │
 │         │                   │                   │                   │          │
 │         ▼                   ▼                   ▼                   ▼          │
@@ -113,28 +115,24 @@
 │                                                                                 │
 │  main_processor.py                                                              │
 │  ┌─────────────────────────────────────────────────────────────────────────┐   │
-│  │                                                                         │   │
 │  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐        │   │
-│  │  │ models_config.py │  │ rename_files.py │  │ postman_generator│        │   │
-│  │  │                 │  │                 │  │      .py        │        │   │
-│  │  │ • get_models_   │  │ • rename_files()│  │                 │        │   │
-│  │  │   config()      │  │ • extract_     │  │ • Postman       │        │   │
-│  │  │ • get_model_    │  │   model_info() │  │   Collection    │        │   │
-│  │  │   by_ts()       │  │ • transform_   │  │   Generator     │        │   │
+│  │  │ models_config.py│  │ rename_files.py │  │ postman_generator│        │   │
+│  │  │ • get_models_   │  │ • rename_files()│  │      .py         │        │   │
+│  │  │   config()      │  │ • extract_      │  │ • Postman        │        │   │
+│  │  │ • get_model_    │  │   model_info()  │  │   Collection     │        │   │
+│  │  │   by_ts()       │  │ • transform_    │  │   Generator      │        │   │
 │  │  └─────────┬───────┘  │   headers()     │  └─────────────────┘        │   │
 │  │            │          └─────────────────┘                              │   │
-│  │            │                                                           │   │
-│  │            ▼                                                           │   │
+│  │            ▼                                                            │   │
 │  │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐        │   │
-│  │  │ dynamic_models  │  │ excel_report    │  │ report_generate │        │   │
-│  │  │      .py        │  │ _generator.py   │  │      .py        │        │   │
-│  │  │                 │  │                 │  │                 │        │   │
-│  │  │ • discover_ts_  │  │ • TimingTracker│  │ • generate_     │        │   │
-│  │  │   folders()     │  │ • ExcelReport  │  │   timing_report │        │   │
-│  │  │ • get_model_    │  │ • get_excel_   │  │ • create_       │        │   │
-│  │  │   by_ts_number()│  │   reporter()    │  │   reporter()    │        │   │
-│  │  │ • normalize_ts_ │  │                 │  │                 │        │   │
-│  │  │   number()      │  │                 │  │                 │        │   │
+│  │  │ dynamic_models  │  │ report_generate │  │ refdb_change.py │        │   │
+│  │  │      .py        │  │      .py        │  │                 │        │   │
+│  │  │ • discover_ts_  │  │ • TimingTracker │  │ • load_default_  │        │   │
+│  │  │   folders()     │  │ • ExcelReport   │  │   values()       │        │   │
+│  │  │ • get_model_    │  │ • get_excel_    │  │ • process_      │        │   │
+│  │  │   by_ts_number()│  │   reporter()    │  │   directory()    │        │   │
+│  │  │ • normalize_ts_ │  │ • generate_     │  │ • is_refdb_      │        │   │
+│  │  │   number()      │  │   timing_report │  │   model_enabled()│        │   │
 │  │  └─────────────────┘  └─────────────────┘  └─────────────────┘        │   │
 │  └─────────────────────────────────────────────────────────────────────────┘   │
 │                                                                                 │
@@ -156,34 +154,36 @@
 ## Directory Structure
 
 ```
-renaming_postman_collection/
-├── 📁 WGS_CSBD/                         # Source TS folders
-│   ├── TS_01_Covid_WGS_CSBD_*/sur/regression/
-│   ├── TS_02_Laterality_*/sur/regression/
-│   ├── TS_03_Revenue_*/sur/regression/
+renaming_files/                           # Project root
+├── 📁 WGS_CSBD/                         # Source TS folders (and WGS_KERNAL, GBDF_*)
+│   ├── TS_*_*/sur/regression/ | smoke/
 │   └── ... (other TS folders)
 │
 ├── 📁 renaming_jsons/                   # Processed files
-│   ├── TS_01_Covid_WGS_CSBD_*/dis/regression/
-│   ├── TS_02_Laterality_*/dis/regression/
-│   ├── TS_03_Revenue_*/dis/regression/
+│   ├── TS_*_*/dis/regression/ | smoke/
 │   └── ... (renamed JSON files)
 │
-├── 📁 postman_collections/              # Generated collections
-│   ├── TS_01_Covid_Collection/
-│   ├── TS_02_Laterality_Collection/
-│   ├── TS_03_Revenue_Collection/
-│   └── ... (Postman JSON files)
+├── 📁 postman_collections/               # Generated collections
+│   └── ... (Postman JSON files per TS)
 │
-├── 🐍 main_processor.py                 # Main orchestrator
-├── 🐍 rename_files.py                  # File renaming module
-├── 🐍 postman_cli.py                    # CLI interface
+├── 📁 reports/                           # Timing/Excel reports (optional)
+│   └── collection_reports/
+│
+├── 📁 Docs/                              # Documentation
+│
+├── 🐍 main_processor.py                  # Main orchestrator (CLI, batch, --refdb)
+├── 🐍 rename_files.py                   # File renaming module
+├── 🐍 postman_cli.py                     # CLI for Postman operations
+├── 🐍 postman_generator.py               # Collection generator
 ├── 🐍 models_config.py                  # Configuration manager
-├── 🐍 dynamic_models.py                 # Auto-discovery engine
-├── 🐍 postman_generator.py              # Collection generator
-├── 🐍 excel_report_generator.py         # Excel report generation
-├── 🐍 report_generate.py                # Timing report generation
-└── 📄 requirements.txt                  # Dependencies
+├── 🐍 dynamic_models.py                  # Auto-discovery engine
+├── 🐍 report_generate.py                # Timing + Excel report generation
+├── 🐍 refdb_change.py                    # RefDB value replacement (--refdb)
+├── 🐍 auto_edit_processor.py            # edits_list.xlsx → models_config
+├── 📄 refdb_values.json                  # RefDB replacement values
+├── 📄 edits_list.xlsx                    # Edit list for config automation
+├── 📄 .env / .env.example                # ENABLE_* flags, paths
+└── 📄 requirements.txt                   # Dependencies
 ```
 
 ## Command Usage Examples
@@ -199,8 +199,10 @@ renaming_postman_collection/
 │  python main_processor.py --gbdf_mcr --GBDTS47      # Process TS47 GBDF MCR   │
 │  python main_processor.py --gbdf_grs --TS139        # Process TS139 GBDF GRS  │
 │  python main_processor.py --wgs_nyk --NYKTS130       # Process TS130 WGS_NYK   │
-│  python main_processor.py --wgs_csbd --all         # Process all WGS_CSBD    │
+│  python main_processor.py --wgs_csbd --all          # Process all WGS_CSBD    │
 │  python main_processor.py --list                    # List available models   │
+│  python main_processor.py --wgs_csbd --CSBDTS46 --refdb  # RefDB value replace │
+│  python main_processor.py --wgs_nyk --NYKTS123 --refdb   # RefDB (WGS_NYK)    │
 │                                                                                 │
 │  # Postman CLI Commands                                                         │
 │  python postman_cli.py generate --collection-name "TestCollection"              │
@@ -212,6 +214,10 @@ renaming_postman_collection/
 │  # Standalone Generator                                                         │
 │  python postman_generator.py --source-dir "renaming_jsons"                     │
 │  python postman_generator.py --directory "TS_01_*" --collection-name "Test"    │
+│                                                                                 │
+│  # Support / Config Automation                                                  │
+│  python auto_edit_processor.py              # Update config from edits_list   │
+│  python refdb_change.py --help              # Standalone RefDB (see module)   │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -260,8 +266,13 @@ renaming_postman_collection/
 │  4. Generation Phase                                                            │
 │     postman_generator.py → Create requests → Generate collection → Save JSON   │
 │                                                                                 │
-│  5. Output Phase                                                                │
-│     Ready-to-import Postman collections in postman_collections/ folder         │
+│  5. (Optional) RefDB Phase                                                      │
+│     When --refdb: refdb_change.py → Replace HCID, NPI, PAT_* etc. in JSONs     │
+│     Uses refdb_values.json; enabled per model via .env (ENABLE_REFDB_*)        │
+│                                                                                 │
+│  6. Output Phase                                                                │
+│     Ready-to-import Postman collections in postman_collections/ folder          │
+│     Reports in reports/collection_reports/ when report generation enabled       │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```

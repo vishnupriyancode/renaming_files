@@ -252,6 +252,28 @@ def _ts_numbers_match(ts1, ts2) -> bool:
     return n1 == n2 and n1 is not None
 
 
+def _normalize_eob_code(code: Optional[str]) -> str:
+    """
+    Normalize EOB code for matching so 'v05' and '00W05' compare equal.
+    Canonical form: 00Wnn (2-digit). Returns original if not v/00W pattern.
+    """
+    if not code or not str(code).strip():
+        return ""
+    s = str(code).strip()
+    m = re.match(r"v(\d+)$", s, re.IGNORECASE)
+    if m:
+        return "00W" + m.group(1).zfill(2)
+    m = re.match(r"00W(\d+)$", s, re.IGNORECASE)
+    if m:
+        return "00W" + m.group(1).zfill(2)
+    return s
+
+
+def _eob_codes_match(code1: Optional[str], code2: Optional[str]) -> bool:
+    """Compare two EOB codes (handles v05 vs 00W05)."""
+    return _normalize_eob_code(code1) == _normalize_eob_code(code2)
+
+
 def _get_used_ts_numbers(model_config: List[Dict]) -> set:
     """
     Collect used TS numbers from existing config entries.
@@ -339,14 +361,15 @@ def _get_test_suite_id_column(df: pd.DataFrame) -> Optional[str]:
 
 def _get_excel_ts_counts(df: pd.DataFrame, model_type: str) -> Counter:
     """
-    Count TS numbers in the Excel "Test Sutie ID" column for a model type.
+    Count TS numbers in the Excel Test Suite ID column for a model type.
     """
     counts: Counter = Counter()
-    if "Test Sutie ID" not in df.columns:
+    ts_id_col = _get_test_suite_id_column(df)
+    if not ts_id_col:
         return counts
     prefix = _get_model_ts_prefix(model_type)
     pattern = re.compile(rf"{re.escape(prefix)}\s*(\d+)", re.IGNORECASE)
-    for value in df["Test Sutie ID"]:
+    for value in df[ts_id_col]:
         if pd.isna(value):
             continue
         match = pattern.search(str(value))
@@ -503,11 +526,10 @@ def check_command_exists(
     else:
         cmd_pattern = f"CSBDTS{ts_number}"
     
-    # Check in "Test Sutie ID" column (note: typo in original column name)
-    if "Test Sutie ID" in df.columns:
-        test_suite_ids = df["Test Sutie ID"].astype(str)
+    ts_id_col = _get_test_suite_id_column(df)
+    if ts_id_col:
+        test_suite_ids = df[ts_id_col].astype(str)
         return any(cmd_pattern in str(val) for val in test_suite_ids if pd.notna(val))
-    
     return False
 
 
@@ -635,7 +657,7 @@ def sync_config_from_excel(
         current_config = config_by_type.get(row_model_type, [])
         existing_entry = None
         for config in current_config:
-            if config.get("edit_id") == edit_id and config.get("code") == eob_code:
+            if config.get("edit_id") == edit_id and _eob_codes_match(config.get("code"), eob_code):
                 existing_entry = config
                 break
         
@@ -704,7 +726,7 @@ def update_cmd_status_from_config(
             edit_id = entry.get("edit_id")
             code = entry.get("code")
             if edit_id is not None and code is not None:
-                config_pairs[model_type].add((str(edit_id).strip(), str(code).strip()))
+                config_pairs[model_type].add((str(edit_id).strip(), _normalize_eob_code(str(code).strip())))
 
     excel_data = read_edits_list(excel_path)
     if not excel_data:
@@ -749,7 +771,7 @@ def update_cmd_status_from_config(
             if row_model_type not in config_pairs:
                 continue
             edit_id = str(parsed["edit_id"]).strip()
-            eob_code = str(parsed["eob_code"]).strip()
+            eob_code = _normalize_eob_code(str(parsed["eob_code"]).strip())
             if (edit_id, eob_code) in config_pairs[row_model_type]:
                 df.at[idx, "Cmd status"] = "Created"
                 updated_count += 1
@@ -797,6 +819,10 @@ def process_edits_from_excel(
     if not edit_column:
         print("[ERROR] Could not find the edit details column in sheet")
         return [], [], []
+
+    ts_id_column = _get_test_suite_id_column(df)
+    if not ts_id_column:
+        print("[WARNING] Could not find 'Test Sutie ID' or 'Test Suite ID' column; sync from Excel and TS assignment may be limited")
 
     # Read current config
     from models_config import STATIC_MODELS_CONFIG
@@ -864,10 +890,10 @@ def process_edits_from_excel(
             print(f"  [WARNING] EOB code not found in edit string - using placeholder '{eob_code}'")
             print(f"  [INFO] Please verify and update the EOB code in models_config.py if needed")
         
-        # Check if edit_id already exists in config (with same EOB code)
+        # Check if edit_id already exists in config (with same EOB code; v05 and 00W05 match)
         existing_entry = None
         for config in current_config:
-            if config.get("edit_id") == edit_id and config.get("code") == eob_code:
+            if config.get("edit_id") == edit_id and _eob_codes_match(config.get("code"), eob_code):
                 existing_entry = config
                 break
         
@@ -875,7 +901,7 @@ def process_edits_from_excel(
             existing_ts = existing_entry.get("ts_number")
             ts_to_use = existing_ts
             # Sync from Excel: if Excel has Test Suite ID and it differs, update config to match
-            test_suite_id = row.get("Test Sutie ID", "")
+            test_suite_id = row.get(ts_id_column, "") if ts_id_column else ""
             if pd.notna(test_suite_id) and str(test_suite_id).strip():
                 ts_match = re.search(r'(\d+)', str(test_suite_id))
                 if ts_match:
@@ -904,7 +930,7 @@ def process_edits_from_excel(
         # Check if edit_id exists with different EOB code (warn but allow)
         existing_with_different_code = None
         for config in current_config:
-            if config.get("edit_id") == edit_id and config.get("code") != eob_code:
+            if config.get("edit_id") == edit_id and not _eob_codes_match(config.get("code"), eob_code):
                 existing_with_different_code = config
                 print(f"  [WARNING] Edit ID {edit_id} already exists with different EOB code: {config.get('code')} (TS{config.get('ts_number')})")
                 break
@@ -916,7 +942,7 @@ def process_edits_from_excel(
         ts_number = get_next_ts_number(current_config, reserved_ts)
         
         # Check if Test Suite ID is already set in Excel
-        test_suite_id = row.get("Test Sutie ID", "")
+        test_suite_id = row.get(ts_id_column, "") if ts_id_column else ""
         if pd.notna(test_suite_id) and str(test_suite_id).strip():
             print(f"  [INFO] Test Suite ID already set: {test_suite_id}")
             # Extract TS number from existing Test Suite ID if possible
@@ -928,7 +954,7 @@ def process_edits_from_excel(
                 for config in current_config:
                     if (_ts_numbers_match(config.get("ts_number"), existing_ts) and 
                         config.get("edit_id") == edit_id and 
-                        config.get("code") == eob_code):
+                        _eob_codes_match(config.get("code"), eob_code)):
                         existing_config = config
                         break
                 
@@ -1005,16 +1031,18 @@ def _apply_config_updates(config_updates: List[Dict], config_path: Optional[str]
             content = f.read()
         original_content = content
         for upd in config_updates:
+            # Preserve existing code format in file (e.g. keep "v05" not switch to "00W05")
+            code_for_block = upd["old_config"].get("code", upd["eob_code"])
             new_config = generate_config_entry(
                 ts_number=upd["new_ts_number"],
                 edit_id=upd["edit_id"],
-                eob_code=upd["eob_code"],
+                eob_code=code_for_block,
                 model_name_with_lob=upd["model_name_with_lob"],
                 model_type=upd["model_type"],
             )
-            # Find and replace the block - match edit_id and code
+            # Find and replace the block - match edit_id and code (use code from file so v05/00W05 both find block)
             edit_id_esc = re.escape(upd["edit_id"])
-            code_esc = re.escape(upd["eob_code"])
+            code_esc = re.escape(upd["old_config"].get("code", upd["eob_code"]))
             # Pattern: block from { to }, with our edit_id and code (capture trailing comma if any)
             old_block_pattern = (
                 r'(\s+\{\s*\n'
@@ -1073,7 +1101,8 @@ def _apply_config_updates(config_updates: List[Dict], config_path: Optional[str]
 
 def update_models_config(
     new_configs: List[Dict],
-    model_type: Optional[str] = None
+    model_type: Optional[str] = None,
+    config_path: Optional[str] = None
 ) -> bool:
     """
     Update models_config.py with new config entries.
@@ -1081,6 +1110,7 @@ def update_models_config(
     Args:
         new_configs: List of config dictionaries
         model_type: Model type key (optional if per-item model_type is present)
+        config_path: Path to models_config.py (default: script dir / models_config.py)
         
     Returns:
         True if successful, False otherwise
@@ -1088,6 +1118,9 @@ def update_models_config(
     if not new_configs:
         print("[INFO] No new configs to add")
         return True
+
+    if config_path is None:
+        config_path = str(Path(__file__).resolve().parent / "models_config.py")
 
     # Group by model_type if provided per item
     has_item_model_type = any("model_type" in item for item in new_configs)
@@ -1098,23 +1131,25 @@ def update_models_config(
             grouped_configs.setdefault(item_model_type, []).append(item)
         
         for grouped_model_type, grouped_items in grouped_configs.items():
-            if not _update_models_config_for_type(grouped_items, grouped_model_type):
+            if not _update_models_config_for_type(grouped_items, grouped_model_type, config_path):
                 return False
         return True
 
-    return _update_models_config_for_type(new_configs, model_type or "wgs_csbd")
+    return _update_models_config_for_type(new_configs, model_type or "wgs_csbd", config_path)
 
 
 def _update_models_config_for_type(
     new_configs: List[Dict],
-    model_type: str
+    model_type: str,
+    config_path: Optional[str] = None
 ) -> bool:
     """
     Update models_config.py with new config entries for a single model type.
     """
+    if config_path is None:
+        config_path = str(Path(__file__).resolve().parent / "models_config.py")
     try:
         # Read current models_config.py
-        config_path = "models_config.py"
         with open(config_path, 'r', encoding='utf-8') as f:
             lines = f.readlines()
         
@@ -1574,7 +1609,7 @@ def main():
         _apply_config_updates(config_updates, config_path=config_path)
     
     # Update models_config.py with new entries
-    update_models_config(generated_configs, model_type)
+    update_models_config(generated_configs, model_type, config_path=config_path)
     
     # Keep STATIC_MODELS_CONFIG in ascending order by ts_number for all models
     if config_updates or generated_configs:

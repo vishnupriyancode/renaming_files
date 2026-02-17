@@ -40,6 +40,17 @@ load_dotenv(dotenv_path=env_path)
 # Check .env file for ENABLE_REPORT_GENERATION setting (default: True)
 # Set to 'false', 'False', '0', or comment out the line to disable
 REPORT_GENERATION_ENABLED = os.getenv('ENABLE_REPORT_GENERATION', 'true').lower() in ('true', '1', 'yes', 'on')
+
+# Postman generation per TS collection - from .env (default: True for each)
+# Set to 'false' to disable Postman generation for that collection type
+def _postman_enabled_for_collection(collection_key: str) -> bool:
+    env_key = f"ENABLE_POSTMAN_{collection_key.upper()}"
+    return os.getenv(env_key, 'true').lower() in ('true', '1', 'yes', 'on')
+
+POSTMAN_ENABLED_WGS_CSBD = _postman_enabled_for_collection("WGS_CSBD")
+POSTMAN_ENABLED_GBDF_MCR = _postman_enabled_for_collection("GBDF_MCR")
+POSTMAN_ENABLED_GBDF_GRS = _postman_enabled_for_collection("GBDF_GRS")
+POSTMAN_ENABLED_WGS_KERNAL = _postman_enabled_for_collection("WGS_KERNAL")
 try:
     from report_generate import (
         extract_model_name_from_source_dir,
@@ -65,7 +76,7 @@ except ImportError:
     def create_excel_reporter_for_batch_processing(model_type=None):
         return get_excel_reporter()
 
-from refdb_change import load_default_values, process_directory
+from refdb_change import load_default_values, process_directory, is_refdb_model_enabled
 from pathlib import Path
 import re
 
@@ -283,12 +294,7 @@ Examples:
   # Generate timing reports for specific models
   python main_processor.py --wgs_csbd --CSBDTS01 --list    # Generate JSON renaming timing report for TS01
   
-  # Skip Postman generation
-  python main_processor.py --wgs_csbd --CSBDTS07 --no-postman
-  python main_processor.py --gbdf_mcr --GBDTS47 --no-postman
-  python main_processor.py --gbdf_mcr --GBDTS138 --no-postman
-  python main_processor.py --gbdf_mcr --GBDTS144 --no-postman
-  python main_processor.py --gbdf_grs --GBDTS139 --no-postman
+  # Postman generation: controlled by .env (ENABLE_POSTMAN_WGS_CSBD, ENABLE_POSTMAN_GBDF_MCR, etc.)
   
   # Process with custom parameters
   python main_processor.py --edit-id rvn001 --code 00W5 --source-dir custom/path
@@ -325,8 +331,6 @@ Examples:
                        help="Process all discovered models")
     parser.add_argument("--list", action="store_true", 
                        help="List all available TS models")
-    parser.add_argument("--no-postman", action="store_true", 
-                       help="Skip Postman collection generation")
     parser.add_argument("--no-report", action="store_true",
                        help="Disable Excel report generation (skip timing reports)")
     parser.add_argument("--refdb", action="store_true",
@@ -443,7 +447,7 @@ Examples:
     # Load model configurations with dynamic discovery
     try:
         from models_config import get_models_config, get_model_by_ts
-        models_config = get_models_config(use_dynamic=True, use_wgs_csbd_destination=args.wgs_csbd, use_gbdf_mcr=args.gbdf_mcr, use_gbdf_grs=args.gbdf_grs, use_wgs_nyk=args.wgs_nyk)
+        models_config = get_models_config(use_dynamic=True, use_wgs_csbd_destination=args.wgs_csbd, use_gbd_mcr=args.gbdf_mcr, use_gbd_grs=args.gbdf_grs, use_wgs_nyk=args.wgs_nyk)
         print("Configuration loaded with dynamic discovery")
     except ImportError as e:
         print(f"Error: {e}")
@@ -487,7 +491,7 @@ Examples:
                 code=args.code,
                 source_dir=args.source_dir,
                 dest_dir=args.dest_dir,
-                generate_postman=not args.no_postman,
+                generate_postman=True,
                 postman_collection_name=args.collection_name
             )
             
@@ -704,9 +708,7 @@ Examples:
     # STAGE 4.6: MODEL PROCESSING EXECUTION
     # ====================================
     # Process selected models
-    generate_postman = not args.no_postman
-    
-    # Determine model type for Excel reporting
+    # Determine model type for Excel reporting and Postman enable from .env
     model_type = None
     if args.wgs_csbd:
         model_type = "WGS_CSBD"
@@ -716,7 +718,23 @@ Examples:
         model_type = "GBDF_MCR"
     elif args.gbdf_grs:
         model_type = "GBDF_GRS"
-    
+
+    # Postman: controlled only by .env per-collection flag (true/false)
+    postman_enabled_for_type = True
+    if model_type == "WGS_CSBD":
+        postman_enabled_for_type = POSTMAN_ENABLED_WGS_CSBD
+    elif model_type == "WGS_NYK":
+        postman_enabled_for_type = POSTMAN_ENABLED_WGS_KERNAL
+    elif model_type == "GBDF_MCR":
+        postman_enabled_for_type = POSTMAN_ENABLED_GBDF_MCR
+    elif model_type == "GBDF_GRS":
+        postman_enabled_for_type = POSTMAN_ENABLED_GBDF_GRS
+    generate_postman = postman_enabled_for_type
+    if not postman_enabled_for_type and model_type:
+        env_key = {"WGS_CSBD": "ENABLE_POSTMAN_WGS_CSBD", "WGS_NYK": "ENABLE_POSTMAN_WGS_KERNAL",
+                   "GBDF_MCR": "ENABLE_POSTMAN_GBDF_MCR", "GBDF_GRS": "ENABLE_POSTMAN_GBDF_GRS"}.get(model_type)
+        print(f"[INFO] Postman generation is DISABLED for {model_type} (from .env: {env_key}=false)")
+
     # Check if report generation is disabled via command line or .env file
     enable_reporting = REPORT_GENERATION_ENABLED and not args.no_report
     
@@ -775,8 +793,14 @@ Examples:
                         refdb_model = "wgs_csbd"
                     elif model_type == "WGS_NYK":
                         refdb_model = "wgs_kernal"
+                    elif model_type == "GBDF_MCR":
+                        refdb_model = "gbdf_mcr"
+                    elif model_type == "GBDF_GRS":
+                        refdb_model = "gbdf_grs"
                     
-                    if refdb_model:
+                    if refdb_model and not is_refdb_model_enabled(refdb_model):
+                        print(f"INFO Refdb is disabled for {refdb_model} (check ENABLE_REFDB_* in .env). Skipping refdb replacement.")
+                    elif refdb_model:
                         # Load refdb values from refdb_values.json
                         refdb_replacements = load_default_values(refdb_model)
                         
@@ -798,7 +822,7 @@ Examples:
                             print(f"WARNING Refdb: Destination directory not found: {dest_dir}")
                     else:
                         print(f"WARNING Refdb: Model type '{model_type}' is not a refdb-supported model")
-                        print(f"   Supported refdb models: WGS_CSBD (CSBDTS_46, CSBDTS_47, CSBDTS_59, CSBDTS_75), WGS_NYK (NYKTS_123, NYKTS_149)")
+                        print(f"   Supported refdb models: WGS_CSBD (CSBDTS_46, CSBDTS_47, CSBDTS_59, CSBDTS_75), WGS_NYK (NYKTS_123, NYKTS_149), GBDF_MCR (GBDTS_XX), GBDF_GRS (GBDTS_XX)")
                 except Exception as refdb_error:
                     print(f"WARNING Refdb processing failed: {refdb_error}")
                     # Continue with normal processing even if refdb fails

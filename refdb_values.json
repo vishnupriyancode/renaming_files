@@ -1,20 +1,23 @@
 {
-  "wgs_csbd": {
-    "HCID": "431A23555",
-    "PAT_BRTH_DT": "11/11/2001",
-    "PAT_FRST_NME": "kumar",
-    "PAT_LAST_NM": "Vijay",
-    "PROV_TAX_ID": "611216322",
-    "BILLG_NPI": "1275520122",
-    "NAT_EA2_RNDR_NPI": "1639166062"
+  "wgs_csbd":
+  {
+  "HCID":"431A23555",
+  "PAT_BRTH_DT":"11/11/2001",
+  "PAT_FRST_NME":"kumar",
+  "PAT_LAST_NM":"Vijay",
+  "PROV_TAX_ID":"611216322",
+  "BILLG_NPI":"1275520122",
+  "NAT_EA2_RNDR_NPI":"1639166062"
   },
-  "wgs_kernal": {
-    "HCID": "431A26666",
-    "PAT_BRTH_DT": "11/11/2001",
-    "PAT_FRST_NME": "Raju",
-    "PAT_LAST_NM": "Raji",
-    "PROV_TAX_ID": "611216311",
-    "BILLG_NPI": "1275520111",
-    "NAT_EA2_RNDR_NPI": "1639166011"
+  "wgs_kernal":
+  {
+    "HCID":"431A26666",
+    "PAT_BRTH_DT":"11/11/2001",
+    "PAT_FRST_NME":"Raju",
+    "PAT_LAST_NM":"Raji",
+    "PROV_TAX_ID":"611216311",
+    "BILLG_NPI":"1275520111",
+    "NAT_EA2_RNDR_NPI":"1639166011"
   }
 }
+

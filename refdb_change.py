@@ -6,13 +6,8 @@ This module provides refdb value replacement functionality for refdb-specific mo
 It is primarily used by main_processor.py when the --refdb flag is specified.
 
 This script replaces the following variables in JSON files:
-- HCID
-- PAT_BRTH_DT
-- PAT_FRST_NME
-- PAT_LAST_NM
-- PROV_TAX_ID
-- BILLG_NPI
-- NAT_EA2_RNDR_NPI
+- HCID, PAT_BRTH_DT, PAT_FRST_NME, PAT_LAST_NM, BILLG_NPI, NAT_EA2_RNDR_NPI (all models)
+- PROV_TAX_ID (wgs_csbd, wgs_kernal only)
 
 Note: This module is integrated into main_processor.py. Use the following command:
   python main_processor.py --wgs_csbd --CSBDTS46 --refdb
@@ -22,7 +17,7 @@ Currently supported refdb models:
 - wgs_csbd: CSBDTS_46, CSBDTS_47, CSBDTS_59, CSBDTS_75
 - wgs_kernal: NYKTS_123, NYKTS_149
 
-Path patterns: CSBDTS_XX_* (for wgs_csbd) or NYKTS_XX_* (for wgs_kernal)
+Path patterns: CSBDTS_XX_* (wgs_csbd), NYKTS_XX_* (wgs_kernal)
 Values are loaded from refdb_values.json based on the specified model.
 """
 
@@ -33,6 +28,14 @@ import argparse
 import re
 from pathlib import Path
 from typing import Dict, Optional, List
+
+# Load .env so ENABLE_REFDB_* are available (standalone and when used from main_processor)
+try:
+    from dotenv import load_dotenv
+    _env_path = Path(__file__).parent / '.env'
+    load_dotenv(dotenv_path=_env_path)
+except ImportError:
+    pass
 
 # Fix Windows encoding issues for Unicode characters in print statements
 if sys.platform == 'win32':
@@ -50,11 +53,35 @@ if sys.platform == 'win32':
 
 # List of refdb-specific TS numbers that support refdb value replacement
 # Only files from these TS numbers will be processed by this script
+# Enable/disable per model via .env: ENABLE_REFDB_WGS_CSBD, ENABLE_REFDB_WGS_KERNAL (default: true)
 # Example refdb models: TS_46 (Multiple E&M Same day), TS_47 (Multiple Billing of Obstetrical Services)
 # To add more refdb models, add their TS numbers to the appropriate list below
 REFDB_TS_NUMBERS = {
     "wgs_csbd": ["46", "47", "59", "75"],  # TS_46: Multiple E&M Same day, TS_47: Multiple Billing of Obstetrical Services, TS_59: Antepartum Services, TS_75: Preventative
-    "wgs_kernal": ["123", "149"]  # NYKTS_123: Observation Services, NYKTS_149: Preventative Medicine and Screening IPREP-362
+    "wgs_kernal": ["123", "149"],  # NYKTS_123: Observation Services, NYKTS_149: Preventative Medicine and Screening IPREP-362
+}
+
+
+def _is_refdb_model_enabled(model: str) -> bool:
+    """Return True if refdb processing is enabled for this model (from .env)."""
+    env_keys = {
+        "wgs_csbd": "ENABLE_REFDB_WGS_CSBD",
+        "wgs_kernal": "ENABLE_REFDB_WGS_KERNAL",
+    }
+    key = env_keys.get(model)
+    if not key:
+        return True
+    return os.getenv(key, "true").lower() in ("true", "1", "yes", "on")
+
+
+def is_refdb_model_enabled(model: str) -> bool:
+    """Public helper: return True if refdb is enabled for this model. Used by main_processor."""
+    return _is_refdb_model_enabled(model)
+
+
+# Effective refdb TS numbers: only models enabled in .env
+REFDB_TS_NUMBERS_EFFECTIVE = {
+    k: v for k, v in REFDB_TS_NUMBERS.items() if _is_refdb_model_enabled(k)
 }
 
 
@@ -64,7 +91,7 @@ def load_default_values(model: str, config_file: Optional[Path] = None) -> Dict[
     Creates the file with a template if it doesn't exist.
     
     Args:
-        model: Model name (must be 'wgs_csbd' or 'wgs_kernal')
+        model: Model name ('wgs_csbd' or 'wgs_kernal')
         config_file: Path to the JSON config file. If None, looks for refdb_values.json
                      in the same directory as the script.
         
@@ -85,21 +112,16 @@ def load_default_values(model: str, config_file: Optional[Path] = None) -> Dict[
         script_dir = Path(__file__).parent
         config_file = script_dir / "refdb_values.json"
     
-    # Template structure for the config file
-    template_values = {
-        "HCID": "",
-        "PAT_BRTH_DT": "",
-        "PAT_FRST_NME": "",
-        "PAT_LAST_NM": "",
-        "PROV_TAX_ID": "",
-        "BILLG_NPI": "",
-        "NAT_EA2_RNDR_NPI": ""
+    # Required keys per model: WGS models use PROV_TAX_ID
+    required_keys_wgs = ["HCID", "PAT_BRTH_DT", "PAT_FRST_NME", "PAT_LAST_NM", "PROV_TAX_ID", "BILLG_NPI", "NAT_EA2_RNDR_NPI"]
+    required_keys_by_model = {
+        "wgs_csbd": required_keys_wgs,
+        "wgs_kernal": required_keys_wgs,
     }
-    
-    # Template structure with both models
+    template_wgs = {k: "" for k in required_keys_wgs}
     template_config = {
-        "wgs_csbd": template_values.copy(),
-        "wgs_kernal": template_values.copy()
+        "wgs_csbd": template_wgs.copy(),
+        "wgs_kernal": template_wgs.copy(),
     }
     
     # Create file with template if it doesn't exist
@@ -136,8 +158,9 @@ def load_default_values(model: str, config_file: Optional[Path] = None) -> Dict[
             print(f"Error: Model '{model}' in {config_file} must contain a JSON object.")
             sys.exit(1)
         
-        # Validate that all required keys exist
-        missing_keys = set(template_values.keys()) - set(values.keys())
+        # Validate that all required keys exist for this model
+        required_keys = required_keys_by_model[model]
+        missing_keys = set(required_keys) - set(values.keys())
         if missing_keys:
             print(f"Error: Missing required keys for model '{model}' in {config_file}: {', '.join(missing_keys)}")
             sys.exit(1)
@@ -269,9 +292,9 @@ def validate_refdb_model(file_path: Path, model: str) -> bool:
     if ts_number is None:
         return False
     
-    # Check if TS number is in the refdb list for this model
-    if model in REFDB_TS_NUMBERS:
-        return ts_number in REFDB_TS_NUMBERS[model]
+    # Check if TS number is in the refdb list for this model (only enabled models)
+    if model in REFDB_TS_NUMBERS_EFFECTIVE:
+        return ts_number in REFDB_TS_NUMBERS_EFFECTIVE[model]
     
     return False
 
@@ -298,7 +321,7 @@ def process_json_file(file_path: Path, replacements: Dict[str, str], backup: boo
     # Strict validation: only process refdb-specific models
     if not validate_refdb_model(file_path, model):
         ts_number = extract_ts_number_from_path(file_path, model)
-        refdb_models = REFDB_TS_NUMBERS.get(model, [])
+        refdb_models = REFDB_TS_NUMBERS_EFFECTIVE.get(model, [])
         if ts_number:
             if model == "wgs_csbd":
                 print(f"  ⚠ Skipping {file_path.name}: CSBDTS_{ts_number} is not a refdb-specific model")
@@ -383,7 +406,7 @@ def process_directory(directory: Path, replacements: Dict[str, str],
     print(f"\nFound {len(json_files)} JSON file(s) to process...")
     
     # Check if directory itself is a refdb model
-    refdb_models = REFDB_TS_NUMBERS.get(model, [])
+    refdb_models = REFDB_TS_NUMBERS_EFFECTIVE.get(model, [])
     is_refdb_dir = validate_refdb_model(directory, model)
     
     if not is_refdb_dir:
@@ -473,7 +496,7 @@ Note: This script ONLY processes refdb-specific models.
     parser.add_argument('--pat-brth-dt', type=str, dest='pat_brth_dt', help='New value for PAT_BRTH_DT')
     parser.add_argument('--pat-frst-nme', type=str, dest='pat_frst_nme', help='New value for PAT_FRST_NME')
     parser.add_argument('--pat-last-nm', type=str, dest='pat_last_nm', help='New value for PAT_LAST_NM')
-    parser.add_argument('--prov-tax-id', type=str, dest='prov_tax_id', help='New value for PROV_TAX_ID')
+    parser.add_argument('--prov-tax-id', type=str, dest='prov_tax_id', help='New value for PROV_TAX_ID (wgs_csbd, wgs_kernal)')
     parser.add_argument('--billg-npi', type=str, dest='billg_npi', help='New value for BILLG_NPI')
     parser.add_argument('--nat-ea2-rndr-npi', type=str, dest='nat_ea2_rndr_npi', 
                         help='New value for NAT_EA2_RNDR_NPI')
@@ -495,8 +518,8 @@ Note: This script ONLY processes refdb-specific models.
     config_path = Path(args.config) if args.config else None
     DEFAULT_VALUES = load_default_values(args.model, config_path)
     
-    # Display refdb model information
-    refdb_models = REFDB_TS_NUMBERS.get(args.model, [])
+    # Display refdb model information (only enabled models)
+    refdb_models = REFDB_TS_NUMBERS_EFFECTIVE.get(args.model, [])
     if refdb_models:
         print(f"\n{'='*60}")
         print(f"REFDB-SPECIFIC MODEL PROCESSING")
@@ -514,6 +537,7 @@ Note: This script ONLY processes refdb-specific models.
         print(f"WARNING: No refdb-specific models configured for '{args.model}'")
         print(f"{'='*60}")
         print("Please update REFDB_TS_NUMBERS in refdb_change.py to add refdb models.")
+        print("To enable a model, set ENABLE_REFDB_WGS_CSBD=true or ENABLE_REFDB_WGS_KERNAL=true in .env")
         print("Example: REFDB_TS_NUMBERS = {'wgs_csbd': ['46', '47'], ...}\n")
         response = input("Continue anyway? (y/N): ").strip().lower()
         if response != 'y':
@@ -523,7 +547,7 @@ Note: This script ONLY processes refdb-specific models.
     # Build replacements dictionary
     replacements = {}
     
-    # Map command-line arguments to replacement keys
+    # Map command-line arguments to replacement keys (PROV_TAX_ID for WGS)
     arg_mapping = {
         'hcid': 'HCID',
         'pat_brth_dt': 'PAT_BRTH_DT',

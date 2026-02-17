@@ -2,6 +2,25 @@
 
 A Python script for automatically renaming and organizing test case JSON files based on predefined naming conventions and suffix mappings, with integrated Postman collection generation for API testing.
 
+---
+
+## 👤 For Users
+
+**What this does:** Renames test-case JSON files and (optionally) generates Postman collections for API testing. Supports WGS_CSBD, WGS_NYK, GBDF MCR, and GBDF GRS model types.
+
+**Quick start:**
+1. **Install:** `pip install -r requirements.txt`
+2. **Run:** `python main_processor.py --wgs_csbd --CSBDTS01` or `python main_processor.py --wgs_nyk --NYKTS124`
+3. **Help:** `python main_processor.py --help` or `python main_processor.py --list` to see available models
+
+**Where to go next:**
+- [Getting Started (New Users)](#-getting-started-new-users) — setup and first run
+- [User Commands & Model Commands](#-user-commands--model-commands) — all CLI options and how to combine them
+- [Quick Start Commands](#-quick-start-commands-verified--ready-to-use) — copy-paste commands by model type
+- [Troubleshooting](#troubleshooting) — common issues and fixes
+
+---
+
 ## 🚀 Getting Started (New Users)
 
 1. **Install dependencies:** `pip install -r requirements.txt`
@@ -12,6 +31,7 @@ For full command reference, see [Quick Start Commands](#-quick-start-commands-ve
 
 ## 📑 Table of Contents
 
+- [For Users](#-for-users)
 - [Getting Started (New Users)](#-getting-started-new-users)
 - [Recent Updates & Fixes](#-recent-updates--fixes)
 - [Quick Start Commands](#-quick-start-commands-verified--ready-to-use)
@@ -92,7 +112,7 @@ python main_processor.py --wgs_nyk --NYKTS128   # Process TS128 model (Observati
 python main_processor.py --wgs_nyk --NYKTS129   # Process TS129 model (Observation Services WGS NYK) - edit ID: RULEOBSER00007
 python main_processor.py --wgs_nyk --NYKTS130   # Process TS130 model (Observation Services WGS NYK) - edit ID: RULEOBSER00008
 python main_processor.py --wgs_nyk --NYKTS132   # Process TS132 model (add_on without base WGS NYK) - edit ID: RULERADDON00001
-python main_processor.py --wgs_nyk --all     # Process all 12 WGS_NYK models
+python main_processor.py --wgs_nyk --all     # Process all 14 WGS_NYK models
 ```
 
 **✅ GBDF Model Command Format Update**
@@ -2419,7 +2439,7 @@ python main_processor.py --wgs_nyk --NYKTS129   # Observation Services WGS NYK C
 python main_processor.py --wgs_nyk --NYKTS130   # Observation Services WGS NYK Collection - edit ID: RULEOBSER00008
 python main_processor.py --wgs_nyk --NYKTS132   # add_on without base WGS NYK Collection - edit ID: RULERADDON00001
 
-# Process all models at once (44 WGS_CSBD, 60 GBDF MCR, 52 GBDF GRS, 12 WGS_NYK)
+# Process all models at once (46 WGS_CSBD, 62 GBDF MCR, 54 GBDF GRS, 14 WGS_NYK)
 python main_processor.py --wgs_csbd --all     # All WGS_CSBD models
 python main_processor.py --gbdf_mcr --all     # All GBDF MCR models
 python main_processor.py --gbdf_grs --all     # All GBDF GRS models

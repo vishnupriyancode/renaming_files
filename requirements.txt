@@ -1,9 +1,6 @@
 # Postman Collection Renaming Project - Requirements
 # Python dependencies for automated file renaming and Postman collection generation
 
-# Core dependencies for document generation
-python-docx>=1.2.0
-
 # Excel report generation dependencies
 pandas>=1.5.0
 openpyxl>=3.0.0

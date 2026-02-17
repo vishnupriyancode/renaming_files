@@ -101,7 +101,6 @@ python main_processor.py --wgs_csbd --CSBDTS49 --no-postman  # Skip Postman gen
 
 ### External Dependencies
 - `pandas`, `openpyxl` - Excel report generation
-- `python-docx` - Optional, not actively used
 - Standard library: `os`, `sys`, `json`, `re`, `shutil`, `argparse`, `glob`, `uuid`, `pathlib`, `datetime`
 
 ### Cross-Module Communication
