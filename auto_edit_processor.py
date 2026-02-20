@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
+from openpyxl import load_workbook
 
 
 # Model mapping from Excel sheet names to config keys
@@ -357,6 +358,83 @@ def _get_test_suite_id_column(df: pd.DataFrame) -> Optional[str]:
         if name in df.columns:
             return name
     return None
+
+
+def _get_ws_header_row_and_columns(ws) -> Tuple[int, Dict[str, int]]:
+    """
+    Find the header row and build column name -> 1-based column index for a worksheet.
+    Scans first 5 rows for 'Cmd status' to detect header row; then builds map from that row.
+    Returns (header_row_1based, col_name_to_col_idx).
+    """
+    header_row = 1
+    for r in range(1, min(6, (ws.max_row or 1) + 1)):
+        for c in range(1, (ws.max_column or 1) + 1):
+            val = ws.cell(row=r, column=c).value
+            if val is not None and "Cmd status" in str(val):
+                header_row = r
+                break
+        else:
+            continue
+        break
+    col_name_to_idx: Dict[str, int] = {}
+    for c in range(1, (ws.max_column or 1) + 1):
+        val = ws.cell(row=header_row, column=c).value
+        if val is not None and str(val).strip():
+            col_name_to_idx[str(val).strip()] = c
+    return header_row, col_name_to_idx
+
+
+def _excel_patch_cells_only(
+    excel_path: str,
+    sheet_name: str,
+    updates: List[Dict],
+    *,
+    data_start_row_offset: int = 1,
+) -> bool:
+    """
+    Update only specific cells in the Excel file using openpyxl.
+    Does not rewrite entire sheets, so formulas in other cells are preserved.
+    Applies to any sheet (e.g. WGS_CSBD/CSBD, KERNAL, GBDF/GBD, GBDF_MCR, GBDF_GRS).
+    updates: list of dicts with keys row_index (0-based), and optional
+      cmd_status, test_suite_id (only written when cell is empty if we have value).
+    data_start_row_offset: 1 if header is in row 1 (data in 2,3,...), 2 if header in row 2.
+    """
+    if not updates:
+        return True
+    try:
+        wb = load_workbook(excel_path, data_only=False)
+        sheet_key = None
+        for name in wb.sheetnames:
+            if name == sheet_name:
+                sheet_key = name
+                break
+        if not sheet_key:
+            print(f"[ERROR] Sheet '{sheet_name}' not found in workbook")
+            return False
+        ws = wb[sheet_key]
+        header_row, col_map = _get_ws_header_row_and_columns(ws)
+        data_first_row = header_row + data_start_row_offset
+        cmd_col = col_map.get("Cmd status")
+        ts_col = None
+        for key in ("Test Sutie ID", "Test Suite ID"):
+            if key in col_map:
+                ts_col = col_map[key]
+                break
+        for item in updates:
+            row_idx = item["row_index"]
+            excel_row = data_first_row + row_idx
+            if cmd_col is not None and item.get("cmd_status") is not None:
+                ws.cell(row=excel_row, column=cmd_col, value=item["cmd_status"])
+            if ts_col is not None and item.get("test_suite_id") is not None:
+                current = ws.cell(row=excel_row, column=ts_col)
+                is_empty = current.value is None or not str(current.value).strip()
+                if is_empty:
+                    ws.cell(row=excel_row, column=ts_col, value=item["test_suite_id"])
+        wb.save(excel_path)
+        return True
+    except Exception as e:
+        print(f"[ERROR] Failed to patch Excel file: {e}")
+        return False
 
 
 def _get_excel_ts_counts(df: pd.DataFrame, model_type: str) -> Counter:
@@ -742,17 +820,15 @@ def update_cmd_status_from_config(
         return True
 
     updated_count = 0
+    updates_by_sheet: Dict[str, List[Dict]] = {}
     for sheet_name in sheets_to_process:
         df, edit_column = _get_sheet_df_with_edit_column(excel_path, excel_data, sheet_name, sheet_name)
         if not edit_column:
             continue
-        excel_data[sheet_name] = df  # use df (may be header=1 version) for later write
         if "Cmd status" not in df.columns:
-            df["Cmd status"] = ""
-        else:
-            df["Cmd status"] = df["Cmd status"].fillna("").astype(str)
-
+            continue
         base_model_type = MODEL_SHEET_MAPPING.get(sheet_name, "gbdf_mcr")
+        sheet_updates: List[Dict] = []
         for idx, row in df.iterrows():
             edit_string = row.get(edit_column)
             if pd.isna(edit_string) or not str(edit_string).strip():
@@ -773,18 +849,19 @@ def update_cmd_status_from_config(
             edit_id = str(parsed["edit_id"]).strip()
             eob_code = _normalize_eob_code(str(parsed["eob_code"]).strip())
             if (edit_id, eob_code) in config_pairs[row_model_type]:
-                df.at[idx, "Cmd status"] = "Created"
+                sheet_updates.append({"row_index": idx, "cmd_status": "Created", "test_suite_id": None})
                 updated_count += 1
+        if sheet_updates:
+            updates_by_sheet[sheet_name] = sheet_updates
 
     if dry_run:
         print(f"[DRY-RUN] Would set Cmd status = 'Created' for {updated_count} row(s)")
         return True
 
-    with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
-        for sheet, data in excel_data.items():
-            data.to_excel(writer, sheet_name=sheet, index=False)
+    for sn, updates in updates_by_sheet.items():
+        _excel_patch_cells_only(excel_path, sn, updates, data_start_row_offset=1)
 
-    print(f"[SUCCESS] Updated Cmd status to 'Created' for {updated_count} row(s) in {excel_path}")
+    print(f"[SUCCESS] Updated Cmd status to 'Created' for {updated_count} row(s) in {excel_path} (formulas preserved)")
     return True
 
 
@@ -1241,84 +1318,54 @@ def update_excel_file(
     new_configs: List[Dict]
 ) -> bool:
     """
-    Update Excel file with command information.
-    
-    Args:
-        excel_path: Path to Excel file
-        sheet_name: Sheet name
-        new_configs: List of config dictionaries with row indices
-        
-    Returns:
-        True if successful, False otherwise
+    Update Excel file with command information by patching only Cmd status and
+    Test Suite ID cells. Does not overwrite entire sheets, so formulas
+    (e.g. in generate_command or =B2) are preserved.
+    Applies to all sheets including WGS_CSBD (CSBD), KERNAL, and GBDF (GBD).
     """
     if not new_configs:
         return True
-    
-    try:
-        # Read Excel file
-        excel_data = pd.read_excel(excel_path, sheet_name=None)
-        
-        if sheet_name not in excel_data:
-            print(f"[ERROR] Sheet '{sheet_name}' not found")
-            return False
-        
-        df = excel_data[sheet_name]
-        
-        # Update rows
-        for item in new_configs:
-            row_idx = item["row_index"]
-            command = item["command"]
-            ts_number = item["config"]["ts_number"]
-            item_model_type = item.get("model_type")
-            
-            # Update Test Suite ID column - only if empty (preserve user's manual edits)
-            ts_id_column = _get_test_suite_id_column(df)
-            if ts_id_column:
-                current_val = df.at[row_idx, ts_id_column]
-                is_empty = pd.isna(current_val) or not str(current_val).strip()
-                if is_empty:
-                    if item_model_type == "gbdf_grs":
-                        df.at[row_idx, ts_id_column] = f"GBDTS{ts_number}"
-                    else:
-                        df.at[row_idx, ts_id_column] = f"CSBDTS{ts_number}" if "CSBDTS" in command else f"GBDTS{ts_number}" if "GBDTS" in command else f"NYKTS{ts_number}"
-                # else: preserve user's value - do not overwrite
 
-            # Command must always match the row's Test Suit ID (so GBDTS in sheet matches --GBDTS in command)
-            final_ts_number = ts_number
-            if ts_id_column:
-                cell_val = df.at[row_idx, ts_id_column]
-                if pd.notna(cell_val) and str(cell_val).strip():
-                    ts_match = re.search(r"(\d+)", str(cell_val))
-                    if ts_match:
-                        final_ts_number = _normalize_ts_number(ts_match.group(1)) or ts_number
-            command_to_write = generate_command(final_ts_number, item_model_type or "gbdf_mcr")
-            
-            # Update Cmd status column
-            if "Cmd status" in df.columns:
-                df.at[row_idx, "Cmd status"] = "Created"
-
-            # Update generate_command column (create if missing)
-            if "generate_command" not in df.columns:
-                df["generate_command"] = ""
-            else:
-                df["generate_command"] = df["generate_command"].fillna("").astype(str)
-            df.at[row_idx, "generate_command"] = command_to_write
-        
-        # Write back to Excel
-        with pd.ExcelWriter(excel_path, engine='openpyxl') as writer:
-            # Write all sheets
-            for sheet, data in excel_data.items():
-                if sheet == sheet_name:
-                    df.to_excel(writer, sheet_name=sheet, index=False)
-                else:
-                    data.to_excel(writer, sheet_name=sheet, index=False)
-        
-        print(f"\n[SUCCESS] Updated {excel_path} with command information")
-        return True
-        
-    except Exception as e:
-        print(f"[ERROR] Failed to update Excel file: {e}")
+    # Build patch list: only Cmd status and Test Suite ID (when empty).
+    # We do NOT write to generate_command so user formulas (e.g. =CONCAT(...)) stay intact.
+    excel_data = pd.read_excel(excel_path, sheet_name=None)
+    if sheet_name not in excel_data:
+        print(f"[ERROR] Sheet '{sheet_name}' not found")
         return False
+    df = excel_data[sheet_name]
+    ts_id_column = _get_test_suite_id_column(df)
+
+    updates: List[Dict] = []
+    for item in new_configs:
+        row_idx = item["row_index"]
+        ts_number = item["config"]["ts_number"]
+        item_model_type = item.get("model_type")
+        command = item["command"]
+
+        test_suite_id_val = None
+        if ts_id_column:
+            current_val = df.at[row_idx, ts_id_column]
+            is_empty = pd.isna(current_val) or not str(current_val).strip()
+            if is_empty:
+                if item_model_type == "gbdf_grs":
+                    test_suite_id_val = f"GBDTS{ts_number}"
+                else:
+                    test_suite_id_val = (
+                        f"CSBDTS{ts_number}" if "CSBDTS" in command
+                        else f"GBDTS{ts_number}" if "GBDTS" in command
+                        else f"NYKTS{ts_number}"
+                    )
+        updates.append({
+            "row_index": row_idx,
+            "cmd_status": "Created",
+            "test_suite_id": test_suite_id_val,
+        })
+
+    # Patch only those cells; formulas in other columns are left unchanged.
+    ok = _excel_patch_cells_only(excel_path, sheet_name, updates, data_start_row_offset=1)
+    if ok:
+        print(f"\n[SUCCESS] Updated {excel_path} with command information (formulas preserved)")
+    return ok
 
 
 def fix_command_mismatch_in_excel(
@@ -1327,15 +1374,15 @@ def fix_command_mismatch_in_excel(
 ) -> int:
     """
     Rewrite generate_command for each row to use the row's Test Suit ID so that
-    the command (e.g. --GBDTS62) always matches the Test Suit ID (e.g. GBDTS62).
+    the command matches the Test Suit ID. Only overwrites cells that do NOT
+    contain a formula, so formula-based generate_command (e.g. =CONCAT(...)) is preserved.
     Returns the number of rows updated.
     """
     excel_data = read_edits_list(excel_path)
     if not excel_data:
         return 0
-    ts_id_col = None
-    edit_col = None
-    updated_count = 0
+    # Collect (sheet_name, row_idx, correct_command) for rows that need fixing
+    fixes: List[Tuple[str, int, str]] = []
     for sheet_name in list(excel_data.keys()):
         df = excel_data[sheet_name]
         ts_id_column = _get_test_suite_id_column(df)
@@ -1352,9 +1399,7 @@ def fix_command_mismatch_in_excel(
             except Exception:
                 pass
         base_model_type = MODEL_SHEET_MAPPING.get(sheet_name)
-        if not base_model_type:
-            continue
-        if "generate_command" not in df.columns:
+        if not base_model_type or "generate_command" not in df.columns:
             continue
         df["generate_command"] = df["generate_command"].fillna("").astype(str)
         for idx, row in df.iterrows():
@@ -1375,16 +1420,36 @@ def fix_command_mismatch_in_excel(
             correct_command = generate_command(ts_number, row_model_type)
             current = str(row.get("generate_command", "") or "").strip()
             if current != correct_command:
-                df.at[idx, "generate_command"] = correct_command
-                updated_count += 1
+                fixes.append((sheet_name, idx, correct_command))
                 if dry_run:
                     print(f"  [FIX] {sheet_name} row {idx + 2}: Test Suit ID {test_suite_id} -> command {correct_command!r} (was {current!r})")
-        excel_data[sheet_name] = df
-    if not dry_run and updated_count > 0:
-        with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
-            for sheet, data in excel_data.items():
-                data.to_excel(writer, sheet_name=sheet, index=False)
-        print(f"[SUCCESS] Updated {updated_count} row(s) so command matches Test Suit ID in {excel_path}")
+
+    if dry_run or not fixes:
+        return len(fixes)
+
+    # Apply fixes with openpyxl: only overwrite generate_command cells that are NOT formulas
+    wb = load_workbook(excel_path, data_only=False)
+    updated_count = 0
+    fixes_by_sheet: Dict[str, List[Tuple[int, str]]] = {}
+    for sheet_name, row_idx, correct_command in fixes:
+        fixes_by_sheet.setdefault(sheet_name, []).append((row_idx, correct_command))
+    for sheet_name, row_cmd_list in fixes_by_sheet.items():
+        ws = wb[sheet_name]
+        header_row, col_map = _get_ws_header_row_and_columns(ws)
+        gen_col = col_map.get("generate_command")
+        if gen_col is None:
+            continue
+        data_first_row = header_row + 1
+        for row_idx, correct_command in row_cmd_list:
+            excel_row = data_first_row + row_idx
+            cell = ws.cell(row=excel_row, column=gen_col)
+            is_formula = isinstance(cell.value, str) and cell.value.strip().startswith("=")
+            if not is_formula:
+                cell.value = correct_command
+                updated_count += 1
+    wb.save(excel_path)
+    if updated_count:
+        print(f"[SUCCESS] Updated {updated_count} row(s) so command matches Test Suit ID in {excel_path} (formula cells preserved)")
     return updated_count
 
 
