@@ -7,7 +7,7 @@
   "payload": {
     "userId": "MFWGS",
     "KEY_CHK_DCN_CENTRY_CD": "20",
-    "KEY_CHK_DCN_NBR": "52660114965",
+    "KEY_CHK_DCN_NBR": "30712503590",
     "KEY_CHK_DCN_ITEM_CD": "80",
     "KEY_ADJ_SEQ_NBR": "999",
     "BHVRL_HLTH_ACS_PROV_IND": "N",
@@ -1001,5 +1001,5 @@
   "responseRequired": "false",
   "meta-src-envrmt": "IMST",
   "meta-transid": "20220117181853TMBL20359Cl893580999",
-  "Protigrity": "true"
+  "Protigrity": "false"
 }
