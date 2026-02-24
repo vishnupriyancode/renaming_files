@@ -2,7 +2,7 @@
 description: Postman and JSON file naming conventions for renaming_files
 globs: "**/postman_collections/**/*.json,**/renaming_jsons/**/*.json,**/source_folder/**/*.json"
 alwaysApply: false
-trigger: glob
+trigger: model_decision
 ---
 
 # Postman and JSON Naming Conventions
