@@ -706,9 +706,16 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
             # STAGE 2.1: POSTMAN GENERATOR SETUP
             # ==================================
             # Initialize Postman generator with specific model directory
-            # All Postman collections stored under WGS_KERNAL only
-            output_dir = "postman_collections/WGS_KERNAL"
-            
+            # Output folder matches model type: WGS_CSBD (incl. CSBDTS), WGS_KERNAL (NYKTS/WGS_NYK), or GBDF
+            if "WGS_CSBD" in dest_dir or "CSBDTS" in dest_dir:
+                output_dir = "postman_collections/WGS_CSBD"
+            elif "WGS_KERNAL" in dest_dir or "WGS_Kernal" in dest_dir or "NYKTS" in dest_dir or "WGS_NYK" in dest_dir:
+                output_dir = "postman_collections/WGS_KERNAL"
+            elif "GBDF" in dest_dir or "GBDTS" in dest_dir:
+                output_dir = "postman_collections/GBDF"
+            else:
+                output_dir = "postman_collections/WGS_KERNAL"  # default fallback
+
             generator = PostmanCollectionGenerator(
                 source_dir=dest_dir,  # Use the specific model's destination directory
                 output_dir=output_dir
@@ -733,8 +740,13 @@ def rename_files(edit_id="rvn001", code="00W5", source_dir=None, dest_dir=None, 
                 if postman_collection_name is None:
                     postman_collection_name = f"TS_01_REVENUE_WGS_CSBD_{edit_id}_{code}"
             
-            # Get custom filename from model config if available
-            custom_filename = postman_file_name
+            # File-based name for Bruno: use config postman_file_name, or derive from collection name + regression/smoke
+            if postman_file_name:
+                custom_filename = postman_file_name
+            else:
+                test_type = "regression" if "regression" in dest_dir else "smoke"
+                slug = re.sub(r"[^\w\-]", "_", postman_collection_name).strip("_")
+                custom_filename = f"{slug}_{test_type}.json"
             
             # STAGE 2.3: COLLECTION GENERATION
             # ===============================
